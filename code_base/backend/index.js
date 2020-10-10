@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const PORT = process.env.PORT || 3000;
 
 app.use(function (req, res, next) {
   res.header(
@@ -55,6 +54,6 @@ app.get("/db", async (req, res) => {
   }
 });
 
-app.listen(PORT, function () {
-  console.log("Example app listening on port " + PORT);
+app.listen(process.env.PORT || 3000, function () {
+  console.log("Example app listening on port %d", this.address().port);
 });

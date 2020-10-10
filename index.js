@@ -28,10 +28,32 @@ app.use(express.json());
 // to support URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
+const { Pool } = require("pg");
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
 app.get("/", function (req, res) {
   res.send("Hello World!");
 });
 
-app.listen(3000, function () {
-  console.log("Example app listening on port 3000!");
+app.get("/db", async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query("SELECT * FROM test_table");
+    const results = { results: result ? result.rows : null };
+    // res.render("pages/db", results);
+    res.send("Hello");
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+});
+
+app.listen(process.env.PORT || 3000, function () {
+  console.log("Example app listening on port %d", this.address().port);
 });
