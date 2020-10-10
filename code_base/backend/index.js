@@ -56,5 +56,5 @@ app.get("/db", async (req, res) => {
 });
 
 app.listen(PORT, function () {
-  console.log("Example app listening on port " + PORT.toString());
+  console.log("Example app listening on port " + PORT);
 });
