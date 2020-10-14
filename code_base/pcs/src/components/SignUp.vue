@@ -11,7 +11,7 @@
                 <h1>Sign Up</h1>
                 <p>Please fill in this form to create an account.</p>
                 <hr>
-
+                
                 <label for="type"><b>I am a ...</b></label>
                     <select id="type" name="type" v-model="type" required>
                         <option value="petOwner">Pet Owner</option>
