@@ -61,9 +61,14 @@ export default {
     return {
       items: [
         {
-          title: "Sign Up or Log In",
+          title: "Sign Up",
           icon: mdiLogin,
-          route: "/sign-up-or-log-in",
+          route: "/sign-up",
+        },
+        {
+          title: "Log In",
+          icon: mdiLogin,
+          route: "/log-in",
         },
       ],
     };
