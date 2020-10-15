@@ -1,6 +1,6 @@
 const e = require("express");
 
-app.get("/pet-care/caretakers", async function (req, res) {
+app.get("/pet-care/pet-owners/caretakers", async function (req, res) {
   const get_caretaker_usernames =
     "SELECT username FROM caretaker ORDER BY username ASC";
 
@@ -19,12 +19,12 @@ app.get("/pet-care/caretakers", async function (req, res) {
   }
 });
 
-app.post("/pet-care/caretakers", async function (req, res) {
+app.post("/pet-care/pet-owners/caretakers", async function (req, res) {
   // send the usernames only
   console.log("Received Caretaker request: ", req.body);
   let commitment = req.body.caretaker.commitment;
-  let date_from = req.body.caretaker.start_date;
-  let date_to = req.body.caretaker.end_date;
+  let date_from = req.body.caretaker.dates[0];
+  let date_to = req.body.caretaker.dates[1];
   let rating_wanted = req.body.caretaker.rating;
   let sort_by = req.body.caretaker.order_by;
   let price_range_from = req.body.caretaker.start_price;
@@ -156,7 +156,7 @@ app.post("/pet-care/caretakers", async function (req, res) {
             request_full_time + add_sort_price_low_to_high_only;
         } else if (sort_by == "price high to low") {
           let add_sort_price_high_to_low_only =
-            " ODER BY current_daily_price DESC";
+            " ORDER BY current_daily_price DESC";
 
           request_full_time =
             request_full_time + add_sort_price_high_to_low_only;
@@ -289,7 +289,7 @@ app.post("/pet-care/caretakers", async function (req, res) {
             request_part_time + add_sort_price_low_to_high_only;
         } else if (sort_by == "price high to low") {
           let add_sort_price_high_to_low_only =
-            " ODER BY current_daily_price DESC";
+            " ORDER BY current_daily_price DESC";
 
           request_part_time =
             request_part_time + add_sort_price_high_to_low_only;
@@ -496,7 +496,7 @@ app.post("/pet-care/caretakers", async function (req, res) {
             request_part_time + add_sort_price_low_to_high_only;
         } else if (sort_by == "price high to low") {
           let add_sort_price_high_to_low_only =
-            " ODER BY current_daily_price DESC";
+            " ORDER BY current_daily_price DESC";
 
           request_full_time =
             request_full_time + add_sort_price_high_to_low_only;

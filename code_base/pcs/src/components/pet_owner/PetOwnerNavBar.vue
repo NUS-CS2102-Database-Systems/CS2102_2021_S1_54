@@ -4,7 +4,7 @@
       <v-navigation-drawer
         height="100%"
         width="250"
-        class="general"
+        class="petOwners"
         color="#01579B"
         fixed
         dark
@@ -12,7 +12,7 @@
       >
         <div id="logo">
           <img
-            :src="require('../assets/petopia_logo_v4.png')"
+            :src="require('../../assets/petopia_logo_v4.png')"
             height="100px"
             width="256px"
           />
@@ -25,7 +25,8 @@
               font-weight: bold;
             "
           >
-            Pet Care Service
+            Pet Care Service <br />
+            Pet Owners
           </h2>
         </div>
 
@@ -52,7 +53,7 @@
 </template>
 
 <script>
-import { mdiLogin } from "@mdi/js";
+import { mdiLogout, mdiAccountGroup, mdiAccountCircle } from "@mdi/js";
 
 export default {
   name: "PetOwnerNavBar",
@@ -61,9 +62,19 @@ export default {
     return {
       items: [
         {
-          title: "Sign Up or Log In",
-          icon: mdiLogin,
-          route: "/sign-up-or-log-in",
+          title: "Caretakers' Profiles",
+          icon: mdiAccountGroup,
+          route: "/pet-owners/view-caretakers-profiles",
+        },
+        {
+          title: "My Profile",
+          icon: mdiAccountCircle,
+          route: "/pet-owners/view-my-profile",
+        },
+        {
+          title: "Log Out",
+          icon: mdiLogout,
+          route: "/log-out",
         },
       ],
     };
