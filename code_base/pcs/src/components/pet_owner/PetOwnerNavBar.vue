@@ -29,7 +29,6 @@
             Pet Owners
           </h2>
         </div>
-
         <v-list nav>
           <v-list-item-group>
             <v-list-item
@@ -37,13 +36,30 @@
               :key="item.title"
               :to="item.route"
             >
-              <v-list-item-icon>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
+              <template v-if="!item.subItems">
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
 
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <template v-else v-slot:activator>
+                <v-list-item
+                  v-for="subitem in subItems"
+                  :key="subitem.title"
+                  :to="subitem.route"
+                >
+                  <v-list-item-icon>
+                    <v-icon>{{ subitem.icon }}</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>{{ subitem.title }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -53,7 +69,14 @@
 </template>
 
 <script>
-import { mdiLogout, mdiAccountGroup, mdiAccountCircle } from "@mdi/js";
+import {
+  mdiLogout,
+  mdiAccountGroup,
+  mdiAccountCircle,
+  mdiCheckBoxMultipleOutline,
+  mdiCheckboxMarkedOutline,
+  mdiCheckboxMultipleBlankOutline,
+} from "@mdi/js";
 
 export default {
   name: "PetOwnerNavBar",
@@ -61,6 +84,21 @@ export default {
   data() {
     return {
       items: [
+        {
+          title: "View Past Jobs",
+          icon: mdiCheckBoxMultipleOutline,
+          route: "/pet-owners/view-past-jobs",
+        },
+        {
+          title: "View Ongoing Jobs",
+          icon: mdiCheckboxMarkedOutline,
+          route: "/pet-owners/view-ongoing-jobs",
+        },
+        {
+          title: "View Upcoming Jobs",
+          icon: mdiCheckboxMultipleBlankOutline,
+          route: "/pet-owners/view-upcoming-jobs",
+        },
         {
           title: "Caretakers' Profiles",
           icon: mdiAccountGroup,
@@ -74,7 +112,7 @@ export default {
         {
           title: "Log Out",
           icon: mdiLogout,
-          route: "/log-out",
+          route: "/",
         },
       ],
     };

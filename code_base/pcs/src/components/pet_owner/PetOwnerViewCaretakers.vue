@@ -33,7 +33,7 @@
           >
             <template v-slot:activator="{ on }">
               <v-text-field
-                label="Availablity"
+                label="Availability"
                 :value="dateDisplay"
                 v-on="on"
                 clearable
@@ -216,7 +216,7 @@ export default {
     price_to: null,
     have_data: true,
     loaded: true,
-    caretaker_username: null,
+    caretaker_username: [],
     selected_commitment_level: null,
     selected_available_dates: null,
     selected_rating: null,
@@ -426,10 +426,14 @@ export default {
         //       this.have_data = true;
         //       for (let i = 0; i < response.data.length; i++) {
         //         let data_received_as_link =
-        //           '"' +
-        //           constants.pet_owner_view_caretaker_domain +
-        //           response.data[i].username +
-        //           '"';
+        //           '"' + constants.caretaker_view_pet_owner_domain;
+        //         data_received_as_link = data_received_as_link.replace(
+        //           /value1/,
+        //           response.data[i].username
+        //         );
+
+        //         data_received_as_link += '"';
+
         //         let data_received = response.data[i].username;
         //         this.caretaker_username.push(
         //           data_received.link(data_received_as_link)
@@ -451,7 +455,14 @@ export default {
     //   } else {
     //     for (let i = 0; i < response.data.length; i++) {
     //       let data_received_as_link =
-    //         '"' + constants.pet_owner_view_caretaker_domain + response.data[i].username + '"';
+    //         '"' + constants.caretaker_view_pet_owner_domain;
+    //       data_received_as_link = data_received_as_link.replace(
+    //         /value1/,
+    //         response.data[i].username
+    //       );
+
+    //       data_received_as_link += '"';
+
     //       let data_received = response.data[i].username;
     //       this.caretaker_username.push(
     //         data_received.link(data_received_as_link)
