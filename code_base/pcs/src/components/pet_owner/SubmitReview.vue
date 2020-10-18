@@ -1,26 +1,25 @@
 <template>
     <div>
-        <form @submit="logIn" style="border:1px solid #ccc">
+        <form @submit="submitReview" style="border:1px solid #ccc">
             <div class="container">
-                <h1>Log In</h1>
-                <p>Please fill in your account details to log in.</p>
+                <h1>Submit a Review</h1>
+                <p>You are writing a review for {{this.caretaker_username}}</p>
                 <hr>
 
-                <label for="type"><b>I am a ...</b></label>
-                  <select id="type" name="type" v-model="type" required>
-                    <option value="petOwner">Pet Owner</option>
-                    <option value="fulltimeCaretaker">Full Time Caretaker</option>
-                    <option value="parttimeCaretaker">Part Time Caretaker</option>
-                  </select>
+                <label for="review"><b>Review</b></label>
+                <input type="text" placeholder="Enter review..." name="review" v-model="review" required>
 
-                <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" v-model="username" required>
-
-                <label for="password"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" v-model="password" required>
+                <label for="rating"><b>Rating</b></label>
+                    <select id="rating" name="rating" v-model="rating" required>
+                        <option value=1>1 (hmm...) </option>
+                        <option value=2>2</option>
+                        <option value=3>3</option>
+                        <option value=4>4</option>
+                        <option value=5>5 (great!) </option>
+                    </select>
 
                 <div class="clearfix">
-                <button type="button" class="cancelbtn"><router-link tag="span" to='/'>Cancel</router-link></button>
+                <button type="button" class="cancelbtn">Cancel</button>
                 <button type="submit" class="signupbtn">Sign Up</button>
                 </div>
             </div>
@@ -30,29 +29,30 @@
 
 <script>
 export default {
-    name: "LogIn",
+    name: "SubmitReview",
     data() {
         return {
-            type: '',
-            username: '',
-            password: '',
+            caretaker_username: 'caretaker',
+            review: '',
+            rating: 5,
         }
     },
     methods: {
-        logIn(e) {
+        submitReview(e) {
             e.preventDefault();
-            const user = {
-                type: this.type,
-                username: this.username,
-                password: this.password,
+            const review = {
+                caretaker_username: this.caretaker_username,
+                review: this.review,
+                rating: this.rating,
             }
 
-            console.log(user)
+            console.log(review)
 
-            this.$emit('log-in', user);
-            this.type = '';
-            this.username = '';
-            this.password = '';
+            this.$emit('submit-review', review);
+            // delete this later
+            this.caretaker_username = '';
+            this.review = '';
+            this.rating = '';
         },
     }
 }
