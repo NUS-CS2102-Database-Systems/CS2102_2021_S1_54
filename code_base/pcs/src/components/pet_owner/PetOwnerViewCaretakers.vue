@@ -187,6 +187,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
+    username: null,
     commitment_levels: [
       { name: "Full-time", value: "full-time" },
       { name: "Part-time", value: "part-time" },
@@ -472,14 +473,25 @@ export default {
     //   }
     // },
   },
-  //   async mounted() {
-  //     this.loaded = false;
-  //     try {
-  //       await this.fetchData();
-  //       this.loaded = true;
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //   },
+  async mounted() {
+    console.log("Doc Caretaker: " + document.cookie);
+    if (document.cookie.includes(";")) {
+      let split_cookie = document.cookie.split(";");
+      console.log("pet owner username: " + split_cookie[0]);
+      var get_last_cookie = split_cookie[0];
+    } else {
+      get_last_cookie = document.cookie;
+    }
+    let get_last_cookie_split = get_last_cookie.split("=");
+    this.username = get_last_cookie_split[1];
+    console.log("Caretaker page:" + this.username);
+    // this.loaded = false;
+    // try {
+    //   await this.fetchData();
+    //   this.loaded = true;
+    // } catch (e) {
+    //   console.error(e);
+    // }
+  },
 };
 </script>

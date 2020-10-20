@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit="signUp" style="border:1px solid #ccc">
+    <form @submit="logIn" style="border:1px solid #ccc">
       <div class="container">
         <h1>Log In</h1>
         <p>Please fill in your account details to log in.</p>
@@ -11,6 +11,7 @@
           <option value="petOwner">Pet Owner</option>
           <option value="fulltimeCaretaker">Full Time Caretaker</option>
           <option value="parttimeCaretaker">Part Time Caretaker</option>
+          <option value="pcsAdmin">PCS Admin</option>
         </select>
 
         <label for="username"><b>Username</b></label>
@@ -35,7 +36,7 @@
           <button type="button" class="cancelbtn">
             <router-link tag="span" to="/">Cancel</router-link>
           </button>
-          <button type="submit" class="signupbtn">Sign Up</button>
+          <button type="submit" class="signupbtn">Log In</button>
         </div>
       </div>
     </form>
@@ -43,6 +44,8 @@
 </template>
 
 <script>
+// import * as constants from "./constants";
+
 export default {
   name: "LogIn",
   data() {
@@ -53,7 +56,7 @@ export default {
     };
   },
   methods: {
-    signUp(e) {
+    logIn(e) {
       e.preventDefault();
       const user = {
         type: this.type,
@@ -62,11 +65,30 @@ export default {
       };
 
       console.log(user);
+      console.log(this.username);
+      console.log(this.type);
 
-      this.$emit("log-in", user);
-      this.type = "";
-      this.username = "";
-      this.password = "";
+      // this.$emit("log-in", user);
+      // this.type = "";
+      // this.username = "";
+      // this.password = "";
+      const username_logged_in = this.username;
+      if (this.type == "petOwner") {
+        document.cookie = "pet_owner_username=" + username_logged_in;
+        console.log("Document: " + document.cookie);
+        if (document.cookie.includes(";")) {
+          let split_cookie = document.cookie.split(";");
+          console.log("split:" + split_cookie[0]);
+          var get_last_cookie = split_cookie[0];
+        } else {
+          get_last_cookie = document.cookie;
+        }
+        console.log("cookie: " + get_last_cookie);
+        this.$router.push({
+          path: "pet-owners",
+          query: { pet_owner_username: username_logged_in },
+        });
+      }
     },
   },
 };

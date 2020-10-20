@@ -5,7 +5,7 @@
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
-        <h2>{{ username }}'s Profile</h2>
+        <h2>{{ caretaker_username }}'s Profile</h2>
         <br />
         <br />
         <v-list>
@@ -70,7 +70,7 @@ export default {
   },
   data: () => ({
     loaded: true,
-    username: null,
+    caretaker_username: null,
     name: null,
     birth_date: null,
     age: null,

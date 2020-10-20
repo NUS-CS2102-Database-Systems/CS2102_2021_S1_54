@@ -15,6 +15,7 @@ import PetOwnerViewMyProfile from "./components/pet_owner/PetOwnerViewMyProfile"
 import PetOwnerEditLoginInfo from "./components/pet_owner/PetOwnerEditLoginInfo";
 import PetOwnerEditPersonalInfo from "./components/pet_owner/PetOwnerEditPersonalInfo";
 import PetOwnerEditCreditCardInfo from "./components/pet_owner/PetOwnerEditCreditCardInfo";
+import PetOwnerHome from "./components/pet_owner/PetOwnerHome";
 
 Vue.use(VueRouter);
 
@@ -40,9 +41,8 @@ export default new VueRouter({
     },
     {
       path: "/pet-owners",
-      name: "PetOwnerViewOngoingJobs",
-      component: PetOwnerViewOngoingJobs,
-      // props: true
+      name: "PetOwnerHome",
+      component: PetOwnerHome,
     },
     {
       path: "/pet-owners/view-past-jobs",

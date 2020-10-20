@@ -75,6 +75,7 @@
         </v-col>
       </v-row>
       <template v-if="loaded && have_data">
+        <br />
         <v-col class="mx-auto">
           <v-list v-for="(number, i) in id_odd" :key="number">
             <v-row>
@@ -169,6 +170,7 @@ export default {
   data: () => ({
     loaded: true,
     have_data: true,
+    username: null,
     commitment_levels: [
       { name: "Full-time", value: "full-time" },
       { name: "Part-time", value: "part-time" },
@@ -298,6 +300,16 @@ export default {
       // }
     },
   },
-  async mounted() {},
+  async mounted() {
+    if (document.cookie.includes(";")) {
+      let split_cookie = document.cookie.split(";");
+      console.log("split profile:" + split_cookie[0]);
+      var get_last_cookie = split_cookie[0];
+    } else {
+      get_last_cookie = document.cookie;
+    }
+    let get_last_cookie_split = get_last_cookie.split("=");
+    this.username = get_last_cookie_split[1];
+  },
 };
 </script>

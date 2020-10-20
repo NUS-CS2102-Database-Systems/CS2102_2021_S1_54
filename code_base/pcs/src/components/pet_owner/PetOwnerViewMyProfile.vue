@@ -5,7 +5,7 @@
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
-        <h2>Welcome, {{ username }}</h2>
+        <h2>Welcome, {{ username }}!</h2>
         <br />
         <h3>My Profile</h3>
         <br />
@@ -107,6 +107,7 @@ export default {
   data: () => ({
     loaded: true,
     username: null,
+    username_details: null,
     password: null,
     name: null,
     age: null,
@@ -122,13 +123,16 @@ export default {
   }),
   methods: {
     editLoginDetails: function() {
-      window.location.href = constants.pet_owner_edit_login_info;
+      window.location.href =
+        constants.pet_owner_edit_login_info + this.username_details;
     },
     editPersonalInfo: function() {
-      window.location.href = constants.pet_owner_edit_personal_info;
+      window.location.href =
+        constants.pet_owner_edit_personal_info + this.username_details;
     },
     editCreditCardInfo: function() {
-      window.location.href = constants.pet_owner_edit_credit_card_info;
+      window.location.href =
+        constants.pet_owner_edit_credit_card_info + this.username_details;
     },
     fetchData: async function() {
       // set caretaker username and pet names as links
@@ -142,6 +146,19 @@ export default {
       // }
     },
   },
-  async mounted() {},
+  async mounted() {
+    console.log("C_Profile: " + document.cookie);
+    if (document.cookie.includes(";")) {
+      let split_cookie = document.cookie.split(";");
+      console.log("split profile:" + split_cookie[0]);
+      var get_last_cookie = split_cookie[0];
+    } else {
+      get_last_cookie = document.cookie;
+    }
+    let get_last_cookie_split = get_last_cookie.split("=");
+    this.username = get_last_cookie_split[1];
+    this.username_details = get_last_cookie;
+    console.log(this.username_details);
+  },
 };
 </script>

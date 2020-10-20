@@ -26,7 +26,7 @@
             "
           >
             Pet Care Service <br />
-            Pet Owners
+            Pet Owners <br />
           </h2>
         </div>
         <v-list nav>
@@ -36,30 +36,13 @@
               :key="item.title"
               :to="item.route"
             >
-              <template v-if="!item.subItems">
-                <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-icon>
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
-              </template>
-              <template v-else v-slot:activator>
-                <v-list-item
-                  v-for="subitem in subItems"
-                  :key="subitem.title"
-                  :to="subitem.route"
-                >
-                  <v-list-item-icon>
-                    <v-icon>{{ subitem.icon }}</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title>{{ subitem.title }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>

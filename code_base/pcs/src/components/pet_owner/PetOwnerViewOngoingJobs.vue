@@ -5,6 +5,10 @@
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded && have_data">
+        <h2>Hello {{ username }}!</h2>
+        <br />
+        <h2>Your pets under our care at the moment:</h2>
+        <br />
         <v-col class="mx-auto">
           <v-list v-for="(number, i) in id_odd" :key="number">
             <v-row>
@@ -66,7 +70,7 @@
               </v-row>
             </v-card-title>
             <p class="text-center">
-              You have no pets under our care at the moment.
+              Hi {{ username }}. You have no pets under our care at the moment.
               <br />We hope to meet them soon! :)
             </p>
           </v-card>
@@ -98,6 +102,7 @@ export default {
   data: () => ({
     loaded: true,
     have_data: false,
+    username: null,
     id_odd: [],
     id_even: [],
     caretaker_odd: [],
@@ -132,6 +137,16 @@ export default {
       // }
     },
   },
-  async mounted() {},
+  async mounted() {
+    if (document.cookie.includes(";")) {
+      let split_cookie = document.cookie.split(";");
+      console.log("split profile:" + split_cookie[0]);
+      var get_last_cookie = split_cookie[0];
+    } else {
+      get_last_cookie = document.cookie;
+    }
+    let get_last_cookie_split = get_last_cookie.split("=");
+    this.username = get_last_cookie_split[1];
+  },
 };
 </script>

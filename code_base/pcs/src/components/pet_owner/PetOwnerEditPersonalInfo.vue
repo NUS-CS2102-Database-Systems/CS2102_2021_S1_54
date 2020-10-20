@@ -5,6 +5,8 @@
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
+        <h2>{{ username }}</h2>
+        <br />
         <h3>Edit Personal Information</h3>
         <br />
         <v-layout align-center>
@@ -94,6 +96,7 @@ export default {
   },
   data: () => ({
     loaded: true,
+    username: null,
     name: null,
     age: null,
     birth_date: null,
@@ -229,6 +232,16 @@ export default {
     },
     fetchData: async function() {},
   },
-  async mounted() {},
+  async mounted() {
+    if (document.cookie.includes(";")) {
+      let split_cookie = document.cookie.split(";");
+      console.log("pet owner username: " + split_cookie[0]);
+      var get_last_cookie = split_cookie[0];
+    } else {
+      get_last_cookie = document.cookie;
+    }
+    let get_last_cookie_split = get_last_cookie.split("=");
+    this.username = get_last_cookie_split[1];
+  },
 };
 </script>

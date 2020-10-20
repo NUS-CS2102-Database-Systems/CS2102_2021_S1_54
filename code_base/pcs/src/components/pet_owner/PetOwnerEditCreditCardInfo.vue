@@ -5,6 +5,8 @@
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
+        <h2>{{ username }}</h2>
+        <br />
         <h3>Edit Credit Card Details</h3>
         <br />
         <v-layout align-center>
@@ -18,7 +20,6 @@
               clearable
               @click:clear="clearCreditCardNumber"
             />
-            <br />
             <b>Name of Cardholder:</b>
             <v-text-field
               v-model="credit_card_name"
@@ -60,7 +61,7 @@
 
 <script>
 import PetOwnerNavBar from "./PetOwnerNavBar";
-// import * as constants from "../constants";
+import * as constants from "../constants";
 import Swal from "sweetalert2";
 
 export default {
@@ -71,6 +72,7 @@ export default {
   },
   data: () => ({
     loaded: true,
+    username: null,
     credit_card_num: null,
     credit_card_name: null,
     expiry_date: null,
@@ -178,11 +180,23 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        // window.location.href = constants.pet_owner_go_back_to_profile_page;
+        window.location.href = constants.pet_owner_go_back_to_profile_page;
       }
     },
     fetchData: async function() {},
   },
-  async mounted() {},
+  async mounted() {
+    console.log("Doc Card: " + document.cookie);
+    if (document.cookie.includes(";")) {
+      let split_cookie = document.cookie.split(";");
+      console.log("pet owner username: " + split_cookie[0]);
+      var get_last_cookie = split_cookie[0];
+    } else {
+      get_last_cookie = document.cookie;
+    }
+    let get_last_cookie_split = get_last_cookie.split("=");
+    this.username = get_last_cookie_split[1];
+    console.log("Card page:" + this.username);
+  },
 };
 </script>
