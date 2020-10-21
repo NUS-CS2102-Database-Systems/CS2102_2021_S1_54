@@ -8,6 +8,7 @@ const pool = new Pool({
 
 var appRouter = function (app) { 
     app.get("/users", get_all_users);
+    app.get("/users/authenticate", get_user_with_username_and_password);
     app.post("/users", create_user);
     app.post("/users/pet-owners", create_petowner);
     app.post("/users/caretakers/fulltime", create_fulltime_caretaker);
@@ -21,8 +22,24 @@ var appRouter = function (app) {
 async function get_all_users(req, res) {
     try {
         const client = await pool.connect();
-        const result = await client.query("SELECT * FROM user;");
+        const result = await client.query("SELECT * FROM users;");
         // const results = { results: result ? result.rows : null };
+
+        res.send(JSON.stringify(result.rows));
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+    }
+}
+
+async function get_user_with_username_and_password(req, res) {
+    try {
+        const client = await pool.connect();
+        const username = req.body.username;
+        const password = req.body.password;
+        const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+        const result = await client.query(query);
 
         res.send(JSON.stringify(result.rows));
         client.release();
@@ -46,12 +63,12 @@ async function create_user(req, res) {
         const address = req.body.address;
 
         // check existence of user
-        const result = await client.query(`SELECT * FROM user WHERE username = '${username}'`);
+        const result = await client.query(`SELECT * FROM users WHERE username = '${username}'`);
         if (result.rowCount !== 0) {
             res.send("username already exists!");
         } else {
             const query = `
-            INSERT INTO user VALUES('${username}', '${password}',
+            INSERT INTO users VALUES('${username}', '${password}',
                 '${name}', '${birth_date}', '${gender}', ${phone}, '${email}', '${address}');`
             
             const result = await client.query(query);
@@ -132,13 +149,13 @@ async function update_user(req, res) {
 
         var is_req_body_empty = true;
         for (const [key, value] of Object.entries(req.body)) {
-            const update_query = `UPDATE user `
+            const update_query = `UPDATE users `
             + `SET ${key} = '${value}' WHERE username = ${username};`;
             await client.query(update_query);
             is_req_body_empty = false
         }
 
-        const result = await client.query(`SELECT * FROM user WHERE username = ${username};`);
+        const result = await client.query(`SELECT * FROM users WHERE username = ${username};`);
         if (result.rowCount != 0 && !is_req_body_empty) {
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(result.rows[0]));
@@ -195,7 +212,7 @@ async function delete_user(req, res) {
     try {
         const client = await pool.connect();
         const username = req.body.username;
-        const delete_query = `DELETE FROM user WHERE username = '${username}'`;
+        const delete_query = `DELETE FROM users WHERE username = '${username}'`;
         const result = await client.query(delete_query);
 
         res.send(JSON.stringify(result.rows));

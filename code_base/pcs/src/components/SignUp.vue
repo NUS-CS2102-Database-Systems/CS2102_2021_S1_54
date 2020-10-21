@@ -14,9 +14,11 @@
                 
                 <label for="type"><b>I am a ...</b></label>
                     <select id="type" name="type" v-model="type" required>
-                        <option value="petOwner">Pet Owner</option>
-                        <option value="fulltimeCaretaker">Full Time Caretaker</option>
-                        <option value="parttimeCaretaker">Part Time Caretaker</option>
+                        <option value="petOwner">Pet Owner only</option>
+                        <option value="fulltimeCaretaker">Full Time Caretaker only</option>
+                        <option value="parttimeCaretaker">Part Time Caretaker only</option>
+                        <option value="poAndFt"> Both Pet Owner and Part Time Caretaker</option>
+                        <option value="poAndPt">Both Pet Owner and Full Time Caretaker</option>
                     </select>
 
                 <label for="username"><b>Username</b></label>
@@ -29,7 +31,7 @@
                 <input type="text" placeholder="Enter Full Name" name="name" v-model="name" required>
 
                 <label for="dob"><b>Date of Birth</b></label>
-                <input type="text" placeholder="Enter Date of Birth" name="dob" v-model="dob" required>
+                <input type="date" placeholder="Enter Date of Birth" name="dob" v-model="dob" required>
 
                 <label for="gender"><b>Gender</b></label>
                     <select id="gender" name="gender" v-model="gender" required>
@@ -120,7 +122,7 @@ export default {
 * {box-sizing: border-box}
 
 /* Full-width input fields */
-  input[type=text], input[type=password] {
+  input[type=text], input[type=password], input[type=date] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
