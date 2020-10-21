@@ -25,6 +25,7 @@ async function get_all_users(req, res) {
         const result = await client.query("SELECT * FROM users;");
         // const results = { results: result ? result.rows : null };
 
+        res.setHeader('content-type', 'application/json');
         res.send(JSON.stringify(result.rows));
         client.release();
     } catch (err) {
@@ -41,6 +42,7 @@ async function get_user_with_username_and_password(req, res) {
         const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
         const result = await client.query(query);
 
+        res.setHeader('content-type', 'application/json');
         res.send(JSON.stringify(result.rows));
         client.release();
     } catch (err) {
@@ -71,8 +73,10 @@ async function create_user(req, res) {
             INSERT INTO users VALUES('${username}', '${password}',
                 '${name}', '${birth_date}', '${gender}', ${phone}, '${email}', '${address}');`
             
-            const result = await client.query(query);
+            await client.query(query);
     
+            const result = await client.query(`SELECT * FROM users WHERE username = '${username}';`);
+            res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(result.rows));
         }
         client.release();
@@ -89,7 +93,10 @@ async function create_petowner(req, res) {
         const username = req.body.username;
 
         const query = `INSERT INTO pet_owner VALUES('${username}', NULL, NULL, NULL);`
-        const result = await client.query(query);
+        await client.query(query);
+
+        const result = await client.query(`SELECT * FROM pet_owner WHERE username = '${username}';`);
+        res.setHeader('content-type', 'application/json');
         res.send(JSON.stringify(result.rows));
 
         client.release();
@@ -106,12 +113,14 @@ async function create_fulltime_caretaker(req, res) {
         const username = req.body.username;
 
         const query1 = `INSERT INTO caretaker VALUES('${username}', DEFAULT, CURRENT_DATE);`
-        const result1 = await client.query(query1);
+        await client.query(query1);
         
         const query2 = `INSERT INTO full_time_caretaker VALUES('${username}');`
-        const result2 = await client.query(query2);
+        await client.query(query2);
         
-        res.send(JSON.stringify(result2.rows));
+        const result = await client.query(`SELECT * FROM full_time_caretaker WHERE username = '${username}';`);
+        res.setHeader('content-type', 'application/json');
+        res.send(JSON.stringify(result.rows));
 
         client.release();
     } catch (err) {
@@ -127,12 +136,14 @@ async function create_parttime_caretaker(req, res) {
         const username = req.body.username;
 
         const query1 = `INSERT INTO caretaker VALUES('${username}', DEFAULT, CURRENT_DATE);`
-        const result1 = await client.query(query1);
+        await client.query(query1);
         
         const query2 = `INSERT INTO part_time_caretaker VALUES('${username}');`
-        const result2 = await client.query(query2);
+        await client.query(query2);
         
-        res.send(JSON.stringify(result2.rows));
+        const result = await client.query(`SELECT * FROM part_time_caretaker WHERE username = '${username}';`);
+        res.setHeader('content-type', 'application/json');
+        res.send(JSON.stringify(result.rows));
 
         client.release();
     } catch (err) {
@@ -149,10 +160,12 @@ async function update_user(req, res) {
 
         var is_req_body_empty = true;
         for (const [key, value] of Object.entries(req.body)) {
-            const update_query = `UPDATE users `
-            + `SET ${key} = '${value}' WHERE username = ${username};`;
-            await client.query(update_query);
-            is_req_body_empty = false
+            if (key !== "username") {
+                const update_query = `UPDATE users `
+                + `SET ${key} = '${value}' WHERE username = ${username};`;
+                await client.query(update_query);
+                is_req_body_empty = false
+            }
         }
 
         const result = await client.query(`SELECT * FROM users WHERE username = ${username};`);
@@ -181,8 +194,10 @@ async function update_pet_owner(req, res) {
         const update_query = `UPDATE pet_owner SET credit_card_number = '${credit_card_number}',
             credit_card_full_name = '${credit_card_full_name}', credit_card_expiry_date='${credit_card_expiry_date}'
             WHERE username = '${username}'`;
-        const result = await client.query(update_query);
+        await client.query(update_query);
 
+        const result = await client.query(`SELECT * FROM pet_owner WHERE username = '${username}';`);
+        res.setHeader('content-type', 'application/json');
         res.send(JSON.stringify(result.rows));
         client.release();
     } catch (err) {
@@ -198,8 +213,10 @@ async function update_care_taker(req, res) {
         const average_rating = req.body.average_rating;
         const update_query = `UPDATE care_taker SET average_rating = ${average_rating}
             WHERE username = '${username}'`;
-        const result = await client.query(update_query);
+        await client.query(update_query);
 
+        const result = await client.query(`SELECT * FROM care_taker WHERE username = '${username}';`);
+        res.setHeader('content-type', 'application/json');
         res.send(JSON.stringify(result.rows));
         client.release();
     } catch (err) {
@@ -213,9 +230,9 @@ async function delete_user(req, res) {
         const client = await pool.connect();
         const username = req.body.username;
         const delete_query = `DELETE FROM users WHERE username = '${username}'`;
-        const result = await client.query(delete_query);
+        await client.query(delete_query);
 
-        res.send(JSON.stringify(result.rows));
+        res.send(`${username} is deleted!`);
         client.release();
     } catch (err) {
         console.error(err);

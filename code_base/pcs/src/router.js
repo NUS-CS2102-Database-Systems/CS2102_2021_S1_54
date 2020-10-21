@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "./components/Home";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
+import DeleteAccount from "./components/DeleteAccount";
 import SubmitReview from "./components/pet_owner/SubmitReview";
 import ViewReviews from "./components/caretaker/ViewReviews";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
@@ -40,6 +41,11 @@ export default new VueRouter({
       path: "/log-in",
       name: "LogIn",
       component: LogIn,
+    },
+    {
+      path: "/delete-account",
+      name: "DeleteAccount",
+      component: DeleteAccount,
     },
     {
       path: "/submit-review", //TODO: change this later
