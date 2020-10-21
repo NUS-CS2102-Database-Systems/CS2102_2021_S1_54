@@ -33,7 +33,7 @@
           >
             <template v-slot:activator="{ on }">
               <v-text-field
-                label="Availablity"
+                label="Availability"
                 :value="dateDisplay"
                 v-on="on"
                 clearable
@@ -187,6 +187,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
+    username: null,
     commitment_levels: [
       { name: "Full-time", value: "full-time" },
       { name: "Part-time", value: "part-time" },
@@ -216,7 +217,7 @@ export default {
     price_to: null,
     have_data: true,
     loaded: true,
-    caretaker_username: null,
+    caretaker_username: [],
     selected_commitment_level: null,
     selected_available_dates: null,
     selected_rating: null,
@@ -426,10 +427,14 @@ export default {
         //       this.have_data = true;
         //       for (let i = 0; i < response.data.length; i++) {
         //         let data_received_as_link =
-        //           '"' +
-        //           constants.pet_owner_view_caretaker_domain +
-        //           response.data[i].username +
-        //           '"';
+        //           '"' + constants.caretaker_view_pet_owner_domain;
+        //         data_received_as_link = data_received_as_link.replace(
+        //           /value1/,
+        //           response.data[i].username
+        //         );
+
+        //         data_received_as_link += '"';
+
         //         let data_received = response.data[i].username;
         //         this.caretaker_username.push(
         //           data_received.link(data_received_as_link)
@@ -451,7 +456,14 @@ export default {
     //   } else {
     //     for (let i = 0; i < response.data.length; i++) {
     //       let data_received_as_link =
-    //         '"' + constants.pet_owner_view_caretaker_domain + response.data[i].username + '"';
+    //         '"' + constants.caretaker_view_pet_owner_domain;
+    //       data_received_as_link = data_received_as_link.replace(
+    //         /value1/,
+    //         response.data[i].username
+    //       );
+
+    //       data_received_as_link += '"';
+
     //       let data_received = response.data[i].username;
     //       this.caretaker_username.push(
     //         data_received.link(data_received_as_link)
@@ -461,14 +473,25 @@ export default {
     //   }
     // },
   },
-  //   async mounted() {
-  //     this.loaded = false;
-  //     try {
-  //       await this.fetchData();
-  //       this.loaded = true;
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //   },
+  async mounted() {
+    console.log("Doc Caretaker: " + document.cookie);
+    if (document.cookie.includes(";")) {
+      let split_cookie = document.cookie.split(";");
+      console.log("pet owner username: " + split_cookie[0]);
+      var get_last_cookie = split_cookie[0];
+    } else {
+      get_last_cookie = document.cookie;
+    }
+    let get_last_cookie_split = get_last_cookie.split("=");
+    this.username = get_last_cookie_split[1];
+    console.log("Caretaker page:" + this.username);
+    // this.loaded = false;
+    // try {
+    //   await this.fetchData();
+    //   this.loaded = true;
+    // } catch (e) {
+    //   console.error(e);
+    // }
+  },
 };
 </script>

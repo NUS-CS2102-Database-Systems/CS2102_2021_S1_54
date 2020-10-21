@@ -1,80 +1,119 @@
 <template>
-    <div>
-        <form @submit="logIn" style="border:1px solid #ccc">
-            <div class="container">
-                <h1>Log In</h1>
-                <p>Please fill in your account details to log in.</p>
-                <hr>
+  <div>
+    <form @submit="logIn" style="border:1px solid #ccc">
+      <div class="container">
+        <h1>Log In</h1>
+        <p>Please fill in your account details to log in.</p>
+        <hr />
 
-                <label for="type"><b>I am a ...</b></label>
-                  <select id="type" name="type" v-model="type" required>
-                    <option value="petOwner">Pet Owner</option>
-                    <option value="fulltimeCaretaker">Full Time Caretaker</option>
-                    <option value="parttimeCaretaker">Part Time Caretaker</option>
-                  </select>
+        <label for="type"><b>I am a ...</b></label>
+        <select id="type" name="type" v-model="type" required>
+          <option value="petOwner">Pet Owner</option>
+          <option value="fulltimeCaretaker">Full Time Caretaker</option>
+          <option value="parttimeCaretaker">Part Time Caretaker</option>
+          <option value="pcsAdmin">PCS Admin</option>
+        </select>
 
-                <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" v-model="username" required>
+        <label for="username"><b>Username</b></label>
+        <input
+          type="text"
+          placeholder="Enter Username"
+          name="username"
+          v-model="username"
+          required
+        />
 
-                <label for="password"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" v-model="password" required>
+        <label for="password"><b>Password</b></label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="password"
+          v-model="password"
+          required
+        />
 
-                <div class="clearfix">
-                <button type="button" class="cancelbtn"><router-link tag="span" to='/'>Cancel</router-link></button>
-                <button type="submit" class="signupbtn">Sign Up</button>
-                </div>
-            </div>
-        </form>
-    </div>
+        <div class="clearfix">
+          <button type="button" class="cancelbtn">
+            <router-link tag="span" to="/">Cancel</router-link>
+          </button>
+          <button type="submit" class="signupbtn">Log In</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
+// import * as constants from "./constants";
+
 export default {
-    name: "LogIn",
-    data() {
-        return {
-            type: '',
-            username: '',
-            password: '',
+  name: "LogIn",
+  data() {
+    return {
+      type: "",
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    logIn(e) {
+      e.preventDefault();
+      const user = {
+        type: this.type,
+        username: this.username,
+        password: this.password,
+      };
+
+      console.log(user);
+      console.log(this.username);
+      console.log(this.type);
+
+      // this.$emit("log-in", user);
+      // this.type = "";
+      // this.username = "";
+      // this.password = "";
+      const username_logged_in = this.username;
+      if (this.type == "petOwner") {
+        document.cookie = "pet_owner_username=" + username_logged_in;
+        console.log("Document: " + document.cookie);
+        if (document.cookie.includes(";")) {
+          let split_cookie = document.cookie.split(";");
+          console.log("split:" + split_cookie[0]);
+          var get_last_cookie = split_cookie[0];
+        } else {
+          get_last_cookie = document.cookie;
         }
+        console.log("cookie: " + get_last_cookie);
+        this.$router.push({
+          path: "pet-owners",
+          query: { pet_owner_username: username_logged_in },
+        });
+      }
     },
-    methods: {
-        logIn(e) {
-            e.preventDefault();
-            const user = {
-                type: this.type,
-                username: this.username,
-                password: this.password,
-            }
-
-            console.log(user)
-
-            this.$emit('log-in', user);
-            this.type = '';
-            this.username = '';
-            this.password = '';
-        },
-    }
-}
+  },
+};
 </script>
 
 <style scoped>
-  form {
-    display: flex;
-  }
-  input[type="text"] {
-    align-self: center;
-    width: 100;
-    padding: 5px;
-  }
-  input[type="submit"] {
-    flex: 2;
-  }
+form {
+  display: flex;
+}
+input[type="text"] {
+  align-self: center;
+  width: 100;
+  padding: 5px;
+}
+input[type="submit"] {
+  flex: 2;
+}
 
-* {box-sizing: border-box}
+* {
+  box-sizing: border-box;
+}
 
 /* Full-width input fields */
-  input[type=text], input[type=password] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -83,7 +122,8 @@ export default {
   background: #f1f1f1;
 }
 
-input[type=text]:focus, input[type=password]:focus {
+input[type="text"]:focus,
+input[type="password"]:focus {
   background-color: #ddd;
   outline: none;
 }
@@ -104,7 +144,7 @@ hr {
 
 /* Set a style for all buttons */
 button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -115,7 +155,7 @@ button {
 }
 
 button:hover {
-  opacity:1;
+  opacity: 1;
 }
 
 /* Extra styles for the cancel button */
@@ -125,7 +165,8 @@ button:hover {
 }
 
 /* Float cancel and signup buttons and add an equal width */
-.cancelbtn, .signupbtn {
+.cancelbtn,
+.signupbtn {
   float: left;
   width: 50%;
 }
@@ -144,9 +185,9 @@ button:hover {
 
 /* Change styles for cancel button and signup button on extra small screens */
 @media screen and (max-width: 300px) {
-  .cancelbtn, .signupbtn {
+  .cancelbtn,
+  .signupbtn {
     width: 100%;
   }
 }
-
 </style>

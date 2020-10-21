@@ -26,10 +26,9 @@
             "
           >
             Pet Care Service <br />
-            Pet Owners
+            Pet Owners <br />
           </h2>
         </div>
-
         <v-list nav>
           <v-list-item-group>
             <v-list-item
@@ -53,7 +52,14 @@
 </template>
 
 <script>
-import { mdiLogout, mdiAccountGroup, mdiAccountCircle } from "@mdi/js";
+import {
+  mdiLogout,
+  mdiAccountGroup,
+  mdiAccountCircle,
+  mdiCheckBoxMultipleOutline,
+  mdiCheckboxMarkedOutline,
+  mdiCheckboxMultipleBlankOutline,
+} from "@mdi/js";
 
 export default {
   name: "PetOwnerNavBar",
@@ -61,6 +67,21 @@ export default {
   data() {
     return {
       items: [
+        {
+          title: "View Past Jobs",
+          icon: mdiCheckBoxMultipleOutline,
+          route: "/pet-owners/view-past-jobs",
+        },
+        {
+          title: "View Ongoing Jobs",
+          icon: mdiCheckboxMarkedOutline,
+          route: "/pet-owners/view-ongoing-jobs",
+        },
+        {
+          title: "View Upcoming Jobs",
+          icon: mdiCheckboxMultipleBlankOutline,
+          route: "/pet-owners/view-upcoming-jobs",
+        },
         {
           title: "Caretakers' Profiles",
           icon: mdiAccountGroup,
@@ -74,7 +95,7 @@ export default {
         {
           title: "Log Out",
           icon: mdiLogout,
-          route: "/log-out",
+          route: "/",
         },
       ],
     };
