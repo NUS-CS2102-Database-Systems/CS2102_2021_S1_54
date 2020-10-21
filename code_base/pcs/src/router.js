@@ -5,7 +5,6 @@ import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import SubmitReview from "./components/pet_owner/SubmitReview";
 import ViewReviews from "./components/caretaker/ViewReviews";
-import PetOwnerHome from "./components/pet_owner/PetOwnerHome";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
 import CaretakerHome from "./components/caretaker/CaretakerHome";
 import CaretakerViewPastJobs from "./components/caretaker/CaretakerViewPastJobs";
