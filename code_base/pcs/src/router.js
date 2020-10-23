@@ -4,9 +4,6 @@ import Home from "./components/Home";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
-import CaretakerHome from "./components/caretaker/CaretakerHome";
-import CaretakerViewPastJobs from "./components/caretaker/CaretakerViewPastJobs";
-import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
 import PetOwnerViewPastJobs from "./components/pet_owner/PetOwnerViewPastJobs";
 import PetOwnerViewOngoingJobs from "./components/pet_owner/PetOwnerViewOngoingJobs";
@@ -14,8 +11,14 @@ import PetOwnerViewUpcomingJobs from "./components/pet_owner/PetOwnerViewUpcomin
 import PetOwnerViewMyProfile from "./components/pet_owner/PetOwnerViewMyProfile";
 import PetOwnerEditLoginInfo from "./components/pet_owner/PetOwnerEditLoginInfo";
 import PetOwnerEditPersonalInfo from "./components/pet_owner/PetOwnerEditPersonalInfo";
+import PetOwnerAddCreditCardInfo from "./components/pet_owner/PetOwnerAddCreditCardInfo";
 import PetOwnerEditCreditCardInfo from "./components/pet_owner/PetOwnerEditCreditCardInfo";
+import PetOwnerViewPets from "./components/pet_owner/PetOwnerViewPets";
+import PetOwnerAddPetProfile from "./components/pet_owner/PetOwnerAddPetProfile";
+import PetOwnerEditPetProfile from "./components/pet_owner/PetOwnerEditPetProfile";
 import PetOwnerHome from "./components/pet_owner/PetOwnerHome";
+import PartTimeCaretakerHome from "./components/part_time_caretaker/PartTimeCaretakerHome";
+import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 
 Vue.use(VueRouter);
 
@@ -75,6 +78,11 @@ export default new VueRouter({
       component: PetOwnerViewMyProfile,
     },
     {
+      path: "/pet-owners/view-my-pets",
+      name: "PetOwnerViewPets",
+      component: PetOwnerViewPets,
+    },
+    {
       path: "/pet-owners/edit-login-information",
       name: "PetOwnerEditLoginInfo",
       component: PetOwnerEditLoginInfo,
@@ -85,19 +93,29 @@ export default new VueRouter({
       component: PetOwnerEditPersonalInfo,
     },
     {
+      path: "/pet-owners/add-credit-card-information",
+      name: "PetOwnerAddCreditCardInfo",
+      component: PetOwnerAddCreditCardInfo,
+    },
+    {
       path: "/pet-owners/edit-credit-card-information",
       name: "PetOwnerEditCreditCardInfo",
       component: PetOwnerEditCreditCardInfo,
     },
     {
-      path: "/caretakers",
-      name: "CaretakerHome",
-      component: CaretakerHome,
+      path: "/pet-owners/add-pets",
+      name: "PetOwnerAddPetProfile",
+      component: PetOwnerAddPetProfile,
     },
     {
-      path: "/caretakers/view-past-jobs",
-      name: "CaretakerViewPastJobs",
-      component: CaretakerViewPastJobs,
+      path: "/pet-owners/edit-pet-information",
+      name: "PetOwnerEditPetProfile",
+      component: PetOwnerEditPetProfile,
+    },
+    {
+      path: "/part-time-caretakers",
+      name: "PartTimeCaretakerHome",
+      component: PartTimeCaretakerHome,
     },
     {
       path: "/pcs-admins",

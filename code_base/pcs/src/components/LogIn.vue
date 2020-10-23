@@ -73,23 +73,37 @@ export default {
       // this.username = "";
       // this.password = "";
       const username_logged_in = this.username;
+
       if (this.type == "petOwner") {
         document.cookie = "pet_owner_username=" + username_logged_in;
-        console.log("Document: " + document.cookie);
-        if (document.cookie.includes(";")) {
-          let split_cookie = document.cookie.split(";");
-          console.log("split:" + split_cookie[0]);
-          var get_last_cookie = split_cookie[0];
-        } else {
-          get_last_cookie = document.cookie;
-        }
-        console.log("cookie: " + get_last_cookie);
+        console.log("cookie: " + document.cookie);
         this.$router.push({
           path: "pet-owners",
           query: { pet_owner_username: username_logged_in },
         });
+      } else if (this.type == "parttimeCaretaker") {
+        document.cookie = "caretaker_username=" + username_logged_in;
+        console.log("cookie: " + document.cookie);
+        this.$router.push({
+          path: "part-time-caretakers",
+          query: { caretaker_username: username_logged_in },
+        });
       }
     },
+  },
+  async mounted() {
+    var allCookies = document.cookie.split(";");
+    console.log("ALL cookies: " + allCookies);
+
+    // The "expire" attribute of every cookie is
+    // Set to "Thu, 01 Jan 1970 00:00:00 GMT"
+    for (var i = 0; i < allCookies.length; i++) {
+      console.log("All cookies i: " + allCookies[i]);
+      document.cookie = allCookies[i] + "; max-age=0";
+      console.log("In loop: " + document.cookie);
+    }
+
+    console.log("ALL cookies after delete: " + document.cookie);
   },
 };
 </script>

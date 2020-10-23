@@ -102,8 +102,9 @@ export default {
     birth_date: null,
     gender: null,
     gender_types: [
-      { name: "Female", value: "F" },
       { name: "Male", value: "M" },
+      { name: "Female", value: "F" },
+      { name: "Other", value: "O" },
     ],
     phone: null,
     email: null,
@@ -233,15 +234,7 @@ export default {
     fetchData: async function() {},
   },
   async mounted() {
-    if (document.cookie.includes(";")) {
-      let split_cookie = document.cookie.split(";");
-      console.log("pet owner username: " + split_cookie[0]);
-      var get_last_cookie = split_cookie[0];
-    } else {
-      get_last_cookie = document.cookie;
-    }
-    let get_last_cookie_split = get_last_cookie.split("=");
-    this.username = get_last_cookie_split[1];
+    this.username = document.cookie.split("=")[1];
   },
 };
 </script>

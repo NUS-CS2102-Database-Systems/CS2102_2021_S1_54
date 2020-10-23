@@ -4,7 +4,7 @@
       <v-navigation-drawer
         height="100%"
         width="250"
-        class="caretakers"
+        class="petOwners"
         color="#01579B"
         fixed
         dark
@@ -26,10 +26,9 @@
             "
           >
             Pet Care Service <br />
-            Caretakers
+            Part-time Caretakers <br />
           </h2>
         </div>
-
         <v-list nav>
           <v-list-item-group>
             <v-list-item
@@ -55,37 +54,37 @@
 <script>
 import {
   mdiLogout,
-  mdiCheckBoxMultipleOutline,
-  mdiCheckboxMultipleBlankOutline,
-  mdiCheckboxMarkedOutline,
   mdiAccountCircle,
+  mdiCheckBoxMultipleOutline,
+  mdiCheckboxMarkedOutline,
+  mdiCheckboxMultipleBlankOutline,
 } from "@mdi/js";
 
 export default {
-  name: "CaretakerNavrBar",
+  name: "PartTimeCaretakerNavBar",
 
   data() {
     return {
       items: [
         {
-          title: "Past Jobs",
+          title: "View Past Jobs",
           icon: mdiCheckBoxMultipleOutline,
-          route: "/caretakers/view-past-jobs",
+          route: "/part-time-caretakers/view-past-jobs",
         },
         {
-          title: "Ongoing Jobs",
+          title: "View Ongoing Jobs",
           icon: mdiCheckboxMarkedOutline,
-          route: "/caretakers/view-ongoing-jobs",
+          route: "/part-time-caretakers/view-ongoing-jobs",
         },
         {
-          title: "Upcoming Jobs",
+          title: "View Upcoming Jobs",
           icon: mdiCheckboxMultipleBlankOutline,
-          route: "/caretakers/view-upcoming-jobs",
+          route: "/part-time-caretakers/view-upcoming-jobs",
         },
         {
           title: "My Profile",
           icon: mdiAccountCircle,
-          route: "/caretakers/view-my-profile",
+          route: "/part-time-caretakers/view-my-profile",
         },
         {
           title: "Log Out",

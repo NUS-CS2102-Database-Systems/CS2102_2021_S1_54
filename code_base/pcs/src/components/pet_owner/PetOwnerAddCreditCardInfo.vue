@@ -7,7 +7,7 @@
       <template v-if="loaded">
         <h2>{{ username }}</h2>
         <br />
-        <h3>Edit Credit Card Details</h3>
+        <h3>Add Credit Card Details</h3>
         <br />
         <v-layout align-center>
           <v-col>
@@ -15,7 +15,6 @@
             <v-text-field
               v-model="credit_card_num"
               label="Enter Credit Card Number"
-              value="credit_card_num"
               outlined
               clearable
               @click:clear="clearCreditCardNumber"
@@ -24,7 +23,6 @@
             <v-text-field
               v-model="credit_card_name"
               label="Enter Name of Cardholder"
-              value="credit_card_name"
               outlined
               clearable
               @click:clear="clearCreditCardName"
@@ -33,7 +31,6 @@
             <v-text-field
               v-model="expiry_date"
               label="MM/YY"
-              value="expiry_date"
               outlined
               clearable
               @click:clear="clearExpiryDate"
@@ -65,7 +62,7 @@ import * as constants from "../constants";
 import Swal from "sweetalert2";
 
 export default {
-  name: "PetOwnerEditCreditCardInfo",
+  name: "PetOwnerAddCreditCardInfo",
 
   components: {
     PetOwnerNavBar,
@@ -170,9 +167,7 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"pet_owner":"' +
-          this.username +
-          '","card_number":' +
+          '{"card_number":' +
           card_num +
           ', "card_name":' +
           card_name +

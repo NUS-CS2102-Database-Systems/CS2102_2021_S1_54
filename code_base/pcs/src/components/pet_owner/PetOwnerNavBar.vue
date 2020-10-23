@@ -59,6 +59,7 @@ import {
   mdiCheckBoxMultipleOutline,
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
+  mdiPaw,
 } from "@mdi/js";
 
 export default {
@@ -70,17 +71,17 @@ export default {
         {
           title: "View Past Jobs",
           icon: mdiCheckBoxMultipleOutline,
-          route: "/pet-owners/view-past-jobs",
+          route: "/pet-owners/view-past-jobs?" + document.cookie,
         },
         {
           title: "View Ongoing Jobs",
           icon: mdiCheckboxMarkedOutline,
-          route: "/pet-owners/view-ongoing-jobs",
+          route: "/pet-owners/view-ongoing-jobs?" + document.cookie,
         },
         {
           title: "View Upcoming Jobs",
           icon: mdiCheckboxMultipleBlankOutline,
-          route: "/pet-owners/view-upcoming-jobs",
+          route: "/pet-owners/view-upcoming-jobs?" + document.cookie,
         },
         {
           title: "Caretakers' Profiles",
@@ -90,7 +91,12 @@ export default {
         {
           title: "My Profile",
           icon: mdiAccountCircle,
-          route: "/pet-owners/view-my-profile",
+          route: "/pet-owners/view-my-profile?" + document.cookie,
+        },
+        {
+          title: "My Pets",
+          icon: mdiPaw,
+          route: "/pet-owners/view-my-pets?" + document.cookie,
         },
         {
           title: "Log Out",

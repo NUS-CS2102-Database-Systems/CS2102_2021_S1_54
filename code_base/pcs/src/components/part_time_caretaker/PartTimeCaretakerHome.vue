@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <PartTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
 
 export default {
-  name: "PetOwnerHome",
+  name: "PartTimeCaretakerHome",
   components: {
-    PetOwnerNavBar,
+    PartTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: true,

@@ -134,10 +134,51 @@
         </v-col>
       </v-row>
       <template v-if="have_data && loaded">
-        <v-list v-for="i in caretaker_username" :key="i">
-          {{ i }}. {{ caretaker_username[i] }}
-          <br />
-        </v-list>
+        <v-col class="mx-auto">
+          <v-list v-for="i in caretaker_username_odd" :key="i">
+            <v-row>
+              <v-card width="45%">
+                <v-card-title> {{ caretaker_username_odd[i] }} </v-card-title>
+                <v-card-text>
+                  Date of Birth: {{ caretaker_date_of_birth_odd[i] }} <br />
+                  Age: {{ caretaker_age_odd[i] }} <br />
+                  Gender: {{ caretaker_gender_odd[i] }} <br />
+                  Years of Experience: {{ caretaker_years_exp_odd[i] }} <br />
+                  Phone: {{ caretaker_phone_odd[i] }} <br />
+                  Email: {{ caretaker_email_odd[i] }}
+                  <br />
+                  Address: {{ caretaker_address_odd[i] }}
+                  <br />
+                  Average Rating: {{ caretaker_avg_rating_odd[i] }} <br />
+                  Can Take Care of: {{ caretaker_take_care_animals_odd[i] }}
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-list>
+        </v-col>
+        <v-spacer />
+        <v-col class="mx-auto">
+          <v-list v-for="i in caretaker_username_even" :key="i">
+            <v-row>
+              <v-card width="45%">
+                <v-card-title> {{ caretaker_username_even[i] }} </v-card-title>
+                <v-card-text>
+                  Date of Birth: {{ caretaker_date_of_birth_even[i] }} <br />
+                  Age: {{ caretaker_age_even[i] }} <br />
+                  Gender: {{ caretaker_gender_even[i] }} <br />
+                  Years of Experience: {{ caretaker_years_exp_even[i] }} <br />
+                  Phone: {{ caretaker_phone_even[i] }} <br />
+                  Email: {{ caretaker_email_even[i] }}
+                  <br />
+                  Address: {{ caretaker_address_even[i] }}
+                  <br />
+                  Average Rating: {{ caretaker_avg_rating_even[i] }} <br />
+                  Can Take Care of: {{ caretaker_take_care_animals_even[i] }}
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-list>
+        </v-col>
       </template>
       <template v-else-if="!have_data && loaded">
         <v-row>
@@ -206,10 +247,11 @@ export default {
       { name: "Price High to Low", value: "price high to low" },
     ],
     pet_types: [
-      { name: "Cats", value: "cat" },
-      { name: "Small Dogs", value: "small dog" },
-      { name: "Big Dogs", value: "big dog" },
-      { name: "Birds", value: "bird" },
+      { name: "Cat", value: "cat" },
+      { name: "Small Dog", value: "small dog" },
+      { name: "Big Dog", value: "big dog" },
+      { name: "Bird", value: "bird" },
+      { name: "Rodent", value: "rodent" },
     ],
     available_dates: false,
     rating: null,
@@ -217,7 +259,28 @@ export default {
     price_to: null,
     have_data: true,
     loaded: true,
-    caretaker_username: [],
+    caretaker_username_even: [],
+    caretaker_name_even: [],
+    caretaker_age_even: [],
+    caretaker_date_of_birth_even: [],
+    caretaker_gender_even: [],
+    caretaker_phone_even: [],
+    caretaker_email_even: [],
+    caretaker_address_even: [],
+    caretaker_avg_rating_even: [],
+    caretaker_years_exp_even: [],
+    caretaker_take_care_animals_even: [],
+    caretaker_username_odd: [],
+    caretaker_name_odd: [],
+    caretaker_age_odd: [],
+    caretaker_date_of_birth_odd: [],
+    caretaker_gender_odd: [],
+    caretaker_phone_odd: [],
+    caretaker_email_odd: [],
+    caretaker_address_odd: [],
+    caretaker_avg_rating_odd: [],
+    caretaker_years_exp_odd: [],
+    caretaker_take_care_animals_odd: [],
     selected_commitment_level: null,
     selected_available_dates: null,
     selected_rating: null,
@@ -475,16 +538,7 @@ export default {
   },
   async mounted() {
     console.log("Doc Caretaker: " + document.cookie);
-    if (document.cookie.includes(";")) {
-      let split_cookie = document.cookie.split(";");
-      console.log("pet owner username: " + split_cookie[0]);
-      var get_last_cookie = split_cookie[0];
-    } else {
-      get_last_cookie = document.cookie;
-    }
-    let get_last_cookie_split = get_last_cookie.split("=");
-    this.username = get_last_cookie_split[1];
-    console.log("Caretaker page:" + this.username);
+    this.username = document.cookie.split("=")[1];
     // this.loaded = false;
     // try {
     //   await this.fetchData();
