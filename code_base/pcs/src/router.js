@@ -21,6 +21,12 @@ import PetOwnerAddPetProfile from "./components/pet_owner/PetOwnerAddPetProfile"
 import PetOwnerEditPetProfile from "./components/pet_owner/PetOwnerEditPetProfile";
 import PetOwnerHome from "./components/pet_owner/PetOwnerHome";
 import PartTimeCaretakerHome from "./components/part_time_caretaker/PartTimeCaretakerHome";
+import PartTimeCaretakerViewMyProfile from "./components/part_time_caretaker/PartTimeCaretakerViewMyProfile";
+import PartTimeCaretakerEditLoginInfo from "./components/part_time_caretaker/PartTimeCaretakerEditLoginInfo";
+import PartTimeCaretakerEditPersonalInfo from "./components/part_time_caretaker/PartTimeCaretakerEditPersonalInfo";
+import PartTimeCaretakerViewPastJobs from "./components/part_time_caretaker/PartTimeCaretakerViewPastJobs";
+import PartTimeCaretakerViewOngoingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewOngoingJobs";
+import PartTimeCaretakerViewUpcomingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewUpcomingJobs";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 
 Vue.use(VueRouter);
@@ -129,6 +135,36 @@ export default new VueRouter({
       path: "/part-time-caretakers",
       name: "PartTimeCaretakerHome",
       component: PartTimeCaretakerHome,
+    },
+    {
+      path: "/part-time-caretakers/view-my-profile",
+      name: "PartTimeCaretakerViewMyProfile",
+      component: PartTimeCaretakerViewMyProfile,
+    },
+    {
+      path: "/part-time-caretakers/view-past-jobs",
+      name: "PartTimeCaretakerViewPastJobs",
+      component: PartTimeCaretakerViewPastJobs,
+    },
+    {
+      path: "/part-time-caretakers/view-ongoing-jobs",
+      name: "PartTimeCaretakerViewOngoingJobs",
+      component: PartTimeCaretakerViewOngoingJobs,
+    },
+    {
+      path: "/part-time-caretakers/view-upcoming-jobs",
+      name: "PartTimeCaretakerViewUpcomingJobs",
+      component: PartTimeCaretakerViewUpcomingJobs,
+    },
+    {
+      path: "/part-time-caretakers/edit-login-information",
+      name: "PartTimeCaretakerEditLoginInfo",
+      component: PartTimeCaretakerEditLoginInfo,
+    },
+    {
+      path: "/part-time-caretakers/edit-personal-information",
+      name: "PartTimeCaretakerEditPersonalInfo",
+      component: PartTimeCaretakerEditPersonalInfo,
     },
     {
       path: "/part-time-caretakers/view-reviews", //TODO: change this later

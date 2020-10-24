@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <PartTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
@@ -90,15 +90,15 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
 
 export default {
-  name: "PetOwnerEditPersonalInfo",
+  name: "PartTimeCaretakerEditPersonalInfo",
 
   components: {
-    PetOwnerNavBar,
+    PartTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: true,
@@ -130,7 +130,8 @@ export default {
       this.address = null;
     },
     cancel: function() {
-      window.location.href = constants.pet_owner_go_back_to_profile_page;
+      window.location.href =
+        constants.part_time_caretaker_go_back_to_profile_page;
     },
     submit: function() {
       let data_ok = true;
@@ -237,7 +238,8 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        window.location.href = constants.pet_owner_go_back_to_profile_page;
+        window.location.href =
+          constants.part_time_caretaker_go_back_to_profile_page;
       }
     },
     fetchData: async function() {},

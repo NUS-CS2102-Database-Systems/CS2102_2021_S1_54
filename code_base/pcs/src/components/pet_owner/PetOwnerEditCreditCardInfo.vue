@@ -44,6 +44,12 @@
           <v-icon> mdi-content-save</v-icon>
           Save
         </v-btn>
+        <v-layout align-right>
+          <v-btn icon color="red" fab @click="cancel">
+            <v-icon> mdi-close</v-icon>
+            Cancel
+          </v-btn>
+        </v-layout>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -86,6 +92,9 @@ export default {
     },
     clearExpiryDate: function() {
       this.expiry_date = "  /  ";
+    },
+    cancel: function() {
+      window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
     submit: function() {
       let data_ok = true;

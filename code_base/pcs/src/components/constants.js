@@ -38,8 +38,5 @@ export const part_time_caretaker_edit_login_info =
 export const part_time_caretaker_edit_personal_info =
   domain + "part-time-caretakers/edit-personal-information?";
 
-export const part_time_caretaker_edit_credit_card_info =
-  domain + "part-time-caretakers/edit-credit-card-information?";
-
 export const part_time_caretaker_go_back_to_profile_page =
   domain + "part-time-caretakers/view-my-profile?" + document.cookie;

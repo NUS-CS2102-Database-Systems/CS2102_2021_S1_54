@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <PartTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
@@ -51,29 +51,17 @@
           <br />
           <v-card width="70%">
             <v-card-title style="font-weight:bold;">
-              Credit Card Information
+              Work Information
             </v-card-title>
             <v-layout align-center>
               <v-card-text>
-                Credit Card Number: {{ credit_card_num }} <br />
-                Cardholder's Name: {{ credit_card_name }} <br />
-                Expiry Date: {{ expiry_date }} <br />
-              </v-card-text>
-              <v-btn icon color="blue" fab @click="editCreditCardInfo">
-                <v-icon>mdi-pencil</v-icon>
-                Edit
-              </v-btn>
-            </v-layout>
-          </v-card>
-          <br />
-          <v-card width="70%">
-            <v-card-title style="font-weight:bold;">
-              Pets' Information
-            </v-card-title>
-            <v-layout align-center>
-              <v-card-text>
-                <v-list v-for="i in pets" :key="i">
-                  {{ pets[i] }}
+                Date Started: {{ date_started }} <br />
+                Years Of Experience: {{ years_exp }} <br />
+                Average Rating: {{ avg_rating }} <br />
+                Can Take Care Of:
+                <v-list v-for="i in can_take_care" :key="i">
+                  {{ can_take_care[i] }}
+                  <v-spacer />
                 </v-list>
               </v-card-text>
             </v-layout>
@@ -95,14 +83,14 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
 import * as constants from "../constants";
 
 export default {
-  name: "PetOwnerViewMyProfile",
+  name: "PartTimeCaretakerViewMyProfile",
 
   components: {
-    PetOwnerNavBar,
+    PartTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: true,
@@ -117,19 +105,17 @@ export default {
     address: null,
     avg_rating: null,
     years_exp: null,
+    date_started: null,
+    can_take_care: [],
   }),
   methods: {
     editLoginDetails: function() {
       window.location.href =
-        constants.pet_owner_edit_login_info + document.cookie;
+        constants.part_time_caretaker_edit_login_info + document.cookie;
     },
     editPersonalInfo: function() {
       window.location.href =
-        constants.pet_owner_edit_personal_info + document.cookie;
-    },
-    editCreditCardInfo: function() {
-      window.location.href =
-        constants.pet_owner_edit_credit_card_info + document.cookie;
+        constants.part_time_caretaker_edit_personal_info + document.cookie;
     },
     fetchData: async function() {},
   },

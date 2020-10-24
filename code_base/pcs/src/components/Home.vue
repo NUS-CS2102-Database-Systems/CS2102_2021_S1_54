@@ -21,7 +21,7 @@ export default {
     // Set to "Thu, 01 Jan 1970 00:00:00 GMT"
     for (var i = 0; i < allCookies.length; i++) {
       console.log("Cookies Log Out i: " + allCookies[i]);
-      document.cookie = allCookies[i] + "; max-age=0";
+      document.cookie = allCookies[i] + ";max-age=0";
       console.log("In Log Out loop: " + document.cookie);
     }
 

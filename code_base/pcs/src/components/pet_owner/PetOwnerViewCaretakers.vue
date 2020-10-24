@@ -111,6 +111,16 @@
           />
         </v-col>
         <v-col class="mx-auto" md="3">
+          <v-text-field
+            v-model="search"
+            clearable
+            filled
+            label="Search Caretaker Username"
+            prepend-icon="mdi-magnify"
+            @click:clear="clearSearch"
+          />
+        </v-col>
+        <v-col class="mx-auto" md="3">
           <v-select
             v-model="selected_pet_type"
             :items="pet_types"
@@ -254,6 +264,7 @@ export default {
       { name: "Rodent", value: "rodent" },
     ],
     available_dates: false,
+    search: null,
     rating: null,
     price_from: null,
     price_to: null,
@@ -351,6 +362,9 @@ export default {
         });
         this.selected_sort_by.pop();
       }
+    },
+    clearSearch: function() {
+      this.search = null;
     },
     clearSortBy: function() {
       this.selected_sort_by = null;
@@ -456,6 +470,12 @@ export default {
         animal_type = null;
       }
 
+      if (this.search != null) {
+        var search_caretaker = '"' + this.search + '"';
+      } else {
+        search_caretaker = null;
+      }
+
       if (data_ok == true) {
         const dataToSend =
           '{"commitment":' +
@@ -470,6 +490,8 @@ export default {
           min_price +
           ', "end_price":' +
           max_price +
+          ', "caretaker_username":' +
+          search_caretaker +
           ', "animal_type":' +
           animal_type +
           "}";

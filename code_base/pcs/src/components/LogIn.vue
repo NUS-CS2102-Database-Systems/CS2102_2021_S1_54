@@ -82,7 +82,7 @@ export default {
           query: { pet_owner_username: username_logged_in },
         });
       } else if (this.type == "parttimeCaretaker") {
-        document.cookie = "caretaker_username=" + username_logged_in;
+        document.cookie = "pt_caretaker_username=" + username_logged_in;
         console.log("cookie: " + document.cookie);
         this.$router.push({
           path: "part-time-caretakers",
@@ -99,7 +99,7 @@ export default {
     // Set to "Thu, 01 Jan 1970 00:00:00 GMT"
     for (var i = 0; i < allCookies.length; i++) {
       console.log("All cookies i: " + allCookies[i]);
-      document.cookie = allCookies[i] + "; max-age=0";
+      document.cookie = allCookies[i] + ";max-age=0";
       console.log("In loop: " + document.cookie);
     }
 

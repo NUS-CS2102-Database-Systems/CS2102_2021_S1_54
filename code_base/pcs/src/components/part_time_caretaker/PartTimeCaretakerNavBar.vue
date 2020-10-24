@@ -69,22 +69,22 @@ export default {
         {
           title: "View Past Jobs",
           icon: mdiCheckBoxMultipleOutline,
-          route: "/part-time-caretakers/view-past-jobs",
+          route: "/part-time-caretakers/view-past-jobs?" + document.cookie,
         },
         {
           title: "View Ongoing Jobs",
           icon: mdiCheckboxMarkedOutline,
-          route: "/part-time-caretakers/view-ongoing-jobs",
+          route: "/part-time-caretakers/view-ongoing-jobs?" + document.cookie,
         },
         {
           title: "View Upcoming Jobs",
           icon: mdiCheckboxMultipleBlankOutline,
-          route: "/part-time-caretakers/view-upcoming-jobs",
+          route: "/part-time-caretakers/view-upcoming-jobs?" + document.cookie,
         },
         {
           title: "My Profile",
           icon: mdiAccountCircle,
-          route: "/part-time-caretakers/view-my-profile",
+          route: "/part-time-caretakers/view-my-profile?" + document.cookie,
         },
         {
           title: "Log Out",

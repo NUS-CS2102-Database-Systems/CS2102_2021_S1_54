@@ -99,6 +99,12 @@
           <v-icon> mdi-content-save</v-icon>
           Save
         </v-btn>
+        <v-layout align-right>
+          <v-btn icon color="red" fab @click="cancel">
+            <v-icon> mdi-close</v-icon>
+            Cancel
+          </v-btn>
+        </v-layout>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -170,6 +176,9 @@ export default {
     },
     clearSpecialReq: function() {
       this.pet_special_req = null;
+    },
+    cancel: function() {
+      window.location.href = constants.pet_owner_view_pet_info;
     },
     submit: function() {
       let data_ok = true;
