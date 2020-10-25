@@ -33,7 +33,7 @@
           >
             <template v-slot:activator="{ on }">
               <v-text-field
-                label="Availablity"
+                label="Availability"
                 :value="dateDisplay"
                 v-on="on"
                 clearable
@@ -111,6 +111,16 @@
           />
         </v-col>
         <v-col class="mx-auto" md="3">
+          <v-text-field
+            v-model="search"
+            clearable
+            filled
+            label="Search Caretaker Username"
+            prepend-icon="mdi-magnify"
+            @click:clear="clearSearch"
+          />
+        </v-col>
+        <v-col class="mx-auto" md="3">
           <v-select
             v-model="selected_pet_type"
             :items="pet_types"
@@ -134,10 +144,51 @@
         </v-col>
       </v-row>
       <template v-if="have_data && loaded">
-        <v-list v-for="i in caretaker_username" :key="i">
-          {{ i }}. {{ caretaker_username[i] }}
-          <br />
-        </v-list>
+        <v-col class="mx-auto">
+          <v-list v-for="i in caretaker_username_odd" :key="i">
+            <v-row>
+              <v-card width="45%">
+                <v-card-title> {{ caretaker_username_odd[i] }} </v-card-title>
+                <v-card-text>
+                  Date of Birth: {{ caretaker_date_of_birth_odd[i] }} <br />
+                  Age: {{ caretaker_age_odd[i] }} <br />
+                  Gender: {{ caretaker_gender_odd[i] }} <br />
+                  Years of Experience: {{ caretaker_years_exp_odd[i] }} <br />
+                  Phone: {{ caretaker_phone_odd[i] }} <br />
+                  Email: {{ caretaker_email_odd[i] }}
+                  <br />
+                  Address: {{ caretaker_address_odd[i] }}
+                  <br />
+                  Average Rating: {{ caretaker_avg_rating_odd[i] }} <br />
+                  Can Take Care of: {{ caretaker_take_care_animals_odd[i] }}
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-list>
+        </v-col>
+        <v-spacer />
+        <v-col class="mx-auto">
+          <v-list v-for="i in caretaker_username_even" :key="i">
+            <v-row>
+              <v-card width="45%">
+                <v-card-title> {{ caretaker_username_even[i] }} </v-card-title>
+                <v-card-text>
+                  Date of Birth: {{ caretaker_date_of_birth_even[i] }} <br />
+                  Age: {{ caretaker_age_even[i] }} <br />
+                  Gender: {{ caretaker_gender_even[i] }} <br />
+                  Years of Experience: {{ caretaker_years_exp_even[i] }} <br />
+                  Phone: {{ caretaker_phone_even[i] }} <br />
+                  Email: {{ caretaker_email_even[i] }}
+                  <br />
+                  Address: {{ caretaker_address_even[i] }}
+                  <br />
+                  Average Rating: {{ caretaker_avg_rating_even[i] }} <br />
+                  Can Take Care of: {{ caretaker_take_care_animals_even[i] }}
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-list>
+        </v-col>
       </template>
       <template v-else-if="!have_data && loaded">
         <v-row>
@@ -187,6 +238,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
+    username: null,
     commitment_levels: [
       { name: "Full-time", value: "full-time" },
       { name: "Part-time", value: "part-time" },
@@ -205,18 +257,41 @@ export default {
       { name: "Price High to Low", value: "price high to low" },
     ],
     pet_types: [
-      { name: "Cats", value: "cat" },
-      { name: "Small Dogs", value: "small dog" },
-      { name: "Big Dogs", value: "big dog" },
-      { name: "Birds", value: "bird" },
+      { name: "Cat", value: "cat" },
+      { name: "Small Dog", value: "small dog" },
+      { name: "Big Dog", value: "big dog" },
+      { name: "Bird", value: "bird" },
+      { name: "Rodent", value: "rodent" },
     ],
     available_dates: false,
+    search: null,
     rating: null,
     price_from: null,
     price_to: null,
     have_data: true,
     loaded: true,
-    caretaker_username: null,
+    caretaker_username_even: [],
+    caretaker_name_even: [],
+    caretaker_age_even: [],
+    caretaker_date_of_birth_even: [],
+    caretaker_gender_even: [],
+    caretaker_phone_even: [],
+    caretaker_email_even: [],
+    caretaker_address_even: [],
+    caretaker_avg_rating_even: [],
+    caretaker_years_exp_even: [],
+    caretaker_take_care_animals_even: [],
+    caretaker_username_odd: [],
+    caretaker_name_odd: [],
+    caretaker_age_odd: [],
+    caretaker_date_of_birth_odd: [],
+    caretaker_gender_odd: [],
+    caretaker_phone_odd: [],
+    caretaker_email_odd: [],
+    caretaker_address_odd: [],
+    caretaker_avg_rating_odd: [],
+    caretaker_years_exp_odd: [],
+    caretaker_take_care_animals_odd: [],
     selected_commitment_level: null,
     selected_available_dates: null,
     selected_rating: null,
@@ -287,6 +362,9 @@ export default {
         });
         this.selected_sort_by.pop();
       }
+    },
+    clearSearch: function() {
+      this.search = null;
     },
     clearSortBy: function() {
       this.selected_sort_by = null;
@@ -392,6 +470,12 @@ export default {
         animal_type = null;
       }
 
+      if (this.search != null) {
+        var search_caretaker = '"' + this.search + '"';
+      } else {
+        search_caretaker = null;
+      }
+
       if (data_ok == true) {
         const dataToSend =
           '{"commitment":' +
@@ -406,6 +490,8 @@ export default {
           min_price +
           ', "end_price":' +
           max_price +
+          ', "caretaker_username":' +
+          search_caretaker +
           ', "animal_type":' +
           animal_type +
           "}";
@@ -426,10 +512,14 @@ export default {
         //       this.have_data = true;
         //       for (let i = 0; i < response.data.length; i++) {
         //         let data_received_as_link =
-        //           '"' +
-        //           constants.pet_owner_view_caretaker_domain +
-        //           response.data[i].username +
-        //           '"';
+        //           '"' + constants.caretaker_view_pet_owner_domain;
+        //         data_received_as_link = data_received_as_link.replace(
+        //           /value1/,
+        //           response.data[i].username
+        //         );
+
+        //         data_received_as_link += '"';
+
         //         let data_received = response.data[i].username;
         //         this.caretaker_username.push(
         //           data_received.link(data_received_as_link)
@@ -451,7 +541,14 @@ export default {
     //   } else {
     //     for (let i = 0; i < response.data.length; i++) {
     //       let data_received_as_link =
-    //         '"' + constants.pet_owner_view_caretaker_domain + response.data[i].username + '"';
+    //         '"' + constants.caretaker_view_pet_owner_domain;
+    //       data_received_as_link = data_received_as_link.replace(
+    //         /value1/,
+    //         response.data[i].username
+    //       );
+
+    //       data_received_as_link += '"';
+
     //       let data_received = response.data[i].username;
     //       this.caretaker_username.push(
     //         data_received.link(data_received_as_link)
@@ -461,14 +558,16 @@ export default {
     //   }
     // },
   },
-  //   async mounted() {
-  //     this.loaded = false;
-  //     try {
-  //       await this.fetchData();
-  //       this.loaded = true;
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //   },
+  async mounted() {
+    console.log("Doc Caretaker: " + document.cookie);
+    this.username = document.cookie.split("=")[1];
+    // this.loaded = false;
+    // try {
+    //   await this.fetchData();
+    //   this.loaded = true;
+    // } catch (e) {
+    //   console.error(e);
+    // }
+  },
 };
 </script>

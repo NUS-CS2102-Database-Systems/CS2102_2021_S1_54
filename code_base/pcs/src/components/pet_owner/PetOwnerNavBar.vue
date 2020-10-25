@@ -26,10 +26,9 @@
             "
           >
             Pet Care Service <br />
-            Pet Owners
+            Pet Owners <br />
           </h2>
         </div>
-
         <v-list nav>
           <v-list-item-group>
             <v-list-item
@@ -53,7 +52,15 @@
 </template>
 
 <script>
-import { mdiLogout, mdiAccountGroup, mdiAccountCircle } from "@mdi/js";
+import {
+  mdiLogout,
+  mdiAccountGroup,
+  mdiAccountCircle,
+  mdiCheckBoxMultipleOutline,
+  mdiCheckboxMarkedOutline,
+  mdiCheckboxMultipleBlankOutline,
+  mdiPaw,
+} from "@mdi/js";
 
 export default {
   name: "PetOwnerNavBar",
@@ -62,6 +69,21 @@ export default {
     return {
       items: [
         {
+          title: "View Past Jobs",
+          icon: mdiCheckBoxMultipleOutline,
+          route: "/pet-owners/view-past-jobs?" + document.cookie,
+        },
+        {
+          title: "View Ongoing Jobs",
+          icon: mdiCheckboxMarkedOutline,
+          route: "/pet-owners/view-ongoing-jobs?" + document.cookie,
+        },
+        {
+          title: "View Upcoming Jobs",
+          icon: mdiCheckboxMultipleBlankOutline,
+          route: "/pet-owners/view-upcoming-jobs?" + document.cookie,
+        },
+        {
           title: "Caretakers' Profiles",
           icon: mdiAccountGroup,
           route: "/pet-owners/view-caretakers-profiles",
@@ -69,12 +91,17 @@ export default {
         {
           title: "My Profile",
           icon: mdiAccountCircle,
-          route: "/pet-owners/view-my-profile",
+          route: "/pet-owners/view-my-profile?" + document.cookie,
+        },
+        {
+          title: "My Pets",
+          icon: mdiPaw,
+          route: "/pet-owners/view-my-pets?" + document.cookie,
         },
         {
           title: "Log Out",
           icon: mdiLogout,
-          route: "/log-out",
+          route: "/",
         },
       ],
     };
