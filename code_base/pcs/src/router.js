@@ -38,7 +38,7 @@ import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/F
 import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
 import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
-
+import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
 Vue.use(VueRouter);
 
 // application routes
@@ -235,6 +235,11 @@ export default new VueRouter({
       path: "/pcs-admins",
       name: "PcsAdminHome",
       component: PcsAdminHome,
+    },
+    {
+      path: "/pcs-admins/Pcs-Admin-View-Num-Of-Pets-Cared-By-Each-Caretaker",
+      name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
+      component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
     },
   ],
 });

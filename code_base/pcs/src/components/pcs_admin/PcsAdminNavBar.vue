@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { mdiLogout, mdiAccountGroup, mdiCurrencyUsd } from "@mdi/js";
+import { mdiLogout, mdiAccountGroup, mdiCurrencyUsd,mdiClipboardCheckMultipleOutline } from "@mdi/js";
 
 export default {
   name: "PcsAdminNavBar",
@@ -65,6 +65,11 @@ export default {
           title: "Jobs",
           icon: mdiAccountGroup,
           route: "/pcs-admins/view-jobs",
+        },
+        {
+          title: "View num of pets each caretaker has taken care of",
+          icon: mdiClipboardCheckMultipleOutline,
+          route: "/pcs-admins/Pcs-Admin-View-Num-Of-Pets-Cared-By-Each-Caretaker",
         },
         {
           title: "Salary",
