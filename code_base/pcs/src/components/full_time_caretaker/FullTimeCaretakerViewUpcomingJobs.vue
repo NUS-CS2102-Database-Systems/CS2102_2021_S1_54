@@ -1,27 +1,11 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <v-row>
-        <v-col class="mx-auto" md="2">
-          <v-select
-            v-model="selected_commitment_level"
-            :items="commitment_levels"
-            item-text="name"
-            item-value="value"
-            label="Commitment"
-            prepend-icon="mdi-account"
-            filled
-            clearable
-            dense
-            color="#000000"
-            @input="selectCommitmentLevel"
-            @click:clear="clearCommitmentLevel"
-          />
-        </v-col>
-        <v-col class="mx-auto" md="3">
+        <v-col class="mx-auto" md="4">
           <v-menu
             v-model="available_dates"
             :nudge-right="40"
@@ -52,23 +36,6 @@
             />
           </v-menu>
         </v-col>
-        <v-col class="mx-auto" md="3">
-          <v-select
-            v-model="selected_pet_names"
-            :items="pet_names"
-            item-text="name"
-            item-value="value"
-            label="Pet Name(s)"
-            prepend-icon="mdi-github"
-            filled
-            clearable
-            multiple
-            dense
-            color="#000000"
-            @input="selectPetNames"
-            @click:clear="clearPetNames"
-          />
-        </v-col>
         <v-col class="mx-auto" md="1">
           <v-btn icon color="blue" fab outlined @click="submit">
             <v-icon>mdi-check</v-icon>
@@ -81,8 +48,9 @@
             <v-row>
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
-                <p>
-                  Caretaker Username: {{ caretaker_odd[i] }} <br />
+                <v-card-text>
+                  <h3>Job Information</h3>
+                  Pet Owner Username: {{ pet_owner_odd[i] }} <br />
                   Pet Name: {{ pet_odd[i] }} <br />
                   Job Started: {{ job_start_odd[i] }} <br />
                   Job Ended: {{ job_end_odd[i] }} <br />
@@ -92,8 +60,26 @@
                   <br />
                   Amount: {{ amount_odd[i] }} <br />
                   Rating: {{ rating_odd[i] }} <br />
-                  Review: {{ review_even[i] }} <br />
-                </p>
+                  Review: {{ review_odd[i] }} <br />
+
+                  <h3>Pet Owner Information</h3>
+                  Name: {{ pet_owner_name_odd[i] }} <br />
+                  Gender: {{ pet_owner_gender_odd[i] }} <br />
+                  Phone: {{ pet_owner_phone_odd[i] }}
+                  <br />
+                  Email: {{ pet_owner_email_odd[i] }} <br />
+                  Address: {{ pet_owner_address_odd[i] }} <br />
+
+                  <h3>Pet Information</h3>
+                  Age: {{ pet_age_odd[i] }} <br />
+                  Gender: {{ pet_gender_odd[i] }} <br />
+                  Breed: {{ pet_breed_odd[i] }} <br />
+                  Type of Animal: {{ type_of_animal_odd[i] }}
+                  <br />
+                  Medical History: {{ pet_med_hist_odd[i] }}
+                  <br />
+                  Special Requirements: {{ pet_special_req_odd[i] }} <br />
+                </v-card-text>
               </v-card>
             </v-row>
           </v-list>
@@ -104,8 +90,9 @@
             <v-row>
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
-                <p>
-                  Caretaker Username: {{ caretaker_even[i] }} <br />
+                <v-card-text>
+                  <h3>Job Information</h3>
+                  Pet Owner Username: {{ pet_owner_even[i] }} <br />
                   Pet Name: {{ pet_even[i] }} <br />
                   Job Started: {{ job_start_even[i] }} <br />
                   Job Ended: {{ job_end_even[i] }} <br />
@@ -116,7 +103,25 @@
                   Amount: {{ amount_even[i] }} <br />
                   Rating: {{ rating_even[i] }} <br />
                   Review: {{ review_even[i] }} <br />
-                </p>
+
+                  <h3>Pet Owner Information</h3>
+                  Name: {{ pet_owner_name_even[i] }} <br />
+                  Gender: {{ pet_owner_gender_even[i] }} <br />
+                  Phone: {{ pet_owner_phone_even[i] }}
+                  <br />
+                  Email: {{ pet_owner_email_even[i] }} <br />
+                  Address: {{ pet_owner_address_even[i] }} <br />
+
+                  <h3>Pet Information</h3>
+                  Age: {{ pet_age_even[i] }} <br />
+                  Gender: {{ pet_gender_even[i] }} <br />
+                  Breed: {{ pet_breed_even[i] }} <br />
+                  Type of Animal: {{ type_of_animal_even[i] }}
+                  <br />
+                  Medical History: {{ pet_med_hist_even[i] }}
+                  <br />
+                  Special Requirements: {{ pet_special_req_even[i] }} <br />
+                </v-card-text>
               </v-card>
             </v-row>
           </v-list>
@@ -137,8 +142,9 @@
               </v-row>
             </v-card-title>
             <p class="text-center">
-              What you are looking for cannot be found.
-              <br />Sorry!
+              Hi {{ username }}. You do not have any upcoming jobs at the
+              moment.
+              <br />
             </p>
           </v-card>
         </v-row>
@@ -158,35 +164,28 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import Swal from "sweetalert2";
 
 export default {
-  name: "PetOwnerViewUpcomingJobs",
+  name: "FullTimeCaretakerViewUpcomingJobs",
 
   components: {
-    PetOwnerNavBar,
+    FullTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: true,
-    have_data: true,
+    have_data: false,
     username: null,
-    commitment_levels: [
-      { name: "Full-time", value: "full-time" },
-      { name: "Part-time", value: "part-time" },
-    ],
-    pet_names: [],
     available_dates: false,
-    selected_commitment_level: null,
     selected_dates: null,
-    selected_pet_names: null,
     getTomorrowDate: new Date(new Date().setDate(new Date().getDate() + 1))
       .toISOString()
       .substr(0, 10),
     id_odd: [],
     id_even: [],
-    caretaker_odd: [],
-    caretaker_even: [],
+    pet_owner_odd: [],
+    pet_owner_even: [],
     pet_odd: [],
     pet_even: [],
     job_start_odd: [],
@@ -203,6 +202,28 @@ export default {
     rating_even: [],
     review_odd: [],
     review_even: [],
+    pet_owner_name_odd: [],
+    pet_owner_gender_odd: [],
+    pet_owner_phone_odd: [],
+    pet_owner_email_odd: [],
+    pet_owner_address_odd: [],
+    pet_age_odd: [],
+    pet_gender_odd: [],
+    pet_breed_odd: [],
+    type_of_animal_odd: [],
+    pet_med_hist_odd: [],
+    pet_special_req_odd: [],
+    pet_owner_name_even: [],
+    pet_owner_gender_even: [],
+    pet_owner_phone_even: [],
+    pet_owner_email_even: [],
+    pet_owner_address_even: [],
+    pet_age_even: [],
+    pet_gender_even: [],
+    pet_breed_even: [],
+    type_of_animal_even: [],
+    pet_med_hist_even: [],
+    pet_special_req_even: [],
   }),
   computed: {
     dateDisplay() {
@@ -210,12 +231,6 @@ export default {
     },
   },
   methods: {
-    selectCommitmentLevel: function() {
-      console.log(this.selected_commitment_level);
-    },
-    clearCommitmentLevel: function() {
-      this.selected_commitment_level = null;
-    },
     selectDates: function() {
       this.selected_dates = this.selected_dates.sort();
       console.log(this.selected_dates);
@@ -223,21 +238,9 @@ export default {
     clearDates: function() {
       this.selected_dates = null;
     },
-    selectPetNames: function() {
-      console.log(this.selected_pet_names);
-    },
-    clearPetNames: function() {
-      this.selected_pet_names = null;
-    },
     submit: function() {
       console.log("Submitted");
       let data_ok = true;
-
-      if (this.selected_commitment_level != null) {
-        var commitment_level = '"' + this.selected_commitment_level + '"';
-      } else {
-        commitment_level = null;
-      }
 
       if (this.selected_dates != null) {
         if (this.selected_dates.length == 1) {
@@ -256,35 +259,8 @@ export default {
         dates = null;
       }
 
-      if (this.selected_pet_names != null) {
-        if (this.selected_pet_names.length > 0) {
-          this.selected_pet_names = this.selected_pet_names.sort();
-          console.log("pet names: " + this.selected_pet_names);
-          var animal_names = '"';
-          for (let m = 0; m < this.selected_pet_names.length; m++) {
-            animal_names += this.selected_pet_names[m] + ",";
-          }
-
-          if (animal_names.includes(",")) {
-            animal_names = animal_names.slice(0, -1);
-          }
-          animal_names += '"';
-        } else {
-          animal_names = null;
-        }
-      } else {
-        animal_names = null;
-      }
-
       if (data_ok == true) {
-        const dataToSend =
-          '{"commitment":' +
-          commitment_level +
-          ',"dates":' +
-          dates +
-          ', "animal_names":' +
-          animal_names +
-          "}";
+        const dataToSend = '{"dates":' + dates + "}";
 
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);

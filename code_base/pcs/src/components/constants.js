@@ -1,14 +1,5 @@
 const domain = "http://localhost:8080/";
 
-export const pet_owner_view_caretaker_domain =
-  domain + "pet-owners/view-caretakers-profiles?caretaker=value1";
-
-export const caretaker_view_pet_owner_domain =
-  domain + "caretakers/view-pet-owner?pet-owner=value1";
-
-export const caretaker_view_pet_domain =
-  domain + "caretakers/view-pet?pet-owner=value1&pet=value2";
-
 export const pet_owner_edit_login_info =
   domain + "pet-owners/edit-login-information?";
 
@@ -40,3 +31,12 @@ export const part_time_caretaker_edit_personal_info =
 
 export const part_time_caretaker_go_back_to_profile_page =
   domain + "part-time-caretakers/view-my-profile?" + document.cookie;
+
+export const full_time_caretaker_edit_login_info =
+  domain + "full-time-caretakers/edit-login-information?";
+
+export const full_time_caretaker_edit_personal_info =
+  domain + "full-time-caretakers/edit-personal-information?";
+
+export const full_time_caretaker_go_back_to_profile_page =
+  domain + "full-time-caretakers/view-my-profile?" + document.cookie;

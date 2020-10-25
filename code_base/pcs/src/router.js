@@ -29,6 +29,14 @@ import PartTimeCaretakerViewOngoingJobs from "./components/part_time_caretaker/P
 import PartTimeCaretakerViewUpcomingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewUpcomingJobs";
 import PartTimeCaretakerViewSalary from "./components/part_time_caretaker/PartTimeCaretakerViewSalary";
 import PartTimeCaretakerSetAvailability from "./components/part_time_caretaker/PartTimeCaretakerSetAvailability";
+import FullTimeCaretakerHome from "./components/full_time_caretaker/FullTimeCaretakerHome";
+import FullTimeCaretakerViewMyProfile from "./components/full_time_caretaker/FullTimeCaretakerViewMyProfile";
+import FullTimeCaretakerEditLoginInfo from "./components/full_time_caretaker/FullTimeCaretakerEditLoginInfo";
+import FullTimeCaretakerEditPersonalInfo from "./components/full_time_caretaker/FullTimeCaretakerEditPersonalInfo";
+import FullTimeCaretakerViewPastJobs from "./components/full_time_caretaker/FullTimeCaretakerViewPastJobs";
+import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewOngoingJobs";
+import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
+import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 
 Vue.use(VueRouter);
@@ -182,6 +190,46 @@ export default new VueRouter({
       path: "/part-time-caretakers/view-reviews", //TODO: change this later
       name: "PartTimeCaretakerViewReviews",
       component: PartTimeCaretakerViewReviews,
+    },
+    {
+      path: "/full-time-caretakers",
+      name: "FullTimeCaretakerHome",
+      component: FullTimeCaretakerHome,
+    },
+    {
+      path: "/full-time-caretakers/view-my-profile",
+      name: "FullTimeCaretakerViewMyProfile",
+      component: FullTimeCaretakerViewMyProfile,
+    },
+    {
+      path: "/full-time-caretakers/edit-login-information",
+      name: "FullTimeCaretakerEditLoginInfo",
+      component: FullTimeCaretakerEditLoginInfo,
+    },
+    {
+      path: "/full-time-caretakers/edit-personal-information",
+      name: "FullTimeCaretakerEditPersonalInfo",
+      component: FullTimeCaretakerEditPersonalInfo,
+    },
+    {
+      path: "/full-time-caretakers/view-past-jobs",
+      name: "FullTimeCaretakerViewPastJobs",
+      component: FullTimeCaretakerViewPastJobs,
+    },
+    {
+      path: "/full-time-caretakers/view-ongoing-jobs",
+      name: "FullTimeCaretakerViewOngoingJobs",
+      component: FullTimeCaretakerViewOngoingJobs,
+    },
+    {
+      path: "/full-time-caretakers/view-upcoming-jobs",
+      name: "FullTimeCaretakerViewUpcomingJobs",
+      component: FullTimeCaretakerViewUpcomingJobs,
+    },
+    {
+      path: "/full-time-caretakers/view-salary",
+      name: "FullTimeCaretakerViewSalary",
+      component: FullTimeCaretakerViewSalary,
     },
     {
       path: "/pcs-admins",

@@ -86,14 +86,14 @@ export default {
         console.log("cookie: " + document.cookie);
         this.$router.push({
           path: "part-time-caretakers",
-          query: { caretaker_username: username_logged_in },
+          query: { pt_caretaker_username: username_logged_in },
         });
       } else if (this.type == "fulltimeCaretaker") {
         document.cookie = "ft_caretaker_username=" + username_logged_in;
         console.log("cookie: " + document.cookie);
         this.$router.push({
           path: "full-time-caretakers",
-          query: { caretaker_username: username_logged_in },
+          query: { ft_caretaker_username: username_logged_in },
         });
       }
     },
