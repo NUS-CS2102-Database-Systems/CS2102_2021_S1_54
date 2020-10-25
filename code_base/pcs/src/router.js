@@ -27,6 +27,8 @@ import PartTimeCaretakerEditPersonalInfo from "./components/part_time_caretaker/
 import PartTimeCaretakerViewPastJobs from "./components/part_time_caretaker/PartTimeCaretakerViewPastJobs";
 import PartTimeCaretakerViewOngoingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewOngoingJobs";
 import PartTimeCaretakerViewUpcomingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewUpcomingJobs";
+import PartTimeCaretakerViewSalary from "./components/part_time_caretaker/PartTimeCaretakerViewSalary";
+import PartTimeCaretakerSetAvailability from "./components/part_time_caretaker/PartTimeCaretakerSetAvailability";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 
 Vue.use(VueRouter);
@@ -165,6 +167,16 @@ export default new VueRouter({
       path: "/part-time-caretakers/edit-personal-information",
       name: "PartTimeCaretakerEditPersonalInfo",
       component: PartTimeCaretakerEditPersonalInfo,
+    },
+    {
+      path: "/part-time-caretakers/view-salary",
+      name: "PartTimeCaretakerViewSalary",
+      component: PartTimeCaretakerViewSalary,
+    },
+    {
+      path: "/part-time-caretakers/set-availability",
+      name: "PartTimeCaretakerSetAvailability",
+      component: PartTimeCaretakerSetAvailability,
     },
     {
       path: "/part-time-caretakers/view-reviews", //TODO: change this later

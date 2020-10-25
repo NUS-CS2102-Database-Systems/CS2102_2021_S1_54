@@ -58,6 +58,8 @@ import {
   mdiCheckBoxMultipleOutline,
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
+  mdiCurrencyUsd,
+  mdiCalendarCheckOutline,
 } from "@mdi/js";
 
 export default {
@@ -80,6 +82,16 @@ export default {
           title: "View Upcoming Jobs",
           icon: mdiCheckboxMultipleBlankOutline,
           route: "/part-time-caretakers/view-upcoming-jobs?" + document.cookie,
+        },
+        {
+          title: "View Salary",
+          icon: mdiCurrencyUsd,
+          route: "/part-time-caretakers/view-salary?" + document.cookie,
+        },
+        {
+          title: "Set Availability",
+          icon: mdiCalendarCheckOutline,
+          route: "/part-time-caretakers/set-availability?" + document.cookie,
         },
         {
           title: "My Profile",
