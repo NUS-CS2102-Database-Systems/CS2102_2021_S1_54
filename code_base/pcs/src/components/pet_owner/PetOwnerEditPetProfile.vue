@@ -75,6 +75,7 @@
 <script>
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
+import axios from "axios";
 
 export default {
   name: "PetOwnerEditPetProfile",
@@ -83,9 +84,8 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
-    pet_owner_name: null,
     pet_name: null,
     pet_age: null,
     pet_birth_date: null,
@@ -122,8 +122,8 @@ export default {
         special_req = null;
       }
       const dataToSend =
-        '{"pet_owner_name":"' +
-        this.pet_owner_name +
+        '{"username":"' +
+        this.username +
         '", "pet_name":"' +
         this.pet_name +
         '", "med_hist":' +
@@ -134,15 +134,58 @@ export default {
       console.log(dataToSend);
       const jsonDataToSend = JSON.parse(dataToSend);
       console.log(jsonDataToSend);
-      window.location.href = constants.pet_owner_view_pet_info;
+      axios
+        .post("/pet-owners/edit-specific-pet-information", {
+          toEdit: jsonDataToSend,
+        })
+        .then((response) => {
+          if (
+            response.data[0].med_hist == this.pet_med_hist &&
+            response.data[0].special_req == this.pet_special_req
+          ) {
+            Swal.fire({
+              icon: "success",
+              title: "Updated!",
+              text:
+                this.pet_name + "'s information has been updated successfully.",
+            });
+            window.location.href = constants.pet_owner_view_pet_info;
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text:
+                this.pet_name +
+                "'s information update failed. Please try again",
+            });
+          }
+        });
     },
-    fetchData: async function() {},
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     this.pet_name = urlParams.get("pet");
+    const get_info = {
+      pet_owner: this.username,
+      pet_name: this.pet_name,
+    };
+
+    await axios
+      .post("/pet-owners/get-specific-pet-information", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        this.pet_age = response.data[0].pet_age;
+        this.pet_birth_date = response.data[0].birth_date;
+        this.pet_gender = response.data[0].gender;
+        this.pet_breed = response.data[0].breed;
+        this.pet_type_of_animal = response.data[0].type_of_animal;
+        this.pet_med_hist = response.data[0].med_hist;
+        this.pet_special_req = response.data[0].special_req;
+      });
+    this.loaded = true;
   },
 };
 </script>

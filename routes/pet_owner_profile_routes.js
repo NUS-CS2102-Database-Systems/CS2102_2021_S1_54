@@ -36,7 +36,7 @@ async function get_profile_information(req, res) {
     const username = req.body.toGet.username;
 
     const result = await client.query(
-      `SELECT password, name, birth_date, AGE(current_date, birth_date), gender, phone, email, 
+      `SELECT password, name, birth_date, AGE(current_date, birth_date) AS age, gender, phone, email, 
       address, credit_card_number, credit_card_full_name, credit_card_expiry_date 
       FROM users NATURAL JOIN pet_owner WHERE username = '${username}';`
     );

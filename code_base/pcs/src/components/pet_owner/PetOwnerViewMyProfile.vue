@@ -179,9 +179,9 @@ export default {
               })
               .then((response) => {
                 if (
-                  response.data.credit_card_full_name == null &&
-                  response.data.credit_card_number == null &&
-                  response.data.credit_card_expiry_date == null
+                  response.data[0].credit_card_full_name == null &&
+                  response.data[0].credit_card_number == null &&
+                  response.data[0].credit_card_expiry_date == null
                 ) {
                   Swal.fire({
                     icon: "success",
@@ -209,16 +209,16 @@ export default {
         toGet: get_info,
       })
       .then((response) => {
-        this.password = response.data.password;
-        this.name = response.data.name;
-        this.age = response.data.age;
-        this.birth_date = response.data.birth_date;
-        this.gender = response.data.gender;
-        this.email = response.data.email;
-        this.address = response.data.address;
-        this.credit_card_num = response.data.credit_card_number;
-        this.credit_card_name = response.data.credit_card_full_name;
-        this.expiry_date = response.data.credit_card_expiry_date;
+        this.password = response.data[0].password;
+        this.name = response.data[0].name;
+        this.age = response.data[0].age;
+        this.birth_date = response.data[0].birth_date;
+        this.gender = response.data[0].gender;
+        this.email = response.data[0].email;
+        this.address = response.data[0].address;
+        this.credit_card_num = response.data[0].credit_card_number;
+        this.credit_card_name = response.data[0].credit_card_full_name;
+        this.expiry_date = response.data[0].credit_card_expiry_date;
       });
     this.loaded = true;
   },

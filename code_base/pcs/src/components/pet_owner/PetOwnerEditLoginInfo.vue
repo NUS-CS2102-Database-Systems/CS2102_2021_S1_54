@@ -134,7 +134,7 @@ export default {
             toEdit: new_login_details,
           })
           .then((response) => {
-            if (this.password == response.data.password) {
+            if (this.password == response.data[0].password) {
               Swal.fire({
                 icon: "success",
                 title: "Updated!",
@@ -164,7 +164,7 @@ export default {
         toGet: get_login_info,
       })
       .then((response) => {
-        this.password = response.data.password;
+        this.password = response.data[0].password;
       });
     this.loaded = true;
   },

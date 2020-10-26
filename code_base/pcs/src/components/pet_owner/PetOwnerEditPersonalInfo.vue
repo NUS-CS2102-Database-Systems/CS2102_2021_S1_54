@@ -246,11 +246,11 @@ export default {
           })
           .then((response) => {
             if (
-              respose.data.name == this.name &&
-              response.data.gender == this.gender &&
-              response.data.phone == this.phone &&
-              response.data.email == this.email &&
-              response.data.address == this.address
+              respose.data[0].name == this.name &&
+              response.data[0].gender == this.gender &&
+              response.data[0].phone == this.phone &&
+              response.data[0].email == this.email &&
+              response.data[0].address == this.address
             ) {
               Swal.fire({
                 icon: "success",
@@ -281,12 +281,12 @@ export default {
         toGet: get_info,
       })
       .then((response) => {
-        this.name = response.data.name;
-        this.age = response.data.age;
-        this.birth_date = response.data.birth_date;
-        this.gender = response.data.gender;
-        this.email = response.data.email;
-        this.address = response.data.address;
+        this.name = response.data[0].name;
+        this.age = response.data[0].age;
+        this.birth_date = response.data[0].birth_date;
+        this.gender = response.data[0].gender;
+        this.email = response.data[0].email;
+        this.address = response.data[0].address;
       });
     this.loaded = true;
   },

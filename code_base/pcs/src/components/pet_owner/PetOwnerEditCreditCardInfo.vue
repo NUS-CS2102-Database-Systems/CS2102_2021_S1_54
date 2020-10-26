@@ -198,9 +198,9 @@ export default {
           })
           .then((response) => {
             if (
-              response.data.credit_card_full_name == this.credit_card_name &&
-              response.data.credit_card_number == this.credit_card_num &&
-              response.data.credit_card_expiry_date == this.expiry_date
+              response.data[0].credit_card_full_name == this.credit_card_name &&
+              response.data[0].credit_card_number == this.credit_card_num &&
+              response.data[0].credit_card_expiry_date == this.expiry_date
             ) {
               Swal.fire({
                 icon: "success",
@@ -232,9 +232,9 @@ export default {
         toGet: credit_card_to_get,
       })
       .then((response) => {
-        this.credit_card_num = response.data.credit_card_number;
-        this.credit_card_name = response.data.credit_card_full_name;
-        this.expiry_date = response.data.credit_card_expiry_date;
+        this.credit_card_num = response.data[0].credit_card_number;
+        this.credit_card_name = response.data[0].credit_card_full_name;
+        this.expiry_date = response.data[0].credit_card_expiry_date;
 
         if (this.credit_card_num == null) {
           Swal.fire({

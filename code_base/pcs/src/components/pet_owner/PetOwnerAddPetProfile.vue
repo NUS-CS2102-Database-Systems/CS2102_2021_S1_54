@@ -260,7 +260,7 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"pet_owner_name":"' +
+          '{"username":"' +
           this.username +
           '", "pet_name":' +
           new_name +
@@ -270,7 +270,7 @@ export default {
           this.pet_gender +
           '", "breed":' +
           new_breed +
-          '" "animal_type":"' +
+          '", "animal_type":"' +
           this.pet_type_of_animal +
           '", "med_hist":' +
           med_hist +
@@ -280,7 +280,20 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        window.location.href = constants.pet_owner_view_pet_info;
+        axios
+          .post("/pet-owners/add-pet-information", {
+            toAdd: jsonDataToSend,
+          })
+          .then((response) => {
+            if (response.data[0].exists == "t") {
+              Swal.fire({
+                icon: "success",
+                title: "Added!",
+                text: pet_name + "'s information has been added successfully.",
+              });
+              window.location.href = constants.pet_owner_view_pet_info;
+            }
+          });
       }
     },
     fetchData: async function() {},
