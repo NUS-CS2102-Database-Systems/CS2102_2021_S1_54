@@ -69,6 +69,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerEditCreditCardInfo",
@@ -77,7 +78,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
     credit_card_num: null,
     credit_card_name: null,
@@ -179,7 +180,7 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"pet_owner":"' +
+          '{"username":"' +
           this.username +
           '","card_number":' +
           card_num +
@@ -191,14 +192,62 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        window.location.href = constants.pet_owner_go_back_to_profile_page;
+        axios
+          .post("/pet-owners/edit-credit-card-information", {
+            toEdit: jsonDataToSend,
+          })
+          .then((response) => {
+            if (
+              response.data.credit_card_full_name == this.credit_card_name &&
+              response.data.credit_card_number == this.credit_card_num &&
+              response.data.credit_card_expiry_date == this.expiry_date
+            ) {
+              Swal.fire({
+                icon: "success",
+                title: "Updated!",
+                text: "Credit Card information has been updated successfully.",
+              });
+              window.location.href =
+                constants.pet_owner_go_back_to_profile_page;
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Credit Card information update failed. Please try again",
+              });
+            }
+          });
       }
     },
-    fetchData: async function() {},
   },
   async mounted() {
     console.log("Doc Card: " + document.cookie);
     this.username = document.cookie.split("=")[1];
+    const credit_card_to_get = {
+      credit_card_to_get: this.username,
+    };
+
+    await axios
+      .post("/pet-owners/get-credit-card-information", {
+        toGet: credit_card_to_get,
+      })
+      .then((response) => {
+        this.credit_card_num = response.data.credit_card_number;
+        this.credit_card_name = response.data.credit_card_full_name;
+        this.expiry_date = response.data.credit_card_expiry_date;
+
+        if (this.credit_card_num == null) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text:
+              "You do not have a credit card to edit. Please add credit card information.",
+          });
+          window.location.href =
+            constants.pet_owner_add_credit_card_info + document.cookie;
+        }
+      });
+    this.loaded = true;
   },
 };
 </script>

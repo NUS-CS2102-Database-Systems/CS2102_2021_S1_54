@@ -65,6 +65,7 @@ export default {
     username: null,
     dateFields: [],
     datesToSubmit: [],
+    number_of_pets_allowed: null,
   }),
   methods: {
     addDates: function() {
@@ -185,8 +186,10 @@ export default {
           }
           if (data_ok_val1 == true && data_ok_val2 == true) {
             const setAvailability = {
+              caretaker_username: this.username,
               start_date: this.dateFields[i].value1,
               end_date: this.dateFields[i].value2,
+              num_pets: this.number_of_pets_allowed,
             };
             this.datesToSubmit.push(setAvailability);
           }

@@ -66,6 +66,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerAddCreditCardInfo",
@@ -74,7 +75,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
     credit_card_num: null,
     credit_card_name: null,
@@ -176,7 +177,9 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"card_number":' +
+          '{"username":"' +
+          this.username +
+          '", "card_number":' +
           card_num +
           ', "card_name":' +
           card_name +
@@ -186,14 +189,39 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        window.location.href = constants.pet_owner_go_back_to_profile_page;
+        axios
+          .post("/pet-owners/add-credit-card-information", {
+            addCreditCardInfo: jsonDataToSend,
+          })
+          .then((response) => {
+            if (
+              response.data.credit_card_full_name == this.credit_card_name &&
+              response.data.credit_card_number == this.credit_card_num &&
+              response.data.credit_card_expiry_date == this.expiry_date
+            ) {
+              Swal.fire({
+                icon: "success",
+                title: "Added!",
+                text: "Credit Card information has been added successfully.",
+              });
+              window.location.href =
+                constants.pet_owner_go_back_to_profile_page;
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text:
+                  "Credit card details could not be added. Please try again.",
+              });
+            }
+          });
       }
     },
-    fetchData: async function() {},
   },
   async mounted() {
     console.log("Doc Card: " + document.cookie);
     this.username = document.cookie.split("=")[1];
+    this.loaded = true;
   },
 };
 </script>
