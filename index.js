@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const routes = require("./routes/routes.js");
 const login_signup_routes = require("./routes/login_signup_routes.js");
+const admin_routes = require("./routes/admin_routes.js");
 
 app.use(function (req, res, next) {
   res.header(
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 // our routes go here
 routes(app);
 login_signup_routes(app);
+admin_routes(app);
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Example app listening on port %d", this.address().port);

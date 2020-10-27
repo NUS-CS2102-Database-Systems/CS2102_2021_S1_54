@@ -124,6 +124,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerAddPetProfile",
@@ -289,7 +290,7 @@ export default {
               Swal.fire({
                 icon: "success",
                 title: "Added!",
-                text: pet_name + "'s information has been added successfully.",
+                text: this.pet_name + "'s information has been added successfully.",
               });
               window.location.href = constants.pet_owner_view_pet_info;
             }

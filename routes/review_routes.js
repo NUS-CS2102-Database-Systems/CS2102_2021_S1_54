@@ -44,6 +44,7 @@ async function get_all_reviews_for_caretaker(req, res) {
 
 }
 
+// same function for edit review
 async function submit_review(req, res) {
     // format of request body:
     // {
