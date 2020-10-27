@@ -149,11 +149,12 @@ export default {
       { name: "Female", value: "F" },
     ],
     animal_types: [
-      { name: "Cat", value: "Cat" },
-      { name: "Small Dog", value: "Small Dog" },
-      { name: "Big Dog", value: "Big Dog" },
-      { name: "Bird", value: "Bird" },
-      { name: "Rodent", value: "Rodent" },
+      { name: "Big Dog", value: "big dog" },
+      { name: "Bird", value: "bird" },
+      { name: "Cat", value: "cat" },
+      { name: "Rodent", value: "rodent" },
+      { name: "Rabbit", value: "rabbit" },
+      { name: "Small Dog", value: "small dog" },
     ],
   }),
   computed: {

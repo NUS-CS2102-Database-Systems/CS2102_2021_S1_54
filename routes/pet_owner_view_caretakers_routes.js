@@ -78,7 +78,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (caretaker_username != null) {
         request_full_time =
-          request_full_time + ` username = '${caretaker_username}' AND`;
+          request_full_time + ` username LIKE '${caretaker_username}' AND`;
       }
 
       if (date_from != null && date_to != null) {
@@ -215,7 +215,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (caretaker_username != null) {
         request_full_time =
-          request_full_time + ` username = '${caretaker_username}' AND`;
+          request_full_time + ` username LIKE '${caretaker_username}' AND`;
       }
 
       if (date_from != null && date_to != null) {
@@ -359,10 +359,10 @@ async function get_specific_caretakers_information(req, res) {
 
       if (caretaker_username != null) {
         request_full_time =
-          request_full_time + ` username = '${caretaker_username}' AND`;
+          request_full_time + ` username LIKE '${caretaker_username}' AND`;
 
         request_part_time =
-          request_part_time + ` username = '${caretaker_username}' AND`;
+          request_part_time + ` username LIKE '${caretaker_username}' AND`;
       }
 
       if (date_from != null && date_to != null) {
