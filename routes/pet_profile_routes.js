@@ -26,7 +26,7 @@ async function get_pet_information(req, res) {
     const username = req.body.toGet.username;
 
     const result = await client.query(
-      `SELECT pet_name, birth_date, AGE(current_date, birth_date) AS age, 
+      `SELECT pet_name, birth_date, AGE(birth_date) AS age, 
       breed, type_of_animal, gender, med_hist, special_req FROM pet WHERE username = '${username}';`
     );
 
@@ -101,7 +101,7 @@ async function get_specific_pet_information(req, res) {
     const pet_name = req.body.toGet.pet_name;
 
     const result = await client.query(
-      `SELECT birth_date, AGE(current_date, birth_date) AS pet_age, breed, type_of_animal, 
+      `SELECT birth_date, AGE(birth_date) AS pet_age, breed, type_of_animal, 
       gender, med_hist, special_req FROM pet WHERE username = '${username}' 
       AND pet_name = '${pet_name}';`
     );

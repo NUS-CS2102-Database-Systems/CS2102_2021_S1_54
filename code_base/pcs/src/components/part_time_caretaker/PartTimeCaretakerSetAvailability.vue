@@ -31,6 +31,11 @@
           Add
         </v-btn>
         <br />
+        <v-btn icon color="red" fab @click="cancel">
+          <v-icon>mdi-close</v-icon>
+          Cancel
+        </v-btn>
+        <br />
         <v-btn icon color="blue" fab @click="submit">
           <v-icon>mdi-content-save</v-icon>
           Submit
@@ -78,6 +83,9 @@ export default {
     },
     removeDates: function(index) {
       this.dateFields.splice(index, 1);
+    },
+    cancel: function() {
+      window.location.reload();
     },
     submit: function() {
       console.log("Submitted");

@@ -296,7 +296,6 @@ export default {
           });
       }
     },
-    fetchData: async function() {},
   },
   async mounted() {
     console.log(document.cookie);

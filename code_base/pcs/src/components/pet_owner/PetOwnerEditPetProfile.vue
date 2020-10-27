@@ -168,7 +168,7 @@ export default {
     const urlParams = new URLSearchParams(queryString);
     this.pet_name = urlParams.get("pet");
     const get_info = {
-      pet_owner: this.username,
+      username: this.username,
       pet_name: this.pet_name,
     };
 

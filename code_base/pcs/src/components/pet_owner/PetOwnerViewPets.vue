@@ -172,7 +172,7 @@ export default {
     console.log("C_Profile: " + document.cookie);
     this.username = document.cookie.split("=")[1];
     const get_info = {
-      pet_owner: this.username,
+      username: this.username,
     };
 
     await axios

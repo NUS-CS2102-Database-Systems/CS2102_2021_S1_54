@@ -224,7 +224,7 @@ export default {
     console.log("Doc Card: " + document.cookie);
     this.username = document.cookie.split("=")[1];
     const credit_card_to_get = {
-      credit_card_to_get: this.username,
+      username: this.username,
     };
 
     await axios

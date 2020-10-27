@@ -273,7 +273,7 @@ export default {
   async mounted() {
     this.username = document.cookie.split("=")[1];
     const get_info = {
-      info_to_get: this.username,
+      username: this.username,
     };
 
     await axios
