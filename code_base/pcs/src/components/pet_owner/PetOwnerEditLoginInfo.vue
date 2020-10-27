@@ -99,7 +99,7 @@ export default {
       window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
     submit: function() {
-      // let data_ok = true;
+      let data_ok = true;
 
       if (this.confirm_new_password == null && this.new_password != null) {
         Swal.fire({
@@ -107,7 +107,7 @@ export default {
           title: "Oops...",
           text: "Please confirm password",
         });
-        // data_ok = false;
+        data_ok = false;
       } else if (this.new_password != this.confirm_new_password) {
         Swal.fire({
           icon: "error",
@@ -115,7 +115,7 @@ export default {
           text: "Passwords do not match",
         });
         this.confirm_new_password = null;
-        // data_ok = false;
+        data_ok = false;
       } else if (
         this.new_password == null &&
         this.confirm_new_password == null
