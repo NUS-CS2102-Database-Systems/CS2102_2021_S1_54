@@ -5,12 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
   },
   "dependencies": {
     "@mdi/js": "^5.8.55",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "log": "^6.0.0",
+    "log-node": "^7.0.0",
     "sass-loader": "^10.0.3",
     "sweetalert2": "^10.5.1",
     "vue": "^2.6.11",

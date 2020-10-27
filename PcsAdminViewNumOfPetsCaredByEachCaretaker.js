@@ -1,18 +1,24 @@
-app.get("/pet-care/pet-owners?username=${props.username}", async function (
+
+app.on('listening',function(){
+  log("going into startup");
+  seeder();
+});
+
+app.get("", async function (
   req,
   res
 ) {
   // https://stackoverflow.com/questions/63321982/is-there-a-way-to-send-data-from-the-frontend-to-the-server-with-an-axios-get-re
-  let pet_owner_details_wanted = req.query.username;
-  const get_pet_owner_details =
-    "SELECT username, name, AGE(CURRENT_DATE, date_birth) AS age, gender, phone, email, address" +
-    " FROM user NATURAL JOIN pet_owner" +
-    " WHERE username = '" +
-    pet_owner_details_wanted +
-    "'";
+  // let pet_owner_details_wanted = req.query.username;
+  const queryNumOfPetsTakenCaredForByEachCaregiver=
+    "SELECT COUNT(*)" +
+    " FROM bid_transaction" +
+    "GROUP BY cusername"+
+    "ORDER BY BY DESC";
 
   try {
-    await client.query(get_pet_owner_details).then((resp) => {
+    await client.query(queryNumOfPetsTakenCaredForByEachCaregiver).then((resp) => {
+      console.log("entered num of pets cared for by each caregiver");
       let arr = [];
       let len = resp.rows.length;
       for (var i = 0; i < len; i++) {
@@ -22,6 +28,8 @@ app.get("/pet-care/pet-owners?username=${props.username}", async function (
       res.send(arr);
     });
   } catch (err) {
+    console.log("ERROR entered num of pets cared for by each caregiver");
+
     console.error(err.stack);
   }
 });

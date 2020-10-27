@@ -37,3 +37,11 @@ login_signup_routes(app);
 app.listen(process.env.PORT || 3000, function () {
   console.log("Example app listening on port %d", this.address().port);
 });
+
+
+app.on('listening', function () {
+  seeder();
+});
+
+
+
