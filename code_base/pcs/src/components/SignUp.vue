@@ -13,11 +13,29 @@
         <hr />
 
         <label for="type"><b>I am a ...</b></label>
-        <select id="type" name="type" v-model="type" required>
-          <option value="petOwner">Pet Owner</option>
-          <option value="fulltimeCaretaker">Full Time Caretaker</option>
-          <option value="parttimeCaretaker">Part Time Caretaker</option>
+        <select id="type" name="type" v-model="type" required @change="showPetTypes($event)">
+          <option value="petOwner">Pet Owner only</option>
+          <option value="fulltimeCaretaker">Full Time Caretaker only</option>
+          <option value="parttimeCaretaker">Part Time Caretaker only</option>
+          <option value="poAndFt"> Both Pet Owner and Part Time Caretaker</option>
+          <option value="poAndPt">Both Pet Owner and Full Time Caretaker</option>
         </select>
+
+        <div id="petType">
+          <label for="petType"><b>For Caretaker: What I can take care of:</b></label><br>
+          <input type="checkbox" id="bigDog" name="bigDog" value="bigDog" v-model="bigDog">
+          <label for="bigDog">  Big Dog</label><br>
+          <input type="checkbox" id="bird" name="bird" value="bird" v-model="bird">
+          <label for="bird">  Bird</label><br>
+          <input type="checkbox" id="cat" name="cat" value="cat" v-model="cat">
+          <label for="cat">  Cat</label><br>
+          <input type="checkbox" id="rodent" name="rodent" value="rodent" v-model="rodent">
+          <label for="rodent">  Rodent</label><br>
+          <input type="checkbox" id="rabbit" name="rabbit" value="rabbit" v-model="rabbit">
+          <label for="rabbit">  Rabbit</label><br>
+          <input type="checkbox" id="smallDog" name="smallDog" value="smallDog" v-model="smallDog">
+          <label for="smallDog">  Small Dog</label><br><br>
+        </div>
 
         <label for="username"><b>Username</b></label>
         <input
@@ -116,6 +134,12 @@ export default {
       phone: "",
       email: "",
       address: "",
+      bigDog: "",
+      bird: "",
+      cat: "",
+      rodent: "",
+      rabbit: "",
+      smallDog: ""
     };
   },
   methods: {
@@ -207,10 +231,13 @@ export default {
           gender: this.gender,
           phone: this.phone,
           email: this.email,
-          address: this.address,
+          address: this.address
         };
 
+        const petTypes = [this.bigDog, this.bird, this.cat, this.rodent, this.rabbit, this.smallDog];
+
         console.log(newUser);
+        console.log(petTypes);
 
         this.$emit("sign-up", newUser);
         this.username = "";
@@ -224,6 +251,14 @@ export default {
         this.address = "";
       }
     },
+    showPetTypes(e) {
+      e.preventDefault();
+      if (this.type !== "petOwner") {
+        document.getElementById("petType").style.display = "block";
+      } else {
+        document.getElementById("petType").style.display = "none";
+      }
+    }
   },
 };
 </script>
@@ -325,4 +360,9 @@ button:hover {
     width: 100%;
   }
 }
+
+#petType {
+  display: none;
+}
+
 </style>
