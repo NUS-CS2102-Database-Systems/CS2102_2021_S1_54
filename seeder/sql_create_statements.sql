@@ -109,7 +109,6 @@ CREATE TABLE leave_days(
 	username VARCHAR NOT NULL REFERENCES full_time_caretaker(username),
     pcs_admin  VARCHAR NOT NULL REFERENCES pcs_administrator(username),
 	reason_for_leave VARCHAR NOT NULL,
-	isApproved BOOLEAN NOT NULL,
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
     PRIMARY KEY(username, start_date, end_date)	

@@ -229,7 +229,8 @@ async function delete_user(req, res) {
     try {
         const client = await pool.connect();
         const username = req.body.username;
-        const delete_query = `DELETE FROM users WHERE username = '${username}'`;
+        const password = req.body.password;
+        const delete_query = `DELETE FROM users WHERE username = '${username}' AND password = '${password}';`;
         await client.query(delete_query);
 
         res.send(`${username} is deleted!`);
