@@ -181,7 +181,7 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_view_pet_info;
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
 
       if (this.pet_name == null) {
@@ -281,7 +281,7 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        axios
+        await axios
           .post("/pet-owners/add-pet-information", {
             toAdd: jsonDataToSend,
           })

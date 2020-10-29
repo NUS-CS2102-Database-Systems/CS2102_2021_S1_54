@@ -133,7 +133,7 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
       if (this.phone != null) {
         if (this.phone.match(/^(9|8|6)[0-9]{7}$/)) {
@@ -240,7 +240,7 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        axios
+        await axios
           .post("/pet-owners/edit-personal-information", {
             toEdit: jsonDataToSend,
           })
@@ -284,6 +284,7 @@ export default {
         this.name = response.data[0].name;
         this.age = response.data[0].age;
         this.birth_date = response.data[0].birth_date;
+        this.phone = response.data[0].phone;
         this.gender = response.data[0].gender;
         this.email = response.data[0].email;
         this.address = response.data[0].address;

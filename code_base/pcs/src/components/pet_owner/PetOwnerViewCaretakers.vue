@@ -161,7 +161,11 @@
                   Address: {{ caretaker_address_odd[i] }}
                   <br />
                   Average Rating: {{ caretaker_avg_rating_odd[i] }} <br />
-                  Can Take Care of: {{ caretaker_take_care_animals_odd[i] }}
+                  Can Take Care of:
+                  <v-list v-for="i in caretaker_take_care_animals_odd" :key="i">
+                    {{ caretaker_take_care_animals_odd[i] }}
+                    <br />
+                  </v-list>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -185,7 +189,14 @@
                   Address: {{ caretaker_address_even[i] }}
                   <br />
                   Average Rating: {{ caretaker_avg_rating_even[i] }} <br />
-                  Can Take Care of: {{ caretaker_take_care_animals_even[i] }}
+                  Can Take Care of:
+                  <v-list
+                    v-for="i in caretaker_take_care_animals_even"
+                    :key="i"
+                  >
+                    {{ caretaker_take_care_animals_even[i] }}
+                    <br />
+                  </v-list>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -378,7 +389,7 @@ export default {
       this.selected_pet_type = null;
       console.log(this.selected_pet_type);
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
 
       if (this.selected_commitment_level) {
@@ -502,12 +513,31 @@ export default {
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
 
-        axios
+        await axios
           .post("/pet-owners/get-specific-caretakers-information", {
             caretaker: jsonDataToSend,
           })
           .then((response) => {
-            this.caretaker_username = [];
+            this.caretaker_username_odd = [];
+            this.caretaker_name_odd = [];
+            this.caretaker_age_odd = [];
+            this.caretaker_date_of_birth_odd = [];
+            this.caretaker_gender_odd = [];
+            this.caretaker_phone_odd = [];
+            this.caretaker_address_odd = [];
+            this.caretaker_avg_rating_odd = [];
+            this.caretaker_years_exp_odd = [];
+            this.caretaker_take_care_animals_odd = [];
+            this.caretaker_username_even = [];
+            this.caretaker_name_even = [];
+            this.caretaker_age_even = [];
+            this.caretaker_date_of_birth_even = [];
+            this.caretaker_gender_even = [];
+            this.caretaker_phone_even = [];
+            this.caretaker_address_even = [];
+            this.caretaker_avg_rating_even = [];
+            this.caretaker_years_exp_even = [];
+            this.caretaker_take_care_animals_even = [];
             this.loaded = false;
             this.have_data = false;
             console.log(response.data);
@@ -534,20 +564,6 @@ export default {
 
               for (let i = 0; i < data_received.length; i++) {
                 if (i % 2 == 0) {
-                  this.caretaker_username_odd.push(data_received[i].username);
-                  this.caretaker_name_odd.push(data_received[i].name);
-                  this.caretaker_age_odd.push(data_received[i].age);
-                  this.caretaker_date_of_birth_odd.push(
-                    data_received[i].birth_date
-                  );
-                  this.caretaker_gender_odd.push(data_received[i].gender);
-                  this.caretaker_phone_odd.push(data_received[i].phone);
-                  this.caretaker_address_odd.push(data_received[i].address);
-                  this.caretaker_avg_rating_odd.push(
-                    data_received[i].average_rating
-                  );
-                  this.caretaker_years_exp_odd.push(data_received[i].years_exp);
-
                   const get_info = {
                     username: data_received[i].username,
                   };
@@ -561,26 +577,12 @@ export default {
                       let pets_can = [];
                       for (let j = 0; j < pet_length; j++) {
                         pets_can.push(response.data[j].type_name);
-                        pets_can.push(response.data[j].current_daily_price);
+                        let price = "$" + response.data[j].current_daily_price;
+                        pets_can.push(price);
                       }
                       this.caretaker_take_care_animals_odd.push(pets_can);
                     });
                 } else {
-                  this.caretaker_username_even.push(data_received[i].username);
-                  this.caretaker_name_even.push(data_received.name);
-                  this.caretaker_age_even.push(data_received[i].age);
-                  this.caretaker_date_of_birth_even.push(
-                    data_received[i].birth_date
-                  );
-                  this.caretaker_gender_even.push(data_received[i].gender);
-                  this.caretaker_phone_even.push(data_received[i].phone);
-                  this.caretaker_address_even.push(data_received[i].address);
-                  this.caretaker_avg_rating_even.push(
-                    data_received[i].average_rating
-                  );
-                  this.caretaker_years_exp_even.push(
-                    data_received[i].years_exp
-                  );
                   const get_pet_info = {
                     username: data_received[i].username,
                   };
@@ -593,7 +595,8 @@ export default {
                       let pets_can = [];
                       for (let j = 0; j < pet_length; j++) {
                         pets_can.push(response.data[j].type_name);
-                        pets_can.push(response.data[j].current_daily_price);
+                        let price = "$" + response.data[j].current_daily_price;
+                        pets_can.push(price);
                       }
                       this.caretaker_take_care_animals_even.push(pets_can);
                     });
@@ -646,7 +649,8 @@ export default {
                   let pets_can = [];
                   for (let j = 0; j < pet_length; j++) {
                     pets_can.push(response.data[j].type_name);
-                    pets_can.push(response.data[j].current_daily_price);
+                    let price = "$" + response.data[j].current_daily_price;
+                    pets_can.push(price);
                   }
                   this.caretaker_take_care_animals_odd.push(pets_can);
                 });
@@ -676,7 +680,8 @@ export default {
                   let pets_can = [];
                   for (let j = 0; j < pet_length; j++) {
                     pets_can.push(response.data[j].type_name);
-                    pets_can.push(response.data[j].current_daily_price);
+                    let price = "$" + response.data[j].current_daily_price;
+                    pets_can.push(price);
                   }
                   this.caretaker_take_care_animals_even.push(pets_can);
                 });

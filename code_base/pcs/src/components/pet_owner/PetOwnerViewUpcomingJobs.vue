@@ -195,7 +195,7 @@ export default {
     clearPetNames: function() {
       this.selected_pet_names = null;
     },
-    submit: function() {
+    submit: async function() {
       console.log("Submitted");
       let data_ok = true;
 
@@ -249,11 +249,27 @@ export default {
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        axios
+        await axios
           .post("/pet-owners/get-specific-upcoming-jobs-information", {
             toGet: jsonDataToSend,
           })
           .then((response) => {
+            this.id_odd = [];
+            this.caretaker_odd = [];
+            this.pet_odd = [];
+            this.job_start_odd = [];
+            this.job_end_odd = [];
+            this.start_transfer_method_odd = [];
+            this.end_transfer_method_odd = [];
+            this.amount_odd = [];
+            this.id_even = [];
+            this.caretaker_even = [];
+            this.pet_even = [];
+            this.job_start_even = [];
+            this.job_end_even = [];
+            this.start_transfer_method_even = [];
+            this.end_transfer_method_even = [];
+            this.amount_even = [];
             this.loaded = false;
             let length = response.data.length;
             if (length == 0) {

@@ -98,7 +98,7 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
 
       if (this.confirm_new_password == null && this.new_password != null) {
@@ -129,7 +129,7 @@ export default {
           password: this.new_password,
         };
 
-        axios
+        await axios
           .post("/pet-owners/edit-login-information", {
             toEdit: new_login_details,
           })

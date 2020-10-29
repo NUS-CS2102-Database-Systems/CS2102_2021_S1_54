@@ -150,7 +150,7 @@ export default {
       window.location.href =
         constants.pet_owner_edit_credit_card_info + document.cookie;
     },
-    deleteCreditCardInfo: function() {
+    deleteCreditCardInfo: async function() {
       if (this.credit_card_num == null) {
         Swal.fire({
           icon: "error",
@@ -173,7 +173,7 @@ export default {
               username: this.username,
             };
 
-            axios
+            await axios
               .post("/pet-owners/delete-credit-card-information", {
                 toDelete: info_delete,
               })
@@ -214,6 +214,7 @@ export default {
         this.age = response.data[0].age;
         this.birth_date = response.data[0].birth_date;
         this.gender = response.data[0].gender;
+        this.phone = response.data[0].phone;
         this.email = response.data[0].email;
         this.address = response.data[0].address;
         this.credit_card_num = response.data[0].credit_card_number;

@@ -131,7 +131,7 @@ export default {
       window.location.href =
         constants.pet_owner_edit_pet_info + document.cookie + pet_name_to_edit;
     },
-    deletePetInformation: function(pet_name) {
+    deletePetInformation: async function(pet_name) {
       console.log(pet_name);
       Swal.fire({
         title: "Are you sure?",
@@ -149,7 +149,7 @@ export default {
             pet: pet_name,
           };
 
-          axios
+          await axios
             .post("/pet-owners/delete-pet-information", {
               toDelete: info_delete,
             })

@@ -105,7 +105,7 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_view_pet_info;
     },
-    submit: function() {
+    submit: async function() {
       if (this.pet_med_hist != null) {
         this.pet_med_hist = this.pet_med_hist.replace(/"/g, "");
         this.pet_med_hist = this.pet_med_hist.replace(/\n/g, " ");
@@ -134,7 +134,7 @@ export default {
       console.log(dataToSend);
       const jsonDataToSend = JSON.parse(dataToSend);
       console.log(jsonDataToSend);
-      axios
+      await axios
         .post("/pet-owners/edit-specific-pet-information", {
           toEdit: jsonDataToSend,
         })

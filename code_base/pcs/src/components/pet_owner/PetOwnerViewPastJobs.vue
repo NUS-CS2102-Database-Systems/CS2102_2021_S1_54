@@ -200,7 +200,7 @@ export default {
     clearPetNames: function() {
       this.selected_pet_names = null;
     },
-    submit: function() {
+    submit: async function() {
       console.log("Submitted");
       let data_ok = true;
 
@@ -248,11 +248,31 @@ export default {
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        axios
+        await axios
           .post("/pet-owners/get-specific-past-jobs-information", {
             toGet: jsonDataToSend,
           })
           .then((response) => {
+            this.id_odd = [];
+            this.caretaker_odd = [];
+            this.pet_odd = [];
+            this.job_start_odd = [];
+            this.job_end_odd = [];
+            this.start_transfer_method_odd = [];
+            this.end_transfer_method_odd = [];
+            this.amount_odd = [];
+            this.rating_odd = [];
+            this.review_odd = [];
+            this.id_even = [];
+            this.caretaker_even = [];
+            this.pet_even = [];
+            this.job_start_even = [];
+            this.job_end_even = [];
+            this.start_transfer_method_even = [];
+            this.end_transfer_method_even = [];
+            this.amount_even = [];
+            this.rating_even = [];
+            this.review_even = [];
             this.loaded = false;
             let length = response.data.length;
             if (length == 0) {
@@ -263,7 +283,7 @@ export default {
               for (let i = 0; i < length; i++) {
                 if (i % 2 == 0) {
                   this.id_odd.push(i + 1);
-                  this.caretaker_odd.push(response.data[i].cusername);
+                  this.caretaker_odd.push(response.data[i].username);
                   this.pet_odd.push(response.data[i].pet_name);
                   this.job_start_odd.push(response.data[i].job_start_datetime);
                   this.job_end_odd.push(response.data[i].job_end_datetime);
@@ -274,9 +294,11 @@ export default {
                     response.data[i].end_transfer_method
                   );
                   this.amount_odd.push(response.data[i].amount);
+                  this.rating_odd.push(response.data[i].rating);
+                  this.review_odd.push(response.data[i].review);
                 } else {
                   this.id_even.push(i + 1);
-                  this.caretaker_even.push(response.data[i].cusername);
+                  this.caretaker_even.push(response.data[i].username);
                   this.pet_even.push(response.data[i].pet_name);
                   this.job_start_even.push(response.data[i].job_start_datetime);
                   this.job_end_even.push(response.data[i].job_end_datetime);
@@ -287,6 +309,8 @@ export default {
                     response.data[i].end_transfer_method
                   );
                   this.amount_even.push(response.data[i].amount);
+                  this.rating_even.push(response.data[i].rating);
+                  this.review_even.push(response.data[i].review);
                 }
               }
               this.loaded = true;
@@ -315,7 +339,7 @@ export default {
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
-              this.caretaker_odd.push(response.data[i].cusername);
+              this.caretaker_odd.push(response.data[i].username);
               this.pet_odd.push(response.data[i].pet_name);
               this.job_start_odd.push(response.data[i].job_start_datetime);
               this.job_end_odd.push(response.data[i].job_end_datetime);
@@ -326,9 +350,11 @@ export default {
                 response.data[i].end_transfer_method
               );
               this.amount_odd.push(response.data[i].amount);
+              this.rating_odd.push(response.data[i].rating);
+              this.review_odd.push(response.data[i].review);
             } else {
               this.id_even.push(i + 1);
-              this.caretaker_even.push(response.data[i].cusername);
+              this.caretaker_even.push(response.data[i].username);
               this.pet_even.push(response.data[i].pet_name);
               this.job_start_even.push(response.data[i].job_start_datetime);
               this.job_end_even.push(response.data[i].job_end_datetime);
@@ -339,6 +365,8 @@ export default {
                 response.data[i].end_transfer_method
               );
               this.amount_even.push(response.data[i].amount);
+              this.rating_even.push(response.data[i].rating);
+              this.review_even.push(response.data[i].review);
             }
           }
         }

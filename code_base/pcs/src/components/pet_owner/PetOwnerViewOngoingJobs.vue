@@ -153,7 +153,7 @@ export default {
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
-              this.caretaker_odd.push(response.data[i].cusername);
+              this.caretaker_odd.push(response.data[i].username);
               this.caretaker_name_odd.push(response.data[i].name);
               this.caretaker_phone_odd.push(response.data[i].phone);
               this.caretaker_address_odd.push(response.data[i].address);
@@ -169,7 +169,7 @@ export default {
               this.amount_odd.push(response.data[i].amount);
             } else {
               this.id_even.push(i + 1);
-              this.caretaker_even.push(response.data[i].cusername);
+              this.caretaker_even.push(response.data[i].username);
               this.caretaker_name_even.push(response.data[i].name);
               this.caretaker_phone_even.push(response.data[i].phone);
               this.caretaker_address_even.push(response.data[i].address);

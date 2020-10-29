@@ -97,7 +97,7 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
       if (this.expiry_date != null) {
         if (this.expiry_date.match(/^[0-9]{2}\/[0-9]{2}$/)) {
@@ -192,7 +192,7 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        axios
+        await axios
           .post("/pet-owners/edit-credit-card-information", {
             toEdit: jsonDataToSend,
           })

@@ -61,7 +61,7 @@
                 Can Take Care Of:
                 <v-list v-for="i in can_take_care" :key="i">
                   {{ can_take_care[i] }}
-                  <v-spacer />
+                  <br />
                 </v-list>
               </v-card-text>
             </v-layout>
@@ -85,6 +85,7 @@
 <script>
 import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
 import * as constants from "../constants";
+import axios from "axios";
 
 export default {
   name: "PartTimeCaretakerViewMyProfile",
@@ -93,7 +94,7 @@ export default {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
     password: null,
     name: null,
@@ -117,11 +118,48 @@ export default {
       window.location.href =
         constants.part_time_caretaker_edit_personal_info + document.cookie;
     },
-    fetchData: async function() {},
   },
   async mounted() {
     console.log("CT_Profile: " + document.cookie);
     this.username = document.cookie.split("=")[1];
+
+    const get_info = {
+      username: this.username,
+    };
+
+    await axios
+      .post("/caretakers/get-profile-information", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        this.password = response.data[0].password;
+        this.name = response.data[0].name;
+        this.age = response.data[0].age;
+        this.birth_date = response.data[0].birth_date;
+        this.gender = response.data[0].gender;
+        this.phone = response.data[0].phone;
+        this.email = response.data[0].email;
+        this.address = response.data[0].address;
+        this.avg_rating = response.data[0].average_rating;
+        this.years_exp = response.data[0].years_exp;
+        this.date_started = response.data[0].date_started;
+
+        axios
+          .post("/caretakers/get-pets-take-care-information", {
+            toGet: get_info,
+          })
+          .then((response) => {
+            let pet_length = response.data.length;
+            let pets_can = [];
+            for (let j = 0; j < pet_length; j++) {
+              pets_can.push(response.data[j].type_name);
+              let price = "$" + response.data[j].current_daily_price;
+              pets_can.push(price);
+            }
+            this.can_take_care.push(pets_can);
+          });
+      });
+    this.loaded = true;
   },
 };
 </script>
