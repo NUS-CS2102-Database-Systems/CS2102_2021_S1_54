@@ -1,3 +1,5 @@
+
+
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -39,9 +41,6 @@ app.listen(process.env.PORT || 3000, function () {
 });
 
 
-app.on('listening', function () {
-  seeder();
-});
 
 
 

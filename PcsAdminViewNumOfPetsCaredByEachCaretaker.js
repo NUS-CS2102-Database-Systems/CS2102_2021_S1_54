@@ -1,8 +1,8 @@
 
-app.on('listening',function(){
-  log("going into startup");
-  seeder();
-});
+const express = require("express");
+const app = express();
+
+
 
 app.get("", async function (
   req,
