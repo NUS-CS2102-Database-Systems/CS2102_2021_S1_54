@@ -173,7 +173,7 @@ export default {
               username: this.username,
             };
 
-            await axios
+            axios
               .post("/pet-owners/delete-credit-card-information", {
                 toDelete: info_delete,
               })
@@ -204,7 +204,7 @@ export default {
       username: this.username,
     };
 
-    await axios
+    axios
       .post("/pet-owners/get-profile-information", {
         toGet: get_info,
       })

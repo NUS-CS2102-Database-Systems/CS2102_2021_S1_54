@@ -149,7 +149,7 @@ export default {
             pet: pet_name,
           };
 
-          await axios
+          axios
             .post("/pet-owners/delete-pet-information", {
               toDelete: info_delete,
             })

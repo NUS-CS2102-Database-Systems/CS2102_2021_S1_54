@@ -120,6 +120,7 @@
 
 <script>
 import Swal from "sweetalert2";
+import axios from 'axios';
 
 export default {
   name: "SignUp",
@@ -143,7 +144,7 @@ export default {
     };
   },
   methods: {
-    signUp(e) {
+    async signUp(e) {
       e.preventDefault();
       let data_ok = true;
       let name_lowercase = this.name.toString().toLowerCase();
@@ -239,16 +240,97 @@ export default {
         console.log(newUser);
         console.log(petTypes);
 
-        this.$emit("sign-up", newUser);
-        this.username = "";
-        this.type = "";
-        this.password = "";
-        this.name = "";
-        this.dob = "";
-        this.gender = "";
-        this.phone = "";
-        this.email = "";
-        this.address = "";
+        // sign up in database
+        const result = await axios({
+          method: "post",
+          url: "https://pet-care-service.herokuapp.com/users",
+          data: {
+            username: this.username,
+            password: this.password,
+            name: this.name,
+            birth_date: this.dob,
+            gender: this.gender,
+            phone: this.phone,
+            email: this.email,
+            address: this.address
+          }
+        })
+
+        if (result.data !== "username already exists!" && result.data[0].username === this.username) {
+          console.log("sign up successful");
+          switch (this.type) {
+            case "petOwner":
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/users/pet-owners",
+                data: {
+                  username: this.username,
+                }
+              });
+              break;
+            case "fulltimeCaretaker":
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/users/caretakers/fulltime",
+                data: {
+                  username: this.username,
+                }
+              });
+              break;
+            case "parttimeCaretaker":
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/users/caretakers/parttime",
+                data: {
+                  username: this.username,
+                }
+              });
+              break;
+            case "poAndFt":
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/users/pet-owners",
+                data: {
+                  username: this.username,
+                }
+              });
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/users/caretakers/fulltime",
+                data: {
+                  username: this.username,
+                }
+              });
+              break;
+            case "poAndPt":
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/users/pet-owners",
+                data: {
+                  username: this.username,
+                }
+              });
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/users/caretakers/parttime",
+                data: {
+                  username: this.username,
+                }
+              });
+              break;
+            default:
+              break;
+          }
+        }
+        // this.username = "";
+        // this.type = "";
+        // this.password = "";
+        // this.name = "";
+        // this.dob = "";
+        // this.gender = "";
+        // this.phone = "";
+        // this.email = "";
+        // this.address = "";
       }
     },
     showPetTypes(e) {
