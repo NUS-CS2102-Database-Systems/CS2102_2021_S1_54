@@ -7,15 +7,11 @@ const pool = new Pool({
 });
 
 var appRouter = function (app) { 
-    app.get("/reviews", get_all_reviews_for_caretaker);
+    app.get("/reviews/:cusername", get_all_reviews_for_caretaker);
     app.post("/reviews", submit_review);
 }
 
 async function get_all_reviews_for_caretaker(req, res) {
-    // format of request body:
-    // {
-    //     "cusername": "xxx"
-    // }
     // format of respond body:
     // {
     //     "cusername": "xxx",
@@ -26,7 +22,7 @@ async function get_all_reviews_for_caretaker(req, res) {
     // }
     try {
         const client = await pool.connect();
-        const cusername = req.body.cusername;
+        const cusername = req.query.cusername;
         const query = ` SELECT cusername, pusername AS reviewer, review, rating, review_time
             FROM bid_transaction
             WHERE cusername = '${cusername}'
