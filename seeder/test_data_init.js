@@ -35,8 +35,8 @@ async function seeder() {
         const emails = [];
         const sampleAddresses = [];
         const addresses = [];
-        const creditCardNumber = [];
-        const creditCardExpiry = [];
+        const creditCardNumbers = [];
+        const creditCardExpiries = [];
         const file = readline.createInterface({
             input: fs.createReadStream('examplesampleAddresses'),
             output: process.stdout,
@@ -80,9 +80,19 @@ async function seeder() {
             }
         }
 
-        limit2 = 1000
+        limit2 = 1000;
+        let today = new Date().toISOString().slice(0, 10);
+        var fiveYearsFromNow = new Date();
+        fiveYearsFromNow.setFullYear(fiveYearsFromNow.getFullYear() + 1);
+        
         for (var i = 0;i<limit2;i++){
+            const creditCardNumber = Math.round(Math.random()*10**16)
+            const expiryDate =  new Date(+today + Math.random() * (fiveYearsFromNow - today));
 
+            if(!creditCardNumbers.includes(creditCardNumber)){
+                creditCardNumbers.push(creditCardNumber)
+                creditCardExpiries.push(expiryDate)
+            }
         }
 
         //for pet owners
@@ -90,9 +100,11 @@ async function seeder() {
             // TODO
             const userCreationQuery = "INSERT INTO user VALUES("+usernames[i]+",123,"+name[1]+"1999-01-08,"+
             genders[i]+","+phoneNumbers[i]+","+emails[i]+","+addresses[i]+")";
-            const perOwnerCreation = "INSERT INTO pet_owner VALUES ("+usernames[i]+")";
+            const perOwnerCreationQuery = "INSERT INTO pet_owner VALUES ("+creditCardNumbers[i]+
+            +","+names[i]+","+creditCardExpiries[i]+")";
             try{
                 await client.query(userCreationQuery);
+                await client.query(perOwnerCreationQuery);
             }catch (err) {
                 console.err("init has already been created");
                 console.error(err);
@@ -101,6 +113,8 @@ async function seeder() {
 
         client.release();
 } 
+
+
 
 
 
