@@ -8,7 +8,7 @@ const pool = new Pool({
 
 var appRouter = function (app) { 
     app.get("/users", get_all_users);
-    app.get("/users/authenticate", get_user_with_username_and_password);
+    app.post("/users/authenticate", get_user_with_username_and_password);
     app.post("/users", create_user);
     app.post("/users/pet-owners", create_petowner);
     app.post("/users/caretakers/fulltime", create_fulltime_caretaker);
