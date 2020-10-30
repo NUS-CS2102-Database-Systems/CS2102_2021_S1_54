@@ -59,7 +59,7 @@ import {
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
   mdiCurrencyUsd,
-  mdiCalendarRangeOutline,
+  mdiCalendarRangeOutline
 } from "@mdi/js";
 
 export default {

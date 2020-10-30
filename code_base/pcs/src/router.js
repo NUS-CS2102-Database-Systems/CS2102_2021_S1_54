@@ -39,6 +39,8 @@ import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTi
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 import AdminSignUp from "./components/AdminSignUp";
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
+import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
+
 
 Vue.use(VueRouter);
 
@@ -244,6 +246,11 @@ export default new VueRouter({
       name: "PetOwnersViewCaretakerReviews",
       component: PetOwnerViewCaretakerReviews,
       props: true
+    },
+    {
+      path: "/full-time-caretakers/apply-for-leave",
+      name: "FullTimeCaretakerApplyForLeave",
+      component: FullTimeCaretakerApplyForLeave,
     },
   ],
 });
