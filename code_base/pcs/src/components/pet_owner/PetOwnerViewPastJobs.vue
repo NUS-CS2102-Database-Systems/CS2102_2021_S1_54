@@ -76,8 +76,23 @@
                   <br />
                   Amount: {{ amount_odd[i] }} <br />
                   Rating: {{ rating_odd[i] }} <br />
-                  Review: {{ review_even[i] }} <br />
+                  Review: {{ review_odd[i] }} <br />
                 </v-card-text>
+                <v-btn elevation="2">
+                  <router-link tag="span" 
+                    :to="{ path: '/pet-owners/submit-review/', 
+                      query: {
+                        cusername: caretaker_odd[i],
+                        pusername: username,
+                        pet_name: pet_odd[i], 
+                        job_start_datetime: job_start_odd[i], 
+                        job_end_datetime: job_end_odd[i], 
+                        rating: rating_odd[i],
+                        review: review_odd[i]
+                      }}">
+                    Submit/Edit Review
+                  </router-link>
+                </v-btn> 
               </v-card>
             </v-row>
           </v-list>
@@ -101,6 +116,21 @@
                   Rating: {{ rating_even[i] }} <br />
                   Review: {{ review_even[i] }} <br />
                 </v-card-text>
+                <v-btn elevation="2">
+                  <router-link tag="span" 
+                    :to="{ path: '/pet-owners/submit-review/', 
+                      query: {
+                        cusername: caretaker_odd[i],
+                        pusername: username,
+                        pet_name: pet_odd[i], 
+                        job_start_datetime: job_start_odd[i], 
+                        job_end_datetime: job_end_odd[i], 
+                        rating: rating_odd[i],
+                        review: review_odd[i]
+                      }}">
+                    Submit/Edit Review
+                  </router-link>
+                </v-btn> 
               </v-card>
             </v-row>
           </v-list>

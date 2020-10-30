@@ -42,6 +42,13 @@
               </v-card-text>
             </v-layout>
           </v-card>
+          <br />  
+          <v-btn elevation="2">
+            <router-link tag="span" 
+              :to="{ path: '/pet-owners/view-caretaker-reviews/' + caretaker_username}">
+              View Reviews
+            </router-link>
+          </v-btn>      
         </v-list>
       </template>
       <template v-else-if="!loaded">

@@ -220,7 +220,7 @@ export default {
             break;
           }
           if (data_ok_val1 == true && data_ok_val2 == true) {
-            const setAvailability = {};
+            var setAvailability = {};
             if (this.have_data == false) {
               setAvailability = {
                 caretaker_username: this.username,
@@ -247,7 +247,7 @@ export default {
         if (this.have_data == false) {
           await axios
             .post("/part-time-caretakers/add-availabilities", {
-              toEdit: datesToSubmit,
+              toEdit: this.datesToSubmit,
             })
             .then((response) => {
               if (response.status == 200) {
@@ -266,7 +266,7 @@ export default {
         } else {
           await axios
             .post("/part-time-caretakers/edit-availabilities", {
-              toEdit: datesToSubmit,
+              toEdit: this.datesToSubmit,
             })
             .then((response) => {
               if (response.status == 200) {

@@ -245,7 +245,7 @@ export default {
           })
           .then((response) => {
             if (
-              respose.data[0].name == this.name &&
+              response.data[0].name == this.name &&
               response.data[0].gender == this.gender &&
               response.data[0].phone == this.phone &&
               response.data[0].email == this.email &&

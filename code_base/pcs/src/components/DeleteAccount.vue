@@ -37,6 +37,7 @@
 
 <script>
 // import * as constants from "./constants";
+import axios from 'axios';
 
 export default {
   name: "DeleteAccount",
@@ -47,7 +48,7 @@ export default {
     };
   },
   methods: {
-    deleteAccount(e) {
+    async deleteAccount(e) {
       e.preventDefault();
       const user = {
         username: this.username,
@@ -58,10 +59,14 @@ export default {
       console.log(this.username);
       console.log(this.type);
 
-      // this.$emit("log-in", user);
-      // this.type = "";
-      // this.username = "";
-      // this.password = "";
+      await axios({
+        method: "delete",
+        url: "https://pet-care-service.herokuapp.com/users",
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      })
       
       }
   },

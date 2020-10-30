@@ -5,7 +5,6 @@ import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import DeleteAccount from "./components/DeleteAccount";
 import PetOwnerSubmitReview from "./components/pet_owner/PetOwnerSubmitReview";
-import PartTimeCaretakerViewReviews from "./components/part_time_caretaker/PartTimeCaretakerViewReviews";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
 import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
 import PetOwnerViewPastJobs from "./components/pet_owner/PetOwnerViewPastJobs";
@@ -39,6 +38,7 @@ import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/
 import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 import AdminSignUp from "./components/AdminSignUp";
+import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 
 Vue.use(VueRouter);
 
@@ -138,9 +138,11 @@ export default new VueRouter({
       component: PetOwnerEditPetProfile,
     },
     {
-      path: "/pet-owner/submit-review", //TODO: change this later
+      // path: "/pet-owners/submit-review/:pusername&:cusername&:pet_name&:job_start_datetime&:job_end_datetime",
+      path: "/pet-owners/submit-review",
       name: "PetOwnerSubmitReview",
       component: PetOwnerSubmitReview,
+      // props: true
     },
     {
       path: "/part-time-caretakers",
@@ -186,11 +188,6 @@ export default new VueRouter({
       path: "/part-time-caretakers/set-availability",
       name: "PartTimeCaretakerSetAvailability",
       component: PartTimeCaretakerSetAvailability,
-    },
-    {
-      path: "/part-time-caretakers/view-reviews", //TODO: change this later
-      name: "PartTimeCaretakerViewReviews",
-      component: PartTimeCaretakerViewReviews,
     },
     {
       path: "/full-time-caretakers",
@@ -241,6 +238,12 @@ export default new VueRouter({
       path: "/admin-signup",
       name: "AdminSignUp",
       component: AdminSignUp,
+    },
+    {
+      path: "/pet-owners/view-caretaker-reviews/:caretaker_username",
+      name: "PetOwnersViewCaretakerReviews",
+      component: PetOwnerViewCaretakerReviews,
+      props: true
     },
   ],
 });

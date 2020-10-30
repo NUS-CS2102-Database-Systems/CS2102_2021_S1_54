@@ -200,9 +200,9 @@ export default {
       let data_ok = true;
 
       if (this.selected_commitment_level != null) {
-        var commitment_level = '"' + this.selected_commitment_level + '"';
+        // var commitment_level = '"' + this.selected_commitment_level + '"';
       } else {
-        commitment_level = null;
+        // commitment_level = null;
       }
 
       if (this.selected_dates != null) {
