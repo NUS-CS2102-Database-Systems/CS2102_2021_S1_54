@@ -47,6 +47,7 @@
 <script>
 import Swal from "sweetalert2";
 import axios from 'axios';
+import * as constants from "../constants";
 
 export default {
   name: "FullTimeCaretakerApplyForLeave",
@@ -67,7 +68,7 @@ export default {
         if (this.start_date.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
           var date = new Date(this.start_date);
           if (date instanceof Date && !isNaN(date.valueOf())) {
-            let year = this.dob.slice(0, 4);
+            let year = this.start_date.slice(0, 4);
             let curr_date = new Date();
             let curr_year = curr_date.getFullYear();
             if (parseInt(year) > curr_year) {
@@ -142,18 +143,18 @@ export default {
       if (data_ok == true) {
         const result = await axios({
           method: "post",
-          url: "https://pet-care-service.herokuapp.com/users",
-        //   data: {
-        //     username: this.username,
-        //     reason: this.reason,
-        //     start_date: this.start_date,
-        //     end_date: this.end_date,
-        //   }
+          url: "https://pet-care-service.herokuapp.com/apply-leave",
+            data: {
+                username: this.username,
+                reason_for_leave: this.reason,
+                start_date: this.start_date,
+                end_date: this.end_date,
+            }
         })
 
-        if (result.data !== "username already exists!" && result.data[0].username === this.username) {
-          console.log("apply leave successful");
-          
+        if (result.data === "Leave submitted!") {
+            console.log("apply leave successful");
+            window.location.href = constants.full_time_caretaker_home;
         }
 
       }
