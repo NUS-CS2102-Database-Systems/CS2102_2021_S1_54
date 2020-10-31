@@ -69,7 +69,7 @@ async function get_specific_past_jobs_information(req, res) {
         bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
         bt.review AS review 
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
-        WHERE bt.pusername = '${username}' AND 
+        WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
         bt.job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
         bt.job_end_datetime BETWEEN '${start_date}' AND '${end_date}' AND (`;
         let pet_names_split = pet_names.split(",");
@@ -86,7 +86,7 @@ async function get_specific_past_jobs_information(req, res) {
         bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
         bt.review AS review 
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
-        WHERE bt.pusername = '${username}' AND 
+        WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
         bt.job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
         bt.job_end_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
         bt.pet_name = '${pet_names}';`;
@@ -103,7 +103,7 @@ async function get_specific_past_jobs_information(req, res) {
         bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
         bt.review AS review 
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
-        WHERE bt.pusername = '${username}' AND 
+        WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
         bt.job_start_datetime < current_timestamp AND 
         bt.job_end_datetime < current_timestamp AND (`;
         let pet_names_split = pet_names.split(",");
@@ -120,7 +120,7 @@ async function get_specific_past_jobs_information(req, res) {
         bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
         bt.review AS review 
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
-        WHERE bt.pusername = '${username}' AND 
+        WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
         bt.job_start_datetime < current_timestamp AND 
         bt.job_end_datetime < current_timestamp AND bt.pet_name = '${pet_names}';`;
       }
@@ -131,7 +131,7 @@ async function get_specific_past_jobs_information(req, res) {
       bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
       bt.review AS review 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
-      WHERE bt.pusername = '${username}' AND 
+      WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
       bt.job_start_datetime < current_timestamp AND 
       bt.job_end_datetime < current_timestamp;`;
     }
@@ -159,7 +159,7 @@ async function get_ongoing_jobs_information(req, res) {
       bt.start_transfer_method AS start_transfer_method, 
       bt.end_transfer_method AS end_transfer_method, bt.amount AS amount
       FROM users u INNER JOIN bid_transction bt ON u.username = bt.cusername 
-      WHERE bt.pusername = '${username}' AND 
+      WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
       bt.job_start_datetime <= current_timestamp AND 
       bt.job_end_datetime >= current_timestamp;`
     );
@@ -180,7 +180,7 @@ async function get_upcoming_jobs_information(req, res) {
 
     const result = await client.query(
       `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
-      job_start_datetime > current_timestamp;`
+      is_successful_bid = 'true' AND job_start_datetime > current_timestamp;`
     );
 
     res.setHeader("content-type", "application/json");
@@ -205,6 +205,7 @@ async function get_specific_upcoming_jobs_information(req, res) {
     if (start_date != null && pet_names != null) {
       if (pet_names.includes(",")) {
         query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
+        is_successful_bid = 'true' AND 
         job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
         job_end_datetime BETWEEN '${start_date}' AND '${end_date}' AND (`;
         let pet_names_split = pet_names.split(",");
@@ -216,16 +217,19 @@ async function get_specific_upcoming_jobs_information(req, res) {
         query += `);`;
       } else {
         query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
+        is_successful_bid = 'true' AND 
         job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
         job_end_datetime BETWEEN '${start_date}' AND '${end_date}' AND pet_name = '${pet_names}';`;
       }
     } else if (start_date != null && pet_names == null) {
       query = `SELECT * FROM bid_transction WHERE pusername = '${username}' AND 
+      is_successful_bid = 'true' AND 
       job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
       job_end_datetime BETWEEN '${start_date}' AND '${end_date}';`;
     } else if (start_date == null && pet_names != null) {
       if (pet_names.includes(",")) {
         query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
+        is_successful_bid = 'true' AND 
         job_start_datetime > current_timestamp AND (`;
         let pet_names_split = pet_names.split(",");
         let length = pet_names_split.length;
@@ -236,10 +240,12 @@ async function get_specific_upcoming_jobs_information(req, res) {
         query += `);`;
       } else {
         query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
+        is_successful_bid = 'true' AND 
         job_start_datetime > current_timestamp AND pet_name = '${pet_names}';`;
       }
     } else {
       query = `SELECT * FROM bid_transction WHERE pusername = '${username}' AND 
+      is_successful_bid = 'true' AND 
         job_start_datetime > current_timestamp;`;
     }
 
