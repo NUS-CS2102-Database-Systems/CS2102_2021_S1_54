@@ -40,3 +40,7 @@ export const full_time_caretaker_edit_personal_info =
 
 export const full_time_caretaker_go_back_to_profile_page =
   domain + "full-time-caretakers/view-my-profile?" + document.cookie;
+
+export const full_time_caretaker_home = domain + "full-time-caretakers";
+
+  

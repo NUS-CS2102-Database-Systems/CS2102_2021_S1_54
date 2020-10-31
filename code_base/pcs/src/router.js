@@ -40,7 +40,7 @@ import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 import AdminSignUp from "./components/AdminSignUp";
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
-
+import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
 
 Vue.use(VueRouter);
 
@@ -251,6 +251,11 @@ export default new VueRouter({
       path: "/full-time-caretakers/apply-for-leave",
       name: "FullTimeCaretakerApplyForLeave",
       component: FullTimeCaretakerApplyForLeave,
+    },
+    {
+      path: "/full-time-caretakers/view-leaves",
+      name: "FullTimeCaretakerViewLeaves",
+      component: FullTimeCaretakerViewLeaves,
     },
   ],
 });

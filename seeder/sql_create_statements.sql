@@ -59,7 +59,7 @@ CREATE TABLE bid_transaction (
 	job_start_datetime TIMESTAMP,
 	job_end_datetime TIMESTAMP,
     payment_datetime TIMESTAMP,
-    daily_price_at_that_point NUMERIC(7, 2),
+    -- daily_price_at_that_point NUMERIC(7, 2),
 	amount NUMERIC(7, 2),
 	payment_method VARCHAR ,
     start_transfer_method VARCHAR,
@@ -69,7 +69,10 @@ CREATE TABLE bid_transaction (
     review VARCHAR,
     rating INT,
 	FOREIGN KEY (pusername, pet_name) REFERENCES pet(username, pet_name),
-	PRIMARY KEY (pusername, cusername, pet_name, job_start_datetime, job_end_datetime)
+	PRIMARY KEY (pusername, cusername, pet_name, job_start_datetime, job_end_datetime),
+	CHECK (job_end_datetime >= job_start_datetime),
+	CHECK (payment_datetime <= job_start_datetime),
+	CHECK (bidding_time <= payment_datetime)
 );
 
 CREATE TABLE pcs_administrator (
@@ -91,7 +94,7 @@ CREATE TABLE can_take_care (
 
 CREATE TABLE daily_price_rate(
 	username VARCHAR REFERENCES caretaker(username),
-	type_name VARCHAR REFERENCES  set_base_daily_price(type_name),
+	type_name VARCHAR REFERENCES set_base_daily_price(type_name),
 	current_daily_price NUMERIC(7, 2),
 	PRIMARY KEY(username, type_name)
 );
@@ -106,7 +109,6 @@ CREATE TABLE availabilities(
 
 CREATE TABLE leave_days(
 	username VARCHAR NOT NULL REFERENCES full_time_caretaker(username),
-    pcs_admin  VARCHAR NOT NULL REFERENCES pcs_administrator(username),
 	reason_for_leave VARCHAR NOT NULL,
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
@@ -152,6 +154,201 @@ CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
 	SELECT DPR.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate WHERE username = DPR.username) * PD.pet_days * 0.75)
 	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD
 );
+ 
+-- trigger 1
+CREATE OR REPLACE FUNCTION not_overlap()
+	RETURNS TRIGGER AS 
+	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN;
+	BEGIN 
+		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.username));
+
+		IF part_time_exists = ‘t’ THEN
+			SELECT COUNT(*) INTO ctx1 FROM availabilities A
+			WHERE NEW.cusername = A.username AND 
+			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <= A.end_date);
+
+			IF ctx1 = 0 THEN
+				RETURN NULL;
+			ELSE
+				RETURN NEW;
+			END IF;
+
+		ELSE
+		SELECT COUNT(*) INTO ctx2 FROM leave_days L
+		WHERE NEW.cusername = L.username AND
+		(job_start_datetime, job_end_datetime) overlaps (L.start_date, L.end_date);
+
+		IF ctx2 > 0 THEN
+			RETURN NULL;
+		ELSE
+			RETURN NEW;
+		END IF;
+
+	END IF; END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_overlap
+BEFORE INSERT OR UPDATE ON bid_transaction
+FOR EACH ROW EXECUTE PROCEDURE not_overlap();
+
+-- trigger 2
+CREATE OR REPLACE FUNCTION update_avg_rating_of_caretaker()
+ RETURNS TRIGGER
+AS $$
+	DECLARE avg_rating NUMERIC;
+	BEGIN
+IF NEW.rating IS NOT NULL AND OLD.rating IS NULL THEN
+	avg_rating := (SELECT AVG(rating) FROM bid_transaction WHERE username = NEW.username);
+UPDATE caretaker SET average_rating = avg_rating WHERE cusername = NEW.username;
+END IF;
+END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_avg_rating
+AFTER UPDATE ON bid_transaction
+FOR EACH ROW EXECUTE FUNCTION update_avg_rating_of_caretaker();
+
+-- trigger 3
+CREATE OR REPLACE FUNCTION update_part_time_pet_limit()
+ RETURNS TRIGGER
+AS $$
+	DECLARE part_time_exists BOOLEAN;
+	BEGIN
+		IF NEW.average_rating != OLD.average_rating THEN
+			part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.username));
+
+			IF part_time_exists = ‘t’ THEN
+				IF NEW.average_rating >= 4.0 THEN
+					UPDATE availabilities SET number_of_pets_allowed = 4 WHERE username = NEW.username AND start_date >= current_date;
+				ELSIF NEW.average_rating < 4.0 THEN
+					UPDATE availabilities SET number_of_pets_allowed = 2 WHERE username = NEW.username AND start_date >= current_date;
+				END IF;
+			END IF;
+		END IF;
+	END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_part_time_max_pet
+AFTER UPDATE ON caretaker
+FOR EACH ROW EXECUTE FUNCTION update_part_time_pet_limit();
+
+-- trigger 4
+CREATE OR REPLACE FUNCTION new_current_daily_price_rate()
+ RETURNS TRIGGER
+AS $$
+DECLARE price_increase NUMERIC;
+	BEGIN
+	IF NEW.average_rating != OLD.average_rating THEN
+			
+		IF NEW.average_rating <= 2.0 THEN
+		UPDATE daily_price_rate d
+		SET d.current_daily_price = base_daily_price
+		FROM can_take_care NATURAL JOIN set_base_daily_price
+		WHERE username = NEW.username AND d.username = NEW.username  AND d.type_name =  type_name;
+
+		ELSE
+			price_increase := ((NEW.average_rating - 2.0)/0.5) * 10;
+			UPDATE daily_price_rate d
+			SET d.current_daily_price = base_daily_price + price_increase
+			FROM can_take_care NATURAL JOIN set_base_daily_price
+			WHERE username = NEW.username AND d.username = NEW.username  AND d.type_name =  type_name;
+		END IF;
+	END IF;
+END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_daily_price
+AFTER UPDATE ON caretaker
+FOR EACH ROW EXECUTE FUNCTION new_current_daily_price_rate();
 
 
+-- trigger 5
+CREATE OR REPLACE FUNCTION check_caretaker_pet_limit()
+ RETURNS TRIGGER
+AS $$
+	DECLARE num_pets INT;
+	DECLARE part_time_pets INT;
+	DECLARE part_time_exists BOOLEAN;
+	DECLARE full_time_exists BOOLEAN;
+	BEGIN
+		SELECT COUNT(*) INTO num_pets FROM bid_transaction WHERE cusername = NEW.cusername AND (job_start_datetime, job_end_datetime) OVERLAPS (NEW.job_start_datetime, NEW.job_end_datetime);
+		
+		full_time_exists := (SELECT EXISTS (SELECT 1 FROM full_time_caretaker WHERE username = NEW.cusername));
 
+		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
+
+		IF full_time_exists = ‘t’ THEN 
+			IF num_pets >= 5 THEN
+				RETURN NULL;
+			ELSIF num_pets < 5 THEN
+				RETURN NEW;
+			END IF;
+		ELSIF part_time_exists = ‘t’ THEN
+			SELECT number_of_pets_allowed INTO part_time_pets FROM availabilities WHERE username = NEW.cusername ORDER BY start_date DESC LIMIT 1;
+			IF num_pets >= part_time_pets THEN
+				RETURN NULL;
+			ELSIF num_pets < part_time_pets THEN
+				RETURN NEW;
+			END IF;
+		END IF;
+END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_pet_limit
+BEFORE INSERT ON bid_transaction
+FOR EACH ROW EXECUTE FUNCTION check_caretaker_pet_limit();
+
+
+-- trigger 6
+CREATE OR REPLACE FUNCTION not_full_time()
+	RETURNS TRIGGER AS 
+		$$ DECLARE ctx NUMERIC;
+		BEGIN 
+		SELECT COUNT(*) INTO ctx FROM full_time_caretaker F
+		WHERE NEW.username = F.username;
+		IF ctx > 0 THEN
+			RETURN NULL;
+		ELSE
+			RETURN NEW;
+	END IF; END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_part_time_caretaker
+BEFORE INSERT OR UPDATE ON part_time_caretaker
+FOR EACH ROW EXECUTE PROCEDURE not_full_time();
+
+CREATE OR REPLACE FUNCTION not_part_time()
+	RETURNS TRIGGER AS 
+	$$ DECLARE ctx NUMERIC;
+	BEGIN 
+		SELECT COUNT(*) INTO ctx FROM part_time_caretaker P
+		WHERE NEW.username = P.username;
+			IF ctx > 0 THEN
+				RETURN NULL;
+			ELSE
+				RETURN NEW;
+			END IF; 
+	END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_full_time_caretaker
+BEFORE INSERT OR UPDATE ON full_time_caretaker
+FOR EACH ROW EXECUTE PROCEDURE not_part_time();
+
+-- trigger 7
+CREATE OR REPLACE FUNCTION change_current_daily_price()
+	RETURNS TRIGGER AS
+$$ DECLARE price_change NUMERIC;
+	BEGIN
+	IF NEW.base_daily_price != OLD.base_daily_price THEN
+		price_change := NEW.base_daily_price - OLD.base_daily_price;
+		UPDATE daily_price_rate d
+		SET d.current_daily_price = d.current_daily_price + price_change
+		WHERE d.type_name = NEW.type_name;
+	END IF;
+END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_current_daily_price
+AFTER UPDATE ON set_base_daily_price
+FOR EACH ROW EXECUTE FUNCTION change_current_daily_price();
