@@ -94,6 +94,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerViewPets",
@@ -102,7 +103,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
     pet_name_even: [],
     pet_age_even: [],
@@ -130,7 +131,7 @@ export default {
       window.location.href =
         constants.pet_owner_edit_pet_info + document.cookie + pet_name_to_edit;
     },
-    deletePetInformation: function(pet_name) {
+    deletePetInformation: async function(pet_name) {
       console.log(pet_name);
       Swal.fire({
         title: "Are you sure?",
@@ -143,25 +144,66 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           // axios to delete info
-          Swal.fire("Deleted!", "Pet information has been deleted.", "success");
+          const info_delete = {
+            username: this.username,
+            pet: pet_name,
+          };
+
+          axios
+            .post("/pet-owners/delete-pet-information", {
+              toDelete: info_delete,
+            })
+            .then((response) => {
+              if (response.data[0].exists == "f") {
+                Swal.fire({
+                  icon: "success",
+                  title: "Deleted!",
+                  text:
+                    pet_name + "'s information has been deleted successfully.",
+                });
+                window.location.reload();
+              }
+            });
         }
       });
-    },
-    fetchData: async function() {
-      // set caretaker username and pet names as links
-      // set pet names as options for select
-      // const response = axios.get(api)
-      // console.log(response.fullTime.data)
-      // console.log(response.partTime.data)
-      // if (response.data.fullTime.data.length == 0 && response.partTime.data.length == 0) {
-      //   this.have_data = false;
-      // } else {
-      // }
     },
   },
   async mounted() {
     console.log("C_Profile: " + document.cookie);
     this.username = document.cookie.split("=")[1];
+    const get_info = {
+      username: this.username,
+    };
+
+    await axios
+      .post("/pet-owners/get-pet-information", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        let length = response.data.length;
+        for (let i = 0; i < length; i++) {
+          if (i % 2 == 0) {
+            this.pet_name_odd.push(response.data[i].pet_name);
+            this.pet_age_odd.push(response.data[i].age);
+            this.pet_birth_date_odd.push(response.data[i].birth_date);
+            this.pet_gender_odd.push(response.data[i].gender);
+            this.pet_breed_odd.push(response.data[i].breed);
+            this.type_of_animal_odd.push(response.data[i].type_of_animal);
+            this.pet_med_hist_odd.push(response.data[i].med_hist);
+            this.pet_special_req_odd.push(response.data[i].special_req);
+          } else {
+            this.pet_name_even.push(response.data[i].pet_name);
+            this.pet_age_even.push(response.data[i].age);
+            this.pet_birth_date_even.push(response.data[i].birth_date);
+            this.pet_gender_even.push(response.data[i].gender);
+            this.pet_breed_even.push(response.data[i].breed);
+            this.type_of_animal_even.push(response.data[i].type_of_animal);
+            this.pet_med_hist_even.push(response.data[i].med_hist);
+            this.pet_special_req_even.push(response.data[i].special_req);
+          }
+        }
+      });
+    this.loaded = true;
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PartTimeCaretakerNavBar />
+      <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
@@ -83,15 +83,15 @@
 </template>
 
 <script>
-import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
+import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import * as constants from "../constants";
 import axios from "axios";
 
 export default {
-  name: "PartTimeCaretakerViewMyProfile",
+  name: "FullTimeCaretakerViewMyProfile",
 
   components: {
-    PartTimeCaretakerNavBar,
+    FullTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: false,
@@ -112,11 +112,11 @@ export default {
   methods: {
     editLoginDetails: function() {
       window.location.href =
-        constants.part_time_caretaker_edit_login_info + document.cookie;
+        constants.full_time_caretaker_edit_login_info + document.cookie;
     },
     editPersonalInfo: function() {
       window.location.href =
-        constants.part_time_caretaker_edit_personal_info + document.cookie;
+        constants.full_time_caretaker_edit_personal_info + document.cookie;
     },
   },
   async mounted() {

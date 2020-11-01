@@ -158,6 +158,7 @@
                   Place a Bid
                 </v-btn>
                 <v-card-text>
+                  Name: {{ caretaker_name_odd[i] }} <br />
                   Date of Birth: {{ caretaker_date_of_birth_odd[i] }} <br />
                   Age: {{ caretaker_age_odd[i] }} <br />
                   Gender: {{ caretaker_gender_odd[i] }} <br />
@@ -168,7 +169,11 @@
                   Address: {{ caretaker_address_odd[i] }}
                   <br />
                   Average Rating: {{ caretaker_avg_rating_odd[i] }} <br />
-                  Can Take Care of: {{ caretaker_take_care_animals_odd[i] }}
+                  Can Take Care of:
+                  <v-list v-for="i in caretaker_take_care_animals_odd" :key="i">
+                    {{ caretaker_take_care_animals_odd[i] }}
+                    <br />
+                  </v-list>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -184,6 +189,7 @@
                   Place a Bid
                 </v-btn>
                 <v-card-text>
+                  Name: {{ caretaker_name_even[i] }} <br />
                   Date of Birth: {{ caretaker_date_of_birth_even[i] }} <br />
                   Age: {{ caretaker_age_even[i] }} <br />
                   Gender: {{ caretaker_gender_even[i] }} <br />
@@ -194,7 +200,14 @@
                   Address: {{ caretaker_address_even[i] }}
                   <br />
                   Average Rating: {{ caretaker_avg_rating_even[i] }} <br />
-                  Can Take Care of: {{ caretaker_take_care_animals_even[i] }}
+                  Can Take Care of:
+                  <v-list
+                    v-for="i in caretaker_take_care_animals_even"
+                    :key="i"
+                  >
+                    {{ caretaker_take_care_animals_even[i] }}
+                    <br />
+                  </v-list>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -240,8 +253,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
-// import axios from "axios";
-// import * as constants from "../constants";
+import axios from "axios";
 
 export default {
   name: "PetOwnerViewCaretakers",
@@ -269,11 +281,12 @@ export default {
       { name: "Price High to Low", value: "price high to low" },
     ],
     pet_types: [
-      { name: "Cat", value: "cat" },
-      { name: "Small Dog", value: "small dog" },
       { name: "Big Dog", value: "big dog" },
       { name: "Bird", value: "bird" },
+      { name: "Cat", value: "cat" },
       { name: "Rodent", value: "rodent" },
+      { name: "Rabbit", value: "rabbit" },
+      { name: "Small Dog", value: "small dog" },
     ],
     available_dates: false,
     search: null,
@@ -281,7 +294,7 @@ export default {
     price_from: null,
     price_to: null,
     have_data: true,
-    loaded: true,
+    loaded: false,
     caretaker_username_even: [],
     caretaker_name_even: [],
     caretaker_age_even: [],
@@ -393,7 +406,7 @@ export default {
       this.selected_pet_type = null;
       console.log(this.selected_pet_type);
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
 
       if (this.selected_commitment_level) {
@@ -516,75 +529,184 @@ export default {
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        // axios
-        //   .post("/pet-care/pet-owners/caretakers", {
-        //     caretaker: jsonDataToSend,
-        //   })
-        //   .then((response) => {
-        //     this.caretaker_username = [];
-        //     this.loaded = false;
-        //     this.have_data = false;
-        //     console.log(response.data);
-        //     if (response.data.length > 0) {
-        //       this.have_data = true;
-        //       for (let i = 0; i < response.data.length; i++) {
-        //         let data_received_as_link =
-        //           '"' + constants.caretaker_view_pet_owner_domain;
-        //         data_received_as_link = data_received_as_link.replace(
-        //           /value1/,
-        //           response.data[i].username
-        //         );
 
-        //         data_received_as_link += '"';
+        await axios
+          .post("/pet-owners/get-specific-caretakers-information", {
+            caretaker: jsonDataToSend,
+          })
+          .then((response) => {
+            this.caretaker_username_odd = [];
+            this.caretaker_name_odd = [];
+            this.caretaker_age_odd = [];
+            this.caretaker_date_of_birth_odd = [];
+            this.caretaker_gender_odd = [];
+            this.caretaker_phone_odd = [];
+            this.caretaker_address_odd = [];
+            this.caretaker_avg_rating_odd = [];
+            this.caretaker_years_exp_odd = [];
+            this.caretaker_take_care_animals_odd = [];
+            this.caretaker_username_even = [];
+            this.caretaker_name_even = [];
+            this.caretaker_age_even = [];
+            this.caretaker_date_of_birth_even = [];
+            this.caretaker_gender_even = [];
+            this.caretaker_phone_even = [];
+            this.caretaker_address_even = [];
+            this.caretaker_avg_rating_even = [];
+            this.caretaker_years_exp_even = [];
+            this.caretaker_take_care_animals_even = [];
+            this.loaded = false;
+            this.have_data = false;
+            console.log(response.data);
+            if (
+              response.data.fullTime.length == 0 &&
+              response.data.partTime.length == 0
+            ) {
+              this.have_data = false;
+              this.loaded = true;
+            } else {
+              let data_received = [];
+              if (response.data.fullTime.length > 0) {
+                this.have_data = true;
+                for (let i = 0; i < response.data.fullTime.length; i++) {
+                  data_received.push(response.data.fullTime[i]);
+                }
+              }
 
-        //         let data_received = response.data[i].username;
-        //         this.caretaker_username.push(
-        //           data_received.link(data_received_as_link)
-        //         );
-        //       }
-        //       this.loaded = true;
-        //     } else {
-        //       this.have_data = false;
-        //       this.loaded = true;
-        //     }
-        //   });
+              if (response.data.partTime.length > 0) {
+                for (let i = 0; i < response.data.partTime.length; i++) {
+                  data_received.push(response.data.partTime[i]);
+                }
+              }
+
+              for (let i = 0; i < data_received.length; i++) {
+                if (i % 2 == 0) {
+                  const get_info = {
+                    username: data_received[i].username,
+                  };
+
+                  axios
+                    .post("/pet-owners/get-caretaker-pets-information", {
+                      toGet: get_info,
+                    })
+                    .then((response) => {
+                      let pet_length = response.data.length;
+                      let pets_can = [];
+                      for (let j = 0; j < pet_length; j++) {
+                        pets_can.push(response.data[j].type_name);
+                        let price = "$" + response.data[j].current_daily_price;
+                        pets_can.push(price);
+                      }
+                      this.caretaker_take_care_animals_odd.push(pets_can);
+                    });
+                } else {
+                  const get_pet_info = {
+                    username: data_received[i].username,
+                  };
+                  axios
+                    .post("/pet-owners/get-caretaker-pets-information", {
+                      toGet: get_pet_info,
+                    })
+                    .then((response) => {
+                      let pet_length = response.data.length;
+                      let pets_can = [];
+                      for (let j = 0; j < pet_length; j++) {
+                        pets_can.push(response.data[j].type_name);
+                        let price = "$" + response.data[j].current_daily_price;
+                        pets_can.push(price);
+                      }
+                      this.caretaker_take_care_animals_even.push(pets_can);
+                    });
+                }
+              }
+              this.loaded = true;
+            }
+          });
       }
     },
-    // fetchData: async function() {
-    //   const response = await axios.get("/pet-care/pet-owners/caretakers");
-    //   console.log(response.data);
-    //   if (response.data.length == 0) {
-    //     this.have_data = false;
-    //   } else {
-    //     for (let i = 0; i < response.data.length; i++) {
-    //       let data_received_as_link =
-    //         '"' + constants.caretaker_view_pet_owner_domain;
-    //       data_received_as_link = data_received_as_link.replace(
-    //         /value1/,
-    //         response.data[i].username
-    //       );
-
-    //       data_received_as_link += '"';
-
-    //       let data_received = response.data[i].username;
-    //       this.caretaker_username.push(
-    //         data_received.link(data_received_as_link)
-    //       );
-    //     }
-    //     this.have_data = true;
-    //   }
-    // },
   },
   async mounted() {
     console.log("Doc Caretaker: " + document.cookie);
     this.username = document.cookie.split("=")[1];
-    // this.loaded = false;
-    // try {
-    //   await this.fetchData();
-    //   this.loaded = true;
-    // } catch (e) {
-    //   console.error(e);
-    // }
+
+    await axios
+      .get("/pet-owners/get-caretakers-information")
+      .then((response) => {
+        let length = response.data.length;
+        if (length == 0) {
+          this.have_data = false;
+        } else {
+          this.have_data = true;
+          for (let i = 0; i < length; i++) {
+            if (i % 2 == 0) {
+              this.caretaker_username_odd.push(response.data[i].username);
+              this.caretaker_name_odd.push(response.data[i].name);
+              this.caretaker_age_odd.push(response.data[i].age);
+              this.caretaker_date_of_birth_odd.push(
+                response.data[i].birth_date
+              );
+              this.caretaker_gender_odd.push(response.data[i].gender);
+              this.caretaker_phone_odd.push(response.data[i].phone);
+              this.caretaker_address_odd.push(response.data[i].address);
+              this.caretaker_avg_rating_odd.push(
+                response.data[i].average_rating
+              );
+              this.caretaker_years_exp_odd.push(response.data[i].years_exp);
+
+              const get_info = {
+                username: response.data[i].username,
+              };
+
+              axios
+                .post("/pet-owners/get-caretaker-pets-information", {
+                  toGet: get_info,
+                })
+                .then((response) => {
+                  let pet_length = response.data.length;
+                  let pets_can = [];
+                  for (let j = 0; j < pet_length; j++) {
+                    pets_can.push(response.data[j].type_name);
+                    let price = "$" + response.data[j].current_daily_price;
+                    pets_can.push(price);
+                  }
+                  this.caretaker_take_care_animals_odd.push(pets_can);
+                });
+            } else {
+              this.caretaker_username_even.push(response.data[i].username);
+              this.caretaker_name_even.push(response.data[i].name);
+              this.caretaker_age_even.push(response.data[i].age);
+              this.caretaker_date_of_birth_even.push(
+                response.data[i].birth_date
+              );
+              this.caretaker_gender_even.push(response.data[i].gender);
+              this.caretaker_phone_even.push(response.data[i].phone);
+              this.caretaker_address_even.push(response.data[i].address);
+              this.caretaker_avg_rating_even.push(
+                response.data[i].average_rating
+              );
+              this.caretaker_years_exp_even.push(response.data[i].years_exp);
+              const get_pet_info = {
+                username: response.data[i].username,
+              };
+              axios
+                .post("/pet-owners/get-caretaker-pets-information", {
+                  toGet: get_pet_info,
+                })
+                .then((response) => {
+                  let pet_length = response.data.length;
+                  let pets_can = [];
+                  for (let j = 0; j < pet_length; j++) {
+                    pets_can.push(response.data[j].type_name);
+                    let price = "$" + response.data[j].current_daily_price;
+                    pets_can.push(price);
+                  }
+                  this.caretaker_take_care_animals_even.push(pets_can);
+                });
+            }
+          }
+        }
+      });
+    this.loaded = true;
   },
 };
 </script>

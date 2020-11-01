@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PartTimeCaretakerNavBar />
+      <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
@@ -69,16 +69,16 @@
 </template>
 
 <script>
-import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
+import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
-  name: "PartTimeCaretakerEditLoginInfo",
+  name: "FullTimeCaretakerEditLoginInfo",
 
   components: {
-    PartTimeCaretakerNavBar,
+    FullTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: false,
@@ -97,7 +97,7 @@ export default {
     },
     cancel: function() {
       window.location.href =
-        constants.part_time_caretaker_go_back_to_profile_page;
+        constants.full_time_caretaker_go_back_to_profile_page;
     },
     submit: async function() {
       // let data_ok = true;
@@ -122,7 +122,7 @@ export default {
         this.confirm_new_password == null
       ) {
         window.location.href =
-          constants.part_time_caretaker_go_back_to_profile_page;
+          constants.full_time_caretaker_go_back_to_profile_page;
       } else {
         console.log(this.new_password);
         console.log(this.confirm_new_password);
@@ -143,7 +143,7 @@ export default {
                 text: "Password has been updated successfully.",
               });
               window.location.href =
-                constants.part_time_caretaker_go_back_to_profile_page;
+                constants.full_time_caretaker_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",

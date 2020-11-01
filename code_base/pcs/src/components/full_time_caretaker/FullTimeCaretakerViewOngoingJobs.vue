@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PartTimeCaretakerNavBar />
+      <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded && have_data">
@@ -25,6 +25,8 @@
                   Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
                   <br />
                   Amount: {{ amount_odd[i] }} <br />
+                  Rating: {{ rating_odd[i] }} <br />
+                  Review: {{ review_odd[i] }} <br />
 
                   <h3>Pet Owner Information</h3>
                   Name: {{ pet_owner_name_odd[i] }} <br />
@@ -125,17 +127,17 @@
 </template>
 
 <script>
-import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
+import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import axios from "axios";
 
 export default {
-  name: "PartTimeCaretakerViewOngoingJobs",
+  name: "FullTimeCaretakerViewOngoingJobs",
 
   components: {
-    PartTimeCaretakerNavBar,
+    FullTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     have_data: false,
     username: null,
     id_odd: [],

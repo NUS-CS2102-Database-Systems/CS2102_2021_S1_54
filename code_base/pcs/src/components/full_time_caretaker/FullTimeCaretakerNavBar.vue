@@ -26,7 +26,7 @@
             "
           >
             Pet Care Service <br />
-            Part-time Caretakers <br />
+            Full-time Caretakers <br />
           </h2>
         </div>
         <v-list nav>
@@ -59,11 +59,11 @@ import {
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
   mdiCurrencyUsd,
-  mdiCalendarCheckOutline,
+  mdiCalendarRangeOutline
 } from "@mdi/js";
 
 export default {
-  name: "PartTimeCaretakerNavBar",
+  name: "FullTimeCaretakerNavBar",
 
   data() {
     return {
@@ -71,32 +71,37 @@ export default {
         {
           title: "View Past Jobs",
           icon: mdiCheckBoxMultipleOutline,
-          route: "/part-time-caretakers/view-past-jobs?" + document.cookie,
+          route: "/full-time-caretakers/view-past-jobs?" + document.cookie,
         },
         {
           title: "View Ongoing Jobs",
           icon: mdiCheckboxMarkedOutline,
-          route: "/part-time-caretakers/view-ongoing-jobs?" + document.cookie,
+          route: "/full-time-caretakers/view-ongoing-jobs?" + document.cookie,
         },
         {
           title: "View Upcoming Jobs",
           icon: mdiCheckboxMultipleBlankOutline,
-          route: "/part-time-caretakers/view-upcoming-jobs?" + document.cookie,
+          route: "/full-time-caretakers/view-upcoming-jobs?" + document.cookie,
         },
         {
           title: "View Salary",
           icon: mdiCurrencyUsd,
-          route: "/part-time-caretakers/view-salary?" + document.cookie,
+          route: "/full-time-caretakers/view-salary?" + document.cookie,
         },
         {
-          title: "Set Availability",
-          icon: mdiCalendarCheckOutline,
-          route: "/part-time-caretakers/set-availability?" + document.cookie,
+          title: "Apply For Leave",
+          icon: mdiCalendarRangeOutline,
+          route: "/full-time-caretakers/apply-for-leave?" + document.cookie,
+        },
+        {
+          title: "View My Leaves",
+          icon: mdiCalendarRangeOutline,
+          route: "/full-time-caretakers/view-leaves?" + document.cookie,
         },
         {
           title: "My Profile",
           icon: mdiAccountCircle,
-          route: "/part-time-caretakers/view-my-profile?" + document.cookie,
+          route: "/full-time-caretakers/view-my-profile?" + document.cookie,
         },
         {
           title: "Log Out",

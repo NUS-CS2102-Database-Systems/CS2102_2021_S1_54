@@ -1,0 +1,351 @@
+<template>
+  <v-container>
+    <div style="width: 20%; float: left">
+      <PartTimeCaretakerNavBar />
+    </div>
+    <div style="width: 80%; float: right">
+      <template v-if="loaded">
+        <v-list v-for="(dateField, i) in dateFields" :key="i">
+          <v-row>
+            {{ i + 1 }}.
+            <v-col class="mx-auto">
+              <template v-if="value1_editable[i]">
+                <v-text-field
+                  :label="dateField.label1"
+                  v-model="dateField.value1"
+                  value="dateField.value1"
+                />
+              </template>
+              <template v-elseif="!value1_editable[i]">
+                <v-text-field
+                  :label="dateField.label1"
+                  v-model="dateField.value1"
+                  value="dateField.value1"
+                  readonly
+                />
+              </template>
+            </v-col>
+            <v-col class="mx-auto">
+              <template v-if="value2_editable[i]">
+                <v-text-field
+                  :label="dateField.label2"
+                  v-model="dateField.value2"
+                  value="dateField.value2"
+                />
+              </template>
+              <template v-elseif="!value2_editable[i]">
+                <v-text-field
+                  :label="dateField.label2"
+                  v-model="dateField.value2"
+                  value="dateField.value2"
+                  readonly
+                />
+              </template>
+            </v-col>
+            <v-btn icon color="red" fab @click="removeDates(i)">
+              <v-icon>mdi-delete</v-icon>
+              Delete
+            </v-btn>
+          </v-row>
+        </v-list>
+        <v-btn icon color="blue" fab @click="addDates">
+          <v-icon>mdi-plus</v-icon>
+          Add
+        </v-btn>
+        <br />
+        <v-btn icon color="red" fab @click="cancel">
+          <v-icon>mdi-close</v-icon>
+          Cancel
+        </v-btn>
+        <br />
+        <v-btn icon color="blue" fab @click="submit">
+          <v-icon>mdi-content-save</v-icon>
+          Submit
+        </v-btn>
+      </template>
+      <template v-else-if="!loaded">
+        <v-row justify="center">
+          <v-progress-circular
+            indeterminate
+            :size="70"
+            :width="7"
+            color="#01579B"
+          />
+        </v-row>
+      </template>
+    </div>
+  </v-container>
+</template>
+
+<script>
+import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
+import Swal from "sweetalert2";
+import axios from "axios";
+
+export default {
+  name: "PartTimeCaretakerSetAvailability",
+
+  components: {
+    PartTimeCaretakerNavBar,
+  },
+  data: () => ({
+    loaded: false,
+    have_data: false,
+    username: null,
+    dateFields: [],
+    datesToSubmit: [],
+    number_of_pets_allowed_arr: [],
+    num_of_pets: null,
+    value1_editable: [],
+    value2_editable: [],
+  }),
+  methods: {
+    addDates: function() {
+      this.dateFields.push({
+        label1: "Enter Start Date (YYYY-MM-DD)",
+        value1: "",
+        label2: "Enter End Date (YYYY-MM-DD)",
+        value2: "",
+      });
+    },
+    removeDates: function(index) {
+      this.dateFields.splice(index, 1);
+    },
+    cancel: function() {
+      window.location.reload();
+    },
+    submit: async function() {
+      console.log("Submitted");
+      let data_ok_val1 = false;
+      let data_ok_val2 = false;
+      if (this.dateFields.length == 0) {
+        this.dateFields = [];
+        data_ok_val1 = true;
+        data_ok_val2 = true;
+      } else {
+        for (let i = 0; i < this.dateFields.length; i++) {
+          if (this.dateFields[i].value1.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
+            var date1 = new Date(this.dateFields[i].value1);
+            if (date1 instanceof Date && !isNaN(date1.valueOf())) {
+              let year = this.dateFields[i].value1.slice(0, 4);
+              let curr_date = new Date();
+              let aYearFromNow = new Date();
+              aYearFromNow.setFullYear(curr_date.getFullYear() + 1);
+              let year_from_now = aYearFromNow.getFullYear();
+              console.log(year_from_now);
+              if (parseInt(year) > year_from_now) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text:
+                    "Please provide availabilities for this year and next year only (at row " +
+                    (i + 1) +
+                    ")",
+                });
+                break;
+              } else {
+                data_ok_val1 = true;
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text:
+                  "Please provide a valid start date(at row " + (i + 1) + ")",
+              });
+              break;
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text:
+                "Please provide a start date matching YYYY-MM-DD (at row " +
+                (i + 1) +
+                ")",
+            });
+            break;
+          }
+
+          if (this.dateFields[i].value2.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
+            var date2 = new Date(this.dateFields[i].value2);
+            if (date2 instanceof Date && !isNaN(date2.valueOf())) {
+              let year = this.dateFields[i].value2.slice(0, 4);
+              let curr_date = new Date();
+              let aYearFromNow = new Date();
+              aYearFromNow.setFullYear(curr_date.getFullYear() + 1);
+              let year_from_now = aYearFromNow.getFullYear();
+              console.log(year_from_now);
+              if (parseInt(year) > year_from_now) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text:
+                    "Please provide availabilities for this year and next year only (at row " +
+                    (i + 1) +
+                    ")",
+                });
+                break;
+              } else {
+                data_ok_val2 = true;
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please provide a valid end date(at row " + (i + 1) + ")",
+              });
+              break;
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text:
+                "Please provide a end date matching YYYY-MM-DD (at row " +
+                (i + 1) +
+                ")",
+            });
+            break;
+          }
+
+          if (date1 > date2) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "End date greater than start date (at row " + (i + 1) + ")",
+            });
+            data_ok_val1 = false;
+            data_ok_val2 = false;
+            break;
+          }
+          if (data_ok_val1 == true && data_ok_val2 == true) {
+            var setAvailability = {};
+            if (this.have_data == false) {
+              setAvailability = {
+                caretaker_username: this.username,
+                start_date: this.dateFields[i].value1,
+                end_date: this.dateFields[i].value2,
+                num_pets: this.number_of_pets_allowed,
+              };
+            } else {
+              setAvailability = {
+                caretaker_username: this.username,
+                start_date: this.dateFields[i].value1,
+                end_date: this.dateFields[i].value2,
+                num_pets: this.number_of_pets_allowed_arr[i],
+              };
+            }
+            this.datesToSubmit.push(setAvailability);
+          }
+        }
+      }
+
+      if (data_ok_val1 == true && data_ok_val2 == true) {
+        console.log(this.datesToSubmit);
+        // no previous data, so insert
+        if (this.have_data == false) {
+          await axios
+            .post("/part-time-caretakers/add-availabilities", {
+              toEdit: this.datesToSubmit,
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Submit Successful!",
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Adding availabilities failed. Please try again.",
+                });
+              }
+            });
+        } else {
+          await axios
+            .post("/part-time-caretakers/edit-availabilities", {
+              toEdit: this.datesToSubmit,
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Update Successful!",
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Updating availabilities failed. Please try again.",
+                });
+              }
+            });
+        }
+        this.datesToSubmit = [];
+      }
+    },
+  },
+  async mounted() {
+    this.username = document.cookie.split("=")[1];
+    let today_date = new Date();
+
+    const get_info = {
+      username: this.username,
+    };
+
+    // need to sort by start date asc and end date asc
+    await axios
+      .post("/part-time-caretakers/get-availabilities", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        let length = response.data.length;
+        if (length == 0) {
+          this.dateFields = [];
+          this.have_data = false;
+          this.value1_editable.push(true);
+          this.value2_editable.push(true);
+          // axios to get num of pets allowed from availabilties
+          // latest available date
+          // If dont have any data at all, then set to 2
+          axios
+            .post("/part-time-caretakers/get-num-of-pets-information", {
+              toGet: get_info,
+            })
+            .then((response) => {
+              if (response.data.number_of_pets_allowed != 0) {
+                this.num_of_pets = response.data.number_of_pets_allowed;
+              } else {
+                this.num_of_pets = 2;
+              }
+            });
+        } else {
+          this.have_data = true;
+          for (let i = 0; i < length; i++) {
+            // this.dateFields.value1.push(response.data[i].start_date);
+            // this.dateFields.value2.push(response.data[i].end_date);
+            this.dateFields[i].value1 = response.data[i].start_date;
+            this.dateFields[i].value2 = response.data[i].end_date;
+            this.number_of_pets_allowed_arr.push(
+              response.data[i].number_of_pets_allowed
+            );
+            if (new Date(response.data[i].start_date) <= today_date) {
+              this.value1_editable.push(false);
+            } else if (new Date(response.data[i].start_date) > today_date) {
+              this.value1_editable.push(true);
+            }
+
+            if (new Date(response.data[i].end_date) <= today_date) {
+              this.value2_editable.push(false);
+            } else if (new Date(response.data[i].end_date) > today_date) {
+              this.value2_editable.push(true);
+            }
+          }
+        }
+      });
+    this.loaded = true;
+  },
+};
+</script>

@@ -8,7 +8,7 @@ const pool = new Pool({
 
 var appRouter = function (app) { 
     app.get("/users", get_all_users);
-    app.get("/users/authenticate", get_user_with_username_and_password);
+    app.post("/users/authenticate", get_user_with_username_and_password);
     app.post("/users", create_user);
     app.post("/users/pet-owners", create_petowner);
     app.post("/users/caretakers/fulltime", create_fulltime_caretaker);
@@ -229,7 +229,8 @@ async function delete_user(req, res) {
     try {
         const client = await pool.connect();
         const username = req.body.username;
-        const delete_query = `DELETE FROM users WHERE username = '${username}'`;
+        const password = req.body.password;
+        const delete_query = `DELETE FROM users WHERE username = '${username}' AND password = '${password}';`;
         await client.query(delete_query);
 
         res.send(`${username} is deleted!`);

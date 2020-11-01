@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
@@ -90,16 +90,16 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
-  name: "PetOwnerEditPersonalInfo",
+  name: "FullTimeCaretakerEditPersonalInfo",
 
   components: {
-    PetOwnerNavBar,
+    FullTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: false,
@@ -131,7 +131,8 @@ export default {
       this.address = null;
     },
     cancel: function() {
-      window.location.href = constants.pet_owner_go_back_to_profile_page;
+      window.location.href =
+        constants.full_time_caretaker_go_back_to_profile_page;
     },
     submit: async function() {
       let data_ok = true;
@@ -224,9 +225,7 @@ export default {
         }
 
         const dataToSend =
-          '{"username":"' +
-          this.username +
-          '"name":' +
+          '{"name":' +
           new_name +
           ', "gender":' +
           new_gender +
@@ -241,7 +240,7 @@ export default {
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/edit-personal-information", {
+          .post("/caretakers/edit-personal-information", {
             toEdit: jsonDataToSend,
           })
           .then((response) => {
@@ -258,7 +257,7 @@ export default {
                 text: "Personal information has been updated successfully.",
               });
               window.location.href =
-                constants.pet_owner_go_back_to_profile_page;
+                constants.full_time_caretaker_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",
@@ -272,12 +271,13 @@ export default {
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
+
     const get_info = {
       username: this.username,
     };
 
     await axios
-      .post("/pet-owners/get-personal-information", {
+      .post("/caretakers/get-personal-information", {
         toGet: get_info,
       })
       .then((response) => {

@@ -124,6 +124,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerAddPetProfile",
@@ -149,11 +150,12 @@ export default {
       { name: "Female", value: "F" },
     ],
     animal_types: [
-      { name: "Cat", value: "Cat" },
-      { name: "Small Dog", value: "Small Dog" },
-      { name: "Big Dog", value: "Big Dog" },
-      { name: "Bird", value: "Bird" },
-      { name: "Rodent", value: "Rodent" },
+      { name: "Big Dog", value: "big dog" },
+      { name: "Bird", value: "bird" },
+      { name: "Cat", value: "cat" },
+      { name: "Rodent", value: "rodent" },
+      { name: "Rabbit", value: "rabbit" },
+      { name: "Small Dog", value: "small dog" },
     ],
   }),
   computed: {
@@ -180,7 +182,7 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_view_pet_info;
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
 
       if (this.pet_name == null) {
@@ -260,7 +262,7 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"pet_owner_name":"' +
+          '{"username":"' +
           this.username +
           '", "pet_name":' +
           new_name +
@@ -270,7 +272,7 @@ export default {
           this.pet_gender +
           '", "breed":' +
           new_breed +
-          '" "animal_type":"' +
+          '", "animal_type":"' +
           this.pet_type_of_animal +
           '", "med_hist":' +
           med_hist +
@@ -280,10 +282,22 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        window.location.href = constants.pet_owner_view_pet_info;
+        await axios
+          .post("/pet-owners/add-pet-information", {
+            toAdd: jsonDataToSend,
+          })
+          .then((response) => {
+            if (response.data[0].exists == "t") {
+              Swal.fire({
+                icon: "success",
+                title: "Added!",
+                text: this.pet_name + "'s information has been added successfully.",
+              });
+              window.location.href = constants.pet_owner_view_pet_info;
+            }
+          });
       }
     },
-    fetchData: async function() {},
   },
   async mounted() {
     console.log(document.cookie);

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <form @submit="deleteAccount" style="border:1px solid #ccc">
+    <form @submit="signUp" style="border:1px solid #ccc">
       <div class="container">
-        <h1>Delete My Account</h1>
-        <p>ATTENTION: This action is irreversible!</p>
+        <h1>Administrator Sign Up</h1>
+        <p>Please fill in this form to create an admin account.</p>
         <hr />
 
         <label for="username"><b>Username</b></label>
@@ -23,24 +23,21 @@
           v-model="password"
           required
         />
-
         <div class="clearfix">
-          <button type="button" class="cancelbtn">
+            <button type="button" class="cancelbtn">
             <router-link tag="span" to="/">Cancel</router-link>
-          </button>
-          <button type="submit" class="signupbtn">Delete Account</button>
+            </button>
+            <button type="submit" class="signupbtn">Sign Up</button>
         </div>
-      </div>
+        </div>
     </form>
   </div>
 </template>
 
 <script>
-// import * as constants from "./constants";
-import axios from 'axios';
 
 export default {
-  name: "DeleteAccount",
+  name: "AdminSignUp",
   data() {
     return {
       username: "",
@@ -48,27 +45,25 @@ export default {
     };
   },
   methods: {
-    async deleteAccount(e) {
+    signUp(e) {
       e.preventDefault();
-      const user = {
-        username: this.username,
-        password: this.password,
-      };
-
-      console.log(user);
-      console.log(this.username);
-      console.log(this.type);
-
-      await axios({
-        method: "delete",
-        url: "https://pet-care-service.herokuapp.com/users",
-        data: {
-          username: this.username,
-          password: this.password
-        }
-      })
-      
+      var data_ok = true;
+    
+      if (this.password === null || this.username === null) {
+          data_ok = false;
       }
+
+      if (data_ok == true) {
+        const newAdmin = {
+          username: this.username,
+          password: this.password,
+        };
+
+        this.$emit("admin-sign-up", newAdmin);
+        this.username = "";
+        this.password = "";
+      }
+    },
   },
 };
 </script>
@@ -92,7 +87,8 @@ input[type="submit"] {
 
 /* Full-width input fields */
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="date"] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;

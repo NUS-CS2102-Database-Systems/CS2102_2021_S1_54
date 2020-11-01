@@ -1,11 +1,11 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
       <v-row>
-        <v-col class="mx-auto" md="3">
+        <v-col class="mx-auto" md="4">
           <v-menu
             v-model="available_dates"
             :nudge-right="40"
@@ -31,26 +31,10 @@
             <v-date-picker
               v-model="selected_dates"
               @click:date="selectDates"
+              :max="getEndDate"
               range
             />
           </v-menu>
-        </v-col>
-        <v-col class="mx-auto" md="3">
-          <v-select
-            v-model="selected_pet_names"
-            :items="pet_names"
-            item-text="name"
-            item-value="value"
-            label="Pet Name(s)"
-            prepend-icon="mdi-github"
-            filled
-            clearable
-            multiple
-            dense
-            color="#000000"
-            @input="selectPetNames"
-            @click:clear="clearPetNames"
-          />
         </v-col>
         <v-col class="mx-auto" md="1">
           <v-btn icon color="blue" fab outlined @click="submit">
@@ -66,7 +50,8 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_odd[i] }} <br />
+                  <h3>Job Information</h3>
+                  Pet Owner Username: {{ pet_owner_odd[i] }} <br />
                   Pet Name: {{ pet_odd[i] }} <br />
                   Job Started: {{ job_start_odd[i] }} <br />
                   Job Ended: {{ job_end_odd[i] }} <br />
@@ -77,22 +62,25 @@
                   Amount: {{ amount_odd[i] }} <br />
                   Rating: {{ rating_odd[i] }} <br />
                   Review: {{ review_odd[i] }} <br />
+
+                  <h3>Pet Owner Information</h3>
+                  Name: {{ pet_owner_name_odd[i] }} <br />
+                  Gender: {{ pet_owner_gender_odd[i] }} <br />
+                  Phone: {{ pet_owner_phone_odd[i] }}
+                  <br />
+                  Email: {{ pet_owner_email_odd[i] }} <br />
+                  Address: {{ pet_owner_address_odd[i] }} <br />
+
+                  <h3>Pet Information</h3>
+                  Age: {{ pet_age_odd[i] }} <br />
+                  Gender: {{ pet_gender_odd[i] }} <br />
+                  Breed: {{ pet_breed_odd[i] }} <br />
+                  Type of Animal: {{ type_of_animal_odd[i] }}
+                  <br />
+                  Medical History: {{ pet_med_hist_odd[i] }}
+                  <br />
+                  Special Requirements: {{ pet_special_req_odd[i] }} <br />
                 </v-card-text>
-                <v-btn elevation="2">
-                  <router-link tag="span" 
-                    :to="{ path: '/pet-owners/submit-review/', 
-                      query: {
-                        cusername: caretaker_odd[i],
-                        pusername: username,
-                        pet_name: pet_odd[i], 
-                        job_start_datetime: job_start_odd[i], 
-                        job_end_datetime: job_end_odd[i], 
-                        rating: rating_odd[i],
-                        review: review_odd[i]
-                      }}">
-                    Submit/Edit Review
-                  </router-link>
-                </v-btn> 
               </v-card>
             </v-row>
           </v-list>
@@ -104,7 +92,8 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_even[i] }} <br />
+                  <h3>Job Information</h3>
+                  Pet Owner Username: {{ pet_owner_even[i] }} <br />
                   Pet Name: {{ pet_even[i] }} <br />
                   Job Started: {{ job_start_even[i] }} <br />
                   Job Ended: {{ job_end_even[i] }} <br />
@@ -115,22 +104,25 @@
                   Amount: {{ amount_even[i] }} <br />
                   Rating: {{ rating_even[i] }} <br />
                   Review: {{ review_even[i] }} <br />
+
+                  <h3>Pet Owner Information</h3>
+                  Name: {{ pet_owner_name_even[i] }} <br />
+                  Gender: {{ pet_owner_gender_even[i] }} <br />
+                  Phone: {{ pet_owner_phone_even[i] }}
+                  <br />
+                  Email: {{ pet_owner_email_even[i] }} <br />
+                  Address: {{ pet_owner_address_even[i] }} <br />
+
+                  <h3>Pet Information</h3>
+                  Age: {{ pet_age_even[i] }} <br />
+                  Gender: {{ pet_gender_even[i] }} <br />
+                  Breed: {{ pet_breed_even[i] }} <br />
+                  Type of Animal: {{ type_of_animal_even[i] }}
+                  <br />
+                  Medical History: {{ pet_med_hist_even[i] }}
+                  <br />
+                  Special Requirements: {{ pet_special_req_even[i] }} <br />
                 </v-card-text>
-                <v-btn elevation="2">
-                  <router-link tag="span" 
-                    :to="{ path: '/pet-owners/submit-review/', 
-                      query: {
-                        cusername: caretaker_odd[i],
-                        pusername: username,
-                        pet_name: pet_odd[i], 
-                        job_start_datetime: job_start_odd[i], 
-                        job_end_datetime: job_end_odd[i], 
-                        rating: rating_odd[i],
-                        review: review_odd[i]
-                      }}">
-                    Submit/Edit Review
-                  </router-link>
-                </v-btn> 
               </v-card>
             </v-row>
           </v-list>
@@ -172,28 +164,34 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
-  name: "PetOwnerViewPastJobs",
+  name: "FullTimeCaretakerViewPastJobs",
 
   components: {
-    PetOwnerNavBar,
+    FullTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: false,
-    have_data: false,
+    have_data: true,
     username: null,
+    commitment_levels: [
+      { name: "Full-time", value: "full-time" },
+      { name: "Part-time", value: "part-time" },
+    ],
+    getEndDate: new Date().toISOString().substr(0, 10),
     pet_names: [],
     available_dates: false,
+    selected_commitment_level: null,
     selected_dates: null,
     selected_pet_names: null,
     id_odd: [],
     id_even: [],
-    caretaker_odd: [],
-    caretaker_even: [],
+    pet_owner_odd: [],
+    pet_owner_even: [],
     pet_odd: [],
     pet_even: [],
     job_start_odd: [],
@@ -210,6 +208,28 @@ export default {
     rating_even: [],
     review_odd: [],
     review_even: [],
+    pet_owner_name_odd: [],
+    pet_owner_gender_odd: [],
+    pet_owner_phone_odd: [],
+    pet_owner_email_odd: [],
+    pet_owner_address_odd: [],
+    pet_age_odd: [],
+    pet_gender_odd: [],
+    pet_breed_odd: [],
+    type_of_animal_odd: [],
+    pet_med_hist_odd: [],
+    pet_special_req_odd: [],
+    pet_owner_name_even: [],
+    pet_owner_gender_even: [],
+    pet_owner_phone_even: [],
+    pet_owner_email_even: [],
+    pet_owner_address_even: [],
+    pet_age_even: [],
+    pet_gender_even: [],
+    pet_breed_even: [],
+    type_of_animal_even: [],
+    pet_med_hist_even: [],
+    pet_special_req_even: [],
   }),
   computed: {
     dateDisplay() {
@@ -223,12 +243,6 @@ export default {
     },
     clearDates: function() {
       this.selected_dates = null;
-    },
-    selectPetNames: function() {
-      console.log(this.selected_pet_names);
-    },
-    clearPetNames: function() {
-      this.selected_pet_names = null;
     },
     submit: async function() {
       console.log("Submitted");
@@ -251,69 +265,70 @@ export default {
         dates = null;
       }
 
-      if (this.selected_pet_names != null) {
-        if (this.selected_pet_names.length > 0) {
-          this.selected_pet_names = this.selected_pet_names.sort();
-          console.log("pet names: " + this.selected_pet_names);
-          var animal_names = '"';
-          for (let m = 0; m < this.selected_pet_names.length; m++) {
-            animal_names += this.selected_pet_names[m] + ",";
-          }
-
-          if (animal_names.includes(",")) {
-            animal_names = animal_names.slice(0, -1);
-          }
-          animal_names += '"';
-        } else {
-          animal_names = null;
-        }
-      } else {
-        animal_names = null;
-      }
-
       if (data_ok == true) {
         const dataToSend =
-          '{"dates":' + dates + ', "animal_names":' + animal_names + "}";
+          '{"username":' + this.username + ', "dates":' + dates + "}";
 
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/get-specific-past-jobs-information", {
+          .post("/caretakers/get-specific-past-jobs-information", {
             toGet: jsonDataToSend,
           })
           .then((response) => {
             this.id_odd = [];
-            this.caretaker_odd = [];
-            this.pet_odd = [];
-            this.job_start_odd = [];
-            this.job_end_odd = [];
-            this.start_transfer_method_odd = [];
-            this.end_transfer_method_odd = [];
-            this.amount_odd = [];
-            this.rating_odd = [];
-            this.review_odd = [];
             this.id_even = [];
-            this.caretaker_even = [];
+            this.pet_owner_odd = [];
+            this.pet_owner_even = [];
+            this.pet_odd = [];
             this.pet_even = [];
+            this.job_start_odd = [];
             this.job_start_even = [];
+            this.job_end_odd = [];
             this.job_end_even = [];
-            this.start_transfer_method_even = [];
-            this.end_transfer_method_even = [];
+            this.amount_odd = [];
             this.amount_even = [];
+            this.start_transfer_method_odd = [];
+            this.start_transfer_method_even = [];
+            this.end_transfer_method_odd = [];
+            this.end_transfer_method_even = [];
+            this.rating_odd = [];
             this.rating_even = [];
+            this.review_odd = [];
             this.review_even = [];
+            this.pet_owner_name_odd = [];
+            this.pet_owner_gender_odd = [];
+            this.pet_owner_phone_odd = [];
+            this.pet_owner_email_odd = [];
+            this.pet_owner_address_odd = [];
+            this.pet_age_odd = [];
+            this.pet_gender_odd = [];
+            this.pet_breed_odd = [];
+            this.type_of_animal_odd = [];
+            this.pet_med_hist_odd = [];
+            this.pet_special_req_odd = [];
+            this.pet_owner_name_even = [];
+            this.pet_owner_gender_even = [];
+            this.pet_owner_phone_even = [];
+            this.pet_owner_email_even = [];
+            this.pet_owner_address_even = [];
+            this.pet_age_even = [];
+            this.pet_gender_even = [];
+            this.pet_breed_even = [];
+            this.type_of_animal_even = [];
+            this.pet_med_hist_even = [];
+            this.pet_special_req_even = [];
             this.loaded = false;
             let length = response.data.length;
             if (length == 0) {
               this.have_data = false;
-              this.loaded = true;
             } else {
               this.have_data = true;
               for (let i = 0; i < length; i++) {
                 if (i % 2 == 0) {
                   this.id_odd.push(i + 1);
-                  this.caretaker_odd.push(response.data[i].username);
+                  this.pet_owner_odd.push(response.data[i].username);
                   this.pet_odd.push(response.data[i].pet_name);
                   this.job_start_odd.push(response.data[i].job_start_datetime);
                   this.job_end_odd.push(response.data[i].job_end_datetime);
@@ -326,6 +341,17 @@ export default {
                   this.amount_odd.push(response.data[i].amount);
                   this.rating_odd.push(response.data[i].rating);
                   this.review_odd.push(response.data[i].review);
+                  this.pet_owner_name_odd.push(response.data[i].name);
+                  this.pet_owner_gender_odd.push(response.data[i].gender);
+                  this.pet_owner_phone_odd.push(response.data[i].phone);
+                  this.pet_owner_email_odd.push(response.data[i].email);
+                  this.pet_owner_address_odd.push(response.data[i].address);
+                  this.pet_age_odd.push(response.data[i].pet_age);
+                  this.pet_gender_odd.push(response.data[i].pet_gender);
+                  this.pet_breed_odd.push(response.data[i].breed);
+                  this.type_of_animal_odd.push(response.data[i].type_of_animal);
+                  this.pet_med_hist_odd.push(response.data[i].med_hist);
+                  this.pet_special_req_odd.push(response.data[i].special_req);
                 } else {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].username);
@@ -341,11 +367,24 @@ export default {
                   this.amount_even.push(response.data[i].amount);
                   this.rating_even.push(response.data[i].rating);
                   this.review_even.push(response.data[i].review);
+                  this.pet_owner_name_even.push(response.data[i].name);
+                  this.pet_owner_gender_even.push(response.data[i].gender);
+                  this.pet_owner_phone_even.push(response.data[i].phone);
+                  this.pet_owner_email_even.push(response.data[i].email);
+                  this.pet_owner_address_even.push(response.data[i].address);
+                  this.pet_age_even.push(response.data[i].pet_age);
+                  this.pet_gender_even.push(response.data[i].pet_gender);
+                  this.pet_breed_even.push(response.data[i].breed);
+                  this.type_of_animal_even.push(
+                    response.data[i].type_of_animal
+                  );
+                  this.pet_med_hist_even.push(response.data[i].med_hist);
+                  this.pet_special_req_even.push(response.data[i].special_req);
                 }
               }
-              this.loaded = true;
             }
           });
+        this.loaded = true;
       }
     },
   },
@@ -357,7 +396,7 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-past-jobs-information", {
+      .post("/caretakers/get-past-jobs-information", {
         toGet: get_info,
       })
       .then((response) => {
@@ -369,7 +408,7 @@ export default {
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
-              this.caretaker_odd.push(response.data[i].username);
+              this.pet_owner_odd.push(response.data[i].username);
               this.pet_odd.push(response.data[i].pet_name);
               this.job_start_odd.push(response.data[i].job_start_datetime);
               this.job_end_odd.push(response.data[i].job_end_datetime);
@@ -382,6 +421,17 @@ export default {
               this.amount_odd.push(response.data[i].amount);
               this.rating_odd.push(response.data[i].rating);
               this.review_odd.push(response.data[i].review);
+              this.pet_owner_name_odd.push(response.data[i].name);
+              this.pet_owner_gender_odd.push(response.data[i].gender);
+              this.pet_owner_phone_odd.push(response.data[i].phone);
+              this.pet_owner_email_odd.push(response.data[i].email);
+              this.pet_owner_address_odd.push(response.data[i].address);
+              this.pet_age_odd.push(response.data[i].pet_age);
+              this.pet_gender_odd.push(response.data[i].pet_gender);
+              this.pet_breed_odd.push(response.data[i].breed);
+              this.type_of_animal_odd.push(response.data[i].type_of_animal);
+              this.pet_med_hist_odd.push(response.data[i].med_hist);
+              this.pet_special_req_odd.push(response.data[i].special_req);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].username);
@@ -397,6 +447,17 @@ export default {
               this.amount_even.push(response.data[i].amount);
               this.rating_even.push(response.data[i].rating);
               this.review_even.push(response.data[i].review);
+              this.pet_owner_name_even.push(response.data[i].name);
+              this.pet_owner_gender_even.push(response.data[i].gender);
+              this.pet_owner_phone_even.push(response.data[i].phone);
+              this.pet_owner_email_even.push(response.data[i].email);
+              this.pet_owner_address_even.push(response.data[i].address);
+              this.pet_age_even.push(response.data[i].pet_age);
+              this.pet_gender_even.push(response.data[i].pet_gender);
+              this.pet_breed_even.push(response.data[i].breed);
+              this.type_of_animal_even.push(response.data[i].type_of_animal);
+              this.pet_med_hist_even.push(response.data[i].med_hist);
+              this.pet_special_req_even.push(response.data[i].special_req);
             }
           }
         }

@@ -1,14 +1,48 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PartTimeCaretakerNavBar />
+      <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
+      <v-row>
+        <v-col class="mx-auto" md="4">
+          <v-menu
+            v-model="available_dates"
+            :nudge-right="40"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            max-width="290px"
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                label="Choose Range of Dates"
+                :value="dateDisplay"
+                v-on="on"
+                clearable
+                prepend-icon="mdi-calendar"
+                filled
+                dense
+                color="#000000"
+                @click:clear="clearDates"
+              />
+            </template>
+            <v-date-picker
+              v-model="selected_dates"
+              @click:date="selectDates"
+              :min="getTomorrowDate"
+              range
+            />
+          </v-menu>
+        </v-col>
+        <v-col class="mx-auto" md="1">
+          <v-btn icon color="blue" fab outlined @click="submit">
+            <v-icon>mdi-check</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
       <template v-if="loaded && have_data">
-        <h2>Hello {{ username }}!</h2>
-        <br />
-        <h2>Here are the jobs in progress:</h2>
-        <br />
         <v-col class="mx-auto">
           <v-list v-for="(number, i) in id_odd" :key="number">
             <v-row>
@@ -104,7 +138,8 @@
               </v-row>
             </v-card-title>
             <p class="text-center">
-              Hi {{ username }}. You have no pets under your care at the moment.
+              Hi {{ username }}. You do not have any upcoming jobs at the
+              moment.
               <br />
             </p>
           </v-card>
@@ -125,19 +160,25 @@
 </template>
 
 <script>
-import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
+import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
-  name: "PartTimeCaretakerViewOngoingJobs",
+  name: "FullTimeCaretakerViewUpcomingJobs",
 
   components: {
-    PartTimeCaretakerNavBar,
+    FullTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     have_data: false,
     username: null,
+    available_dates: false,
+    selected_dates: null,
+    getTomorrowDate: new Date(new Date().setDate(new Date().getDate() + 1))
+      .toISOString()
+      .substr(0, 10),
     id_odd: [],
     id_even: [],
     pet_owner_odd: [],
@@ -177,6 +218,156 @@ export default {
     pet_med_hist_even: [],
     pet_special_req_even: [],
   }),
+  computed: {
+    dateDisplay() {
+      return this.selected_dates;
+    },
+  },
+  methods: {
+    selectDates: function() {
+      this.selected_dates = this.selected_dates.sort();
+      console.log(this.selected_dates);
+    },
+    clearDates: function() {
+      this.selected_dates = null;
+    },
+    submit: async function() {
+      console.log("Submitted");
+      let data_ok = true;
+
+      if (this.selected_dates != null) {
+        if (this.selected_dates.length == 1) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Please provide a range of dates",
+          });
+          this.selected_dates = null;
+          data_ok = false;
+        } else {
+          var dates =
+            '"' + this.selected_dates[0] + "," + this.selected_dates[1] + '"';
+        }
+      } else {
+        dates = null;
+      }
+
+      if (data_ok == true) {
+        const dataToSend =
+          '{"username":"' + this.username + '", "dates":' + dates + "}";
+
+        console.log(dataToSend);
+        let jsonDataToSend = JSON.parse(dataToSend);
+        console.log(jsonDataToSend);
+
+        await axios
+          .post("/caretakers/get-specific-upcoming-jobs-information", {
+            toGet: jsonDataToSend,
+          })
+          .then((response) => {
+            this.id_odd = [];
+            this.id_even = [];
+            this.pet_owner_odd = [];
+            this.pet_owner_even = [];
+            this.pet_odd = [];
+            this.pet_even = [];
+            this.job_start_odd = [];
+            this.job_start_even = [];
+            this.job_end_odd = [];
+            this.job_end_even = [];
+            this.amount_odd = [];
+            this.amount_even = [];
+            this.start_transfer_method_odd = [];
+            this.start_transfer_method_even = [];
+            this.end_transfer_method_odd = [];
+            this.end_transfer_method_even = [];
+            this.pet_owner_name_odd = [];
+            this.pet_owner_gender_odd = [];
+            this.pet_owner_phone_odd = [];
+            this.pet_owner_email_odd = [];
+            this.pet_owner_address_odd = [];
+            this.pet_age_odd = [];
+            this.pet_gender_odd = [];
+            this.pet_breed_odd = [];
+            this.type_of_animal_odd = [];
+            this.pet_med_hist_odd = [];
+            this.pet_special_req_odd = [];
+            this.pet_owner_name_even = [];
+            this.pet_owner_gender_even = [];
+            this.pet_owner_phone_even = [];
+            this.pet_owner_email_even = [];
+            this.pet_owner_address_even = [];
+            this.pet_age_even = [];
+            this.pet_gender_even = [];
+            this.pet_breed_even = [];
+            this.type_of_animal_even = [];
+            this.pet_med_hist_even = [];
+            this.pet_special_req_even = [];
+            this.loaded = false;
+            let length = response.data.length;
+            if (length == 0) {
+              this.have_data = false;
+            } else {
+              this.have_data = true;
+              for (let i = 0; i < length; i++) {
+                if (i % 2 == 0) {
+                  this.id_odd.push(i + 1);
+                  this.pet_owner_odd.push(response.data[i].pusername);
+                  this.pet_odd.push(response.data[i].pet_name);
+                  this.job_start_odd.push(response.data[i].job_start_datetime);
+                  this.job_end_odd.push(response.data[i].job_end_datetime);
+                  this.start_transfer_method_odd.push(
+                    response.data[i].start_transfer_method
+                  );
+                  this.end_transfer_method_odd.push(
+                    response.data[i].end_transfer_method
+                  );
+                  this.amount_odd.push(response.data[i].amount);
+                  this.pet_owner_name_odd.push(response.data[i].name);
+                  this.pet_owner_gender_odd.push(response.data[i].gender);
+                  this.pet_owner_phone_odd.push(response.data[i].phone);
+                  this.pet_owner_email_odd.push(response.data[i].email);
+                  this.pet_owner_address_odd.push(response.data[i].address);
+                  this.pet_age_odd.push(response.data[i].pet_age);
+                  this.pet_gender_odd.push(response.data[i].pet_gender);
+                  this.pet_breed_odd.push(response.data[i].breed);
+                  this.type_of_animal_odd.push(response.data[i].type_of_animal);
+                  this.pet_med_hist_odd.push(response.data[i].med_hist);
+                  this.pet_special_req_odd.push(response.data[i].special_req);
+                } else {
+                  this.id_even.push(i + 1);
+                  this.caretaker_even.push(response.data[i].cusername);
+                  this.pet_even.push(response.data[i].pet_name);
+                  this.job_start_even.push(response.data[i].job_start_datetime);
+                  this.job_end_even.push(response.data[i].job_end_datetime);
+                  this.start_transfer_method_even.push(
+                    response.data[i].start_transfer_method
+                  );
+                  this.end_transfer_method_even.push(
+                    response.data[i].end_transfer_method
+                  );
+                  this.amount_even.push(response.data[i].amount);
+                  this.pet_owner_name_even.push(response.data[i].name);
+                  this.pet_owner_gender_even.push(response.data[i].gender);
+                  this.pet_owner_phone_even.push(response.data[i].phone);
+                  this.pet_owner_email_even.push(response.data[i].email);
+                  this.pet_owner_address_even.push(response.data[i].address);
+                  this.pet_age_even.push(response.data[i].pet_age);
+                  this.pet_gender_even.push(response.data[i].pet_gender);
+                  this.pet_breed_even.push(response.data[i].breed);
+                  this.type_of_animal_even.push(
+                    response.data[i].type_of_animal
+                  );
+                  this.pet_med_hist_even.push(response.data[i].med_hist);
+                  this.pet_special_req_even.push(response.data[i].special_req);
+                }
+              }
+            }
+          });
+        this.loaded = true;
+      }
+    },
+  },
   async mounted() {
     this.username = document.cookie.split("=")[1];
 
@@ -185,7 +376,7 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-ongoing-jobs-information", {
+      .post("/caretakers/get-upcoming-jobs-information", {
         toGet: get_info,
       })
       .then((response) => {

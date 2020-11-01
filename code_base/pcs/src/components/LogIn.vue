@@ -45,6 +45,7 @@
 
 <script>
 // import * as constants from "./constants";
+import axios from 'axios';
 
 export default {
   name: "LogIn",
@@ -56,7 +57,7 @@ export default {
     };
   },
   methods: {
-    logIn(e) {
+    async logIn(e) {
       e.preventDefault();
       const user = {
         type: this.type,
@@ -67,6 +68,20 @@ export default {
       console.log(user);
       console.log(this.username);
       console.log(this.type);
+
+      const authResponse = await axios({
+        method: "post",
+        url: "https://pet-care-service.herokuapp.com/users/authenticate",
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      });
+      
+      const loggedIn = authResponse.length === 1;
+      if (!loggedIn) {
+        return;
+      }
 
       // this.$emit("log-in", user);
       // this.type = "";
@@ -86,7 +101,14 @@ export default {
         console.log("cookie: " + document.cookie);
         this.$router.push({
           path: "part-time-caretakers",
-          query: { caretaker_username: username_logged_in },
+          query: { pt_caretaker_username: username_logged_in },
+        });
+      } else if (this.type == "fulltimeCaretaker") {
+        document.cookie = "ft_caretaker_username=" + username_logged_in;
+        console.log("cookie: " + document.cookie);
+        this.$router.push({
+          path: "full-time-caretakers",
+          query: { ft_caretaker_username: username_logged_in },
         });
       }
     },

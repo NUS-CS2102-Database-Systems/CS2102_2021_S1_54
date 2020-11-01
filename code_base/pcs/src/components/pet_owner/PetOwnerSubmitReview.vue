@@ -2,8 +2,8 @@
   <div>
     <form @submit="submitReview" style="border:1px solid #ccc">
       <div class="container">
-        <h1>Submit a Review</h1>
-        <p>You are writing a review for {{ this.caretaker_username }}</p>
+        <h1>Submit / Edit a Review</h1>
+        <p>You are writing a review for {{ this.$route.query.cusername }}</p>
         <hr />
 
         <label for="review"><b>Review</b></label>
@@ -25,8 +25,12 @@
         </select>
 
         <div class="clearfix">
-          <button type="button" class="cancelbtn">Cancel</button>
-          <button type="submit" class="signupbtn">Sign Up</button>
+          <button type="button" class="cancelbtn">
+            <router-link tag="span" to="/pet-owners/view-past-jobs">
+              Cancel
+            </router-link>
+            </button>
+          <button type="submit" class="signupbtn">Submit Review</button>
         </div>
       </div>
     </form>
@@ -34,32 +38,54 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+import axios from "axios";
+
 export default {
   name: "PetOwnerSubmitReview",
 
   data() {
     return {
-      caretaker_username: "caretaker",
-      review: "",
-      rating: 5,
+      review: this.$route.query.review === null ? "" : this.$route.query.review,
+      rating: this.$route.query.rating === null ? 5 : this.$route.query.rating,
     };
   },
   methods: {
     submitReview(e) {
       e.preventDefault();
       const review = {
-        caretaker_username: this.caretaker_username,
+        pusername: this.$route.query.pusername,
+        cusername: this.$route.query.cusername,
+        pet_name: this.$route.query.pet_name,
+        job_start_datetime: this.$route.query.job_start_datetime,
+        job_end_datetime: this.$route.query.job_end_datetime,
         review: this.review,
         rating: this.rating,
       };
 
       console.log(review);
 
-      this.$emit("submit-review", review);
-      // delete this later
-      this.caretaker_username = "";
-      this.review = "";
-      this.rating = "";
+      axios
+        .post("/reviews", review)
+        .then((response) => {
+          if (
+            response.data === "Review submitted!"
+          ) {
+            Swal.fire({
+              icon: "success",
+              title: "Updated!",
+              text: "Review has been submitted successfully.",
+            });
+            this.review = "";
+            this.rating = "";
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Review submission failed. Please try again",
+            });
+          }
+      });
     },
   },
 };

@@ -5,7 +5,6 @@ import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import DeleteAccount from "./components/DeleteAccount";
 import PetOwnerSubmitReview from "./components/pet_owner/PetOwnerSubmitReview";
-import PartTimeCaretakerViewReviews from "./components/part_time_caretaker/PartTimeCaretakerViewReviews";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
 import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
 import PetOwnerBidCaretaker from "./components/pet_owner/PetOwnerBidCaretaker"
@@ -28,7 +27,21 @@ import PartTimeCaretakerEditPersonalInfo from "./components/part_time_caretaker/
 import PartTimeCaretakerViewPastJobs from "./components/part_time_caretaker/PartTimeCaretakerViewPastJobs";
 import PartTimeCaretakerViewOngoingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewOngoingJobs";
 import PartTimeCaretakerViewUpcomingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewUpcomingJobs";
+import PartTimeCaretakerViewSalary from "./components/part_time_caretaker/PartTimeCaretakerViewSalary";
+import PartTimeCaretakerSetAvailability from "./components/part_time_caretaker/PartTimeCaretakerSetAvailability";
+import FullTimeCaretakerHome from "./components/full_time_caretaker/FullTimeCaretakerHome";
+import FullTimeCaretakerViewMyProfile from "./components/full_time_caretaker/FullTimeCaretakerViewMyProfile";
+import FullTimeCaretakerEditLoginInfo from "./components/full_time_caretaker/FullTimeCaretakerEditLoginInfo";
+import FullTimeCaretakerEditPersonalInfo from "./components/full_time_caretaker/FullTimeCaretakerEditPersonalInfo";
+import FullTimeCaretakerViewPastJobs from "./components/full_time_caretaker/FullTimeCaretakerViewPastJobs";
+import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewOngoingJobs";
+import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
+import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
+import AdminSignUp from "./components/AdminSignUp";
+import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
+import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
+import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
 
 Vue.use(VueRouter);
 
@@ -133,9 +146,11 @@ export default new VueRouter({
       component: PetOwnerEditPetProfile,
     },
     {
-      path: "/pet-owner/submit-review", //TODO: change this later
+      // path: "/pet-owners/submit-review/:pusername&:cusername&:pet_name&:job_start_datetime&:job_end_datetime",
+      path: "/pet-owners/submit-review",
       name: "PetOwnerSubmitReview",
       component: PetOwnerSubmitReview,
+      // props: true
     },
     {
       path: "/part-time-caretakers",
@@ -173,14 +188,80 @@ export default new VueRouter({
       component: PartTimeCaretakerEditPersonalInfo,
     },
     {
-      path: "/part-time-caretakers/view-reviews", //TODO: change this later
-      name: "PartTimeCaretakerViewReviews",
-      component: PartTimeCaretakerViewReviews,
+      path: "/part-time-caretakers/view-salary",
+      name: "PartTimeCaretakerViewSalary",
+      component: PartTimeCaretakerViewSalary,
+    },
+    {
+      path: "/part-time-caretakers/set-availability",
+      name: "PartTimeCaretakerSetAvailability",
+      component: PartTimeCaretakerSetAvailability,
+    },
+    {
+      path: "/full-time-caretakers",
+      name: "FullTimeCaretakerHome",
+      component: FullTimeCaretakerHome,
+    },
+    {
+      path: "/full-time-caretakers/view-my-profile",
+      name: "FullTimeCaretakerViewMyProfile",
+      component: FullTimeCaretakerViewMyProfile,
+    },
+    {
+      path: "/full-time-caretakers/edit-login-information",
+      name: "FullTimeCaretakerEditLoginInfo",
+      component: FullTimeCaretakerEditLoginInfo,
+    },
+    {
+      path: "/full-time-caretakers/edit-personal-information",
+      name: "FullTimeCaretakerEditPersonalInfo",
+      component: FullTimeCaretakerEditPersonalInfo,
+    },
+    {
+      path: "/full-time-caretakers/view-past-jobs",
+      name: "FullTimeCaretakerViewPastJobs",
+      component: FullTimeCaretakerViewPastJobs,
+    },
+    {
+      path: "/full-time-caretakers/view-ongoing-jobs",
+      name: "FullTimeCaretakerViewOngoingJobs",
+      component: FullTimeCaretakerViewOngoingJobs,
+    },
+    {
+      path: "/full-time-caretakers/view-upcoming-jobs",
+      name: "FullTimeCaretakerViewUpcomingJobs",
+      component: FullTimeCaretakerViewUpcomingJobs,
+    },
+    {
+      path: "/full-time-caretakers/view-salary",
+      name: "FullTimeCaretakerViewSalary",
+      component: FullTimeCaretakerViewSalary,
     },
     {
       path: "/pcs-admins",
       name: "PcsAdminHome",
       component: PcsAdminHome,
+    },
+    {
+      path: "/admin-signup",
+      name: "AdminSignUp",
+      component: AdminSignUp,
+    },
+    {
+      path: "/pet-owners/view-caretaker-reviews/:caretaker_username",
+      name: "PetOwnersViewCaretakerReviews",
+      component: PetOwnerViewCaretakerReviews,
+      props: true
+    },
+    {
+      path: "/full-time-caretakers/apply-for-leave",
+      name: "FullTimeCaretakerApplyForLeave",
+      component: FullTimeCaretakerApplyForLeave,
+    },
+    {
+      path: "/full-time-caretakers/view-leaves",
+      name: "FullTimeCaretakerViewLeaves",
+      component: FullTimeCaretakerViewLeaves,
     },
   ],
 });
