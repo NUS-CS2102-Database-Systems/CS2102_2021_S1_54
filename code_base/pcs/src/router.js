@@ -8,6 +8,7 @@ import PetOwnerSubmitReview from "./components/pet_owner/PetOwnerSubmitReview";
 import PartTimeCaretakerViewReviews from "./components/part_time_caretaker/PartTimeCaretakerViewReviews";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
 import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
+import PetOwnerBidCaretaker from "./components/pet_owner/PetOwnerBidCaretaker"
 import PetOwnerViewPastJobs from "./components/pet_owner/PetOwnerViewPastJobs";
 import PetOwnerViewOngoingJobs from "./components/pet_owner/PetOwnerViewOngoingJobs";
 import PetOwnerViewUpcomingJobs from "./components/pet_owner/PetOwnerViewUpcomingJobs";
@@ -85,6 +86,11 @@ export default new VueRouter({
       path: "/pet-owners/view-caretakers-profiles/caretaker",
       name: "PetOwnerViewCaretakerProfile",
       component: PetOwnerViewCaretakerProfile,
+    },
+    {
+      path: "/pet-owners/view-caretakers-profiles/bid",
+      name: "PetOwnerBidCaretaker",
+      component: PetOwnerBidCaretaker,
     },
     {
       path: "/pet-owners/view-my-profile",

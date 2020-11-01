@@ -4,6 +4,11 @@
       <PetOwnerNavBar />
     </div>
     <div style="width: 80%; float: right">
+      
+      <v-btn depressed color="primary" @click="addABid('hey')">
+        Place a Bid
+      </v-btn>
+
       <v-row>
         <v-col class="mx-auto" md="2">
           <v-select
@@ -149,6 +154,9 @@
             <v-row>
               <v-card width="45%">
                 <v-card-title> {{ caretaker_username_odd[i] }} </v-card-title>
+                <v-btn depressed color="primary" @click="addABid(caretaker_username_odd[i])">
+                  Place a Bid
+                </v-btn>
                 <v-card-text>
                   Date of Birth: {{ caretaker_date_of_birth_odd[i] }} <br />
                   Age: {{ caretaker_age_odd[i] }} <br />
@@ -172,6 +180,9 @@
             <v-row>
               <v-card width="45%">
                 <v-card-title> {{ caretaker_username_even[i] }} </v-card-title>
+                <v-btn depressed color="primary" @click="addABid(caretaker_username_odd[i])">
+                  Place a Bid
+                </v-btn>
                 <v-card-text>
                   Date of Birth: {{ caretaker_date_of_birth_even[i] }} <br />
                   Age: {{ caretaker_age_even[i] }} <br />
@@ -227,6 +238,7 @@
 
 <script>
 import PetOwnerNavBar from "./PetOwnerNavBar";
+import * as constants from "../constants";
 import Swal from "sweetalert2";
 // import axios from "axios";
 // import * as constants from "../constants";
@@ -306,6 +318,11 @@ export default {
     },
   },
   methods: {
+    addABid: function(caretaker_username) {
+      let caretaker_username_to_bid = "&caretaker=" + caretaker_username;
+      window.location.href =
+        constants.pet_owner_submit_bid_for_caretaker + document.cookie + caretaker_username_to_bid;
+    },
     selectCommitmentLevel: function() {
       console.log(this.selected_commitment_level);
     },

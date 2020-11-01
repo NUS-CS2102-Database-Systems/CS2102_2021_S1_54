@@ -3,6 +3,9 @@ const domain = "http://localhost:8080/";
 export const pet_owner_view_caretaker_domain =
   domain + "pet-owners/view-caretakers-profiles?caretaker=value1";
 
+export const pet_owner_submit_bid_for_caretaker =
+  domain + "pet-owners/view-caretakers-profiles/bid?";
+
 export const caretaker_view_pet_owner_domain =
   domain + "caretakers/view-pet-owner?pet-owner=value1";
 
