@@ -9,16 +9,38 @@
           <v-row>
             {{ i + 1 }}.
             <v-col class="mx-auto">
-              <v-text-field
-                :label="dateField.label1"
-                v-model="dateField.value1"
-              />
+              <template v-if="value1_editable[i]">
+                <v-text-field
+                  :label="dateField.label1"
+                  v-model="dateField.value1"
+                  value="dateField.value1"
+                />
+              </template>
+              <template v-elseif="!value1_editable[i]">
+                <v-text-field
+                  :label="dateField.label1"
+                  v-model="dateField.value1"
+                  value="dateField.value1"
+                  readonly
+                />
+              </template>
             </v-col>
             <v-col class="mx-auto">
-              <v-text-field
-                :label="dateField.label2"
-                v-model="dateField.value2"
-              />
+              <template v-if="value2_editable[i]">
+                <v-text-field
+                  :label="dateField.label2"
+                  v-model="dateField.value2"
+                  value="dateField.value2"
+                />
+              </template>
+              <template v-elseif="!value2_editable[i]">
+                <v-text-field
+                  :label="dateField.label2"
+                  v-model="dateField.value2"
+                  value="dateField.value2"
+                  readonly
+                />
+              </template>
             </v-col>
             <v-btn icon color="red" fab @click="removeDates(i)">
               <v-icon>mdi-delete</v-icon>
@@ -29,6 +51,11 @@
         <v-btn icon color="blue" fab @click="addDates">
           <v-icon>mdi-plus</v-icon>
           Add
+        </v-btn>
+        <br />
+        <v-btn icon color="red" fab @click="cancel">
+          <v-icon>mdi-close</v-icon>
+          Cancel
         </v-btn>
         <br />
         <v-btn icon color="blue" fab @click="submit">
@@ -53,6 +80,7 @@
 <script>
 import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PartTimeCaretakerSetAvailability",
@@ -61,10 +89,15 @@ export default {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
+    have_data: false,
     username: null,
     dateFields: [],
     datesToSubmit: [],
+    number_of_pets_allowed_arr: [],
+    num_of_pets: null,
+    value1_editable: [],
+    value2_editable: [],
   }),
   methods: {
     addDates: function() {
@@ -78,7 +111,10 @@ export default {
     removeDates: function(index) {
       this.dateFields.splice(index, 1);
     },
-    submit: function() {
+    cancel: function() {
+      window.location.reload();
+    },
+    submit: async function() {
       console.log("Submitted");
       let data_ok_val1 = false;
       let data_ok_val2 = false;
@@ -184,10 +220,22 @@ export default {
             break;
           }
           if (data_ok_val1 == true && data_ok_val2 == true) {
-            const setAvailability = {
-              start_date: this.dateFields[i].value1,
-              end_date: this.dateFields[i].value2,
-            };
+            var setAvailability = {};
+            if (this.have_data == false) {
+              setAvailability = {
+                caretaker_username: this.username,
+                start_date: this.dateFields[i].value1,
+                end_date: this.dateFields[i].value2,
+                num_pets: this.number_of_pets_allowed,
+              };
+            } else {
+              setAvailability = {
+                caretaker_username: this.username,
+                start_date: this.dateFields[i].value1,
+                end_date: this.dateFields[i].value2,
+                num_pets: this.number_of_pets_allowed_arr[i],
+              };
+            }
             this.datesToSubmit.push(setAvailability);
           }
         }
@@ -195,27 +243,109 @@ export default {
 
       if (data_ok_val1 == true && data_ok_val2 == true) {
         console.log(this.datesToSubmit);
+        // no previous data, so insert
+        if (this.have_data == false) {
+          await axios
+            .post("/part-time-caretakers/add-availabilities", {
+              toEdit: this.datesToSubmit,
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Submit Successful!",
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Adding availabilities failed. Please try again.",
+                });
+              }
+            });
+        } else {
+          await axios
+            .post("/part-time-caretakers/edit-availabilities", {
+              toEdit: this.datesToSubmit,
+            })
+            .then((response) => {
+              if (response.status == 200) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Update Successful!",
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Updating availabilities failed. Please try again.",
+                });
+              }
+            });
+        }
         this.datesToSubmit = [];
-        Swal.fire({
-          icon: "success",
-          title: "Submit Successful!",
-        });
       }
-    },
-    fetchData: async function() {
-      // set caretaker username and pet names as links
-      // set pet names as options for select
-      // const response = axios.get(api)
-      // console.log(response.fullTime.data)
-      // console.log(response.partTime.data)
-      // if (response.data.fullTime.data.length == 0 && response.partTime.data.length == 0) {
-      //   this.have_data = false;
-      // } else {
-      // }
     },
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
+    let today_date = new Date();
+
+    const get_info = {
+      username: this.username,
+    };
+
+    // need to sort by start date asc and end date asc
+    await axios
+      .post("/part-time-caretakers/get-availabilities", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        let length = response.data.length;
+        if (length == 0) {
+          this.dateFields = [];
+          this.have_data = false;
+          this.value1_editable.push(true);
+          this.value2_editable.push(true);
+          // axios to get num of pets allowed from availabilties
+          // latest available date
+          // If dont have any data at all, then set to 2
+          axios
+            .post("/part-time-caretakers/get-num-of-pets-information", {
+              toGet: get_info,
+            })
+            .then((response) => {
+              if (response.data.number_of_pets_allowed != 0) {
+                this.num_of_pets = response.data.number_of_pets_allowed;
+              } else {
+                this.num_of_pets = 2;
+              }
+            });
+        } else {
+          this.have_data = true;
+          for (let i = 0; i < length; i++) {
+            // this.dateFields.value1.push(response.data[i].start_date);
+            // this.dateFields.value2.push(response.data[i].end_date);
+            this.dateFields[i].value1 = response.data[i].start_date;
+            this.dateFields[i].value2 = response.data[i].end_date;
+            this.number_of_pets_allowed_arr.push(
+              response.data[i].number_of_pets_allowed
+            );
+            if (new Date(response.data[i].start_date) <= today_date) {
+              this.value1_editable.push(false);
+            } else if (new Date(response.data[i].start_date) > today_date) {
+              this.value1_editable.push(true);
+            }
+
+            if (new Date(response.data[i].end_date) <= today_date) {
+              this.value2_editable.push(false);
+            } else if (new Date(response.data[i].end_date) > today_date) {
+              this.value2_editable.push(true);
+            }
+          }
+        }
+      });
+    this.loaded = true;
   },
 };
 </script>

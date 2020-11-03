@@ -59,7 +59,7 @@ import {
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
   mdiCurrencyUsd,
-  mdiCalendarRangeOutline,
+  mdiCalendarRangeOutline
 } from "@mdi/js";
 
 export default {
@@ -92,6 +92,11 @@ export default {
           title: "Apply For Leave",
           icon: mdiCalendarRangeOutline,
           route: "/full-time-caretakers/apply-for-leave?" + document.cookie,
+        },
+        {
+          title: "View My Leaves",
+          icon: mdiCalendarRangeOutline,
+          route: "/full-time-caretakers/view-leaves?" + document.cookie,
         },
         {
           title: "My Profile",

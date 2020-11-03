@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { mdiLogin, mdiDelete, } from "@mdi/js";
+import { mdiLogin, mdiDelete, mdiAccountSettings } from "@mdi/js";
 
 export default {
   name: "GeneralNavBar",
@@ -74,6 +74,11 @@ export default {
           title: "Delete Account",
           icon: mdiDelete,
           route: "/delete-account",
+        },
+        {
+          title: "Admin Sign Up",
+          icon: mdiAccountSettings,
+          route: "/admin-signup",
         },
       ],
     };

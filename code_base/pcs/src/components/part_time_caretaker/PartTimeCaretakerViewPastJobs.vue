@@ -166,6 +166,7 @@
 <script>
 import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PartTimeCaretakerViewPastJobs",
@@ -174,7 +175,7 @@ export default {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     have_data: true,
     username: null,
     commitment_levels: [
@@ -243,7 +244,7 @@ export default {
     clearDates: function() {
       this.selected_dates = null;
     },
-    submit: function() {
+    submit: async function() {
       console.log("Submitted");
       let data_ok = true;
 
@@ -265,27 +266,203 @@ export default {
       }
 
       if (data_ok == true) {
-        const dataToSend = '{"dates":' + dates + "}";
+        const dataToSend =
+          '{"username":' + this.username + ', "dates":' + dates + "}";
 
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
+        await axios
+          .post("/caretakers/get-specific-past-jobs-information", {
+            toGet: jsonDataToSend,
+          })
+          .then((response) => {
+            this.id_odd = [];
+            this.id_even = [];
+            this.pet_owner_odd = [];
+            this.pet_owner_even = [];
+            this.pet_odd = [];
+            this.pet_even = [];
+            this.job_start_odd = [];
+            this.job_start_even = [];
+            this.job_end_odd = [];
+            this.job_end_even = [];
+            this.amount_odd = [];
+            this.amount_even = [];
+            this.start_transfer_method_odd = [];
+            this.start_transfer_method_even = [];
+            this.end_transfer_method_odd = [];
+            this.end_transfer_method_even = [];
+            this.rating_odd = [];
+            this.rating_even = [];
+            this.review_odd = [];
+            this.review_even = [];
+            this.pet_owner_name_odd = [];
+            this.pet_owner_gender_odd = [];
+            this.pet_owner_phone_odd = [];
+            this.pet_owner_email_odd = [];
+            this.pet_owner_address_odd = [];
+            this.pet_age_odd = [];
+            this.pet_gender_odd = [];
+            this.pet_breed_odd = [];
+            this.type_of_animal_odd = [];
+            this.pet_med_hist_odd = [];
+            this.pet_special_req_odd = [];
+            this.pet_owner_name_even = [];
+            this.pet_owner_gender_even = [];
+            this.pet_owner_phone_even = [];
+            this.pet_owner_email_even = [];
+            this.pet_owner_address_even = [];
+            this.pet_age_even = [];
+            this.pet_gender_even = [];
+            this.pet_breed_even = [];
+            this.type_of_animal_even = [];
+            this.pet_med_hist_even = [];
+            this.pet_special_req_even = [];
+            this.loaded = false;
+            let length = response.data.length;
+            if (length == 0) {
+              this.have_data = false;
+            } else {
+              this.have_data = true;
+              for (let i = 0; i < length; i++) {
+                if (i % 2 == 0) {
+                  this.id_odd.push(i + 1);
+                  this.pet_owner_odd.push(response.data[i].username);
+                  this.pet_odd.push(response.data[i].pet_name);
+                  this.job_start_odd.push(response.data[i].job_start_datetime);
+                  this.job_end_odd.push(response.data[i].job_end_datetime);
+                  this.start_transfer_method_odd.push(
+                    response.data[i].start_transfer_method
+                  );
+                  this.end_transfer_method_odd.push(
+                    response.data[i].end_transfer_method
+                  );
+                  this.amount_odd.push(response.data[i].amount);
+                  this.rating_odd.push(response.data[i].rating);
+                  this.review_odd.push(response.data[i].review);
+                  this.pet_owner_name_odd.push(response.data[i].name);
+                  this.pet_owner_gender_odd.push(response.data[i].gender);
+                  this.pet_owner_phone_odd.push(response.data[i].phone);
+                  this.pet_owner_email_odd.push(response.data[i].email);
+                  this.pet_owner_address_odd.push(response.data[i].address);
+                  this.pet_age_odd.push(response.data[i].pet_age);
+                  this.pet_gender_odd.push(response.data[i].pet_gender);
+                  this.pet_breed_odd.push(response.data[i].breed);
+                  this.type_of_animal_odd.push(response.data[i].type_of_animal);
+                  this.pet_med_hist_odd.push(response.data[i].med_hist);
+                  this.pet_special_req_odd.push(response.data[i].special_req);
+                } else {
+                  this.id_even.push(i + 1);
+                  this.caretaker_even.push(response.data[i].username);
+                  this.pet_even.push(response.data[i].pet_name);
+                  this.job_start_even.push(response.data[i].job_start_datetime);
+                  this.job_end_even.push(response.data[i].job_end_datetime);
+                  this.start_transfer_method_even.push(
+                    response.data[i].start_transfer_method
+                  );
+                  this.end_transfer_method_even.push(
+                    response.data[i].end_transfer_method
+                  );
+                  this.amount_even.push(response.data[i].amount);
+                  this.rating_even.push(response.data[i].rating);
+                  this.review_even.push(response.data[i].review);
+                  this.pet_owner_name_even.push(response.data[i].name);
+                  this.pet_owner_gender_even.push(response.data[i].gender);
+                  this.pet_owner_phone_even.push(response.data[i].phone);
+                  this.pet_owner_email_even.push(response.data[i].email);
+                  this.pet_owner_address_even.push(response.data[i].address);
+                  this.pet_age_even.push(response.data[i].pet_age);
+                  this.pet_gender_even.push(response.data[i].pet_gender);
+                  this.pet_breed_even.push(response.data[i].breed);
+                  this.type_of_animal_even.push(
+                    response.data[i].type_of_animal
+                  );
+                  this.pet_med_hist_even.push(response.data[i].med_hist);
+                  this.pet_special_req_even.push(response.data[i].special_req);
+                }
+              }
+            }
+          });
+        this.loaded = true;
       }
-    },
-    fetchData: async function() {
-      // set caretaker username and pet names as links
-      // set pet names as options for select
-      // const response = axios.get(api)
-      // console.log(response.fullTime.data)
-      // console.log(response.partTime.data)
-      // if (response.data.fullTime.data.length == 0 && response.partTime.data.length == 0) {
-      //   this.have_data = false;
-      // } else {
-      // }
     },
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
+
+    const get_info = {
+      username: this.username,
+    };
+
+    await axios
+      .post("/caretakers/get-past-jobs-information", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        let length = response.data.length;
+        if (length == 0) {
+          this.have_data = false;
+        } else {
+          this.have_data = true;
+          for (let i = 0; i < length; i++) {
+            if (i % 2 == 0) {
+              this.id_odd.push(i + 1);
+              this.pet_owner_odd.push(response.data[i].username);
+              this.pet_odd.push(response.data[i].pet_name);
+              this.job_start_odd.push(response.data[i].job_start_datetime);
+              this.job_end_odd.push(response.data[i].job_end_datetime);
+              this.start_transfer_method_odd.push(
+                response.data[i].start_transfer_method
+              );
+              this.end_transfer_method_odd.push(
+                response.data[i].end_transfer_method
+              );
+              this.amount_odd.push(response.data[i].amount);
+              this.rating_odd.push(response.data[i].rating);
+              this.review_odd.push(response.data[i].review);
+              this.pet_owner_name_odd.push(response.data[i].name);
+              this.pet_owner_gender_odd.push(response.data[i].gender);
+              this.pet_owner_phone_odd.push(response.data[i].phone);
+              this.pet_owner_email_odd.push(response.data[i].email);
+              this.pet_owner_address_odd.push(response.data[i].address);
+              this.pet_age_odd.push(response.data[i].pet_age);
+              this.pet_gender_odd.push(response.data[i].pet_gender);
+              this.pet_breed_odd.push(response.data[i].breed);
+              this.type_of_animal_odd.push(response.data[i].type_of_animal);
+              this.pet_med_hist_odd.push(response.data[i].med_hist);
+              this.pet_special_req_odd.push(response.data[i].special_req);
+            } else {
+              this.id_even.push(i + 1);
+              this.caretaker_even.push(response.data[i].username);
+              this.pet_even.push(response.data[i].pet_name);
+              this.job_start_even.push(response.data[i].job_start_datetime);
+              this.job_end_even.push(response.data[i].job_end_datetime);
+              this.start_transfer_method_even.push(
+                response.data[i].start_transfer_method
+              );
+              this.end_transfer_method_even.push(
+                response.data[i].end_transfer_method
+              );
+              this.amount_even.push(response.data[i].amount);
+              this.rating_even.push(response.data[i].rating);
+              this.review_even.push(response.data[i].review);
+              this.pet_owner_name_even.push(response.data[i].name);
+              this.pet_owner_gender_even.push(response.data[i].gender);
+              this.pet_owner_phone_even.push(response.data[i].phone);
+              this.pet_owner_email_even.push(response.data[i].email);
+              this.pet_owner_address_even.push(response.data[i].address);
+              this.pet_age_even.push(response.data[i].pet_age);
+              this.pet_gender_even.push(response.data[i].pet_gender);
+              this.pet_breed_even.push(response.data[i].breed);
+              this.type_of_animal_even.push(response.data[i].type_of_animal);
+              this.pet_med_hist_even.push(response.data[i].med_hist);
+              this.pet_special_req_even.push(response.data[i].special_req);
+            }
+          }
+        }
+      });
+    this.loaded = true;
   },
 };
 </script>

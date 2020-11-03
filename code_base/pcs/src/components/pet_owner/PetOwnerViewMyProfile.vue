@@ -102,6 +102,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerViewMyProfile",
@@ -110,7 +111,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
     password: null,
     name: null,
@@ -149,41 +150,78 @@ export default {
       window.location.href =
         constants.pet_owner_edit_credit_card_info + document.cookie;
     },
-    deleteCreditCardInfo: function() {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // axios to delete info
-          Swal.fire(
-            "Deleted!",
-            "Credit Card information has been deleted.",
-            "success"
-          );
-        }
-      });
-    },
-    fetchData: async function() {
-      // set caretaker username and pet names as links
-      // set pet names as options for select
-      // const response = axios.get(api)
-      // console.log(response.fullTime.data)
-      // console.log(response.partTime.data)
-      // if (response.data.fullTime.data.length == 0 && response.partTime.data.length == 0) {
-      //   this.have_data = false;
-      // } else {
-      // }
+    deleteCreditCardInfo: async function() {
+      if (this.credit_card_num == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Sorry! There is no credit card information to delete!",
+        });
+      } else {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // axios to delete info
+            const info_delete = {
+              username: this.username,
+            };
+
+            axios
+              .post("/pet-owners/delete-credit-card-information", {
+                toDelete: info_delete,
+              })
+              .then((response) => {
+                if (
+                  response.data[0].credit_card_full_name == null &&
+                  response.data[0].credit_card_number == null &&
+                  response.data[0].credit_card_expiry_date == null
+                ) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Deleted!",
+                    text:
+                      "Credit Card information has been deleted successfully.",
+                  });
+                  window.location.reload();
+                }
+              });
+          }
+        });
+      }
     },
   },
   async mounted() {
     console.log("C_Profile: " + document.cookie);
     this.username = document.cookie.split("=")[1];
+    const get_info = {
+      username: this.username,
+    };
+
+    axios
+      .post("/pet-owners/get-profile-information", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        this.password = response.data[0].password;
+        this.name = response.data[0].name;
+        this.age = response.data[0].age;
+        this.birth_date = response.data[0].birth_date;
+        this.gender = response.data[0].gender;
+        this.phone = response.data[0].phone;
+        this.email = response.data[0].email;
+        this.address = response.data[0].address;
+        this.credit_card_num = response.data[0].credit_card_number;
+        this.credit_card_name = response.data[0].credit_card_full_name;
+        this.expiry_date = response.data[0].credit_card_expiry_date;
+      });
+    this.loaded = true;
   },
 };
 </script>

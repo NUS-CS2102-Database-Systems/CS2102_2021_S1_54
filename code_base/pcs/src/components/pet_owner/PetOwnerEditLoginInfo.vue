@@ -72,6 +72,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerEditLoginInfo",
@@ -80,7 +81,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
     new_password: null,
     confirm_new_password: null,
@@ -97,13 +98,16 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
-    submit: function() {
+    submit: async function() {
+      // let data_ok = true;
+
       if (this.confirm_new_password == null && this.new_password != null) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: "Please confirm password",
         });
+        // data_ok = false;
       } else if (this.new_password != this.confirm_new_password) {
         Swal.fire({
           icon: "error",
@@ -111,26 +115,58 @@ export default {
           text: "Passwords do not match",
         });
         this.confirm_new_password = null;
+        // data_ok = false;
+      } else if (
+        this.new_password == null &&
+        this.confirm_new_password == null
+      ) {
+        window.location.href = constants.pet_owner_go_back_to_profile_page;
       } else {
         console.log(this.new_password);
         console.log(this.confirm_new_password);
-        window.location.href = constants.pet_owner_go_back_to_profile_page;
+        const new_login_details = {
+          username: this.username,
+          password: this.new_password,
+        };
+
+        await axios
+          .post("/pet-owners/edit-login-information", {
+            toEdit: new_login_details,
+          })
+          .then((response) => {
+            if (this.password == response.data[0].password) {
+              Swal.fire({
+                icon: "success",
+                title: "Updated!",
+                text: "Password has been updated successfully.",
+              });
+              window.location.href =
+                constants.pet_owner_go_back_to_profile_page;
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Password update failed. Please try again",
+              });
+            }
+          });
       }
-    },
-    fetchData: async function() {
-      // set caretaker username and pet names as links
-      // set pet names as options for select
-      // const response = axios.get(api)
-      // console.log(response.fullTime.data)
-      // console.log(response.partTime.data)
-      // if (response.data.fullTime.data.length == 0 && response.partTime.data.length == 0) {
-      //   this.have_data = false;
-      // } else {
-      // }
     },
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
+    const get_login_info = {
+      username: this.username,
+    };
+
+    await axios
+      .post("/pet-owners/get-login-information", {
+        toGet: get_login_info,
+      })
+      .then((response) => {
+        this.password = response.data[0].password;
+      });
+    this.loaded = true;
   },
 };
 </script>

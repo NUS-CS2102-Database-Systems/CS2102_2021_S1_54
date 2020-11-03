@@ -93,6 +93,7 @@
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerEditPersonalInfo",
@@ -101,7 +102,7 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     username: null,
     name: null,
     age: null,
@@ -132,7 +133,7 @@ export default {
     cancel: function() {
       window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
-    submit: function() {
+    submit: async function() {
       let data_ok = true;
       if (this.phone != null) {
         if (this.phone.match(/^(9|8|6)[0-9]{7}$/)) {
@@ -223,7 +224,9 @@ export default {
         }
 
         const dataToSend =
-          '{"name":' +
+          '{"username":"' +
+          this.username +
+          '"name":' +
           new_name +
           ', "gender":' +
           new_gender +
@@ -237,13 +240,56 @@ export default {
         console.log(dataToSend);
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-        window.location.href = constants.pet_owner_go_back_to_profile_page;
+        await axios
+          .post("/pet-owners/edit-personal-information", {
+            toEdit: jsonDataToSend,
+          })
+          .then((response) => {
+            if (
+              response.data[0].name == this.name &&
+              response.data[0].gender == this.gender &&
+              response.data[0].phone == this.phone &&
+              response.data[0].email == this.email &&
+              response.data[0].address == this.address
+            ) {
+              Swal.fire({
+                icon: "success",
+                title: "Updated!",
+                text: "Personal information has been updated successfully.",
+              });
+              window.location.href =
+                constants.pet_owner_go_back_to_profile_page;
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Personal information update failed. Please try again",
+              });
+            }
+          });
       }
     },
-    fetchData: async function() {},
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
+    const get_info = {
+      username: this.username,
+    };
+
+    await axios
+      .post("/pet-owners/get-personal-information", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        this.name = response.data[0].name;
+        this.age = response.data[0].age;
+        this.birth_date = response.data[0].birth_date;
+        this.phone = response.data[0].phone;
+        this.gender = response.data[0].gender;
+        this.email = response.data[0].email;
+        this.address = response.data[0].address;
+      });
+    this.loaded = true;
   },
 };
 </script>

@@ -5,22 +5,6 @@
     </div>
     <div style="width: 80%; float: right">
       <v-row>
-        <v-col class="mx-auto" md="2">
-          <v-select
-            v-model="selected_commitment_level"
-            :items="commitment_levels"
-            item-text="name"
-            item-value="value"
-            label="Commitment"
-            prepend-icon="mdi-account"
-            filled
-            clearable
-            dense
-            color="#000000"
-            @input="selectCommitmentLevel"
-            @click:clear="clearCommitmentLevel"
-          />
-        </v-col>
         <v-col class="mx-auto" md="3">
           <v-menu
             v-model="available_dates"
@@ -81,7 +65,7 @@
             <v-row>
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
-                <p>
+                <v-card-text>
                   Caretaker Username: {{ caretaker_odd[i] }} <br />
                   Pet Name: {{ pet_odd[i] }} <br />
                   Job Started: {{ job_start_odd[i] }} <br />
@@ -92,8 +76,23 @@
                   <br />
                   Amount: {{ amount_odd[i] }} <br />
                   Rating: {{ rating_odd[i] }} <br />
-                  Review: {{ review_even[i] }} <br />
-                </p>
+                  Review: {{ review_odd[i] }} <br />
+                </v-card-text>
+                <v-btn elevation="2">
+                  <router-link tag="span" 
+                    :to="{ path: '/pet-owners/submit-review/', 
+                      query: {
+                        cusername: caretaker_odd[i],
+                        pusername: username,
+                        pet_name: pet_odd[i], 
+                        job_start_datetime: job_start_odd[i], 
+                        job_end_datetime: job_end_odd[i], 
+                        rating: rating_odd[i],
+                        review: review_odd[i]
+                      }}">
+                    Submit/Edit Review
+                  </router-link>
+                </v-btn> 
               </v-card>
             </v-row>
           </v-list>
@@ -104,7 +103,7 @@
             <v-row>
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
-                <p>
+                <v-card-text>
                   Caretaker Username: {{ caretaker_even[i] }} <br />
                   Pet Name: {{ pet_even[i] }} <br />
                   Job Started: {{ job_start_even[i] }} <br />
@@ -116,7 +115,22 @@
                   Amount: {{ amount_even[i] }} <br />
                   Rating: {{ rating_even[i] }} <br />
                   Review: {{ review_even[i] }} <br />
-                </p>
+                </v-card-text>
+                <v-btn elevation="2">
+                  <router-link tag="span" 
+                    :to="{ path: '/pet-owners/submit-review/', 
+                      query: {
+                        cusername: caretaker_odd[i],
+                        pusername: username,
+                        pet_name: pet_odd[i], 
+                        job_start_datetime: job_start_odd[i], 
+                        job_end_datetime: job_end_odd[i], 
+                        rating: rating_odd[i],
+                        review: review_odd[i]
+                      }}">
+                    Submit/Edit Review
+                  </router-link>
+                </v-btn> 
               </v-card>
             </v-row>
           </v-list>
@@ -160,6 +174,7 @@
 <script>
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PetOwnerViewPastJobs",
@@ -168,16 +183,11 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
-    have_data: true,
+    loaded: false,
+    have_data: false,
     username: null,
-    commitment_levels: [
-      { name: "Full-time", value: "full-time" },
-      { name: "Part-time", value: "part-time" },
-    ],
     pet_names: [],
     available_dates: false,
-    selected_commitment_level: null,
     selected_dates: null,
     selected_pet_names: null,
     id_odd: [],
@@ -207,12 +217,6 @@ export default {
     },
   },
   methods: {
-    selectCommitmentLevel: function() {
-      console.log(this.selected_commitment_level);
-    },
-    clearCommitmentLevel: function() {
-      this.selected_commitment_level = null;
-    },
     selectDates: function() {
       this.selected_dates = this.selected_dates.sort();
       console.log(this.selected_dates);
@@ -226,15 +230,9 @@ export default {
     clearPetNames: function() {
       this.selected_pet_names = null;
     },
-    submit: function() {
+    submit: async function() {
       console.log("Submitted");
       let data_ok = true;
-
-      if (this.selected_commitment_level != null) {
-        var commitment_level = '"' + this.selected_commitment_level + '"';
-      } else {
-        commitment_level = null;
-      }
 
       if (this.selected_dates != null) {
         if (this.selected_dates.length == 1) {
@@ -275,33 +273,135 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"commitment":' +
-          commitment_level +
-          ',"dates":' +
-          dates +
-          ', "animal_names":' +
-          animal_names +
-          "}";
+          '{"dates":' + dates + ', "animal_names":' + animal_names + "}";
 
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
+        await axios
+          .post("/pet-owners/get-specific-past-jobs-information", {
+            toGet: jsonDataToSend,
+          })
+          .then((response) => {
+            this.id_odd = [];
+            this.caretaker_odd = [];
+            this.pet_odd = [];
+            this.job_start_odd = [];
+            this.job_end_odd = [];
+            this.start_transfer_method_odd = [];
+            this.end_transfer_method_odd = [];
+            this.amount_odd = [];
+            this.rating_odd = [];
+            this.review_odd = [];
+            this.id_even = [];
+            this.caretaker_even = [];
+            this.pet_even = [];
+            this.job_start_even = [];
+            this.job_end_even = [];
+            this.start_transfer_method_even = [];
+            this.end_transfer_method_even = [];
+            this.amount_even = [];
+            this.rating_even = [];
+            this.review_even = [];
+            this.loaded = false;
+            let length = response.data.length;
+            if (length == 0) {
+              this.have_data = false;
+              this.loaded = true;
+            } else {
+              this.have_data = true;
+              for (let i = 0; i < length; i++) {
+                if (i % 2 == 0) {
+                  this.id_odd.push(i + 1);
+                  this.caretaker_odd.push(response.data[i].username);
+                  this.pet_odd.push(response.data[i].pet_name);
+                  this.job_start_odd.push(response.data[i].job_start_datetime);
+                  this.job_end_odd.push(response.data[i].job_end_datetime);
+                  this.start_transfer_method_odd.push(
+                    response.data[i].start_transfer_method
+                  );
+                  this.end_transfer_method_odd.push(
+                    response.data[i].end_transfer_method
+                  );
+                  this.amount_odd.push(response.data[i].amount);
+                  this.rating_odd.push(response.data[i].rating);
+                  this.review_odd.push(response.data[i].review);
+                } else {
+                  this.id_even.push(i + 1);
+                  this.caretaker_even.push(response.data[i].username);
+                  this.pet_even.push(response.data[i].pet_name);
+                  this.job_start_even.push(response.data[i].job_start_datetime);
+                  this.job_end_even.push(response.data[i].job_end_datetime);
+                  this.start_transfer_method_even.push(
+                    response.data[i].start_transfer_method
+                  );
+                  this.end_transfer_method_even.push(
+                    response.data[i].end_transfer_method
+                  );
+                  this.amount_even.push(response.data[i].amount);
+                  this.rating_even.push(response.data[i].rating);
+                  this.review_even.push(response.data[i].review);
+                }
+              }
+              this.loaded = true;
+            }
+          });
       }
-    },
-    fetchData: async function() {
-      // set caretaker username and pet names as links
-      // set pet names as options for select
-      // const response = axios.get(api)
-      // console.log(response.fullTime.data)
-      // console.log(response.partTime.data)
-      // if (response.data.fullTime.data.length == 0 && response.partTime.data.length == 0) {
-      //   this.have_data = false;
-      // } else {
-      // }
     },
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
+
+    const get_info = {
+      username: this.username,
+    };
+
+    await axios
+      .post("/pet-owners/get-past-jobs-information", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        let length = response.data.length;
+        if (length == 0) {
+          this.have_data = false;
+        } else {
+          this.have_data = true;
+          for (let i = 0; i < length; i++) {
+            if (i % 2 == 0) {
+              this.id_odd.push(i + 1);
+              this.caretaker_odd.push(response.data[i].username);
+              this.pet_odd.push(response.data[i].pet_name);
+              this.job_start_odd.push(response.data[i].job_start_datetime);
+              this.job_end_odd.push(response.data[i].job_end_datetime);
+              this.start_transfer_method_odd.push(
+                response.data[i].start_transfer_method
+              );
+              this.end_transfer_method_odd.push(
+                response.data[i].end_transfer_method
+              );
+              this.amount_odd.push(response.data[i].amount);
+              this.rating_odd.push(response.data[i].rating);
+              this.review_odd.push(response.data[i].review);
+            } else {
+              this.id_even.push(i + 1);
+              this.caretaker_even.push(response.data[i].username);
+              this.pet_even.push(response.data[i].pet_name);
+              this.job_start_even.push(response.data[i].job_start_datetime);
+              this.job_end_even.push(response.data[i].job_end_datetime);
+              this.start_transfer_method_even.push(
+                response.data[i].start_transfer_method
+              );
+              this.end_transfer_method_even.push(
+                response.data[i].end_transfer_method
+              );
+              this.amount_even.push(response.data[i].amount);
+              this.rating_even.push(response.data[i].rating);
+              this.review_even.push(response.data[i].review);
+            }
+          }
+        }
+      });
+    this.loaded = true;
   },
 };
 </script>

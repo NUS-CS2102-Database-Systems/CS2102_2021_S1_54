@@ -5,9 +5,9 @@ import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import DeleteAccount from "./components/DeleteAccount";
 import PetOwnerSubmitReview from "./components/pet_owner/PetOwnerSubmitReview";
-import PartTimeCaretakerViewReviews from "./components/part_time_caretaker/PartTimeCaretakerViewReviews";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
 import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
+import PetOwnerBidCaretaker from "./components/pet_owner/PetOwnerBidCaretaker"
 import PetOwnerViewPastJobs from "./components/pet_owner/PetOwnerViewPastJobs";
 import PetOwnerViewOngoingJobs from "./components/pet_owner/PetOwnerViewOngoingJobs";
 import PetOwnerViewUpcomingJobs from "./components/pet_owner/PetOwnerViewUpcomingJobs";
@@ -38,7 +38,15 @@ import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/F
 import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
 import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
+<<<<<<< HEAD
 import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
+=======
+import AdminSignUp from "./components/AdminSignUp";
+import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
+import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
+import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
+
+>>>>>>> b9cfb9154e72945c7f7dea6cc2726a2881998e7b
 Vue.use(VueRouter);
 
 // application routes
@@ -97,6 +105,11 @@ export default new VueRouter({
       component: PetOwnerViewCaretakerProfile,
     },
     {
+      path: "/pet-owners/view-caretakers-profiles/bid",
+      name: "PetOwnerBidCaretaker",
+      component: PetOwnerBidCaretaker,
+    },
+    {
       path: "/pet-owners/view-my-profile",
       name: "PetOwnerViewMyProfile",
       component: PetOwnerViewMyProfile,
@@ -137,9 +150,11 @@ export default new VueRouter({
       component: PetOwnerEditPetProfile,
     },
     {
-      path: "/pet-owner/submit-review", //TODO: change this later
+      // path: "/pet-owners/submit-review/:pusername&:cusername&:pet_name&:job_start_datetime&:job_end_datetime",
+      path: "/pet-owners/submit-review",
       name: "PetOwnerSubmitReview",
       component: PetOwnerSubmitReview,
+      // props: true
     },
     {
       path: "/part-time-caretakers",
@@ -187,11 +202,6 @@ export default new VueRouter({
       component: PartTimeCaretakerSetAvailability,
     },
     {
-      path: "/part-time-caretakers/view-reviews", //TODO: change this later
-      name: "PartTimeCaretakerViewReviews",
-      component: PartTimeCaretakerViewReviews,
-    },
-    {
       path: "/full-time-caretakers",
       name: "FullTimeCaretakerHome",
       component: FullTimeCaretakerHome,
@@ -237,9 +247,31 @@ export default new VueRouter({
       component: PcsAdminHome,
     },
     {
+<<<<<<< HEAD
       path: "/pcs-admins/Pcs-Admin-View-Num-Of-Pets-Cared-By-Each-Caretaker",
       name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
       component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
+=======
+      path: "/admin-signup",
+      name: "AdminSignUp",
+      component: AdminSignUp,
+    },
+    {
+      path: "/pet-owners/view-caretaker-reviews/:caretaker_username",
+      name: "PetOwnersViewCaretakerReviews",
+      component: PetOwnerViewCaretakerReviews,
+      props: true
+    },
+    {
+      path: "/full-time-caretakers/apply-for-leave",
+      name: "FullTimeCaretakerApplyForLeave",
+      component: FullTimeCaretakerApplyForLeave,
+    },
+    {
+      path: "/full-time-caretakers/view-leaves",
+      name: "FullTimeCaretakerViewLeaves",
+      component: FullTimeCaretakerViewLeaves,
+>>>>>>> b9cfb9154e72945c7f7dea6cc2726a2881998e7b
     },
   ],
 });

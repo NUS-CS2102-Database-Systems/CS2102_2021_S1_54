@@ -18,6 +18,9 @@ export const pet_owner_edit_pet_info =
 export const pet_owner_view_pet_info =
   domain + "pet-owners/view-my-pets?" + document.cookie;
 
+export const pet_owner_submit_bid_for_caretaker =
+  domain + "pet-owners/view-caretakers-profiles/bid?";
+
 export const pet_owner_add_pet_info = domain + "pet-owners/add-pets?";
 
 export const pet_owner_go_back_to_profile_page =
@@ -40,3 +43,7 @@ export const full_time_caretaker_edit_personal_info =
 
 export const full_time_caretaker_go_back_to_profile_page =
   domain + "full-time-caretakers/view-my-profile?" + document.cookie;
+
+export const full_time_caretaker_home = domain + "full-time-caretakers";
+
+  
