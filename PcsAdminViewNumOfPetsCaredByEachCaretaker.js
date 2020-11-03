@@ -1,10 +1,9 @@
-
 const express = require("express");
 const app = express();
 
 
 
-app.get("", async function (
+app.get("/pcs-admin-total-cared-pets-per-caretaker", async function (
   req,
   res
 ) {
