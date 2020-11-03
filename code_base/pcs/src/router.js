@@ -38,15 +38,12 @@ import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/F
 import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
 import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
-<<<<<<< HEAD
 import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
-=======
 import AdminSignUp from "./components/AdminSignUp";
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
 import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
 
->>>>>>> b9cfb9154e72945c7f7dea6cc2726a2881998e7b
 Vue.use(VueRouter);
 
 // application routes
