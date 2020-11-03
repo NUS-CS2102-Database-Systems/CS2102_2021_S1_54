@@ -13,10 +13,10 @@ var appRouter = function (app) {
 async function get_past_jobs_information(req, res) {
   try {
     const client = await pool.connect();
-    const username = req.body.toGet.username;
+    // const username = req.body.toGet.username;
 
     const result = await client.query(
-      `SELECT COUNT(*) FROM bid_transaction GROUP BY '${username}' ORDER BY BY DESC`
+      `SELECT COUNT(*) FROM bid_transaction GROUP BY cusername ORDER BY BY DESC`
     );
     res.setHeader("content-type", "application/json");
     res.send(JSON.stringify(result.rows));
