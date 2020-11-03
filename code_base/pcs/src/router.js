@@ -244,11 +244,11 @@ export default new VueRouter({
       component: PcsAdminHome,
     },
     {
-<<<<<<< HEAD
       path: "/pcs-admins/Pcs-Admin-View-Num-Of-Pets-Cared-By-Each-Caretaker",
       name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
       component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
-=======
+    },
+    {      
       path: "/admin-signup",
       name: "AdminSignUp",
       component: AdminSignUp,
@@ -268,7 +268,6 @@ export default new VueRouter({
       path: "/full-time-caretakers/view-leaves",
       name: "FullTimeCaretakerViewLeaves",
       component: FullTimeCaretakerViewLeaves,
->>>>>>> b9cfb9154e72945c7f7dea6cc2726a2881998e7b
     },
   ],
 });
