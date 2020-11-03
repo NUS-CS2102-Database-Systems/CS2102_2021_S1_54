@@ -244,7 +244,7 @@ export default new VueRouter({
       component: PcsAdminHome,
     },
     {
-      path: "/pcs-admins/Pcs-Admin-View-Num-Of-Pets-Cared-By-Each-Caretaker",
+      path: "/pcs-admin-total-cared-pets-per-caretaker",
       name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
       component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
     },
