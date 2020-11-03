@@ -1,9 +1,7 @@
 const express = require("express");
 const app = express();
 
-
-
-app.get("/pcs-admin-total-cared-pets-per-caretaker", async (req, res) => {
+app.get("/pcs-admin-total-cared-pets-per-caretaker", async (req, res) {
     // https://stackoverflow.com/questions/63321982/is-there-a-way-to-send-data-from-the-frontend-to-the-server-with-an-axios-get-re
     // let pet_owner_details_wanted = req.query.username;
     const queryNumOfPetsTakenCaredForByEachCaregiver = "SELECT COUNT(*)" +
