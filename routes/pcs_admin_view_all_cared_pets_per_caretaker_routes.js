@@ -16,7 +16,7 @@ async function get_past_jobs_information(req, res) {
     // const username = req.body.toGet.username;
 
     const result = await client.query(
-      `SELECT COUNT(*) FROM bid_transaction GROUP BY cusername ORDER BY COUNT(*) DESC`
+      `SELECT cusername, COUNT(*) FROM bid_transaction GROUP BY cusername ORDER BY COUNT(*) DESC`
     );
     res.setHeader("content-type", "application/json");
     res.send(JSON.stringify(result.rows));
