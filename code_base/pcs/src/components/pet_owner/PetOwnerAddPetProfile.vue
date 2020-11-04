@@ -291,7 +291,7 @@ export default {
           )
           .then((response) => {
             console.log(response.data[0]);
-            if (response.data[0].exists == "t") {
+            if (response.data[0].exists == true) {
               Swal.fire({
                 icon: "success",
                 title: "Added!",

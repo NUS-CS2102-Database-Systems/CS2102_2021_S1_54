@@ -13,49 +13,16 @@
         </v-btn>
         <br />
         <v-col class="mx-auto">
-          <v-list v-for="i in pet_name_odd" :key="i">
+          <v-list v-for="i in length_odd" :key="i">
             <v-row>
-              <v-card width="45%">
-                <v-card-title> {{ pet_name_odd[i] }} </v-card-title>
-                <v-card-text>
-                  Date of Birth: {{ pet_birth_date_odd[i] }} <br />
-                  Age: {{ pet_age_odd[i] }} <br />
-                  Gender: {{ pet_gender_odd[i] }} <br />
-                  Breed: {{ pet_breed_odd[i] }} <br />
-                  Type of Animal: {{ type_of_animal_odd[i] }}
-                  <br />
-                  Medical History: {{ pet_med_hist_odd[i] }}
-                  <br />
-                  Special Requirements: {{ pet_special_req_odd[i] }} <br />
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
-        <v-spacer />
-        <v-col class="mx-auto">
-          <v-list v-for="i in pet_name_even" :key="i">
-            <v-row>
-              <v-card width="45%">
-                <v-card-title> {{ pet_name_even[i] }} </v-card-title>
-                <v-layout align-center>
-                  <v-card-text>
-                    Date of Birth: {{ pet_birth_date_even[i] }} <br />
-                    Age: {{ pet_age_even[i] }} <br />
-                    Gender: {{ pet_gender_even[i] }} <br />
-                    Breed: {{ pet_breed_even[i] }} <br />
-                    Type of Animal: {{ type_of_animal_even[i] }}
-                    <br />
-                    Medical History: {{ pet_med_hist_even[i] }}
-                    <br />
-                    Special Requirements: {{ pet_special_req_even[i] }} <br />
-                  </v-card-text>
-                  <br />
+              <v-card width="35%">
+                <v-card-title>
+                  {{ pet_name_odd[i - 1] }}
                   <v-btn
                     icon
                     color="blue"
                     fab
-                    @click="editPetInformation(pet_name)"
+                    @click="editPetInformation(pet_name_odd[i - 1])"
                   >
                     <v-icon>mdi-pencil</v-icon>
                     Edit
@@ -65,11 +32,72 @@
                     icon
                     color="red"
                     fab
-                    @click="deletePetInformation(pet_name)"
+                    @click="deletePetInformation(pet_name_odd[i - 1])"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                    Delete
+                  </v-btn></v-card-title
+                >
+                <v-card-text>
+                  <p style="color:black">
+                    Date of Birth: {{ pet_birth_date_odd[i - 1] }} <br />
+                    Age: {{ pet_age_odd[i - 1] }} <br />
+                    Gender: {{ pet_gender_odd[i - 1] }} <br />
+                    Breed: {{ pet_breed_odd[i - 1] }} <br />
+                    Type of Animal: {{ type_of_animal_odd[i - 1] }}
+                    <br />
+                    Medical History: {{ pet_med_hist_odd[i - 1] }}
+                    <br />
+                    Special Requirements: {{ pet_special_req_odd[i - 1] }}
+                    <br />
+                  </p>
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-list>
+        </v-col>
+        <!-- <v-spacer /> -->
+        <v-col class="mx-auto">
+          <v-list v-for="i in length_even" :key="i">
+            <v-row>
+              <v-card width="35%">
+                <v-card-title>
+                  {{ pet_name_even[i - 1] }}
+                  <v-btn
+                    icon
+                    color="blue"
+                    fab
+                    @click="editPetInformation(pet_name_even[i - 1])"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                    Edit
+                  </v-btn>
+                  <v-spacer />
+                  <v-btn
+                    icon
+                    color="red"
+                    fab
+                    @click="deletePetInformation(pet_name_even[i - 1])"
                   >
                     <v-icon>mdi-delete</v-icon>
                     Delete
                   </v-btn>
+                </v-card-title>
+                <v-layout align-center>
+                  <v-card-text>
+                    <p style="color:black">
+                      Date of Birth: {{ pet_birth_date_even[i - 1] }} <br />
+                      Age: {{ pet_age_even[i - 1] }} <br />
+                      Gender: {{ pet_gender_even[i - 1] }} <br />
+                      Breed: {{ pet_breed_even[i - 1] }} <br />
+                      Type of Animal: {{ type_of_animal_even[i - 1] }}
+                      <br />
+                      Medical History: {{ pet_med_hist_even[i - 1] }}
+                      <br />
+                      Special Requirements: {{ pet_special_req_even[i - 1] }}
+                      <br />
+                    </p>
+                  </v-card-text>
                 </v-layout>
               </v-card>
             </v-row>
@@ -105,6 +133,8 @@ export default {
   data: () => ({
     loaded: false,
     username: null,
+    length_odd: 0,
+    length_even: 0,
     pet_name_even: [],
     pet_age_even: [],
     pet_birth_date_even: [],
@@ -157,7 +187,7 @@ export default {
               }
             )
             .then((response) => {
-              if (response.data[0].exists == "f") {
+              if (response.data[0].exists == false) {
                 Swal.fire({
                   icon: "success",
                   title: "Deleted!",
@@ -186,26 +216,67 @@ export default {
         }
       )
       .then((response) => {
+        this.length_odd = 0;
+        this.length_even = 0;
         let length = response.data.length;
+        console.log(response.data[0]);
         for (let i = 0; i < length; i++) {
           if (i % 2 == 0) {
             this.pet_name_odd.push(response.data[i].pet_name);
-            this.pet_age_odd.push(response.data[i].age);
-            this.pet_birth_date_odd.push(response.data[i].birth_date);
+            let age =
+              response.data[0].age.years +
+              " years " +
+              response.data[0].age.months +
+              " months " +
+              response.data[0].age.days +
+              " days";
+            this.pet_age_odd.push(age);
+            this.pet_birth_date_odd.push(
+              response.data[i].birth_date.toString().split("T")[0]
+            );
             this.pet_gender_odd.push(response.data[i].gender);
             this.pet_breed_odd.push(response.data[i].breed);
             this.type_of_animal_odd.push(response.data[i].type_of_animal);
-            this.pet_med_hist_odd.push(response.data[i].med_hist);
-            this.pet_special_req_odd.push(response.data[i].special_req);
+            if (response.data[i].med_hist == "null") {
+              this.pet_med_hist_odd.push("-");
+            } else {
+              this.pet_med_hist_odd.push(response.data[i].med_hist);
+            }
+
+            if (response.data[i].special_req == "null") {
+              this.pet_special_req_odd.push("-");
+            } else {
+              this.pet_special_req_odd.push(response.data[i].special_req);
+            }
+            this.length_odd += 1;
           } else {
             this.pet_name_even.push(response.data[i].pet_name);
-            this.pet_age_even.push(response.data[i].age);
-            this.pet_birth_date_even.push(response.data[i].birth_date);
+            let age =
+              response.data[0].age.years +
+              " years " +
+              response.data[0].age.months +
+              " months " +
+              response.data[0].age.days +
+              " days";
+            this.pet_age_even.push(age);
+            this.pet_birth_date_even.push(
+              response.data[i].birth_date.toString().split("T")[0]
+            );
             this.pet_gender_even.push(response.data[i].gender);
             this.pet_breed_even.push(response.data[i].breed);
             this.type_of_animal_even.push(response.data[i].type_of_animal);
-            this.pet_med_hist_even.push(response.data[i].med_hist);
-            this.pet_special_req_even.push(response.data[i].special_req);
+            if (response.data[i].med_hist == "null") {
+              this.pet_med_hist_even.push("-");
+            } else {
+              this.pet_med_hist_even.push(response.data[i].med_hist);
+            }
+
+            if (response.data[i].special_req == "null") {
+              this.pet_special_req_even.push("-");
+            } else {
+              this.pet_special_req_even.push(response.data[i].special_req);
+            }
+            this.length_even += 1;
           }
         }
       });
