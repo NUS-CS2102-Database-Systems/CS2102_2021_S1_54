@@ -321,16 +321,81 @@ export default {
             default:
               break;
           }
+
+          // add can take care for caretaker
+          // [this.bigDog, this.bird, this.cat, this.rodent, this.rabbit, this.smallDog]
+          if (this.type !== "petOwner") {
+            if (this.bigDog) {
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/caretakers/add-can-take-care",
+                data: {
+                  username: this.username,
+                  type_name: "big dog"
+                }
+              });
+            }
+            if (this.bird) {
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/caretakers/add-can-take-care",
+                data: {
+                  username: this.username,
+                  type_name: "bird"
+                }
+              });
+            }
+            if (this.cat) {
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/caretakers/add-can-take-care",
+                data: {
+                  username: this.username,
+                  type_name: "cat"
+                }
+              });
+            }  
+            if (this.rodent) {
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/caretakers/add-can-take-care",
+                data: {
+                  username: this.username,
+                  type_name: "rodent"
+                }
+              });
+            }     
+            if (this.rabbit) {
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/caretakers/add-can-take-care",
+                data: {
+                  username: this.username,
+                  type_name: "rabbit"
+                }
+              });
+            }     
+            if (this.smallDog) {
+              await axios({
+                method: "post",
+                url: "https://pet-care-service.herokuapp.com/caretakers/add-can-take-care",
+                data: {
+                  username: this.username,
+                  type_name: "small dog"
+                }
+              });
+            }
+          }
+
+          Swal.fire({
+            icon: "success",
+            title: "Signed Up Successfully!",
+            text: "You may log in to your new account from the Home page.",
+          });
+          this.$router.push({
+            path: "/"
+          });
         }
-        // this.username = "";
-        // this.type = "";
-        // this.password = "";
-        // this.name = "";
-        // this.dob = "";
-        // this.gender = "";
-        // this.phone = "";
-        // this.email = "";
-        // this.address = "";
       }
     },
     showPetTypes(e) {

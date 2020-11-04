@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   name: "AdminSignUp",
@@ -45,7 +47,7 @@ export default {
     };
   },
   methods: {
-    signUp(e) {
+    async signUp(e) {
       e.preventDefault();
       var data_ok = true;
     
@@ -54,14 +56,24 @@ export default {
       }
 
       if (data_ok == true) {
-        const newAdmin = {
-          username: this.username,
-          password: this.password,
-        };
-
-        this.$emit("admin-sign-up", newAdmin);
-        this.username = "";
-        this.password = "";
+        const result = await axios({
+          method: "post",
+          url: "https://pet-care-service.herokuapp.com/admins",
+          data: {
+            username: this.username,
+            password: this.password
+          }
+        })
+        if (result.data !== "admin username already exists!") {
+          Swal.fire({
+            icon: "success",
+            title: "Signed Up Successfully!",
+            text: "You may log in to your new account from the Home page.",
+          });
+          this.$router.push({
+            path: "/"
+          });
+        }
       }
     },
   },
