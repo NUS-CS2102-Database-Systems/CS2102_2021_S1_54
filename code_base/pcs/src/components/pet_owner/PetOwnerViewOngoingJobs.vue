@@ -149,6 +149,8 @@ export default {
       )
       .then((response) => {
         let length = response.data.length;
+        console.log(length);
+        console.log(response.data);
         if (length == 0) {
           this.have_data = false;
         } else {

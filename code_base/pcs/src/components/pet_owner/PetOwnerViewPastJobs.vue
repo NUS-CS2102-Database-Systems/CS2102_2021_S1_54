@@ -66,17 +66,20 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_odd[i] }} <br />
-                  Pet Name: {{ pet_odd[i] }} <br />
-                  Job Started: {{ job_start_odd[i] }} <br />
-                  Job Ended: {{ job_end_odd[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_odd[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
-                  <br />
-                  Amount: {{ amount_odd[i] }} <br />
-                  Rating: {{ rating_odd[i] }} <br />
-                  Review: {{ review_odd[i] }} <br />
+                  <p style="color:black">
+                    Caretaker Username: {{ caretaker_odd[i] }} <br />
+                    Pet Name: {{ pet_odd[i] }} <br />
+                    Job Started: {{ job_start_odd[i] }} <br />
+                    Job Ended: {{ job_end_odd[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_odd[i] }}
+                    <br />
+                    Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
+                    <br />
+                    Amount: {{ amount_odd[i] }} <br />
+                    Rating: {{ rating_odd[i] }} <br />
+                    Review: {{ review_odd[i] }} <br />
+                  </p>
                 </v-card-text>
                 <v-btn elevation="2">
                   <router-link
@@ -108,17 +111,21 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_even[i] }} <br />
-                  Pet Name: {{ pet_even[i] }} <br />
-                  Job Started: {{ job_start_even[i] }} <br />
-                  Job Ended: {{ job_end_even[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_even[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_even[i] }}
-                  <br />
-                  Amount: {{ amount_even[i] }} <br />
-                  Rating: {{ rating_even[i] }} <br />
-                  Review: {{ review_even[i] }} <br />
+                  <p style="color:black">
+                    Caretaker Username: {{ caretaker_even[i] }} <br />
+                    Pet Name: {{ pet_even[i] }} <br />
+                    Job Started: {{ job_start_even[i] }} <br />
+                    Job Ended: {{ job_end_even[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_even[i] }}
+                    <br />
+                    Transfer Method (Drop Off):
+                    {{ end_transfer_method_even[i] }}
+                    <br />
+                    Amount: {{ amount_even[i] }} <br />
+                    Rating: {{ rating_even[i] }} <br />
+                    Review: {{ review_even[i] }} <br />
+                  </p>
                 </v-card-text>
                 <v-btn elevation="2">
                   <router-link
