@@ -190,9 +190,12 @@ export default {
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/add-credit-card-information", {
-            addCreditCardInfo: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/add-credit-card-information",
+            {
+              addCreditCardInfo: jsonDataToSend,
+            }
+          )
           .then((response) => {
             if (
               response.data[0].credit_card_full_name == this.credit_card_name &&

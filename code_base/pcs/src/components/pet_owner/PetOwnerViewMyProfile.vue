@@ -147,8 +147,16 @@ export default {
       }
     },
     editCreditCardInfo: function() {
-      window.location.href =
-        constants.pet_owner_edit_credit_card_info + document.cookie;
+      if (this.credit_card_num == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Sorry! There is no credit card information to edit!",
+        });
+      } else {
+        window.location.href =
+          constants.pet_owner_edit_credit_card_info + document.cookie;
+      }
     },
     deleteCreditCardInfo: async function() {
       if (this.credit_card_num == null) {
@@ -174,9 +182,12 @@ export default {
             };
 
             axios
-              .post("/pet-owners/delete-credit-card-information", {
-                toDelete: info_delete,
-              })
+              .post(
+                "https://pet-care-service.herokuapp.com/pet-owners/delete-credit-card-information",
+                {
+                  toDelete: info_delete,
+                }
+              )
               .then((response) => {
                 if (
                   response.data[0].credit_card_full_name == null &&
@@ -205,15 +216,24 @@ export default {
     };
 
     axios
-      .post("/pet-owners/get-profile-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-profile-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         console.log("inside reponse!")
         this.password = response.data[0].password;
         this.name = response.data[0].name;
-        this.age = response.data[0].age;
-        this.birth_date = response.data[0].birth_date;
+        this.age =
+          response.data[0].age.years +
+          " years " +
+          response.data[0].age.months +
+          " months " +
+          response.data[0].age.days +
+          " days";
+        this.birth_date = response.data[0].birth_date.toString().split("T")[0];
         this.gender = response.data[0].gender;
         this.phone = response.data[0].phone;
         this.email = response.data[0].email;

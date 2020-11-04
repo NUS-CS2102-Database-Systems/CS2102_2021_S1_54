@@ -24,7 +24,7 @@
             <v-menu
               v-model="dateMenu"
               :nudge-right="40"
-              :close-on-content-click="true"
+              :close-on-content-click="false"
               transition="scale-transition"
               offset-y
               max-width="290px"
@@ -56,14 +56,6 @@
               dense
               color="#000000"
             />
-            <b>Breed:</b>
-            <v-text-field
-              v-model="pet_breed"
-              label="Enter Pet's Breed"
-              outlined
-              clearable
-              @click:clear="clearPetBreed"
-            />
             <b>Type of Animal:</b>
             <v-select
               v-model="pet_type_of_animal"
@@ -74,6 +66,14 @@
               label="Select Type of Animal"
               dense
               color="#000000"
+            />
+            <b>Breed:</b>
+            <v-text-field
+              v-model="pet_breed"
+              label="Enter Pet's Breed"
+              outlined
+              clearable
+              @click:clear="clearPetBreed"
             />
             <b>Medical History:</b>
             <v-textarea
@@ -272,7 +272,7 @@ export default {
           this.pet_gender +
           '", "breed":' +
           new_breed +
-          '", "animal_type":"' +
+          ', "animal_type":"' +
           this.pet_type_of_animal +
           '", "med_hist":' +
           med_hist +
@@ -283,10 +283,14 @@ export default {
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/add-pet-information", {
-            toAdd: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/add-pet-information",
+            {
+              toAdd: jsonDataToSend,
+            }
+          )
           .then((response) => {
+            console.log(response.data[0]);
             if (response.data[0].exists == "t") {
               Swal.fire({
                 icon: "success",

@@ -136,9 +136,12 @@ export default {
       const jsonDataToSend = JSON.parse(dataToSend);
       console.log(jsonDataToSend);
       await axios
-        .post("/pet-owners/edit-specific-pet-information", {
-          toEdit: jsonDataToSend,
-        })
+        .post(
+          "https://pet-care-service.herokuapp.com/pet-owners/edit-specific-pet-information",
+          {
+            toEdit: jsonDataToSend,
+          }
+        )
         .then((response) => {
           if (
             response.data[0].med_hist == this.pet_med_hist &&
@@ -174,9 +177,12 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-specific-pet-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-specific-pet-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         this.pet_age = response.data[0].pet_age;
         this.pet_birth_date = response.data[0].birth_date;

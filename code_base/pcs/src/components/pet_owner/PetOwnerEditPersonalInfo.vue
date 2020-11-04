@@ -136,7 +136,7 @@ export default {
     submit: async function() {
       let data_ok = true;
       if (this.phone != null) {
-        if (this.phone.match(/^(9|8|6)[0-9]{7}$/)) {
+        if (this.phone.toString().match(/^(9|8|6)[0-9]{7}$/)) {
           var new_phone = '"' + this.phone + '"';
         } else {
           Swal.fire({
@@ -226,7 +226,7 @@ export default {
         const dataToSend =
           '{"username":"' +
           this.username +
-          '"name":' +
+          '", "name":' +
           new_name +
           ', "gender":' +
           new_gender +
@@ -241,9 +241,12 @@ export default {
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/edit-personal-information", {
-            toEdit: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/edit-personal-information",
+            {
+              toEdit: jsonDataToSend,
+            }
+          )
           .then((response) => {
             if (
               response.data[0].name == this.name &&
@@ -277,13 +280,22 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-personal-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-personal-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         this.name = response.data[0].name;
-        this.age = response.data[0].age;
-        this.birth_date = response.data[0].birth_date;
+        this.age =
+          response.data[0].age.years +
+          " years " +
+          response.data[0].age.months +
+          " months " +
+          response.data[0].age.days +
+          " days";
+        this.birth_date = response.data[0].birth_date.toString().split("T")[0];
         this.phone = response.data[0].phone;
         this.gender = response.data[0].gender;
         this.email = response.data[0].email;

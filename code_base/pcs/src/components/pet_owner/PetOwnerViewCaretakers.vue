@@ -4,7 +4,6 @@
       <PetOwnerNavBar />
     </div>
     <div style="width: 80%; float: right">
-      
       <v-btn depressed color="primary" @click="addABid('hey')">
         Place a Bid
       </v-btn>
@@ -152,9 +151,13 @@
         <v-col class="mx-auto">
           <v-list v-for="i in caretaker_username_odd" :key="i">
             <v-row>
-              <v-card width="45%">
+              <v-card width="35%">
                 <v-card-title> {{ caretaker_username_odd[i] }} </v-card-title>
-                <v-btn depressed color="primary" @click="addABid(caretaker_username_odd[i])">
+                <v-btn
+                  depressed
+                  color="primary"
+                  @click="addABid(caretaker_username_odd[i])"
+                >
                   Place a Bid
                 </v-btn>
                 <v-card-text>
@@ -183,9 +186,13 @@
         <v-col class="mx-auto">
           <v-list v-for="i in caretaker_username_even" :key="i">
             <v-row>
-              <v-card width="45%">
+              <v-card width="35%">
                 <v-card-title> {{ caretaker_username_even[i] }} </v-card-title>
-                <v-btn depressed color="primary" @click="addABid(caretaker_username_odd[i])">
+                <v-btn
+                  depressed
+                  color="primary"
+                  @click="addABid(caretaker_username_odd[i])"
+                >
                   Place a Bid
                 </v-btn>
                 <v-card-text>
@@ -334,7 +341,9 @@ export default {
     addABid: function(caretaker_username) {
       let caretaker_username_to_bid = "&caretaker=" + caretaker_username;
       window.location.href =
-        constants.pet_owner_submit_bid_for_caretaker + document.cookie + caretaker_username_to_bid;
+        constants.pet_owner_submit_bid_for_caretaker +
+        document.cookie +
+        caretaker_username_to_bid;
     },
     selectCommitmentLevel: function() {
       console.log(this.selected_commitment_level);
@@ -409,7 +418,7 @@ export default {
     submit: async function() {
       let data_ok = true;
 
-      if (this.selected_commitment_level) {
+      if (this.selected_commitment_level != null) {
         var commitment_level = '"' + this.selected_commitment_level + '"';
       } else {
         commitment_level = null;
@@ -431,13 +440,13 @@ export default {
         order_by = null;
       }
 
-      if (this.selected_price_from) {
+      if (this.selected_price_from != null) {
         var min_price = '"' + this.selected_price_from + '"';
       } else {
         min_price = null;
       }
 
-      if (this.selected_price_to) {
+      if (this.selected_price_to != null) {
         var max_price = '"' + this.selected_price_to + '"';
       } else {
         max_price = null;
@@ -474,7 +483,7 @@ export default {
         dates = null;
       }
 
-      if (this.selected_rating) {
+      if (this.selected_rating != null) {
         var rating_wanted = '"' + this.selected_rating + '"';
       } else {
         rating_wanted = null;
@@ -531,9 +540,12 @@ export default {
         console.log(jsonDataToSend);
 
         await axios
-          .post("/pet-owners/get-specific-caretakers-information", {
-            caretaker: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/get-specific-caretakers-information",
+            {
+              caretaker: jsonDataToSend,
+            }
+          )
           .then((response) => {
             this.caretaker_username_odd = [];
             this.caretaker_name_odd = [];
@@ -557,6 +569,9 @@ export default {
             this.caretaker_take_care_animals_even = [];
             this.loaded = false;
             this.have_data = false;
+            console.log("Axios");
+            console.log(response.data.partTime);
+            console.log(response.data.fullTime);
             console.log(response.data);
             if (
               response.data.fullTime.length == 0 &&
@@ -574,6 +589,7 @@ export default {
               }
 
               if (response.data.partTime.length > 0) {
+                this.have_data = true;
                 for (let i = 0; i < response.data.partTime.length; i++) {
                   data_received.push(response.data.partTime[i]);
                 }
@@ -581,14 +597,45 @@ export default {
 
               for (let i = 0; i < data_received.length; i++) {
                 if (i % 2 == 0) {
+                  this.caretaker_username_odd.push(data_received[i].username);
+                  this.caretaker_name_odd.push(response.data[i].name);
+                  let age =
+                    data_received[i].age.years +
+                    " years " +
+                    data_received[i].age.months +
+                    " months " +
+                    data_received[i].age.days +
+                    " days";
+                  this.caretaker_age_odd.push(age);
+                  this.caretaker_date_of_birth_odd.push(
+                    data_received.birth_date.toString().split("T")[0]
+                  );
+                  this.caretaker_gender_odd.push(data_received[i].gender);
+                  this.caretaker_phone_odd.push(data_received[i].phone);
+                  this.caretaker_address_odd.push(data_received[i].address);
+                  this.caretaker_avg_rating_odd.push(
+                    data_received[i].average_rating
+                  );
+                  let years =
+                    data_received[i].years_exp.years +
+                    " years " +
+                    data_received[i].years_exp.months +
+                    " months " +
+                    data_received[i].years_exp.days +
+                    " days";
+                  this.caretaker_years_exp_odd.push(years);
+
                   const get_info = {
                     username: data_received[i].username,
                   };
 
                   axios
-                    .post("/pet-owners/get-caretaker-pets-information", {
-                      toGet: get_info,
-                    })
+                    .post(
+                      "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+                      {
+                        toGet: get_info,
+                      }
+                    )
                     .then((response) => {
                       let pet_length = response.data.length;
                       let pets_can = [];
@@ -600,13 +647,44 @@ export default {
                       this.caretaker_take_care_animals_odd.push(pets_can);
                     });
                 } else {
+                  this.caretaker_username_even.push(data_received[i].username);
+                  this.caretaker_name_even.push(response.data[i].name);
+                  let age =
+                    data_received[i].age.years +
+                    " years " +
+                    data_received[i].age.months +
+                    " months " +
+                    data_received[i].age.days +
+                    " days";
+                  this.caretaker_age_even.push(age);
+                  this.caretaker_date_of_birth_even.push(
+                    data_received.birth_date.toString().split("T")[0]
+                  );
+                  this.caretaker_gender_even.push(data_received[i].gender);
+                  this.caretaker_phone_even.push(data_received[i].phone);
+                  this.caretaker_address_even.push(data_received[i].address);
+                  this.caretaker_avg_rating_even.push(
+                    data_received[i].average_rating
+                  );
+                  let years =
+                    data_received[i].years_exp.years +
+                    " years " +
+                    data_received[i].years_exp.months +
+                    " months " +
+                    data_received[i].years_exp.days +
+                    " days";
+                  this.caretaker_years_exp_even.push(years);
+
                   const get_pet_info = {
                     username: data_received[i].username,
                   };
                   axios
-                    .post("/pet-owners/get-caretaker-pets-information", {
-                      toGet: get_pet_info,
-                    })
+                    .post(
+                      "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+                      {
+                        toGet: get_pet_info,
+                      }
+                    )
                     .then((response) => {
                       let pet_length = response.data.length;
                       let pets_can = [];
@@ -630,7 +708,9 @@ export default {
     this.username = document.cookie.split("=")[1];
 
     await axios
-      .get("/pet-owners/get-caretakers-information")
+      .get(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-caretakers-information"
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
@@ -641,9 +721,16 @@ export default {
             if (i % 2 == 0) {
               this.caretaker_username_odd.push(response.data[i].username);
               this.caretaker_name_odd.push(response.data[i].name);
-              this.caretaker_age_odd.push(response.data[i].age);
+              let age =
+                response.data[i].age.years +
+                " years " +
+                response.data[i].age.months +
+                " months " +
+                response.data[i].age.days +
+                " days";
+              this.caretaker_age_odd.push(age);
               this.caretaker_date_of_birth_odd.push(
-                response.data[i].birth_date
+                response.data[i].birth_date.toString().split("T")[0]
               );
               this.caretaker_gender_odd.push(response.data[i].gender);
               this.caretaker_phone_odd.push(response.data[i].phone);
@@ -658,9 +745,12 @@ export default {
               };
 
               axios
-                .post("/pet-owners/get-caretaker-pets-information", {
-                  toGet: get_info,
-                })
+                .post(
+                  "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+                  {
+                    toGet: get_info,
+                  }
+                )
                 .then((response) => {
                   let pet_length = response.data.length;
                   let pets_can = [];
@@ -674,9 +764,16 @@ export default {
             } else {
               this.caretaker_username_even.push(response.data[i].username);
               this.caretaker_name_even.push(response.data[i].name);
-              this.caretaker_age_even.push(response.data[i].age);
+              let age =
+                response.data[i].age.years +
+                " years " +
+                response.data[i].age.months +
+                " months " +
+                response.data[i].age.days +
+                " days";
+              this.caretaker_age_even.push(age);
               this.caretaker_date_of_birth_even.push(
-                response.data[i].birth_date
+                response.data[i].birth_date.toString().split("T")[0]
               );
               this.caretaker_gender_even.push(response.data[i].gender);
               this.caretaker_phone_even.push(response.data[i].phone);
@@ -689,9 +786,12 @@ export default {
                 username: response.data[i].username,
               };
               axios
-                .post("/pet-owners/get-caretaker-pets-information", {
-                  toGet: get_pet_info,
-                })
+                .post(
+                  "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+                  {
+                    toGet: get_pet_info,
+                  }
+                )
                 .then((response) => {
                   let pet_length = response.data.length;
                   let pets_can = [];

@@ -58,7 +58,7 @@ async function add_pet_information(req, res) {
 
     const result = await client.query(
       `SELECT EXISTS (SELECT 1 FROM pet WHERE username = '${username}' 
-        AND pet_name = '${pet_name}');`
+        AND pet_name = '${pet_name}') AS exists;`
     );
 
     res.setHeader("content-type", "application/json");
