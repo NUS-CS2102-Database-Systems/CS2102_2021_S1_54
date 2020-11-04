@@ -78,7 +78,7 @@ export default {
         },
       });
 
-      const loggedIn = authResponse.length === 1;
+      const loggedIn = authResponse.data.length === 1;
       if (!loggedIn) {
         return;
       } else {
