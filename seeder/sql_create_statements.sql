@@ -1,4 +1,4 @@
--- run this to init database: cat seeder/sql_create_statements.sql | heroku pg:psql --app pet-care-service
+-- run this to init database: cat seeder/file_name.sql | heroku pg:psql --app pet-care-service
 DROP TABLE IF EXISTS animal_type, users, pet_owner, caretaker, full_time_caretaker, part_time_caretaker, 
 	pet, bid_transaction, pcs_administrator, set_base_daily_price, can_take_care, daily_price_rate,
 	availabilities, leave_days CASCADE;
@@ -20,14 +20,14 @@ CREATE TABLE users (
 
 CREATE TABLE pet_owner (
 	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
-	credit_card_number CHAR(16),
+	credit_card_number VARCHAR,
 	credit_card_full_name VARCHAR,
 	credit_card_expiry_date VARCHAR(5)
 );
 
 CREATE TABLE caretaker (
     username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
-    average_rating NUMERIC(2, 1) NOT NULL DEFAULT 5.0,
+    average_rating NUMERIC(2, 1) NOT NULL DEFAULT 0.0,
 	date_started DATE NOT NULL
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE part_time_caretaker (
 );
 
 CREATE TABLE pet (
-	username VARCHAR NOT NULL  REFERENCES pet_owner(username) ON DELETE cascade,
+	username VARCHAR NOT NULL REFERENCES pet_owner(username) ON DELETE cascade,
 	pet_name VARCHAR NOT NULL,
 	birth_date DATE NOT NULL,
 	breed VARCHAR NOT NULL,
@@ -103,8 +103,9 @@ CREATE TABLE availabilities(
 	username VARCHAR REFERENCES part_time_caretaker(username),
 	start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-	number_of_pets_allowed INTEGER NOT NULL,
-	PRIMARY KEY(username, start_date, end_date)
+	number_of_pets_allowed INTEGER NOT NULL ,
+	PRIMARY KEY(username, start_date, end_date),
+	CHECK (number_of_pets_allowed = 2 OR number_of_pets_allowed = 4)
 );
 
 CREATE TABLE leave_days(
@@ -160,9 +161,9 @@ CREATE OR REPLACE FUNCTION not_overlap()
 	RETURNS TRIGGER AS 
 	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN;
 	BEGIN 
-		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.username));
+		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
 
-		IF part_time_exists = ‘t’ THEN
+		IF part_time_exists THEN
 			SELECT COUNT(*) INTO ctx1 FROM availabilities A
 			WHERE NEW.cusername = A.username AND 
 			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <= A.end_date);
@@ -176,7 +177,7 @@ CREATE OR REPLACE FUNCTION not_overlap()
 		ELSE
 		SELECT COUNT(*) INTO ctx2 FROM leave_days L
 		WHERE NEW.cusername = L.username AND
-		(job_start_datetime, job_end_datetime) overlaps (L.start_date, L.end_date);
+			(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, L.end_date);
 
 		IF ctx2 > 0 THEN
 			RETURN NULL;
@@ -217,7 +218,7 @@ AS $$
 		IF NEW.average_rating != OLD.average_rating THEN
 			part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.username));
 
-			IF part_time_exists = ‘t’ THEN
+			IF part_time_exists THEN
 				IF NEW.average_rating >= 4.0 THEN
 					UPDATE availabilities SET number_of_pets_allowed = 4 WHERE username = NEW.username AND start_date >= current_date;
 				ELSIF NEW.average_rating < 4.0 THEN
@@ -277,13 +278,13 @@ AS $$
 
 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
 
-		IF full_time_exists = ‘t’ THEN 
+		IF full_time_exists THEN 
 			IF num_pets >= 5 THEN
 				RETURN NULL;
 			ELSIF num_pets < 5 THEN
 				RETURN NEW;
 			END IF;
-		ELSIF part_time_exists = ‘t’ THEN
+		ELSIF part_time_exists THEN
 			SELECT number_of_pets_allowed INTO part_time_pets FROM availabilities WHERE username = NEW.cusername ORDER BY start_date DESC LIMIT 1;
 			IF num_pets >= part_time_pets THEN
 				RETURN NULL;
