@@ -209,6 +209,7 @@ export default {
         toGet: get_info,
       })
       .then((response) => {
+        console.log("inside reponse!")
         this.password = response.data[0].password;
         this.name = response.data[0].name;
         this.age = response.data[0].age;
