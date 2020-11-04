@@ -99,15 +99,12 @@ export default {
       window.location.href = constants.pet_owner_go_back_to_profile_page;
     },
     submit: async function() {
-      // let data_ok = true;
-
       if (this.confirm_new_password == null && this.new_password != null) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: "Please confirm password",
         });
-        // data_ok = false;
       } else if (this.new_password != this.confirm_new_password) {
         Swal.fire({
           icon: "error",
@@ -115,7 +112,6 @@ export default {
           text: "Passwords do not match",
         });
         this.confirm_new_password = null;
-        // data_ok = false;
       } else if (
         this.new_password == null &&
         this.confirm_new_password == null
@@ -130,9 +126,12 @@ export default {
         };
 
         await axios
-          .post("/pet-owners/edit-login-information", {
-            toEdit: new_login_details,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/edit-login-information",
+            {
+              toEdit: new_login_details,
+            }
+          )
           .then((response) => {
             if (this.password == response.data[0].password) {
               Swal.fire({
@@ -160,9 +159,12 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-login-information", {
-        toGet: get_login_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-login-information",
+        {
+          toGet: get_login_info,
+        }
+      )
       .then((response) => {
         this.password = response.data[0].password;
       });

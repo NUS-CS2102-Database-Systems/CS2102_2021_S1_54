@@ -193,9 +193,12 @@ export default {
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/edit-credit-card-information", {
-            toEdit: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/edit-credit-card-information",
+            {
+              toEdit: jsonDataToSend,
+            }
+          )
           .then((response) => {
             if (
               response.data[0].credit_card_full_name == this.credit_card_name &&
@@ -228,9 +231,12 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-credit-card-information", {
-        toGet: credit_card_to_get,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-credit-card-information",
+        {
+          toGet: credit_card_to_get,
+        }
+      )
       .then((response) => {
         this.credit_card_num = response.data[0].credit_card_number;
         this.credit_card_name = response.data[0].credit_card_full_name;

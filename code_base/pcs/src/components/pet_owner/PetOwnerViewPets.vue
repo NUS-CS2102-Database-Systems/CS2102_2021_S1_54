@@ -150,9 +150,12 @@ export default {
           };
 
           axios
-            .post("/pet-owners/delete-pet-information", {
-              toDelete: info_delete,
-            })
+            .post(
+              "https://pet-care-service.herokuapp.com/pet-owners/delete-pet-information",
+              {
+                toDelete: info_delete,
+              }
+            )
             .then((response) => {
               if (response.data[0].exists == "f") {
                 Swal.fire({
@@ -176,9 +179,12 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-pet-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-pet-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         let length = response.data.length;
         for (let i = 0; i < length; i++) {

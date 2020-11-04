@@ -24,7 +24,8 @@ async function get_caretakers_information(req, res) {
 
     const result = await client.query(
       `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, phone, email, address, 
-      average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN caretaker;`
+      average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN caretaker 
+      order by random() limit 20;`
     );
 
     res.setHeader("content-type", "application/json");
@@ -83,8 +84,6 @@ async function get_specific_caretakers_information(req, res) {
 
       if (date_from != null && date_to != null) {
         let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}')) OR (start_date BETWEEN date('${date_from}') AND 
         date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
         date('${date_to}'))`;
 
@@ -368,8 +367,6 @@ async function get_specific_caretakers_information(req, res) {
       if (date_from != null && date_to != null) {
         let add_dates_requested_full_time = ` (start_date NOT BETWEEN date('${date_from}') AND 
         date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}')) OR (start_date BETWEEN date('${date_from}') AND 
-        date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
         date('${date_to}'))`;
 
         let add_dates_requested_part_time =
@@ -563,110 +560,6 @@ async function get_specific_caretakers_information(req, res) {
         res.send(JSON.stringify(caretakerObject));
       });
     }
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-}
-
-async function get_ongoing_jobs_information(req, res) {
-  try {
-    const client = await pool.connect();
-    const username = req.body.toGet.username;
-
-    const result = await client.query(
-      `SELECT *
-      FROM users u INNER JOIN bid_transction bt ON u.username = bt.cusername 
-      WHERE bt.pusername = '${username}' AND 
-      job_start_datetime <= current_timestamp AND 
-      job_end_datetime >= current_timestamp;`
-    );
-
-    res.setHeader("content-type", "application/json");
-    res.send(JSON.stringify(result.rows));
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-}
-
-async function get_upcoming_jobs_information(req, res) {
-  try {
-    const client = await pool.connect();
-    const username = req.body.toGet.username;
-
-    const result = await client.query(
-      `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
-      job_start_datetime > current_timestamp;`
-    );
-
-    res.setHeader("content-type", "application/json");
-    res.send(JSON.stringify(result.rows));
-
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-}
-
-async function get_specific_upcoming_jobs_information(req, res) {
-  try {
-    const client = await pool.connect();
-    const username = req.body.toGet.username;
-    const start_date = req.body.toGet.dates[0];
-    const end_date = req.body.toGet.dates[1];
-    let pet_names = req.body.toGet.animal_names;
-    let query = "";
-
-    if (start_date != null && pet_names != null) {
-      if (pet_names.includes(",")) {
-        query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
-        job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
-        job_end_datetime BETWEEN '${start_date}' AND '${end_date}' AND (`;
-        let pet_names_split = pet_names.split(",");
-        let length = pet_names_split.length;
-        for (let i = 0; i < length; i++) {
-          query += `pet_name = '${pet_names_split[i]}' OR `;
-        }
-        query = query.slice(0, -4);
-        query += `);`;
-      } else {
-        query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
-        job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
-        job_end_datetime BETWEEN '${start_date}' AND '${end_date}' AND pet_name = '${pet_names}';`;
-      }
-    } else if (start_date != null && pet_names == null) {
-      query = `SELECT * FROM bid_transction WHERE pusername = '${username}' AND 
-      job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
-      job_end_datetime BETWEEN '${start_date}' AND '${end_date}';`;
-    } else if (start_date == null && pet_names != null) {
-      if (pet_names.includes(",")) {
-        query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
-        job_start_datetime > current_timestamp AND (`;
-        let pet_names_split = pet_names.split(",");
-        let length = pet_names_split.length;
-        for (let i = 0; i < length; i++) {
-          query += `pet_name = '${pet_names_split[i]}' OR `;
-        }
-        query = query.slice(0, -4);
-        query += `);`;
-      } else {
-        query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
-        job_start_datetime > current_timestamp AND pet_name = '${pet_names}';`;
-      }
-    } else {
-      query = `SELECT * FROM bid_transction WHERE pusername = '${username}' AND 
-        job_start_datetime > current_timestamp;`;
-    }
-
-    const result = await client.query(query);
-
-    res.setHeader("content-type", "application/json");
-    res.send(JSON.stringify(result.rows));
-
     client.release();
   } catch (err) {
     console.error(err);
