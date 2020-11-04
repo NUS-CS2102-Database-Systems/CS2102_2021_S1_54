@@ -219,7 +219,7 @@ export default {
         this.length_odd = 0;
         this.length_even = 0;
         let length = response.data.length;
-        console.log(response.data[0]);
+        console.log(response.data);
         for (let i = 0; i < length; i++) {
           if (i % 2 == 0) {
             this.pet_name_odd.push(response.data[i].pet_name);
@@ -265,13 +265,13 @@ export default {
             this.pet_gender_even.push(response.data[i].gender);
             this.pet_breed_even.push(response.data[i].breed);
             this.type_of_animal_even.push(response.data[i].type_of_animal);
-            if (response.data[i].med_hist == "null") {
+            if (response.data[i].med_hist == null) {
               this.pet_med_hist_even.push("-");
             } else {
               this.pet_med_hist_even.push(response.data[i].med_hist);
             }
 
-            if (response.data[i].special_req == "null") {
+            if (response.data[i].special_req == null) {
               this.pet_special_req_even.push("-");
             } else {
               this.pet_special_req_even.push(response.data[i].special_req);

@@ -149,7 +149,7 @@
       </v-row>
       <template v-if="have_data && loaded">
         <v-col class="mx-auto">
-          <v-list v-for="i in caretaker_username_odd" :key="i">
+          <v-list v-for="i in length_odd" :key="i">
             <v-row>
               <v-card width="35%">
                 <v-card-title> {{ caretaker_username_odd[i] }} </v-card-title>
@@ -161,22 +161,24 @@
                   Place a Bid
                 </v-btn>
                 <v-card-text>
-                  Name: {{ caretaker_name_odd[i] }} <br />
-                  Date of Birth: {{ caretaker_date_of_birth_odd[i] }} <br />
-                  Age: {{ caretaker_age_odd[i] }} <br />
-                  Gender: {{ caretaker_gender_odd[i] }} <br />
-                  Years of Experience: {{ caretaker_years_exp_odd[i] }} <br />
-                  Phone: {{ caretaker_phone_odd[i] }} <br />
-                  Email: {{ caretaker_email_odd[i] }}
-                  <br />
-                  Address: {{ caretaker_address_odd[i] }}
-                  <br />
-                  Average Rating: {{ caretaker_avg_rating_odd[i] }} <br />
-                  Can Take Care of:
-                  <v-list v-for="i in caretaker_take_care_animals_odd" :key="i">
-                    {{ caretaker_take_care_animals_odd[i] }}
+                  <p style="color:black">
+                    Name: {{ caretaker_name_odd[i] }} <br />
+                    Date of Birth: {{ caretaker_date_of_birth_odd[i] }} <br />
+                    Age: {{ caretaker_age_odd[i] }} <br />
+                    Gender: {{ caretaker_gender_odd[i] }} <br />
+                    Years of Experience: {{ caretaker_years_exp_odd[i] }} <br />
+                    Phone: {{ caretaker_phone_odd[i] }} <br />
+                    Email: {{ caretaker_email_odd[i] }}
                     <br />
-                  </v-list>
+                    Address: {{ caretaker_address_odd[i] }}
+                    <br />
+                    Average Rating: {{ caretaker_avg_rating_odd[i] }} <br />
+                    Can Take Care of: {{ caretaker_take_care_animals_odd[i] }}
+                    <!-- <v-list v-for="i in animals_length_odd" :key="i">
+                      {{ caretaker_take_care_animals_odd[i] }}
+                      <br />
+                    </v-list> -->
+                  </p>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -184,7 +186,7 @@
         </v-col>
         <v-spacer />
         <v-col class="mx-auto">
-          <v-list v-for="i in caretaker_username_even" :key="i">
+          <v-list v-for="i in length_even" :key="i">
             <v-row>
               <v-card width="35%">
                 <v-card-title> {{ caretaker_username_even[i] }} </v-card-title>
@@ -196,25 +198,25 @@
                   Place a Bid
                 </v-btn>
                 <v-card-text>
-                  Name: {{ caretaker_name_even[i] }} <br />
-                  Date of Birth: {{ caretaker_date_of_birth_even[i] }} <br />
-                  Age: {{ caretaker_age_even[i] }} <br />
-                  Gender: {{ caretaker_gender_even[i] }} <br />
-                  Years of Experience: {{ caretaker_years_exp_even[i] }} <br />
-                  Phone: {{ caretaker_phone_even[i] }} <br />
-                  Email: {{ caretaker_email_even[i] }}
-                  <br />
-                  Address: {{ caretaker_address_even[i] }}
-                  <br />
-                  Average Rating: {{ caretaker_avg_rating_even[i] }} <br />
-                  Can Take Care of:
-                  <v-list
-                    v-for="i in caretaker_take_care_animals_even"
-                    :key="i"
-                  >
-                    {{ caretaker_take_care_animals_even[i] }}
+                  <p style="color:black">
+                    Name: {{ caretaker_name_even[i] }} <br />
+                    Date of Birth: {{ caretaker_date_of_birth_even[i] }} <br />
+                    Age: {{ caretaker_age_even[i] }} <br />
+                    Gender: {{ caretaker_gender_even[i] }} <br />
+                    Years of Experience: {{ caretaker_years_exp_even[i] }}
                     <br />
-                  </v-list>
+                    Phone: {{ caretaker_phone_even[i] }} <br />
+                    Email: {{ caretaker_email_even[i] }}
+                    <br />
+                    Address: {{ caretaker_address_even[i] }}
+                    <br />
+                    Average Rating: {{ caretaker_avg_rating_even[i] }} <br />
+                    Can Take Care of: {{ caretaker_take_care_animals_even[i] }}
+                    <!-- <v-list v-for="i in animals_length_even" :key="i">
+                      {{ caretaker_take_care_animals_even[i] }}
+                      <br />
+                    </v-list> -->
+                  </p>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -302,6 +304,10 @@ export default {
     price_to: null,
     have_data: true,
     loaded: false,
+    length_even: 0,
+    length_odd: 0,
+    animals_length_odd: 0,
+    animals_length_even: 0,
     caretaker_username_even: [],
     caretaker_name_even: [],
     caretaker_age_even: [],
@@ -547,6 +553,7 @@ export default {
             }
           )
           .then((response) => {
+            console.log(response.data);
             this.caretaker_username_odd = [];
             this.caretaker_name_odd = [];
             this.caretaker_age_odd = [];
@@ -567,6 +574,8 @@ export default {
             this.caretaker_avg_rating_even = [];
             this.caretaker_years_exp_even = [];
             this.caretaker_take_care_animals_even = [];
+            this.length_even = 0;
+            this.length_odd = 0;
             this.loaded = false;
             this.have_data = false;
             console.log("Axios");
@@ -597,6 +606,7 @@ export default {
 
               for (let i = 0; i < data_received.length; i++) {
                 if (i % 2 == 0) {
+                  this.length_odd += 1;
                   this.caretaker_username_odd.push(data_received[i].username);
                   this.caretaker_name_odd.push(response.data[i].name);
                   let age =
@@ -612,6 +622,7 @@ export default {
                   );
                   this.caretaker_gender_odd.push(data_received[i].gender);
                   this.caretaker_phone_odd.push(data_received[i].phone);
+                  this.caretaker_email_odd.push(response.data[i].email);
                   this.caretaker_address_odd.push(data_received[i].address);
                   this.caretaker_avg_rating_odd.push(
                     data_received[i].average_rating
@@ -645,8 +656,10 @@ export default {
                         pets_can.push(price);
                       }
                       this.caretaker_take_care_animals_odd.push(pets_can);
+                      this.animals_length_odd += 1;
                     });
                 } else {
+                  this.length_even += 1;
                   this.caretaker_username_even.push(data_received[i].username);
                   this.caretaker_name_even.push(response.data[i].name);
                   let age =
@@ -662,6 +675,7 @@ export default {
                   );
                   this.caretaker_gender_even.push(data_received[i].gender);
                   this.caretaker_phone_even.push(data_received[i].phone);
+                  this.caretaker_email_even.push(response.data[i].email);
                   this.caretaker_address_even.push(data_received[i].address);
                   this.caretaker_avg_rating_even.push(
                     data_received[i].average_rating
@@ -694,6 +708,7 @@ export default {
                         pets_can.push(price);
                       }
                       this.caretaker_take_care_animals_even.push(pets_can);
+                      this.animals_length_even += 1;
                     });
                 }
               }
@@ -719,6 +734,7 @@ export default {
           this.have_data = true;
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
+              this.length_odd += 1;
               this.caretaker_username_odd.push(response.data[i].username);
               this.caretaker_name_odd.push(response.data[i].name);
               let age =
@@ -734,11 +750,19 @@ export default {
               );
               this.caretaker_gender_odd.push(response.data[i].gender);
               this.caretaker_phone_odd.push(response.data[i].phone);
+              this.caretaker_email_odd.push(response.data[i].email);
               this.caretaker_address_odd.push(response.data[i].address);
               this.caretaker_avg_rating_odd.push(
                 response.data[i].average_rating
               );
-              this.caretaker_years_exp_odd.push(response.data[i].years_exp);
+              let years_exp =
+                response.data[i].years_exp.years +
+                " years " +
+                response.data[i].years_exp.months +
+                " months " +
+                response.data[i].years_exp.days +
+                " days";
+              this.caretaker_years_exp_odd.push(years_exp);
 
               const get_info = {
                 username: response.data[i].username,
@@ -760,8 +784,10 @@ export default {
                     pets_can.push(price);
                   }
                   this.caretaker_take_care_animals_odd.push(pets_can);
+                  this.animals_length_odd += 1;
                 });
             } else {
+              this.length_even += 1;
               this.caretaker_username_even.push(response.data[i].username);
               this.caretaker_name_even.push(response.data[i].name);
               let age =
@@ -777,11 +803,19 @@ export default {
               );
               this.caretaker_gender_even.push(response.data[i].gender);
               this.caretaker_phone_even.push(response.data[i].phone);
+              this.caretaker_email_even.push(response.data[i].email);
               this.caretaker_address_even.push(response.data[i].address);
               this.caretaker_avg_rating_even.push(
                 response.data[i].average_rating
               );
-              this.caretaker_years_exp_even.push(response.data[i].years_exp);
+              let years_exp =
+                response.data[i].years_exp.years +
+                " years " +
+                response.data[i].years_exp.months +
+                " months " +
+                response.data[i].years_exp.days +
+                " days";
+              this.caretaker_years_exp_even.push(years_exp);
               const get_pet_info = {
                 username: response.data[i].username,
               };
@@ -801,11 +835,14 @@ export default {
                     pets_can.push(price);
                   }
                   this.caretaker_take_care_animals_even.push(pets_can);
+                  this.animals_length_even += 1;
                 });
             }
           }
         }
       });
+    console.log(this.caretaker_take_care_animals_odd);
+    console.log(this.caretaker_username_even);
     this.loaded = true;
   },
 };

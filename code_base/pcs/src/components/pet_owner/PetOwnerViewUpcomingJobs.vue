@@ -250,9 +250,12 @@ export default {
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/get-specific-upcoming-jobs-information", {
-            toGet: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/get-specific-upcoming-jobs-information",
+            {
+              toGet: jsonDataToSend,
+            }
+          )
           .then((response) => {
             this.id_odd = [];
             this.caretaker_odd = [];
@@ -282,8 +285,16 @@ export default {
                   this.id_odd.push(i + 1);
                   this.caretaker_odd.push(response.data[i].cusername);
                   this.pet_odd.push(response.data[i].pet_name);
-                  this.job_start_odd.push(response.data[i].job_start_datetime);
-                  this.job_end_odd.push(response.data[i].job_end_datetime);
+                  let job_start =
+                    response.data[i].job_start_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_start_datetime.split("T")[1];
+                  this.job_start_odd.push(job_start);
+                  let job_end =
+                    response.data[i].job_end_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_end_datetime.split("T")[1];
+                  this.job_end_odd.push(job_end);
                   this.start_transfer_method_odd.push(
                     response.data[i].start_transfer_method
                   );
@@ -295,8 +306,16 @@ export default {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].cusername);
                   this.pet_even.push(response.data[i].pet_name);
-                  this.job_start_even.push(response.data[i].job_start_datetime);
-                  this.job_end_even.push(response.data[i].job_end_datetime);
+                  let job_start =
+                    response.data[i].job_start_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_start_datetime.split("T")[1];
+                  this.job_start_even.push(job_start);
+                  let job_end =
+                    response.data[i].job_end_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_end_datetime.split("T")[1];
+                  this.job_end_even.push(job_end);
                   this.start_transfer_method_even.push(
                     response.data[i].start_transfer_method
                   );
@@ -319,9 +338,12 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-upcoming-jobs-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-upcoming-jobs-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
@@ -333,8 +355,16 @@ export default {
               this.id_odd.push(i + 1);
               this.caretaker_odd.push(response.data[i].cusername);
               this.pet_odd.push(response.data[i].pet_name);
-              this.job_start_odd.push(response.data[i].job_start_datetime);
-              this.job_end_odd.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_odd.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
               );
@@ -346,8 +376,16 @@ export default {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].cusername);
               this.pet_even.push(response.data[i].pet_name);
-              this.job_start_even.push(response.data[i].job_start_datetime);
-              this.job_end_even.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_even.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_even.push(job_end);
               this.start_transfer_method_even.push(
                 response.data[i].start_transfer_method
               );

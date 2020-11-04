@@ -141,9 +141,12 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-ongoing-jobs-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-ongoing-jobs-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
@@ -158,8 +161,16 @@ export default {
               this.caretaker_phone_odd.push(response.data[i].phone);
               this.caretaker_address_odd.push(response.data[i].address);
               this.pet_odd.push(response.data[i].pet_name);
-              this.job_start_odd.push(response.data[i].job_start_datetime);
-              this.job_end_odd.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_odd.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
               );
@@ -174,8 +185,16 @@ export default {
               this.caretaker_phone_even.push(response.data[i].phone);
               this.caretaker_address_even.push(response.data[i].address);
               this.pet_even.push(response.data[i].pet_name);
-              this.job_start_even.push(response.data[i].job_start_datetime);
-              this.job_end_even.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_even.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_even.push(job_end);
               this.start_transfer_method_even.push(
                 response.data[i].start_transfer_method
               );

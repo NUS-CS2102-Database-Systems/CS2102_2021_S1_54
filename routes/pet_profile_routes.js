@@ -68,13 +68,14 @@ async function add_pet_information(req, res) {
 
     await client.query(insert_query);
 
-    const result = await client.query(
-      `SELECT EXISTS (SELECT 1 FROM pet WHERE username = '${username}' 
-        AND pet_name = '${pet_name}') AS exists;`
-    );
+    // const result = await client.query(
+    //   `SELECT EXISTS (SELECT 1 FROM pet WHERE username = '${username}'
+    //     AND pet_name = '${pet_name}') AS exists;`
+    // );
 
     res.setHeader("content-type", "application/json");
-    res.send(JSON.stringify(result.rows));
+    // res.send(JSON.stringify(result.rows));
+    res.sendStatus(200);
 
     client.release();
   } catch (err) {

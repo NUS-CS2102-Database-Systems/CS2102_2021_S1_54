@@ -195,6 +195,8 @@ async function get_specific_caretakers_information(req, res) {
         }
       }
 
+      request_full_time += ";";
+
       await client.query(request_full_time).then((resp) => {
         let arr = [];
         let len = resp.rows.length;
