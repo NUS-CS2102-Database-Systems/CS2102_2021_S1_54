@@ -184,13 +184,30 @@ export default {
         }
       )
       .then((response) => {
-        this.pet_age = response.data[0].pet_age;
-        this.pet_birth_date = response.data[0].birth_date;
+        this.pet_age =
+          response.data[0].pet_age.years +
+          " years " +
+          response.data[0].pet_age.months +
+          " months " +
+          response.data[0].pet_age.days +
+          " days";
+        this.pet_birth_date = response.data[0].birth_date
+          .toString()
+          .split("T")[0];
         this.pet_gender = response.data[0].gender;
         this.pet_breed = response.data[0].breed;
         this.pet_type_of_animal = response.data[0].type_of_animal;
-        this.pet_med_hist = response.data[0].med_hist;
-        this.pet_special_req = response.data[0].special_req;
+        if (response.data[0].med_hist == "null") {
+          this.pet_med_hist = null;
+        } else {
+          this.pet_med_hist = response.data[0].med_hist;
+        }
+
+        if (response.data[0].special_req == "null") {
+          this.pet_special_req = null;
+        } else {
+          this.pet_special_req = response.data[0].special_req;
+        }
       });
     this.loaded = true;
   },

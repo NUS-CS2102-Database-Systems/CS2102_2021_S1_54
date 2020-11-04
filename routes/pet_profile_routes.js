@@ -51,18 +51,31 @@ async function add_pet_information(req, res) {
     const med_hist = req.body.toAdd.med_hist;
     const special_req = req.body.toAdd.special_req;
 
+    if (med_hist == null) {
+      med_hist = null;
+    } else {
+      med_hist = "'" + med_hist + "'";
+    }
+
+    if (special_req == null) {
+      special_req = null;
+    } else {
+      special_req = "'" + special_req + "'";
+    }
+
     const insert_query = `INSERT INTO pet VALUES ('${username}', '${pet_name}', '${birth_date}', 
-    '${breed}', '${type_of_animal}', '${gender}', '${med_hist}', '${special_req}');`;
+    '${breed}', '${type_of_animal}', '${gender}', ${med_hist}, ${special_req});`;
 
     await client.query(insert_query);
 
     const result = await client.query(
-      `SELECT EXISTS (SELECT 1 FROM pet WHERE username = '${username}' 
+      `SELECT EXISTS (SELECT 1 FROM pet WHERE username = '${username}'
         AND pet_name = '${pet_name}') AS exists;`
     );
 
     res.setHeader("content-type", "application/json");
     res.send(JSON.stringify(result.rows));
+    // res.sendStatus(200);
 
     client.release();
   } catch (err) {
@@ -123,8 +136,20 @@ async function edit_specific_pet_information(req, res) {
     const pet_med_hist = req.body.toEdit.med_hist;
     const pet_special_req = req.body.toEdit.special_req;
 
-    const edit_pet_details = `UPDATE pet SET med_hist = '${pet_med_hist}', 
-      special_req = '${pet_special_req}' WHERE username = '${username}' 
+    if (pet_med_hist == null) {
+      pet_med_hist = null;
+    } else {
+      pet_med_hist = "'" + pet_med_hist + "'";
+    }
+
+    if (pet_special_req == null) {
+      pet_special_req = null;
+    } else {
+      pet_special_req = "'" + pet_special_req + "'";
+    }
+
+    const edit_pet_details = `UPDATE pet SET med_hist = ${pet_med_hist}, 
+      special_req = ${pet_special_req} WHERE username = '${username}' 
       AND pet_name = '${pet_name}';`;
 
     await client.query(edit_pet_details);

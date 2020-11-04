@@ -66,33 +66,40 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_odd[i] }} <br />
-                  Pet Name: {{ pet_odd[i] }} <br />
-                  Job Started: {{ job_start_odd[i] }} <br />
-                  Job Ended: {{ job_end_odd[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_odd[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
-                  <br />
-                  Amount: {{ amount_odd[i] }} <br />
-                  Rating: {{ rating_odd[i] }} <br />
-                  Review: {{ review_odd[i] }} <br />
+                  <p style="color:black">
+                    Caretaker Username: {{ caretaker_odd[i] }} <br />
+                    Pet Name: {{ pet_odd[i] }} <br />
+                    Job Started: {{ job_start_odd[i] }} <br />
+                    Job Ended: {{ job_end_odd[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_odd[i] }}
+                    <br />
+                    Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
+                    <br />
+                    Amount: {{ amount_odd[i] }} <br />
+                    Rating: {{ rating_odd[i] }} <br />
+                    Review: {{ review_odd[i] }} <br />
+                  </p>
                 </v-card-text>
                 <v-btn elevation="2">
-                  <router-link tag="span" 
-                    :to="{ path: '/pet-owners/submit-review/', 
+                  <router-link
+                    tag="span"
+                    :to="{
+                      path: '/pet-owners/submit-review/',
                       query: {
                         cusername: caretaker_odd[i],
                         pusername: username,
-                        pet_name: pet_odd[i], 
-                        job_start_datetime: job_start_odd[i], 
-                        job_end_datetime: job_end_odd[i], 
+                        pet_name: pet_odd[i],
+                        job_start_datetime: job_start_odd[i],
+                        job_end_datetime: job_end_odd[i],
                         rating: rating_odd[i],
-                        review: review_odd[i]
-                      }}">
+                        review: review_odd[i],
+                      },
+                    }"
+                  >
                     Submit/Edit Review
                   </router-link>
-                </v-btn> 
+                </v-btn>
               </v-card>
             </v-row>
           </v-list>
@@ -104,33 +111,41 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_even[i] }} <br />
-                  Pet Name: {{ pet_even[i] }} <br />
-                  Job Started: {{ job_start_even[i] }} <br />
-                  Job Ended: {{ job_end_even[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_even[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_even[i] }}
-                  <br />
-                  Amount: {{ amount_even[i] }} <br />
-                  Rating: {{ rating_even[i] }} <br />
-                  Review: {{ review_even[i] }} <br />
+                  <p style="color:black">
+                    Caretaker Username: {{ caretaker_even[i] }} <br />
+                    Pet Name: {{ pet_even[i] }} <br />
+                    Job Started: {{ job_start_even[i] }} <br />
+                    Job Ended: {{ job_end_even[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_even[i] }}
+                    <br />
+                    Transfer Method (Drop Off):
+                    {{ end_transfer_method_even[i] }}
+                    <br />
+                    Amount: {{ amount_even[i] }} <br />
+                    Rating: {{ rating_even[i] }} <br />
+                    Review: {{ review_even[i] }} <br />
+                  </p>
                 </v-card-text>
                 <v-btn elevation="2">
-                  <router-link tag="span" 
-                    :to="{ path: '/pet-owners/submit-review/', 
+                  <router-link
+                    tag="span"
+                    :to="{
+                      path: '/pet-owners/submit-review/',
                       query: {
                         cusername: caretaker_odd[i],
                         pusername: username,
-                        pet_name: pet_odd[i], 
-                        job_start_datetime: job_start_odd[i], 
-                        job_end_datetime: job_end_odd[i], 
+                        pet_name: pet_odd[i],
+                        job_start_datetime: job_start_odd[i],
+                        job_end_datetime: job_end_odd[i],
                         rating: rating_odd[i],
-                        review: review_odd[i]
-                      }}">
+                        review: review_odd[i],
+                      },
+                    }"
+                  >
                     Submit/Edit Review
                   </router-link>
-                </v-btn> 
+                </v-btn>
               </v-card>
             </v-row>
           </v-list>
@@ -279,9 +294,12 @@ export default {
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/pet-owners/get-specific-past-jobs-information", {
-            toGet: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/get-specific-past-jobs-information",
+            {
+              toGet: jsonDataToSend,
+            }
+          )
           .then((response) => {
             this.id_odd = [];
             this.caretaker_odd = [];
@@ -310,13 +328,22 @@ export default {
               this.loaded = true;
             } else {
               this.have_data = true;
+              console.log(response.data);
               for (let i = 0; i < length; i++) {
                 if (i % 2 == 0) {
                   this.id_odd.push(i + 1);
                   this.caretaker_odd.push(response.data[i].username);
                   this.pet_odd.push(response.data[i].pet_name);
-                  this.job_start_odd.push(response.data[i].job_start_datetime);
-                  this.job_end_odd.push(response.data[i].job_end_datetime);
+                  let job_start =
+                    response.data[i].job_start_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_start_datetime.split("T")[1];
+                  this.job_start_odd.push(job_start);
+                  let job_end =
+                    response.data[i].job_end_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_end_datetime.split("T")[1];
+                  this.job_end_odd.push(job_end);
                   this.start_transfer_method_odd.push(
                     response.data[i].start_transfer_method
                   );
@@ -330,8 +357,16 @@ export default {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].username);
                   this.pet_even.push(response.data[i].pet_name);
-                  this.job_start_even.push(response.data[i].job_start_datetime);
-                  this.job_end_even.push(response.data[i].job_end_datetime);
+                  let job_start =
+                    response.data[i].job_start_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_start_datetime.split("T")[1];
+                  this.job_start_even.push(job_start);
+                  let job_end =
+                    response.data[i].job_end_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_end_datetime.split("T")[1];
+                  this.job_end_even.push(job_end);
                   this.start_transfer_method_even.push(
                     response.data[i].start_transfer_method
                   );
@@ -357,9 +392,27 @@ export default {
     };
 
     await axios
-      .post("/pet-owners/get-past-jobs-information", {
+      .post("https://pet-care-service.herokuapp.com/pet-owners/get-pet-names", {
         toGet: get_info,
       })
+      .then((response) => {
+        let length = response.data.length;
+        for (var i = 0; i < length; i++) {
+          let arr = {
+            name: response.data[i].pet_name,
+            value: response.data[i].pet_name,
+          };
+          this.pet_names.push(arr);
+        }
+      });
+
+    await axios
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/get-past-jobs-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
@@ -371,8 +424,16 @@ export default {
               this.id_odd.push(i + 1);
               this.caretaker_odd.push(response.data[i].username);
               this.pet_odd.push(response.data[i].pet_name);
-              this.job_start_odd.push(response.data[i].job_start_datetime);
-              this.job_end_odd.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_odd.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
               );
@@ -386,8 +447,16 @@ export default {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].username);
               this.pet_even.push(response.data[i].pet_name);
-              this.job_start_even.push(response.data[i].job_start_datetime);
-              this.job_end_even.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_even.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_even.push(job_end);
               this.start_transfer_method_even.push(
                 response.data[i].start_transfer_method
               );
