@@ -291,8 +291,7 @@ export default {
           )
           .then((response) => {
             console.log(response.status);
-            // if (response.data[0].exists == true)
-            if (response.status == 200) {
+            if (response.data[0].exists == true) {
               Swal.fire({
                 icon: "success",
                 title: "Added!",
@@ -300,6 +299,8 @@ export default {
                   this.pet_name + "'s information has been added successfully.",
               });
               window.location.href = constants.pet_owner_view_pet_info;
+            } else {
+              console.log("Error!");
             }
           });
       }
