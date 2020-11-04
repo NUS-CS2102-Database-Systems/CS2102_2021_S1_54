@@ -170,7 +170,7 @@ async function get_specific_upcoming_jobs_information(req, res) {
         AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
         p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
         FROM (users u INNER JOIN bid_transaction bt ON u.username = bt.pusername) NATURAL JOIN pet p 
-        WHERE bt.cusername = '${username}' AND 
+        WHERE bt.cusername = '${username}' AND bt.is_successful_bid = 'true' AND
         bt.job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
         bt.job_end_datetime BETWEEN '${start_date}' AND '${end_date}';`;
     } else {
@@ -182,7 +182,7 @@ async function get_specific_upcoming_jobs_information(req, res) {
         AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
         p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
         FROM (users u INNER JOIN bid_transaction bt ON u.username = bt.pusername) NATURAL JOIN pet p 
-        WHERE bt.cusername = '${username}' AND 
+        WHERE bt.cusername = '${username}' AND bt.is_successful_bid = 'true' AND
         bt.job_start_datetime > current_timestamp;`;
     }
 

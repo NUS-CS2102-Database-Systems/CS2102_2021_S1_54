@@ -25,4 +25,3 @@ app.get("/pet-care/pet-owners?username=${props.username}", async function (
     console.error(err.stack);
   }
 });
-  

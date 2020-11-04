@@ -23,7 +23,7 @@ var appRouter = function (app) {
   app.post(
     "/pet-owners/edit-credit-card-information",
     edit_credit_card_information
-  );
+  )
   app.post("/pet-owners/get-login-information", get_login_information);
   app.post("/pet-owners/edit-login-information", edit_login_information);
   app.post("/pet-owners/get-personal-information", get_personal_information);

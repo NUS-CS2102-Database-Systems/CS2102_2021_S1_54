@@ -37,7 +37,7 @@
                 <v-text-field
                   :label="dateField.label2"
                   v-model="dateField.value2"
-                  value="dateField.value1"
+                  value="dateField.value2"
                   readonly
                 />
               </template>

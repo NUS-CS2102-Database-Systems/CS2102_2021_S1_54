@@ -291,7 +291,8 @@ export default {
               Swal.fire({
                 icon: "success",
                 title: "Added!",
-                text: this.pet_name + "'s information has been added successfully.",
+                text:
+                  this.pet_name + "'s information has been added successfully.",
               });
               window.location.href = constants.pet_owner_view_pet_info;
             }

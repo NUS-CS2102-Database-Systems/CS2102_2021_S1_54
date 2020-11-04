@@ -157,7 +157,7 @@ export default {
       }
 
       if (this.credit_card_num != null) {
-        if (this.credit_card_num.match(/^[0-9]{16,19}$/)) {
+        if (this.credit_card_num.match(/^[0-9]{13,19}$/)) {
           var card_num = '"' + this.credit_card_num + '"';
         } else {
           Swal.fire({
