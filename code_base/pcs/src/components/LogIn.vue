@@ -69,14 +69,26 @@ export default {
       console.log(this.username);
       console.log(this.type);
 
-      const authResponse = await axios({
-        method: "post",
-        url: "https://pet-care-service.herokuapp.com/users/authenticate",
-        data: {
-          username: this.username,
-          password: this.password,
-        },
+      var authResponse = [];
+      if (this.type === "pcs-admins") {
+        authResponse = await axios({
+          method: "post",
+          url: "https://pet-care-service.herokuapp.com/admins/authenticate",
+          data: {
+            username: this.username,
+            password: this.password,
+          },
+        })
+      } else {
+        authResponse = await axios({
+          method: "post",
+          url: "https://pet-care-service.herokuapp.com/users/authenticate",
+          data: {
+            username: this.username,
+            password: this.password,
+          },
       });
+      }
 
       const loggedIn = authResponse.data.length === 1;
       if (!loggedIn) {
@@ -104,6 +116,13 @@ export default {
           this.$router.push({
             path: "full-time-caretakers",
             query: { ft_caretaker_username: username_logged_in },
+          });
+        } else if (this.type == "pcsAdmin") {
+          document.cookie = "admin_username=" + username_logged_in;
+          console.log("cookie: " + document.cookie);
+          this.$router.push({
+            path: "pcs-admins",
+            query: { admin_username: username_logged_in },
           });
         }
       }
