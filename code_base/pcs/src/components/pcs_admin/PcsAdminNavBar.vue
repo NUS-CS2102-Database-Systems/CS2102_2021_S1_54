@@ -84,7 +84,7 @@ export default {
         {
           title: "Log Out",
           icon: mdiLogout,
-          route: "/log-out",
+          route: "/",
         },
       ],
     };
