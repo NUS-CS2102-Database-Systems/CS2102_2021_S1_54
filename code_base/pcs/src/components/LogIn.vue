@@ -45,6 +45,7 @@
 
 <script>
 // import * as constants from "./constants";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
@@ -70,7 +71,7 @@ export default {
       console.log(this.type);
 
       var authResponse = [];
-      if (this.type === "pcs-admins") {
+      if (this.type === "pcsAdmin") {
         authResponse = await axios({
           method: "post",
           url: "https://pet-care-service.herokuapp.com/admins/authenticate",
@@ -92,6 +93,11 @@ export default {
 
       const loggedIn = authResponse.data.length === 1;
       if (!loggedIn) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops",
+          text: "Your username or password is wrong. Please try again.",
+        });
         return;
       } else {
         const username_logged_in = this.username;
@@ -125,6 +131,12 @@ export default {
             query: { admin_username: username_logged_in },
           });
         }
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "You've logged in successfully!",
+        });
       }
 
       // this.$emit("log-in", user);
