@@ -328,6 +328,7 @@ export default {
               this.loaded = true;
             } else {
               this.have_data = true;
+              console.log(response.data);
               for (let i = 0; i < length; i++) {
                 if (i % 2 == 0) {
                   this.id_odd.push(i + 1);

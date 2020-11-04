@@ -56,8 +56,9 @@ async function get_specific_past_jobs_information(req, res) {
   try {
     const client = await pool.connect();
     const username = req.body.toGet.username;
-    const start_date = req.body.toGet.dates[0];
-    const end_date = req.body.toGet.dates[1];
+    let dates = req.body.toGet.dates.split(",");
+    const start_date = dates[0];
+    const end_date = dates[1];
     let pet_names = req.body.toGet.animal_names;
     let query = "";
 
