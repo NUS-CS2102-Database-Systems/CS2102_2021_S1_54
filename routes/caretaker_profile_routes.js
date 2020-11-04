@@ -13,6 +13,7 @@ var appRouter = function (app) {
   app.post("/caretakers/edit-login-information", edit_login_information);
   app.post("/caretakers/get-personal-information", get_personal_information);
   app.post("/caretakers/edit-personal-information", edit_personal_information);
+  app.post("/caretakers/add-can-take-care", add_can_take_care);
 };
 
 async function get_profile_information(req, res) {
@@ -134,6 +135,24 @@ async function edit_personal_information(req, res) {
     );
     res.setHeader("content-type", "application/json");
     res.send(JSON.stringify(result.rows));
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+async function add_can_take_care(req, res) {
+  try {
+    const client = await pool.connect();
+    const username = req.body.username;
+    const type_name = req.body.type_name;
+
+    await client.query(
+      `INSERT INTO can_take_care VALUES('${username}', '${type_name}');`
+    );
+
+    res.send("Added successfully!");
     client.release();
   } catch (err) {
     console.error(err);

@@ -46,8 +46,8 @@ CREATE TABLE pet (
 	breed VARCHAR NOT NULL,
 	type_of_animal VARCHAR NOT NULL REFERENCES animal_type(type_name),
 	gender VARCHAR NOT NULL, 
-	med_hist VARCHAR NOT NULL,
-	special_req VARCHAR NOT NULL,
+	med_hist VARCHAR,
+	special_req VARCHAR,
 	PRIMARY KEY (username, pet_name)
 );
 
