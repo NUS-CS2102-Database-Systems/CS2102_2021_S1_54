@@ -24,6 +24,7 @@ var appRouter = function (app) {
     "/pet-owners/get-specific-upcoming-jobs-information",
     get_specific_upcoming_jobs_information
   );
+  app.post("/pet-owners/get-pet-names", get_pet_names);
 };
 
 async function get_past_jobs_information(req, res) {
@@ -255,6 +256,24 @@ async function get_specific_upcoming_jobs_information(req, res) {
     res.setHeader("content-type", "application/json");
     res.send(JSON.stringify(result.rows));
 
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+async function get_pet_names(req, res) {
+  try {
+    const client = await pool.connect();
+    const username = req.body.toGet.username;
+
+    const result = await client.query(
+      `SELECT pet_name FROM pet WHERE username = '${username}';`
+    );
+
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify(result.rows));
     client.release();
   } catch (err) {
     console.error(err);

@@ -392,6 +392,21 @@ export default {
     };
 
     await axios
+      .post("https://pet-care-service.herokuapp.com/pet-owners/get-pet-names", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        let length = response.data.length;
+        for (var i = 0; i < length; i++) {
+          let arr = {
+            name: response.data[i].pet_name,
+            value: response.data[i].pet_name,
+          };
+          this.pet_names.push(arr);
+        }
+      });
+
+    await axios
       .post(
         "https://pet-care-service.herokuapp.com/pet-owners/get-past-jobs-information",
         {
