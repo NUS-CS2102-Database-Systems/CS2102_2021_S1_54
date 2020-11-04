@@ -7,6 +7,7 @@ import DeleteAccount from "./components/DeleteAccount";
 import PetOwnerSubmitReview from "./components/pet_owner/PetOwnerSubmitReview";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
 import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
+import PetOwnerBidCaretaker from "./components/pet_owner/PetOwnerBidCaretaker"
 import PetOwnerViewPastJobs from "./components/pet_owner/PetOwnerViewPastJobs";
 import PetOwnerViewOngoingJobs from "./components/pet_owner/PetOwnerViewOngoingJobs";
 import PetOwnerViewUpcomingJobs from "./components/pet_owner/PetOwnerViewUpcomingJobs";
@@ -37,6 +38,7 @@ import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/F
 import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
 import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
+import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
 import AdminSignUp from "./components/AdminSignUp";
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
@@ -98,6 +100,11 @@ export default new VueRouter({
       path: "/pet-owners/view-caretakers-profiles/caretaker",
       name: "PetOwnerViewCaretakerProfile",
       component: PetOwnerViewCaretakerProfile,
+    },
+    {
+      path: "/pet-owners/view-caretakers-profiles/bid",
+      name: "PetOwnerBidCaretaker",
+      component: PetOwnerBidCaretaker,
     },
     {
       path: "/pet-owners/view-my-profile",
@@ -237,6 +244,11 @@ export default new VueRouter({
       component: PcsAdminHome,
     },
     {
+      path: "/pcs-admin-total-cared-pets-per-caretaker",
+      name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
+      component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
+    },
+    {      
       path: "/admin-signup",
       name: "AdminSignUp",
       component: AdminSignUp,

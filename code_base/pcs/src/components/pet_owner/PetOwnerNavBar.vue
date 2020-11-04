@@ -11,11 +11,13 @@
         permanent
       >
         <div id="logo">
-          <img
-            :src="require('../../assets/petopia_logo_v4.png')"
-            height="100px"
-            width="256px"
-          />
+          <a href='/pet-owners'>
+            <img
+              :src="require('../../assets/petopia_logo_v4.png')"
+              height="100px"
+              width="256px"
+            />
+          </a>
           <h2
             style="
               color: white;

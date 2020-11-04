@@ -18,7 +18,7 @@ async function get_all_admins(req, res) {
         const result = await client.query("SELECT * FROM pcs_administrator;");
 
         res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify(result.rows));
+        res.send(JSON.stringify(result.rows))
         client.release();
     } catch (err) {
         console.error(err);
