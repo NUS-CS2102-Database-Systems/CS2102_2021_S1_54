@@ -180,11 +180,17 @@
                     </v-list> -->
                     <br />
                     <v-btn elevation="2">
-                      <router-link tag="span" 
-                        :to="{ path: '/pet-owners/view-caretaker-reviews/' + caretaker_username_odd[i]}">
+                      <router-link
+                        tag="span"
+                        :to="{
+                          path:
+                            '/pet-owners/view-caretaker-reviews/' +
+                            caretaker_username_odd[i],
+                        }"
+                      >
                         View Reviews
                       </router-link>
-                    </v-btn> 
+                    </v-btn>
                   </p>
                 </v-card-text>
               </v-card>
@@ -225,11 +231,17 @@
                     </v-list> -->
                     <br />
                     <v-btn elevation="2">
-                      <router-link tag="span" 
-                        :to="{ path: '/pet-owners/view-caretaker-reviews/' + caretaker_username_even[i]}">
+                      <router-link
+                        tag="span"
+                        :to="{
+                          path:
+                            '/pet-owners/view-caretaker-reviews/' +
+                            caretaker_username_even[i],
+                        }"
+                      >
                         View Reviews
                       </router-link>
-                    </v-btn> 
+                    </v-btn>
                   </p>
                 </v-card-text>
               </v-card>
@@ -593,9 +605,9 @@ export default {
             this.loaded = false;
             this.have_data = false;
             console.log("Axios");
-            console.log(response.data.partTime);
-            console.log(response.data.fullTime);
-            console.log(response.data);
+            console.log("part-time: " + response.data.partTime);
+            console.log("full-time: " + response.data.fullTime);
+            console.log("All data: " + response.data);
             if (
               response.data.fullTime.length == 0 &&
               response.data.partTime.length == 0

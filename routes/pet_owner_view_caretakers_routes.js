@@ -155,7 +155,7 @@ async function get_specific_caretakers_information(req, res) {
         request_full_time = request_full_time_split_by_space.join(" ");
       }
 
-      request_full_time += "ORDER BY random(),";
+      request_full_time += " ORDER BY random(),";
 
       if (sort_by != null) {
         if (sort_by.length > 1) {
@@ -300,7 +300,7 @@ async function get_specific_caretakers_information(req, res) {
         request_part_time = request_part_time_split_by_space.join(" ");
       }
 
-      request_part_time += "ORDER BY random(),";
+      request_part_time += " ORDER BY random(),";
 
       if (sort_by != null) {
         if (sort_by.length > 1) {
@@ -492,8 +492,8 @@ async function get_specific_caretakers_information(req, res) {
         request_part_time = request_part_time_split_by_space.join(" ");
       }
 
-      request_full_time += "ORDER BY random(),";
-      request_part_time += "ORDER BY random(),";
+      request_full_time += " ORDER BY random(),";
+      request_part_time += " ORDER BY random(),";
 
       if (sort_by != null) {
         if (sort_by.length > 1) {
