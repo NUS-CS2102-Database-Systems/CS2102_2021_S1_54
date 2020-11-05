@@ -60,14 +60,24 @@ async function get_specific_caretakers_information(req, res) {
   try {
     const client = await pool.connect();
     let commitment = req.body.caretaker.commitment;
-    let date_from = req.body.caretaker.dates[0];
-    let date_to = req.body.caretaker.dates[1];
+    const dates_received = req.body.caretaker.dates;
     let rating_wanted = req.body.caretaker.rating;
     let sort_by = req.body.caretaker.order_by;
     let price_range_from = req.body.caretaker.start_price;
     let price_range_to = req.body.caretaker.end_price;
     let type_of_animal = req.body.caretaker.animal_type;
     let caretaker_username = req.body.caretaker.search_caretaker;
+    let date_from = "";
+    let date_to = "";
+
+    if (dates_received != null) {
+      let dates = dates_received.split(",");
+      date_from = dates[0];
+      date_to = dates[1];
+    } else {
+      date_from = null;
+      date_to = null;
+    }
 
     var caretakerObject = { fullTime: {}, partTime: {} };
 
