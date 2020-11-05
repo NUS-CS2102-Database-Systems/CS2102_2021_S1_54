@@ -143,6 +143,7 @@ export default {
           }
         )
         .then((response) => {
+          console.log(response.data);
           if (
             response.data[0].med_hist == this.pet_med_hist &&
             response.data[0].special_req == this.pet_special_req

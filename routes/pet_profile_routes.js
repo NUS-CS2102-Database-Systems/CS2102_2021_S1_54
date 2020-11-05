@@ -132,7 +132,7 @@ async function edit_specific_pet_information(req, res) {
   try {
     const client = await pool.connect();
     const username = req.body.toEdit.username;
-    const pet_name = req.body.toEdit.card_number;
+    const pet_name = req.body.toEdit.pet_name;
     let pet_med_hist = req.body.toEdit.med_hist;
     let pet_special_req = req.body.toEdit.special_req;
 
