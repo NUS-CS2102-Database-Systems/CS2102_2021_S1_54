@@ -207,7 +207,7 @@ async function get_specific_caretakers_information(req, res) {
 
       let req_len = request_full_time.length;
       if (request_full_time.charAt(req_len - 1) == ",") {
-        request_full_time.slice(-1);
+        request_full_time.slice(0, -1);
       }
 
       request_full_time += " LIMIT 20;";
@@ -352,7 +352,7 @@ async function get_specific_caretakers_information(req, res) {
 
       let req_len = request_part_time.length;
       if (request_part_time.charAt(req_len - 1) == ",") {
-        request_part_time.slice(-1);
+        request_part_time.slice(0, -1);
       }
 
       request_part_time += " LIMIT 20;";
@@ -565,14 +565,14 @@ async function get_specific_caretakers_information(req, res) {
 
       let req_len = request_full_time.length;
       if (request_full_time.charAt(req_len - 1) == ",") {
-        request_full_time.slice(-1);
+        request_full_time.slice(0, -1);
       }
 
       request_full_time += " LIMIT 20;";
 
       req_len = request_part_time.length;
       if (request_part_time.charAt(req_len - 1) == ",") {
-        request_part_time.slice(-1);
+        request_part_time.slice(0, -1);
       }
 
       request_part_time += " LIMIT 20;";
