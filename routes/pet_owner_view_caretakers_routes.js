@@ -563,15 +563,15 @@ async function get_specific_caretakers_information(req, res) {
         }
       }
 
-      let req_len = request_full_time.length;
-      if (request_full_time.charAt(req_len - 1) == ",") {
+      let req_len_full = request_full_time.length;
+      if (request_full_time.charAt(req_len_full - 1) == ",") {
         request_full_time = request_full_time.slice(0, -1);
       }
 
       request_full_time += " LIMIT 20;";
 
-      req_len = request_part_time.length;
-      if (request_part_time.charAt(req_len - 1) == ",") {
+      let req_len_part = request_part_time.length;
+      if (request_part_time.charAt(req_len_part - 1) == ",") {
         request_part_time = request_part_time.slice(0, -1);
       }
 
@@ -590,7 +590,7 @@ async function get_specific_caretakers_information(req, res) {
       await client.query(request_part_time).then((resp) => {
         let part_time_arr = [];
         let part_time_len = resp.rows.length;
-        for (var i = 0; i < len; i++) {
+        for (var i = 0; i < part_time_len; i++) {
           let result = resp.rows[i];
           part_time_arr.push(result);
         }

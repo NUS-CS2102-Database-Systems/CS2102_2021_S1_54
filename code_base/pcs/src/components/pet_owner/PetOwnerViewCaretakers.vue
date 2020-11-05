@@ -605,8 +605,8 @@ export default {
             this.loaded = false;
             this.have_data = false;
             console.log("Axios");
-            console.log("part-time: " + response.data.partTime);
-            console.log("full-time: " + response.data.fullTime);
+            console.log("part-time: " + response.data.partTime.length);
+            console.log("full-time: " + response.data.fullTime.length);
             console.log("All data: " + response.data);
             if (
               response.data.fullTime.length == 0 &&
