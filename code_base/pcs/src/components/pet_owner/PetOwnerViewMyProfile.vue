@@ -223,7 +223,7 @@ export default {
         }
       )
       .then((response) => {
-        console.log("inside reponse!")
+        console.log("inside response!");
         this.password = response.data[0].password;
         this.name = response.data[0].name;
         this.age =
