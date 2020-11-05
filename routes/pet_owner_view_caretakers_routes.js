@@ -25,7 +25,7 @@ async function get_caretakers_information(req, res) {
     const result = await client.query(
       `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, phone, email, address, 
       average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN caretaker 
-      order by random() limit 20;`
+      ORDER BY random() LIMIT 20;`
     );
 
     res.setHeader("content-type", "application/json");
@@ -155,15 +155,17 @@ async function get_specific_caretakers_information(req, res) {
         request_full_time = request_full_time_split_by_space.join(" ");
       }
 
+      request_full_time += "ORDER BY random(),";
+
       if (sort_by != null) {
         if (sort_by.length > 1) {
           if (sort_by[0] == "alphabetical a to z") {
-            let add_sort_alphebatically_a_to_z = " ORDER BY username ASC,";
+            let add_sort_alphebatically_a_to_z = " username ASC,";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_a_to_z;
           } else if (sort_by[0] == "alphabetical z to a") {
-            let add_sort_alphebatically_z_to_a = " ORDER BY username DESC,";
+            let add_sort_alphebatically_z_to_a = " username DESC,";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_z_to_a;
@@ -180,24 +182,22 @@ async function get_specific_caretakers_information(req, res) {
           }
         } else {
           if (sort_by == "alphabetical a to z") {
-            let add_sort_alphebatically_a_to_z_only = " ORDER BY username ASC";
+            let add_sort_alphebatically_a_to_z_only = " username ASC";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_a_to_z_only;
           } else if (sort_by == "alphabetical z to a") {
-            let add_sort_alphebatically_z_to_a_only = " ORDER BY username DESC";
+            let add_sort_alphebatically_z_to_a_only = " username DESC";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_z_to_a_only;
           } else if (sort_by == "price low to high") {
-            let add_sort_price_low_to_high_only =
-              " ORDER BY current_daily_price ASC";
+            let add_sort_price_low_to_high_only = " current_daily_price ASC";
 
             request_full_time =
               request_full_time + add_sort_price_low_to_high_only;
           } else if (sort_by == "price high to low") {
-            let add_sort_price_high_to_low_only =
-              " ORDER BY current_daily_price DESC";
+            let add_sort_price_high_to_low_only = " current_daily_price DESC";
 
             request_full_time =
               request_full_time + add_sort_price_high_to_low_only;
@@ -205,7 +205,12 @@ async function get_specific_caretakers_information(req, res) {
         }
       }
 
-      request_full_time += ";";
+      let req_len = request_full_time.length;
+      if (request_full_time.charAt(req_len - 1) == ",") {
+        request_full_time.slice(-1);
+      }
+
+      request_full_time += " LIMIT 20;";
 
       await client.query(request_full_time).then((resp) => {
         let arr = [];
@@ -295,15 +300,17 @@ async function get_specific_caretakers_information(req, res) {
         request_part_time = request_part_time_split_by_space.join(" ");
       }
 
+      request_part_time += "ORDER BY random(),";
+
       if (sort_by != null) {
         if (sort_by.length > 1) {
           if (sort_by[0] == "alphabetical a to z") {
-            let add_sort_alphebatically_a_to_z = " ORDER BY username ASC,";
+            let add_sort_alphebatically_a_to_z = " username ASC,";
 
             request_part_time =
               request_part_time + add_sort_alphebatically_a_to_z;
           } else if (sort_by[0] == "alphabetical z to a") {
-            let add_sort_alphebatically_z_to_a = " ORDER BY username DESC,";
+            let add_sort_alphebatically_z_to_a = " username DESC,";
 
             request_part_time =
               request_part_time + add_sort_alphebatically_z_to_a;
@@ -320,30 +327,35 @@ async function get_specific_caretakers_information(req, res) {
           }
         } else {
           if (sort_by == "alphabetical a to z") {
-            let add_sort_alphebatically_a_to_z_only = " ORDER BY username ASC";
+            let add_sort_alphebatically_a_to_z_only = " username ASC";
 
             request_part_time =
               request_part_time + add_sort_alphebatically_a_to_z_only;
           } else if (sort_by == "alphabetical z to a") {
-            let add_sort_alphebatically_z_to_a_only = " ORDER BY username DESC";
+            let add_sort_alphebatically_z_to_a_only = " username DESC";
 
             request_part_time =
               request_part_time + add_sort_alphebatically_z_to_a_only;
           } else if (sort_by == "price low to high") {
-            let add_sort_price_low_to_high_only =
-              " ORDER BY current_daily_price ASC";
+            let add_sort_price_low_to_high_only = " current_daily_price ASC";
 
             request_part_time =
               request_part_time + add_sort_price_low_to_high_only;
           } else if (sort_by == "price high to low") {
-            let add_sort_price_high_to_low_only =
-              " ORDER BY current_daily_price DESC";
+            let add_sort_price_high_to_low_only = " current_daily_price DESC";
 
             request_part_time =
               request_part_time + add_sort_price_high_to_low_only;
           }
         }
       }
+
+      let req_len = request_part_time.length;
+      if (request_part_time.charAt(req_len - 1) == ",") {
+        request_part_time.slice(-1);
+      }
+
+      request_part_time += " LIMIT 20;";
 
       await client.query(request_part_time).then((resp) => {
         let arr = [];
@@ -480,10 +492,13 @@ async function get_specific_caretakers_information(req, res) {
         request_part_time = request_part_time_split_by_space.join(" ");
       }
 
+      request_full_time += "ORDER BY random(),";
+      request_part_time += "ORDER BY random(),";
+
       if (sort_by != null) {
         if (sort_by.length > 1) {
           if (sort_by[0] == "alphabetical a to z") {
-            let add_sort_alphebatically_a_to_z = " ORDER BY username ASC,";
+            let add_sort_alphebatically_a_to_z = " username ASC,";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_a_to_z;
@@ -491,7 +506,7 @@ async function get_specific_caretakers_information(req, res) {
             request_part_time =
               request_part_time + add_sort_alphebatically_a_to_z;
           } else if (sort_by[0] == "alphabetical z to a") {
-            let add_sort_alphebatically_z_to_a = " ORDER BY username DESC,";
+            let add_sort_alphebatically_z_to_a = " username DESC,";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_z_to_a;
@@ -513,7 +528,7 @@ async function get_specific_caretakers_information(req, res) {
           }
         } else {
           if (sort_by == "alphabetical a to z") {
-            let add_sort_alphebatically_a_to_z_only = " ORDER BY username ASC";
+            let add_sort_alphebatically_a_to_z_only = " username ASC";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_a_to_z_only;
@@ -521,7 +536,7 @@ async function get_specific_caretakers_information(req, res) {
             request_part_time =
               request_part_time + add_sort_alphebatically_a_to_z_only;
           } else if (sort_by == "alphabetical z to a") {
-            let add_sort_alphebatically_z_to_a_only = " ORDER BY username DESC";
+            let add_sort_alphebatically_z_to_a_only = " username DESC";
 
             request_full_time =
               request_full_time + add_sort_alphebatically_z_to_a_only;
@@ -529,8 +544,7 @@ async function get_specific_caretakers_information(req, res) {
             request_part_time =
               request_part_time + add_sort_alphebatically_z_to_a_only;
           } else if (sort_by == "price low to high") {
-            let add_sort_price_low_to_high_only =
-              " ORDER BY current_daily_price ASC";
+            let add_sort_price_low_to_high_only = " current_daily_price ASC";
 
             request_full_time =
               request_full_time + add_sort_price_low_to_high_only;
@@ -538,8 +552,7 @@ async function get_specific_caretakers_information(req, res) {
             request_part_time =
               request_part_time + add_sort_price_low_to_high_only;
           } else if (sort_by == "price high to low") {
-            let add_sort_price_high_to_low_only =
-              " ORDER BY current_daily_price DESC";
+            let add_sort_price_high_to_low_only = " current_daily_price DESC";
 
             request_full_time =
               request_full_time + add_sort_price_high_to_low_only;
@@ -549,6 +562,20 @@ async function get_specific_caretakers_information(req, res) {
           }
         }
       }
+
+      let req_len = request_full_time.length;
+      if (request_full_time.charAt(req_len - 1) == ",") {
+        request_full_time.slice(-1);
+      }
+
+      request_full_time += " LIMIT 20;";
+
+      let req_len = request_part_time.length;
+      if (request_part_time.charAt(req_len - 1) == ",") {
+        request_part_time.slice(-1);
+      }
+
+      request_part_time += " LIMIT 20;";
 
       await client.query(request_full_time).then((resp) => {
         let full_time_arr = [];
