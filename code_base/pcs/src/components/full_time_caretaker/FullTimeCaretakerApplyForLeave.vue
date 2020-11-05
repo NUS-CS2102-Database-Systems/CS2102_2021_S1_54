@@ -154,6 +154,11 @@ export default {
 
         if (result.data === "Leave submitted!") {
             console.log("apply leave successful");
+            Swal.fire({
+              icon: "success",
+              title: "Leave Submitted",
+              text: "Your leave application is submitted successfully!",
+            });
             window.location.href = constants.full_time_caretaker_home;
         }
 

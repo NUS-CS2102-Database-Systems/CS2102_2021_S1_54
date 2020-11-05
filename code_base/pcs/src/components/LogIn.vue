@@ -87,8 +87,9 @@ export default {
           data: {
             username: this.username,
             password: this.password,
+            type: this.type
           },
-      });
+        });
       }
 
       const loggedIn = authResponse.data.length === 1;

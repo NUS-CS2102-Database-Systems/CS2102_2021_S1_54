@@ -39,11 +39,35 @@ async function get_user_with_username_and_password(req, res) {
         const client = await pool.connect();
         const username = req.body.username;
         const password = req.body.password;
+        const type = req.body.type;
+
         const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
         const result = await client.query(query);
+        const authResult = JSON.stringify(result.rows);
 
-        res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify(result.rows));
+        if (authResult.length === 0) {
+            res.setHeader('content-type', 'application/json');
+            res.send(authResult);
+            client.release();
+            return;
+        }
+
+        if (type === "petOwner") {
+            const petOwnerResult = await client.query(`SELECT * FROM pet_owner WHERE username = ${username};`);
+            res.setHeader('content-type', 'application/json');
+            res.send(JSON.stringify(petOwnerResult.rows));
+        } else if (type === "parttimeCaretaker") {
+            const parttimeCaretakerResult = await client.query(`SELECT * FROM part_time_caretaker WHERE username = ${username};`);
+            res.setHeader('content-type', 'application/json');
+            res.send(JSON.stringify(parttimeCaretakerResult.rows));
+        } else if (type === "fulltimeCaretaker") {
+            const fulltimeCaretakerResult = await client.query(`SELECT * FROM full_time_caretaker WHERE username = ${username};`);
+            res.setHeader('content-type', 'application/json');
+            res.send(JSON.stringify(fulltimeCaretakerResult.rows));
+        } else {
+            res.send("Invalid user type.");
+        }
+
         client.release();
     } catch (err) {
         console.error(err);
