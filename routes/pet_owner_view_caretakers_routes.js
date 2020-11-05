@@ -84,7 +84,7 @@ async function get_specific_caretakers_information(req, res) {
     if (commitment == "full-time") {
       let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-      full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
+      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
       NATURAL JOIN daily_price_rate WHERE`;
 
       if (caretaker_username != null) {
@@ -221,8 +221,8 @@ async function get_specific_caretakers_information(req, res) {
     } else if (commitment == "part-time") {
       let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN
-      part_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN availabilities 
-      NATURAL JOIN daily_price_rate WHERE`;
+      caretaker NATURAL JOIN part_time_caretaker NATURAL JOIN can_take_care 
+      NATURAL JOIN availabilities NATURAL JOIN daily_price_rate WHERE`;
 
       if (caretaker_username != null) {
         request_full_time =
@@ -360,13 +360,13 @@ async function get_specific_caretakers_information(req, res) {
       // both full-time and part-time
       let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-      full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
+      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
       NATURAL JOIN daily_price_rate WHERE`;
 
       let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN
-      part_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN availabilities 
-      NATURAL JOIN daily_price_rate WHERE`;
+      caretaker NATURAL JOIN part_time_caretaker NATURAL JOIN can_take_care 
+      NATURAL JOIN availabilities NATURAL JOIN daily_price_rate WHERE`;
 
       if (caretaker_username != null) {
         request_full_time =
