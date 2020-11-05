@@ -261,7 +261,7 @@ export default {
       }
 
       if (data_ok == true) {
-        let dataToSend =
+        const dataToSend =
           '{"username":"' +
           this.username +
           '", "pet_name":' +
@@ -280,7 +280,7 @@ export default {
           special_req +
           "}";
         console.log(dataToSend);
-        let jsonDataToSend = JSON.parse(dataToSend);
+        const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
           .post(

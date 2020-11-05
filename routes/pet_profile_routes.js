@@ -42,14 +42,14 @@ async function get_pet_information(req, res) {
 async function add_pet_information(req, res) {
   try {
     const client = await pool.connect();
-    const username = req.body.toAdd.username;
-    const pet_name = req.body.toAdd.pet_name;
-    const birth_date = req.body.toAdd.birth_date;
-    const gender = req.body.toAdd.gender;
-    const breed = req.body.toAdd.breed;
-    const type_of_animal = req.body.toAdd.animal_type;
-    const med_hist = req.body.toAdd.med_hist;
-    const special_req = req.body.toAdd.special_req;
+    let username = req.body.toAdd.username;
+    let pet_name = req.body.toAdd.pet_name;
+    let birth_date = req.body.toAdd.birth_date;
+    let gender = req.body.toAdd.gender;
+    let breed = req.body.toAdd.breed;
+    let type_of_animal = req.body.toAdd.animal_type;
+    let med_hist = req.body.toAdd.med_hist;
+    let special_req = req.body.toAdd.special_req;
 
     if (med_hist == null) {
       med_hist = null;
@@ -133,8 +133,8 @@ async function edit_specific_pet_information(req, res) {
     const client = await pool.connect();
     const username = req.body.toEdit.username;
     const pet_name = req.body.toEdit.card_number;
-    const pet_med_hist = req.body.toEdit.med_hist;
-    const pet_special_req = req.body.toEdit.special_req;
+    let pet_med_hist = req.body.toEdit.med_hist;
+    let pet_special_req = req.body.toEdit.special_req;
 
     if (pet_med_hist == null) {
       pet_med_hist = null;
