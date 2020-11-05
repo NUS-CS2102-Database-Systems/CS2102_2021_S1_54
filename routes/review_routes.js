@@ -22,7 +22,7 @@ async function get_all_reviews_for_caretaker(req, res) {
     // }
     try {
         const client = await pool.connect();
-        const cusername = req.query.cusername;
+        const cusername = req.params.cusername;
         const query = ` SELECT cusername, pusername AS reviewer, review, rating, review_time
             FROM bid_transaction
             WHERE cusername = '${cusername}'

@@ -75,9 +75,9 @@
         <br />
         <label for="gender"><b>Gender</b></label>
         <select id="gender" name="gender" v-model="gender" required>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+          <option value="O">Other</option>
         </select>
 
         <label for="phone"><b>Phone Number</b></label>

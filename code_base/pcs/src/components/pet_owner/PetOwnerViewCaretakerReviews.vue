@@ -83,15 +83,8 @@ export default {
       }
   },
   async mounted() {
-
-    const get_info = {
-      cusername: this.caretaker_username,
-    };
-
     await axios
-      .get("/reviews", { 
-        toGet: get_info,
-      })
+      .get(`https://pet-care-service.herokuapp.com/reviews/${this.caretaker_username}`)
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
