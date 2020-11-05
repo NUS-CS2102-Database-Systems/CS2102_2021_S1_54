@@ -148,7 +148,6 @@ async function get_specific_past_jobs_information(req, res) {
       bt.job_end_datetime < current_timestamp;`;
     }
 
-    console.log("Query: " + query);
     const result = await client.query(query);
 
     res.setHeader("content-type", "application/json");
@@ -210,10 +209,20 @@ async function get_specific_upcoming_jobs_information(req, res) {
   try {
     const client = await pool.connect();
     const username = req.body.toGet.username;
-    const start_date = req.body.toGet.dates[0];
-    const end_date = req.body.toGet.dates[1];
+    const dates_received = req.body.toGet.dates;
     let pet_names = req.body.toGet.animal_names;
     let query = "";
+    let start_date = "";
+    let end_date = "";
+
+    if (dates_received != null) {
+      let dates = dates_received.split(",");
+      start_date = dates[0];
+      end_date = dates[1];
+    } else {
+      start_date = null;
+      end_date = null;
+    }
 
     if (start_date != null && pet_names != null) {
       if (pet_names.includes(",")) {

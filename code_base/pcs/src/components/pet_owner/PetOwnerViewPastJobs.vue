@@ -296,7 +296,13 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"dates":' + dates + ', "animal_names":' + animal_names + "}";
+          '{"username":"' +
+          this.username +
+          '", "dates":' +
+          dates +
+          ', "animal_names":' +
+          animal_names +
+          "}";
 
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);

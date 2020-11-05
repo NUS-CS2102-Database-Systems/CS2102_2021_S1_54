@@ -199,12 +199,6 @@ export default {
       console.log("Submitted");
       let data_ok = true;
 
-      if (this.selected_commitment_level != null) {
-        // var commitment_level = '"' + this.selected_commitment_level + '"';
-      } else {
-        // commitment_level = null;
-      }
-
       if (this.selected_dates != null) {
         if (this.selected_dates.length == 1) {
           Swal.fire({
@@ -216,7 +210,13 @@ export default {
           data_ok = false;
         } else {
           var dates =
-            '"' + this.selected_dates[0] + "," + this.selected_dates[1] + '"';
+            '"' +
+            this.selected_dates[0] +
+            "T00:00:00.000Z" +
+            "," +
+            this.selected_dates[1] +
+            "T23:59:59.999Z" +
+            '"';
         }
       } else {
         dates = null;
@@ -244,7 +244,13 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"dates":' + dates + ', "animal_names":' + animal_names + "}";
+          '{"username":"' +
+          this.username +
+          '", "dates":' +
+          dates +
+          ', "animal_names":' +
+          animal_names +
+          "}";
 
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
@@ -338,6 +344,21 @@ export default {
     };
 
     await axios
+      .post("https://pet-care-service.herokuapp.com/pet-owners/get-pet-names", {
+        toGet: get_info,
+      })
+      .then((response) => {
+        let length = response.data.length;
+        for (var i = 0; i < length; i++) {
+          let arr = {
+            name: response.data[i].pet_name,
+            value: response.data[i].pet_name,
+          };
+          this.pet_names.push(arr);
+        }
+      });
+
+    await axios
       .post(
         "https://pet-care-service.herokuapp.com/pet-owners/get-upcoming-jobs-information",
         {
@@ -346,6 +367,8 @@ export default {
       )
       .then((response) => {
         let length = response.data.length;
+        console.log(length);
+        console.log(response.data);
         if (length == 0) {
           this.have_data = false;
         } else {
