@@ -37,6 +37,7 @@
 
 <script>
 // import * as constants from "./constants";
+import Swal from "sweetalert2";
 import axios from 'axios';
 
 export default {
@@ -50,25 +51,44 @@ export default {
   methods: {
     async deleteAccount(e) {
       e.preventDefault();
-      const user = {
-        username: this.username,
-        password: this.password,
-      };
 
-      console.log(user);
-      console.log(this.username);
-      console.log(this.type);
-
-      await axios({
-        method: "delete",
-        url: "https://pet-care-service.herokuapp.com/users",
+      const authResponse = await axios({
+        method: "post",
+        url: "https://pet-care-service.herokuapp.com/users/authenticate",
         data: {
           username: this.username,
           password: this.password
         }
       })
-      
+
+      if (authResponse.data.length === 1) {
+        const result = await axios({
+          method: "delete",
+          url: "https://pet-care-service.herokuapp.com/users",
+          data: {
+            username: this.username,
+            password: this.password
+          }
+        });
+
+        if (result.data === `${this.username} is deleted!`) {
+          Swal.fire({
+            icon: "success",
+            title: "Account Deleted",
+            text: "You account has been permanently deleted."
+          })
+          this.$router.push({
+            path: "/",
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops",
+          text: "Your username or password is wrong. Please try again."
+        })
       }
+    }
   },
 };
 </script>
