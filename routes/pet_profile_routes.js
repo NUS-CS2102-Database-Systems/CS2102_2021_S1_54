@@ -63,7 +63,7 @@ async function add_pet_information(req, res) {
       special_req = "'" + special_req + "'";
     }
 
-    const insert_query = `INSERT INTO pet VALUES ('${username}', '${pet_name}', '${birth_date}', 
+    let insert_query = `INSERT INTO pet VALUES ('${username}', '${pet_name}', '${birth_date}', 
     '${breed}', '${type_of_animal}', '${gender}', ${med_hist}, ${special_req});`;
 
     await client.query(insert_query);
@@ -90,7 +90,7 @@ async function delete_pet_information(req, res) {
     const username = req.body.toDelete.username;
     const pet_name = req.body.toDelete.pet;
 
-    const delete_pet = `DELETE FROM pet WHERE username = '${username}' AND pet_name = '${pet_name}';`;
+    let delete_pet = `DELETE FROM pet WHERE username = '${username}' AND pet_name = '${pet_name}';`;
     await client.query(delete_pet);
 
     const result = await client.query(
@@ -148,7 +148,7 @@ async function edit_specific_pet_information(req, res) {
       pet_special_req = "'" + pet_special_req + "'";
     }
 
-    const edit_pet_details = `UPDATE pet SET med_hist = ${pet_med_hist}, 
+    let edit_pet_details = `UPDATE pet SET med_hist = ${pet_med_hist}, 
       special_req = ${pet_special_req} WHERE username = '${username}' 
       AND pet_name = '${pet_name}';`;
 

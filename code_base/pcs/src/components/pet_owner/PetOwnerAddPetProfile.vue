@@ -261,7 +261,7 @@ export default {
       }
 
       if (data_ok == true) {
-        const dataToSend =
+        let dataToSend =
           '{"username":"' +
           this.username +
           '", "pet_name":' +
@@ -280,7 +280,7 @@ export default {
           special_req +
           "}";
         console.log(dataToSend);
-        const jsonDataToSend = JSON.parse(dataToSend);
+        let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
           .post(
@@ -290,7 +290,7 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response.status);
+            console.log(response.data);
             if (response.data[0].exists == true) {
               Swal.fire({
                 icon: "success",
