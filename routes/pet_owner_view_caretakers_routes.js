@@ -570,7 +570,7 @@ async function get_specific_caretakers_information(req, res) {
 
       request_full_time += " LIMIT 20;";
 
-      let req_len = request_part_time.length;
+      req_len = request_part_time.length;
       if (request_part_time.charAt(req_len - 1) == ",") {
         request_part_time.slice(-1);
       }
