@@ -586,6 +586,7 @@ export default {
             this.caretaker_gender_odd = [];
             this.caretaker_phone_odd = [];
             this.caretaker_address_odd = [];
+            this.caretaker_email_odd = [];
             this.caretaker_avg_rating_odd = [];
             this.caretaker_years_exp_odd = [];
             this.caretaker_take_care_animals_odd = [];
@@ -595,6 +596,7 @@ export default {
             this.caretaker_date_of_birth_even = [];
             this.caretaker_gender_even = [];
             this.caretaker_phone_even = [];
+            this.caretaker_email_even = [];
             this.caretaker_address_even = [];
             this.caretaker_avg_rating_even = [];
             this.caretaker_years_exp_even = [];
@@ -612,6 +614,7 @@ export default {
               this.have_data = false;
               this.loaded = true;
             } else {
+              this.have_data = true;
               for (let i = 0; i < response.data.length; i++) {
                 if (i % 2 == 0) {
                   this.length_odd += 1;
