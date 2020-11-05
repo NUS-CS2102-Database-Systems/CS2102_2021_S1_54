@@ -290,7 +290,7 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response.status);
+            console.log(response.data);
             if (response.data[0].exists == true) {
               Swal.fire({
                 icon: "success",

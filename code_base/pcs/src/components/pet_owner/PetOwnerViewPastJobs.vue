@@ -31,6 +31,7 @@
             <v-date-picker
               v-model="selected_dates"
               @click:date="selectDates"
+              :max="getEndDate"
               range
             />
           </v-menu>
@@ -205,6 +206,7 @@ export default {
     available_dates: false,
     selected_dates: null,
     selected_pet_names: null,
+    getEndDate: new Date().toISOString().substr(0, 10),
     id_odd: [],
     id_even: [],
     caretaker_odd: [],

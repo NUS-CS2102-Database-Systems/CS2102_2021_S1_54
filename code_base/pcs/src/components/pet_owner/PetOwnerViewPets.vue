@@ -237,13 +237,13 @@ export default {
             this.pet_gender_odd.push(response.data[i].gender);
             this.pet_breed_odd.push(response.data[i].breed);
             this.type_of_animal_odd.push(response.data[i].type_of_animal);
-            if (response.data[i].med_hist == "null") {
+            if (response.data[i].med_hist == null) {
               this.pet_med_hist_odd.push("-");
             } else {
               this.pet_med_hist_odd.push(response.data[i].med_hist);
             }
 
-            if (response.data[i].special_req == "null") {
+            if (response.data[i].special_req == null) {
               this.pet_special_req_odd.push("-");
             } else {
               this.pet_special_req_odd.push(response.data[i].special_req);
