@@ -53,15 +53,15 @@ async function get_user_with_username_and_password(req, res) {
         }
 
         if (type === "petOwner") {
-            const petOwnerResult = await client.query(`SELECT * FROM pet_owner WHERE username = ${username};`);
+            const petOwnerResult = await client.query(`SELECT * FROM pet_owner WHERE username = '${username}';`);
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(petOwnerResult.rows));
         } else if (type === "parttimeCaretaker") {
-            const parttimeCaretakerResult = await client.query(`SELECT * FROM part_time_caretaker WHERE username = ${username};`);
+            const parttimeCaretakerResult = await client.query(`SELECT * FROM part_time_caretaker WHERE username = '${username}';`);
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(parttimeCaretakerResult.rows));
         } else if (type === "fulltimeCaretaker") {
-            const fulltimeCaretakerResult = await client.query(`SELECT * FROM full_time_caretaker WHERE username = ${username};`);
+            const fulltimeCaretakerResult = await client.query(`SELECT * FROM full_time_caretaker WHERE username = '${username}';`);
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(fulltimeCaretakerResult.rows));
         } else {
