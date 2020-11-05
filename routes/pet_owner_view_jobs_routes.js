@@ -57,12 +57,17 @@ async function get_specific_past_jobs_information(req, res) {
   try {
     const client = await pool.connect();
     const username = req.body.toGet.username;
-    console.log("dates: " + req.body.toGet.dates);
-    let dates = req.body.toGet.dates.split(",");
-    const start_date = dates[0];
-    const end_date = dates[1];
-    console.log("Start date: " + start_date);
-    console.log("End date: " + end_date);
+    const dates_received = req.body.toGet.dates;
+
+    if (dates_received != null) {
+      let dates = dates_received.split(",");
+      const start_date = dates[0];
+      const end_date = dates[1];
+    } else {
+      const start_date = null;
+      const end_date = null;
+    }
+
     let pet_names = req.body.toGet.animal_names;
     let query = "";
 

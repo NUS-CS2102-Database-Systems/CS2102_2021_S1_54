@@ -262,7 +262,13 @@ export default {
           data_ok = false;
         } else {
           var dates =
-            '"' + this.selected_dates[0] + "," + this.selected_dates[1] + '"';
+            '"' +
+            this.selected_dates[0] +
+            "T00:00:00.000Z" +
+            "," +
+            this.selected_dates[1] +
+            "T23:59:59.999Z" +
+            '"';
         }
       } else {
         dates = null;
