@@ -579,7 +579,6 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response.data);
             this.caretaker_username_odd = [];
             this.caretaker_name_odd = [];
             this.caretaker_age_odd = [];

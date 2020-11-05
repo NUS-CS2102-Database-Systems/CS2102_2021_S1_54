@@ -70,6 +70,7 @@ async function get_specific_caretakers_information(req, res) {
     let caretaker_username = req.body.caretaker.search_caretaker;
     let date_from = "";
     let date_to = "";
+    let query = "";
 
     if (dates_received != null) {
       let dates = dates_received.split(",");
