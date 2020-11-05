@@ -605,65 +605,48 @@ export default {
             this.loaded = false;
             this.have_data = false;
             console.log("Axios");
-            console.log("part-time: " + response.data.partTime.length);
-            console.log("full-time: " + response.data.fullTime.length);
-            console.log("All data: " + response.data);
-            if (
-              response.data.fullTime.length == 0 &&
-              response.data.partTime.length == 0
-            ) {
+            console.log(response.data);
+            // console.log("part-time: " + response.data.partTime.length);
+            // console.log("full-time: " + response.data.fullTime.length);
+            // console.log("All data: " + response.data);
+            if (response.data.length == 0) {
               this.have_data = false;
               this.loaded = true;
             } else {
-              let data_received = [];
-              if (response.data.fullTime.length > 0) {
-                this.have_data = true;
-                for (let i = 0; i < response.data.fullTime.length; i++) {
-                  data_received.push(response.data.fullTime[i]);
-                }
-              }
-
-              if (response.data.partTime.length > 0) {
-                this.have_data = true;
-                for (let i = 0; i < response.data.partTime.length; i++) {
-                  data_received.push(response.data.partTime[i]);
-                }
-              }
-
-              for (let i = 0; i < data_received.length; i++) {
+              for (let i = 0; i < response.data.length; i++) {
                 if (i % 2 == 0) {
                   this.length_odd += 1;
-                  this.caretaker_username_odd.push(data_received[i].username);
+                  this.caretaker_username_odd.push(response.data[i].username);
                   this.caretaker_name_odd.push(response.data[i].name);
                   let age =
-                    data_received[i].age.years +
+                    response.data[i].age.years +
                     " years " +
-                    data_received[i].age.months +
+                    response.data[i].age.months +
                     " months " +
-                    data_received[i].age.days +
+                    response.data[i].age.days +
                     " days";
                   this.caretaker_age_odd.push(age);
                   this.caretaker_date_of_birth_odd.push(
-                    data_received.birth_date.toString().split("T")[0]
+                    response.data[i].birth_date.toString().split("T")[0]
                   );
-                  this.caretaker_gender_odd.push(data_received[i].gender);
-                  this.caretaker_phone_odd.push(data_received[i].phone);
+                  this.caretaker_gender_odd.push(response.data[i].gender);
+                  this.caretaker_phone_odd.push(response.data[i].phone);
                   this.caretaker_email_odd.push(response.data[i].email);
-                  this.caretaker_address_odd.push(data_received[i].address);
+                  this.caretaker_address_odd.push(response.data[i].address);
                   this.caretaker_avg_rating_odd.push(
-                    data_received[i].average_rating
+                    response.data[i].average_rating
                   );
                   let years =
-                    data_received[i].years_exp.years +
+                    response.data[i].years_exp.years +
                     " years " +
-                    data_received[i].years_exp.months +
+                    response.data[i].years_exp.months +
                     " months " +
-                    data_received[i].years_exp.days +
+                    response.data[i].years_exp.days +
                     " days";
                   this.caretaker_years_exp_odd.push(years);
 
                   const get_info = {
-                    username: data_received[i].username,
+                    username: response.data[i].username,
                   };
 
                   axios
@@ -686,37 +669,37 @@ export default {
                     });
                 } else {
                   this.length_even += 1;
-                  this.caretaker_username_even.push(data_received[i].username);
+                  this.caretaker_username_even.push(response.data[i].username);
                   this.caretaker_name_even.push(response.data[i].name);
                   let age =
-                    data_received[i].age.years +
+                    response.data[i].age.years +
                     " years " +
-                    data_received[i].age.months +
+                    response.data[i].age.months +
                     " months " +
-                    data_received[i].age.days +
+                    response.data[i].age.days +
                     " days";
                   this.caretaker_age_even.push(age);
                   this.caretaker_date_of_birth_even.push(
-                    data_received.birth_date.toString().split("T")[0]
+                    response.data[i].birth_date.toString().split("T")[0]
                   );
-                  this.caretaker_gender_even.push(data_received[i].gender);
-                  this.caretaker_phone_even.push(data_received[i].phone);
+                  this.caretaker_gender_even.push(response.data[i].gender);
+                  this.caretaker_phone_even.push(response.data[i].phone);
                   this.caretaker_email_even.push(response.data[i].email);
-                  this.caretaker_address_even.push(data_received[i].address);
+                  this.caretaker_address_even.push(response.data[i].address);
                   this.caretaker_avg_rating_even.push(
-                    data_received[i].average_rating
+                    response.data[i].average_rating
                   );
                   let years =
-                    data_received[i].years_exp.years +
+                    response.data[i].years_exp.years +
                     " years " +
-                    data_received[i].years_exp.months +
+                    response.data[i].years_exp.months +
                     " months " +
-                    data_received[i].years_exp.days +
+                    response.data[i].years_exp.days +
                     " days";
                   this.caretaker_years_exp_even.push(years);
 
                   const get_pet_info = {
-                    username: data_received[i].username,
+                    username: response.data[i].username,
                   };
                   axios
                     .post(
