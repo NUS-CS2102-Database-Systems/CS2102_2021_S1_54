@@ -325,6 +325,8 @@ export default {
             this.review_even = [];
             this.loaded = false;
             let length = response.data.length;
+            console.log(length);
+            console.log(response.data);
             if (length == 0) {
               this.have_data = false;
               this.loaded = true;
@@ -417,6 +419,7 @@ export default {
       )
       .then((response) => {
         let length = response.data.length;
+        console.log(length);
         if (length == 0) {
           this.have_data = false;
         } else {
@@ -429,12 +432,12 @@ export default {
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_start_datetime.split("T")[1];
+                response.data[i].job_start_datetime.split("T")[1].split(".")[0];
               this.job_start_odd.push(job_start);
               let job_end =
                 response.data[i].job_end_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_end_datetime.split("T")[1];
+                response.data[i].job_end_datetime.split("T")[1].split(".")[0];
               this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
