@@ -6,6 +6,12 @@
         <p>ATTENTION: This action is irreversible!</p>
         <hr />
 
+        <label for="type"><b>I am a ...</b></label>
+        <select id="type" name="type" v-model="type" required>
+          <option value="user">User (Pet Owner and/or Caretaker)</option>
+          <option value="admin">Administrator</option>
+        </select>
+
         <label for="username"><b>Username</b></label>
         <input
           type="text"
@@ -46,30 +52,55 @@ export default {
     return {
       username: "",
       password: "",
+      type: ""
     };
   },
   methods: {
     async deleteAccount(e) {
       e.preventDefault();
 
-      const authResponse = await axios({
-        method: "post",
-        url: "https://pet-care-service.herokuapp.com/users/authenticate",
-        data: {
-          username: this.username,
-          password: this.password
-        }
-      })
-
-      if (authResponse.data.length === 1) {
-        const result = await axios({
-          method: "delete",
-          url: "https://pet-care-service.herokuapp.com/users",
+      var authResponse = [];
+      if (this.type === "user") { // normal user
+        authResponse = await axios({
+          method: "post",
+          url: "https://pet-care-service.herokuapp.com/users/authenticate",
           data: {
             username: this.username,
             password: this.password
           }
         });
+      } else { // administrator
+        authResponse = await axios({
+          method: "post",
+          url: "https://pet-care-service.herokuapp.com/admins/authenticate",
+          data: {
+            username: this.username,
+            password: this.password
+          }
+        });
+      }
+
+      if (authResponse.data.length === 1) {
+        var result = [];
+        if (this.type === "user") { // normal user
+          result = await axios({
+            method: "delete",
+            url: "https://pet-care-service.herokuapp.com/users",
+            data: {
+              username: this.username,
+              password: this.password
+            }
+          });
+        } else { // administrator
+          result = await axios({
+            method: "delete",
+            url: "https://pet-care-service.herokuapp.com/admins",
+            data: {
+              username: this.username,
+              password: this.password
+            }
+          });
+        }
 
         if (result.data === `${this.username} is deleted!`) {
           Swal.fire({

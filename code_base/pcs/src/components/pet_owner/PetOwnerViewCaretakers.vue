@@ -178,6 +178,13 @@
                       {{ caretaker_take_care_animals_odd[i] }}
                       <br />
                     </v-list> -->
+                    <br />
+                    <v-btn elevation="2">
+                      <router-link tag="span" 
+                        :to="{ path: '/pet-owners/view-caretaker-reviews/' + caretaker_username_odd[i]}">
+                        View Reviews
+                      </router-link>
+                    </v-btn> 
                   </p>
                 </v-card-text>
               </v-card>
@@ -216,6 +223,13 @@
                       {{ caretaker_take_care_animals_even[i] }}
                       <br />
                     </v-list> -->
+                    <br />
+                    <v-btn elevation="2">
+                      <router-link tag="span" 
+                        :to="{ path: '/pet-owners/view-caretaker-reviews/' + caretaker_username_even[i]}">
+                        View Reviews
+                      </router-link>
+                    </v-btn> 
                   </p>
                 </v-card-text>
               </v-card>
