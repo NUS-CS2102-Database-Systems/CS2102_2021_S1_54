@@ -60,7 +60,7 @@ async function get_num_of_pets_information(req, res) {
       `SELECT number_of_pets_allowed
         FROM availabilities 
         WHERE username = '${username}' 
-        ORDER BY start_end DESC, end_date DESC LIMIT 1;`
+        ORDER BY start_date DESC, end_date DESC LIMIT 1;`
     );
 
     res.setHeader("content-type", "application/json");

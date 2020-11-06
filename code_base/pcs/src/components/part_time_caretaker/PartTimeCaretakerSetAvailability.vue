@@ -297,9 +297,12 @@ export default {
 
     // need to sort by start date asc and end date asc
     await axios
-      .post("/part-time-caretakers/get-availabilities", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/part-time-caretakers/get-availabilities",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
