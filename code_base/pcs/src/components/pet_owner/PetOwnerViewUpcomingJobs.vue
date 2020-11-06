@@ -66,15 +66,20 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_odd[i] }} <br />
-                  Pet Name: {{ pet_odd[i] }} <br />
-                  Job Started: {{ job_start_odd[i] }} <br />
-                  Job Ended: {{ job_end_odd[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_odd[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
-                  <br />
-                  Amount: {{ amount_odd[i] }} <br />
+                  <p style="color:black">
+                    Caretaker Username: {{ caretaker_odd[i] }} <br />
+                    Pet Name: {{ pet_odd[i] }} <br />
+                    Job Started: {{ job_start_odd[i] }} <br />
+                    Job Ended: {{ job_end_odd[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_odd[i] }}
+                    <br />
+                    Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
+                    <br />
+                    Amount: {{ amount_odd[i] }} <br />
+                    Paid By: {{ payment_method_odd[i] }} <br />
+                    Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
+                  </p>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -87,15 +92,21 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  Caretaker Username: {{ caretaker_even[i] }} <br />
-                  Pet Name: {{ pet_even[i] }} <br />
-                  Job Started: {{ job_start_even[i] }} <br />
-                  Job Ended: {{ job_end_even[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_even[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_even[i] }}
-                  <br />
-                  Amount: {{ amount_even[i] }} <br />
+                  <p style="color:black">
+                    Caretaker Username: {{ caretaker_even[i] }} <br />
+                    Pet Name: {{ pet_even[i] }} <br />
+                    Job Started: {{ job_start_even[i] }} <br />
+                    Job Ended: {{ job_end_even[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_even[i] }}
+                    <br />
+                    Transfer Method (Drop Off):
+                    {{ end_transfer_method_even[i] }}
+                    <br />
+                    Amount: {{ amount_even[i] }} <br />
+                    Paid By: {{ payment_method_even[i] }} <br />
+                    Payment Date and Time: {{ payment_datetime_even[i] }} <br />
+                  </p>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -302,12 +313,16 @@ export default {
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_start_datetime.split("T")[1];
+                    response.data[i].job_start_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_start_odd.push(job_start);
                   let job_end =
                     response.data[i].job_end_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_end_datetime.split("T")[1];
+                    response.data[i].job_end_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_end_odd.push(job_end);
                   this.start_transfer_method_odd.push(
                     response.data[i].start_transfer_method
@@ -317,9 +332,13 @@ export default {
                   );
                   this.amount_odd.push(response.data[i].amount);
                   this.payment_method_odd.push(response.data[i].payment_method);
-                  this.payment_datetime_odd.push(
+                  let date_time =
+                    response.data[i].payment_datetime.split("T")[0] +
+                    " " +
                     response.data[i].payment_datetime
-                  );
+                      .split("T")[1]
+                      .split(".")[0];
+                  this.payment_datetime_odd.push(date_time);
                 } else {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].cusername);
@@ -327,12 +346,16 @@ export default {
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_start_datetime.split("T")[1];
+                    response.data[i].job_start_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_start_even.push(job_start);
                   let job_end =
                     response.data[i].job_end_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_end_datetime.split("T")[1];
+                    response.data[i].job_end_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_end_even.push(job_end);
                   this.start_transfer_method_even.push(
                     response.data[i].start_transfer_method
@@ -344,9 +367,13 @@ export default {
                   this.payment_method_even.push(
                     response.data[i].payment_method
                   );
-                  this.payment_datetime_even.push(
+                  let date_time =
+                    response.data[i].payment_datetime.split("T")[0] +
+                    " " +
                     response.data[i].payment_datetime
-                  );
+                      .split("T")[1]
+                      .split(".")[0];
+                  this.payment_datetime_even.push(date_time);
                 }
               }
               this.loaded = true;
@@ -399,12 +426,12 @@ export default {
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_start_datetime.split("T")[1];
+                response.data[i].job_start_datetime.split("T")[1].split(".")[0];
               this.job_start_odd.push(job_start);
               let job_end =
                 response.data[i].job_end_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_end_datetime.split("T")[1];
+                response.data[i].job_end_datetime.split("T")[1].split(".")[0];
               this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
@@ -414,7 +441,11 @@ export default {
               );
               this.amount_odd.push(response.data[i].amount);
               this.payment_method_odd.push(response.data[i].payment_method);
-              this.payment_datetime_odd.push(response.data[i].payment_datetime);
+              let date_time =
+                response.data[i].payment_datetime.split("T")[0] +
+                " " +
+                response.data[i].payment_datetime.split("T")[1].split(".")[0];
+              this.payment_datetime_odd.push(date_time);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].cusername);
@@ -422,12 +453,12 @@ export default {
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_start_datetime.split("T")[1];
+                response.data[i].job_start_datetime.split("T")[1].split(".")[0];
               this.job_start_even.push(job_start);
               let job_end =
                 response.data[i].job_end_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_end_datetime.split("T")[1];
+                response.data[i].job_end_datetime.split("T")[1].split(".")[0];
               this.job_end_even.push(job_end);
               this.start_transfer_method_even.push(
                 response.data[i].start_transfer_method
@@ -437,9 +468,11 @@ export default {
               );
               this.amount_even.push(response.data[i].amount);
               this.payment_method_even.push(response.data[i].payment_method);
-              this.payment_datetime_even.push(
-                response.data[i].payment_datetime
-              );
+              let date_time =
+                response.data[i].payment_datetime.split("T")[0] +
+                " " +
+                response.data[i].payment_datetime.split("T")[1].split(".")[0];
+              this.payment_datetime_even.push(date_time);
             }
           }
         }
