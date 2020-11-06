@@ -37,7 +37,7 @@ async function get_past_jobs_information(req, res) {
       bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
       bt.start_transfer_method AS start_transfer_method, 
       bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
-      bt.review AS review
+      bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime, 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND 
       bt.job_start_datetime < current_timestamp AND 
@@ -79,7 +79,7 @@ async function get_specific_past_jobs_information(req, res) {
         bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
         bt.start_transfer_method AS start_transfer_method, 
         bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
-        bt.review AS review 
+        bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime,  
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
         bt.job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 

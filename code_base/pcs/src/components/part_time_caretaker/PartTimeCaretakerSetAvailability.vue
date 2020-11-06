@@ -314,10 +314,14 @@ export default {
           // latest available date
           // If dont have any data at all, then set to 2
           axios
-            .post("/part-time-caretakers/get-num-of-pets-information", {
-              toGet: get_info,
-            })
+            .post(
+              "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets-information",
+              {
+                toGet: get_info,
+              }
+            )
             .then((response) => {
+              console.log(response.data);
               if (response.data.number_of_pets_allowed != 0) {
                 this.num_of_pets = response.data.number_of_pets_allowed;
               } else {

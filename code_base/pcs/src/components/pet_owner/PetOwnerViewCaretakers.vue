@@ -617,13 +617,25 @@ export default {
                   this.length_odd += 1;
                   this.caretaker_username_odd.push(response.data[i].username);
                   this.caretaker_name_odd.push(response.data[i].name);
-                  let age =
-                    response.data[i].age.years +
-                    " years " +
-                    response.data[i].age.months +
-                    " months " +
-                    response.data[i].age.days +
-                    " days";
+                  let age = "";
+
+                  if (response.data[0].age.months != undefined && age == null) {
+                    age = response.data[0].age.months + " months ";
+                  } else if (
+                    response.data[0].age.months != undefined &&
+                    age != null
+                  ) {
+                    age += response.data[0].age.months + " months ";
+                  }
+
+                  if (response.data[0].age.days != undefined && age == null) {
+                    age = response.data[0].age.days + " days";
+                  } else if (
+                    response.data[0].age.days != undefined &&
+                    age != null
+                  ) {
+                    age += response.data[0].age.days + " days";
+                  }
                   this.caretaker_age_odd.push(age);
                   this.caretaker_date_of_birth_odd.push(
                     response.data[i].birth_date.toString().split("T")[0]
@@ -635,13 +647,35 @@ export default {
                   this.caretaker_avg_rating_odd.push(
                     response.data[i].average_rating
                   );
-                  let years =
-                    response.data[i].years_exp.years +
-                    " years " +
-                    response.data[i].years_exp.months +
-                    " months " +
-                    response.data[i].years_exp.days +
-                    " days";
+
+                  let years = null;
+                  if (response.data[0].years_exp.years != undefined) {
+                    years = response.data[0].years_exp.years + " years ";
+                  }
+
+                  if (
+                    response.data[0].years_exp.months != undefined &&
+                    years == null
+                  ) {
+                    years = response.data[0].years_exp.months + " months ";
+                  } else if (
+                    response.data[0].years_exp.months != undefined &&
+                    years != null
+                  ) {
+                    years += response.data[0].years_exp.months + " months ";
+                  }
+
+                  if (
+                    response.data[0].years_exp.days != undefined &&
+                    years == null
+                  ) {
+                    years = response.data[0].years_exp.days + " days";
+                  } else if (
+                    response.data[0].years_exp.days != undefined &&
+                    years != null
+                  ) {
+                    years += response.data[0].years_exp.days + " days";
+                  }
                   this.caretaker_years_exp_odd.push(years);
 
                   const get_info = {
@@ -670,13 +704,25 @@ export default {
                   this.length_even += 1;
                   this.caretaker_username_even.push(response.data[i].username);
                   this.caretaker_name_even.push(response.data[i].name);
-                  let age =
-                    response.data[i].age.years +
-                    " years " +
-                    response.data[i].age.months +
-                    " months " +
-                    response.data[i].age.days +
-                    " days";
+                  let age = null;
+
+                  if (response.data[0].age.months != undefined && age == null) {
+                    age = response.data[0].age.months + " months ";
+                  } else if (
+                    response.data[0].age.months != undefined &&
+                    age != null
+                  ) {
+                    age += response.data[0].age.months + " months ";
+                  }
+
+                  if (response.data[0].age.days != undefined && age == null) {
+                    age = response.data[0].age.days + " days";
+                  } else if (
+                    response.data[0].age.days != undefined &&
+                    age != null
+                  ) {
+                    age += response.data[0].age.days + " days";
+                  }
                   this.caretaker_age_even.push(age);
                   this.caretaker_date_of_birth_even.push(
                     response.data[i].birth_date.toString().split("T")[0]
@@ -688,13 +734,34 @@ export default {
                   this.caretaker_avg_rating_even.push(
                     response.data[i].average_rating
                   );
-                  let years =
-                    response.data[i].years_exp.years +
-                    " years " +
-                    response.data[i].years_exp.months +
-                    " months " +
-                    response.data[i].years_exp.days +
-                    " days";
+                  let years = null;
+                  if (response.data[0].years_exp.years != undefined) {
+                    years = response.data[0].years_exp.years + " years ";
+                  }
+
+                  if (
+                    response.data[0].years_exp.months != undefined &&
+                    years == null
+                  ) {
+                    years = response.data[0].years_exp.months + " months ";
+                  } else if (
+                    response.data[0].years_exp.months != undefined &&
+                    years != null
+                  ) {
+                    years += response.data[0].years_exp.months + " months ";
+                  }
+
+                  if (
+                    response.data[0].years_exp.days != undefined &&
+                    years == null
+                  ) {
+                    years = response.data[0].years_exp.days + " days";
+                  } else if (
+                    response.data[0].years_exp.days != undefined &&
+                    years != null
+                  ) {
+                    years += response.data[0].years_exp.days + " days";
+                  }
                   this.caretaker_years_exp_even.push(years);
 
                   const get_pet_info = {
@@ -745,13 +812,25 @@ export default {
               this.length_odd += 1;
               this.caretaker_username_odd.push(response.data[i].username);
               this.caretaker_name_odd.push(response.data[i].name);
-              let age =
-                response.data[i].age.years +
-                " years " +
-                response.data[i].age.months +
-                " months " +
-                response.data[i].age.days +
-                " days";
+              let age = null;
+
+              if (response.data[0].age.months != undefined && age == null) {
+                age = response.data[0].age.months + " months ";
+              } else if (
+                response.data[0].age.months != undefined &&
+                age != null
+              ) {
+                age += response.data[0].age.months + " months ";
+              }
+
+              if (response.data[0].age.days != undefined && age == null) {
+                age = response.data[0].age.days + " days";
+              } else if (
+                response.data[0].age.days != undefined &&
+                age != null
+              ) {
+                age += response.data[0].age.days + " days";
+              }
               this.caretaker_age_odd.push(age);
               this.caretaker_date_of_birth_odd.push(
                 response.data[i].birth_date.toString().split("T")[0]
@@ -763,14 +842,35 @@ export default {
               this.caretaker_avg_rating_odd.push(
                 response.data[i].average_rating
               );
-              let years_exp =
-                response.data[i].years_exp.years +
-                " years " +
-                response.data[i].years_exp.months +
-                " months " +
-                response.data[i].years_exp.days +
-                " days";
-              this.caretaker_years_exp_odd.push(years_exp);
+              let years = null;
+              if (response.data[0].years_exp.years != undefined) {
+                years = response.data[0].years_exp.years + " years ";
+              }
+
+              if (
+                response.data[0].years_exp.months != undefined &&
+                years == null
+              ) {
+                years = response.data[0].years_exp.months + " months ";
+              } else if (
+                response.data[0].years_exp.months != undefined &&
+                years != null
+              ) {
+                years += response.data[0].years_exp.months + " months ";
+              }
+
+              if (
+                response.data[0].years_exp.days != undefined &&
+                years == null
+              ) {
+                years = response.data[0].years_exp.days + " days";
+              } else if (
+                response.data[0].years_exp.days != undefined &&
+                years != null
+              ) {
+                years += response.data[0].years_exp.days + " days";
+              }
+              this.caretaker_years_exp_odd.push(years);
 
               const get_info = {
                 username: response.data[i].username,
@@ -798,13 +898,24 @@ export default {
               this.length_even += 1;
               this.caretaker_username_even.push(response.data[i].username);
               this.caretaker_name_even.push(response.data[i].name);
-              let age =
-                response.data[i].age.years +
-                " years " +
-                response.data[i].age.months +
-                " months " +
-                response.data[i].age.days +
-                " days";
+              let age = null;
+              if (response.data[0].age.months != undefined && age == null) {
+                age = response.data[0].age.months + " months ";
+              } else if (
+                response.data[0].age.months != undefined &&
+                age != null
+              ) {
+                age += response.data[0].age.months + " months ";
+              }
+
+              if (response.data[0].age.days != undefined && age == null) {
+                age = response.data[0].age.days + " days";
+              } else if (
+                response.data[0].age.days != undefined &&
+                age != null
+              ) {
+                age += response.data[0].age.days + " days";
+              }
               this.caretaker_age_even.push(age);
               this.caretaker_date_of_birth_even.push(
                 response.data[i].birth_date.toString().split("T")[0]
@@ -816,14 +927,35 @@ export default {
               this.caretaker_avg_rating_even.push(
                 response.data[i].average_rating
               );
-              let years_exp =
-                response.data[i].years_exp.years +
-                " years " +
-                response.data[i].years_exp.months +
-                " months " +
-                response.data[i].years_exp.days +
-                " days";
-              this.caretaker_years_exp_even.push(years_exp);
+              let years = null;
+              if (response.data[0].years_exp.years != undefined) {
+                years = response.data[0].years_exp.years + " years ";
+              }
+
+              if (
+                response.data[0].years_exp.months != undefined &&
+                years == null
+              ) {
+                years = response.data[0].years_exp.months + " months ";
+              } else if (
+                response.data[0].years_exp.months != undefined &&
+                years != null
+              ) {
+                years += response.data[0].years_exp.months + " months ";
+              }
+
+              if (
+                response.data[0].years_exp.days != undefined &&
+                years == null
+              ) {
+                years = response.data[0].years_exp.days + " days";
+              } else if (
+                response.data[0].years_exp.days != undefined &&
+                years != null
+              ) {
+                years += response.data[0].years_exp.days + " days";
+              }
+              this.caretaker_years_exp_even.push(years);
               const get_pet_info = {
                 username: response.data[i].username,
               };
