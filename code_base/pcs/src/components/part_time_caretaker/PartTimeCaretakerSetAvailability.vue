@@ -98,6 +98,7 @@ export default {
     num_of_pets: null,
     value1_editable: [],
     value2_editable: [],
+    count: 0,
   }),
   methods: {
     addDates: function() {
@@ -107,6 +108,8 @@ export default {
         label2: "Enter End Date (YYYY-MM-DD)",
         value2: "",
       });
+      this.value1_editable.push(true);
+      this.value2_editable.push(true);
     },
     removeDates: function(index) {
       this.dateFields.splice(index, 1);
@@ -119,10 +122,12 @@ export default {
       let data_ok_val1 = false;
       let data_ok_val2 = false;
       if (this.dateFields.length == 0) {
+        this.count = 0;
         this.dateFields = [];
         data_ok_val1 = true;
         data_ok_val2 = true;
       } else {
+        this.count = 0;
         for (let i = 0; i < this.dateFields.length; i++) {
           if (this.dateFields[i].value1.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
             var date1 = new Date(this.dateFields[i].value1);
@@ -220,6 +225,7 @@ export default {
             break;
           }
           if (data_ok_val1 == true && data_ok_val2 == true) {
+            this.count += 1;
             var setAvailability = {};
             if (this.have_data == false) {
               setAvailability = {
@@ -275,7 +281,7 @@ export default {
               }
             )
             .then((response) => {
-              if (response.status == 200) {
+              if (response.data[0] == this.count) {
                 Swal.fire({
                   icon: "success",
                   title: "Update Successful!",
@@ -312,8 +318,8 @@ export default {
       .then((response) => {
         console.log(response.data);
         let length = response.data.length;
+        this.dateFields = [];
         if (length == 0) {
-          this.dateFields = [];
           this.have_data = false;
           this.value1_editable.push(true);
           this.value2_editable.push(true);
@@ -328,6 +334,7 @@ export default {
               }
             )
             .then((response) => {
+              this.count = response.data.length;
               console.log(response.data);
               if (response.data.number_of_pets_allowed != 0) {
                 this.num_of_pets = response.data.number_of_pets_allowed;
@@ -338,10 +345,13 @@ export default {
         } else {
           this.have_data = true;
           for (let i = 0; i < length; i++) {
-            // this.dateFields.value1.push(response.data[i].start_date);
-            // this.dateFields.value2.push(response.data[i].end_date);
-            this.dateFields[i].value1 = response.data[i].start_date;
-            this.dateFields[i].value2 = response.data[i].end_date;
+            let start_date = response.data[i].start_date.split("T")[0];
+            let end_date = response.data[i].end_date.split("T")[0];
+            let arr = {
+              value1: start_date,
+              value2: end_date,
+            };
+            this.dateFields.push(arr);
             this.number_of_pets_allowed_arr.push(
               response.data[i].number_of_pets_allowed
             );
