@@ -36,7 +36,7 @@ async function get_past_jobs_information(req, res) {
       `SELECT u.username AS username, bt.pet_name AS pet_name, 
       bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
       bt.start_transfer_method AS start_transfer_method, 
-      bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
+      bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating, 
       bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND 
@@ -76,9 +76,9 @@ async function get_specific_past_jobs_information(req, res) {
     if (start_date != null && pet_names != null) {
       if (pet_names.includes(",")) {
         query = `SELECT u.username AS username, bt.pet_name AS pet_name, 
-        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
+        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, 
-        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
+        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating, 
         bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime  
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
@@ -93,9 +93,9 @@ async function get_specific_past_jobs_information(req, res) {
         query += `);`;
       } else {
         query = `SELECT u.username AS username, bt.pet_name AS pet_name, 
-        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
+        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, 
-        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
+        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating, 
         bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
@@ -110,9 +110,9 @@ async function get_specific_past_jobs_information(req, res) {
     } else if (start_date == null && pet_names != null) {
       if (pet_names.includes(",")) {
         query = `SELECT u.username AS username, bt.pet_name AS pet_name, 
-        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
+        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, 
-        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
+        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating, 
         bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime  
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
@@ -127,9 +127,9 @@ async function get_specific_past_jobs_information(req, res) {
         query += `);`;
       } else {
         query = `SELECT u.username AS username, bt.pet_name AS pet_name, 
-        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
+        bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, 
-        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
+        bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating, 
         bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime  
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
@@ -138,9 +138,9 @@ async function get_specific_past_jobs_information(req, res) {
       }
     } else {
       query = `SELECT u.username AS username, bt.pet_name AS pet_name, 
-      bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
+      bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
       bt.start_transfer_method AS start_transfer_method, 
-      bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating,
+      bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, bt.rating AS rating, 
       bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime  
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
@@ -167,10 +167,10 @@ async function get_ongoing_jobs_information(req, res) {
     const result = await client.query(
       `SELECT u.username AS username, u.name AS name, u.phone AS phone, u.email AS email, 
       u.address AS address, bt.pet_name AS pet_name, 
-      bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime,
+      bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
       bt.start_transfer_method AS start_transfer_method, 
       bt.end_transfer_method AS end_transfer_method, bt.amount AS amount, 
-      bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime
+      bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
       bt.job_start_datetime <= current_timestamp AND 
