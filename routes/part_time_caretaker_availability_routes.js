@@ -42,7 +42,7 @@ async function get_availabilities_information(req, res) {
       (SELECT EXTRACT(YEAR FROM start_date) = '${next_year}')) 
       AND ((SELECT EXTRACT(YEAR FROM end_date) = '${curr_year}') OR 
       (SELECT EXTRACT(YEAR FROM end_date) = '${next_year}'))  
-      ORDER BY start_end ASC, end_date ASC;`
+      ORDER BY start_date ASC, end_date ASC;`
     );
 
     res.setHeader("content-type", "application/json");

@@ -213,12 +213,12 @@ export default {
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_start_datetime.split("T")[1];
+                response.data[i].job_start_datetime.split("T")[1].split(".")[0];
               this.job_start_odd.push(job_start);
               let job_end =
                 response.data[i].job_end_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_end_datetime.split("T")[1];
+                response.data[i].job_end_datetime.split("T")[1].split(".")[0];
               this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
@@ -264,7 +264,11 @@ export default {
               this.pet_med_hist_odd.push(response.data[i].med_hist);
               this.pet_special_req_odd.push(response.data[i].special_req);
               this.payment_method_odd.push(response.data[i].payment_method);
-              this.payment_datetime_odd.push(response.data[i].payment_datetime);
+              let date_time =
+                response.data[i].payment_datetime.split("T")[0] +
+                " " +
+                response.data[i].payment_datetime.split("T")[1].split(".")[0];
+              this.payment_datetime_odd.push(date_time);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].cusername);
@@ -272,12 +276,12 @@ export default {
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_start_datetime.split("T")[1];
+                response.data[i].job_start_datetime.split("T")[1].split(".")[0];
               this.job_start_even.push(job_start);
               let job_end =
                 response.data[i].job_end_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_end_datetime.split("T")[1];
+                response.data[i].job_end_datetime.split("T")[1].split(".")[0];
               this.job_end_even.push(job_end);
               this.start_transfer_method_even.push(
                 response.data[i].start_transfer_method
@@ -323,9 +327,11 @@ export default {
               this.pet_med_hist_even.push(response.data[i].med_hist);
               this.pet_special_req_even.push(response.data[i].special_req);
               this.payment_method_even.push(response.data[i].payment_method);
-              this.payment_datetime_even.push(
-                response.data[i].payment_datetime
-              );
+              let date_time =
+                response.data[i].payment_datetime.split("T")[0] +
+                " " +
+                response.data[i].payment_datetime.split("T")[1].split(".")[0];
+              this.payment_datetime_even.push(date_time);
             }
           }
         }
