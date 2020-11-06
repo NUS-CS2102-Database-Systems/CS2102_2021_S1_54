@@ -246,9 +246,12 @@ export default {
         // no previous data, so insert
         if (this.have_data == false) {
           await axios
-            .post("/part-time-caretakers/add-availabilities", {
-              toEdit: this.datesToSubmit,
-            })
+            .post(
+              "https://pet-care-service.herokuapp.com/part-time-caretakers/add-availabilities-information",
+              {
+                toEdit: this.datesToSubmit,
+              }
+            )
             .then((response) => {
               if (response.status == 200) {
                 Swal.fire({
@@ -265,9 +268,12 @@ export default {
             });
         } else {
           await axios
-            .post("/part-time-caretakers/edit-availabilities", {
-              toEdit: this.datesToSubmit,
-            })
+            .post(
+              "https://pet-care-service.herokuapp.com/part-time-caretakers/edit-availabilities-information",
+              {
+                toEdit: this.datesToSubmit,
+              }
+            )
             .then((response) => {
               if (response.status == 200) {
                 Swal.fire({
@@ -298,12 +304,13 @@ export default {
     // need to sort by start date asc and end date asc
     await axios
       .post(
-        "https://pet-care-service.herokuapp.com/part-time-caretakers/get-availabilities",
+        "https://pet-care-service.herokuapp.com/part-time-caretakers/get-availabilities-information",
         {
           toGet: get_info,
         }
       )
       .then((response) => {
+        console.log(response.data);
         let length = response.data.length;
         if (length == 0) {
           this.dateFields = [];
