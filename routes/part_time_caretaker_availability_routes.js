@@ -30,15 +30,18 @@ async function get_availabilities_information(req, res) {
   try {
     const client = await pool.connect();
     const username = req.body.toGet.username;
+    let date = new Date();
+    let curr_year = date.getFullYear();
+    let next_year = date.getFullYear() + 1;
 
     const result = await client.query(
       `SELECT start_date, end_date, number_of_pets_allowed 
       FROM availabilities 
       WHERE username = '${username}' AND 
-      ((SELECT EXTRACT(YEAR FROM start_date)) = (SELECT EXTRACT(YEAR FROM current_date)) OR 
-      (SELECT EXTRACT(YEAR FROM start_date)) = SELECT EXTRACT(YEAR FROM (current_date + integer '365'))) 
-      AND ((SELECT EXTRACT(YEAR FROM end_date)) = (SELECT EXTRACT(YEAR FROM current_date)) OR 
-      (SELECT EXTRACT(YEAR FROM end_date)) = SELECT EXTRACT(YEAR FROM (current_date + integer '365'))) 
+      ((SELECT EXTRACT(YEAR FROM start_date) = '${curr_year}') OR 
+      (SELECT EXTRACT(YEAR FROM start_date) = '${next_year}')) 
+      AND ((SELECT EXTRACT(YEAR FROM end_date) = '${curr_year}') OR 
+      (SELECT EXTRACT(YEAR FROM end_date) = '${next_year}'))  
       ORDER BY start_end ASC, end_date ASC;`
     );
 
@@ -109,14 +112,16 @@ async function edit_availabilities_information(req, res) {
       let start_date = req.body.toEdit[i].start_date;
       let end_date = req.body.toEdit[i].end_date;
       let num_of_pets = req.body.toEdit[i].num_pets;
+      let curr_year = date.getFullYear();
+      let next_year = date.getFullYear() + 1;
 
       let query = `UPDATE availabilities SET start_date = '${start_date}', 
       end_date = '${end_date}', number_of_pets_allowed = '${num_of_pets}' 
       WHERE username = '${username}' AND 
-      ((SELECT EXTRACT(YEAR FROM start_date)) = (SELECT EXTRACT(YEAR FROM current_date)) OR 
-      (SELECT EXTRACT(YEAR FROM start_date)) = SELECT EXTRACT(YEAR FROM (current_date + integer '365'))) 
-      AND ((SELECT EXTRACT(YEAR FROM end_date)) = (SELECT EXTRACT(YEAR FROM current_date)) OR 
-      (SELECT EXTRACT(YEAR FROM end_date)) = SELECT EXTRACT(YEAR FROM (current_date + integer '365')));`;
+      ((SELECT EXTRACT(YEAR FROM start_date) = '${curr_year}') OR 
+      (SELECT EXTRACT(YEAR FROM start_date) = '${next_year}')) 
+      AND ((SELECT EXTRACT(YEAR FROM end_date) = '${curr_year}') OR 
+      (SELECT EXTRACT(YEAR FROM end_date) = '${next_year}'));`;
 
       await client.query(query);
     }
