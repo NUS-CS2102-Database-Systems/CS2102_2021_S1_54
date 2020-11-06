@@ -193,9 +193,12 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-ongoing-jobs-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-ongoing-jobs-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {

@@ -273,9 +273,12 @@ export default {
         console.log(jsonDataToSend);
 
         await axios
-          .post("/caretakers/get-specific-upcoming-jobs-information", {
-            toGet: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/caretakers/get-specific-upcoming-jobs-information",
+            {
+              toGet: jsonDataToSend,
+            }
+          )
           .then((response) => {
             this.id_odd = [];
             this.id_even = [];
@@ -392,9 +395,12 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-upcoming-jobs-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-upcoming-jobs-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
