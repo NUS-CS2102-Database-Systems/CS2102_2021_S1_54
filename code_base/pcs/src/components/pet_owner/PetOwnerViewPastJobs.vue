@@ -78,6 +78,8 @@
                     Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
                     <br />
                     Amount: {{ amount_odd[i] }} <br />
+                    Paid By: {{ payment_method_odd[i] }} <br />
+                    Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
                     Rating: {{ rating_odd[i] }} <br />
                     Review: {{ review_odd[i] }} <br />
                   </p>
@@ -124,6 +126,8 @@
                     {{ end_transfer_method_even[i] }}
                     <br />
                     Amount: {{ amount_even[i] }} <br />
+                    Paid By: {{ payment_method_even[i] }} <br />
+                    Payment Date and Time: {{ payment_datetime_even[i] }} <br />
                     Rating: {{ rating_even[i] }} <br />
                     Review: {{ review_even[i] }} <br />
                   </p>
@@ -227,6 +231,10 @@ export default {
     rating_even: [],
     review_odd: [],
     review_even: [],
+    payment_method_even: [],
+    payment_method_odd: [],
+    payment_datetime_even: [],
+    payment_datetime_odd: [],
   }),
   computed: {
     dateDisplay() {
@@ -335,6 +343,10 @@ export default {
             this.amount_even = [];
             this.rating_even = [];
             this.review_even = [];
+            this.payment_method_even = [];
+            this.payment_method_odd = [];
+            this.payment_datetime_even = [];
+            this.payment_datetime_odd = [];
             this.loaded = false;
             let length = response.data.length;
             console.log(length);
@@ -369,6 +381,10 @@ export default {
                   this.amount_odd.push(response.data[i].amount);
                   this.rating_odd.push(response.data[i].rating);
                   this.review_odd.push(response.data[i].review);
+                  this.payment_method_odd.push(response.data[i].payment_method);
+                  this.payment_datetime_odd.push(
+                    response.data[i].payment_datetime
+                  );
                 } else {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].username);
@@ -392,6 +408,12 @@ export default {
                   this.amount_even.push(response.data[i].amount);
                   this.rating_even.push(response.data[i].rating);
                   this.review_even.push(response.data[i].review);
+                  this.payment_method_even.push(
+                    response.data[i].payment_method
+                  );
+                  this.payment_datetime_even.push(
+                    response.data[i].payment_datetime
+                  );
                 }
               }
               this.loaded = true;
@@ -432,6 +454,7 @@ export default {
       .then((response) => {
         let length = response.data.length;
         console.log(length);
+        console.log(response.data);
         if (length == 0) {
           this.have_data = false;
         } else {
@@ -460,6 +483,8 @@ export default {
               this.amount_odd.push(response.data[i].amount);
               this.rating_odd.push(response.data[i].rating);
               this.review_odd.push(response.data[i].review);
+              this.payment_method_odd.push(response.data[i].payment_method);
+              this.payment_datetime_odd.push(response.data[i].payment_datetime);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].username);
@@ -483,6 +508,10 @@ export default {
               this.amount_even.push(response.data[i].amount);
               this.rating_even.push(response.data[i].rating);
               this.review_even.push(response.data[i].review);
+              this.payment_method_even.push(response.data[i].payment_method);
+              this.payment_datetime_even.push(
+                response.data[i].payment_datetime
+              );
             }
           }
         }

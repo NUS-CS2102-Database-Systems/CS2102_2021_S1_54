@@ -60,6 +60,8 @@
                   Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
                   <br />
                   Amount: {{ amount_odd[i] }} <br />
+                  Paid By: {{ payment_method_odd[i] }} <br />
+                  Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
                   Rating: {{ rating_odd[i] }} <br />
                   Review: {{ review_odd[i] }} <br />
 
@@ -102,6 +104,8 @@
                   Transfer Method (Drop Off): {{ end_transfer_method_even[i] }}
                   <br />
                   Amount: {{ amount_even[i] }} <br />
+                  Paid By: {{ payment_method_even[i] }} <br />
+                  Payment Date and Time: {{ payment_datetime_even[i] }} <br />
                   Rating: {{ rating_even[i] }} <br />
                   Review: {{ review_even[i] }} <br />
 
@@ -230,6 +234,10 @@ export default {
     type_of_animal_even: [],
     pet_med_hist_even: [],
     pet_special_req_even: [],
+    payment_method_even: [],
+    payment_method_odd: [],
+    payment_datetime_even: [],
+    payment_datetime_odd: [],
   }),
   computed: {
     dateDisplay() {
@@ -273,9 +281,12 @@ export default {
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/caretakers/get-specific-past-jobs-information", {
-            toGet: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/caretakers/get-specific-past-jobs-information",
+            {
+              toGet: jsonDataToSend,
+            }
+          )
           .then((response) => {
             this.id_odd = [];
             this.id_even = [];
@@ -319,6 +330,10 @@ export default {
             this.type_of_animal_even = [];
             this.pet_med_hist_even = [];
             this.pet_special_req_even = [];
+            this.payment_method_even = [];
+            this.payment_method_odd = [];
+            this.payment_datetime_even = [];
+            this.payment_datetime_odd = [];
             this.loaded = false;
             let length = response.data.length;
             if (length == 0) {
@@ -346,12 +361,41 @@ export default {
                   this.pet_owner_phone_odd.push(response.data[i].phone);
                   this.pet_owner_email_odd.push(response.data[i].email);
                   this.pet_owner_address_odd.push(response.data[i].address);
-                  this.pet_age_odd.push(response.data[i].pet_age);
+                  let pet_age = null;
+
+                  if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.months + " months ";
+                  } else if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.months + " months ";
+                  }
+
+                  if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.days + " days";
+                  } else if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.days + " days";
+                  }
+                  this.pet_age_odd.push(pet_age);
                   this.pet_gender_odd.push(response.data[i].pet_gender);
                   this.pet_breed_odd.push(response.data[i].breed);
                   this.type_of_animal_odd.push(response.data[i].type_of_animal);
                   this.pet_med_hist_odd.push(response.data[i].med_hist);
                   this.pet_special_req_odd.push(response.data[i].special_req);
+                  this.payment_method_odd.push(response.data[i].payment_method);
+                  this.payment_datetime_odd.push(
+                    response.data[i].payment_datetime
+                  );
                 } else {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].username);
@@ -372,7 +416,32 @@ export default {
                   this.pet_owner_phone_even.push(response.data[i].phone);
                   this.pet_owner_email_even.push(response.data[i].email);
                   this.pet_owner_address_even.push(response.data[i].address);
-                  this.pet_age_even.push(response.data[i].pet_age);
+                  let pet_age = null;
+
+                  if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.months + " months ";
+                  } else if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.months + " months ";
+                  }
+
+                  if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.days + " days";
+                  } else if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.days + " days";
+                  }
+                  this.pet_age_even.push(pet_age);
                   this.pet_gender_even.push(response.data[i].pet_gender);
                   this.pet_breed_even.push(response.data[i].breed);
                   this.type_of_animal_even.push(
@@ -380,6 +449,12 @@ export default {
                   );
                   this.pet_med_hist_even.push(response.data[i].med_hist);
                   this.pet_special_req_even.push(response.data[i].special_req);
+                  this.payment_method_even.push(
+                    response.data[i].payment_method
+                  );
+                  this.payment_datetime_even.push(
+                    response.data[i].payment_datetime
+                  );
                 }
               }
             }
@@ -396,10 +471,14 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-past-jobs-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-past-jobs-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
+        console.log(response.data);
         let length = response.data.length;
         if (length == 0) {
           this.have_data = false;
@@ -410,8 +489,16 @@ export default {
               this.id_odd.push(i + 1);
               this.pet_owner_odd.push(response.data[i].username);
               this.pet_odd.push(response.data[i].pet_name);
-              this.job_start_odd.push(response.data[i].job_start_datetime);
-              this.job_end_odd.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_odd.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
               );
@@ -426,18 +513,53 @@ export default {
               this.pet_owner_phone_odd.push(response.data[i].phone);
               this.pet_owner_email_odd.push(response.data[i].email);
               this.pet_owner_address_odd.push(response.data[i].address);
-              this.pet_age_odd.push(response.data[i].pet_age);
+              let pet_age = null;
+
+              if (
+                response.data[0].pet_age.months != undefined &&
+                pet_age == null
+              ) {
+                pet_age = response.data[0].pet_age.months + " months ";
+              } else if (
+                response.data[0].pet_age.months != undefined &&
+                pet_age != null
+              ) {
+                pet_age += response.data[0].pet_age.months + " months ";
+              }
+
+              if (
+                response.data[0].pet_age.days != undefined &&
+                pet_age == null
+              ) {
+                pet_age = response.data[0].pet_age.days + " days";
+              } else if (
+                response.data[0].pet_age.days != undefined &&
+                pet_age != null
+              ) {
+                pet_age += response.data[0].pet_age.days + " days";
+              }
+              this.pet_age_odd.push(pet_age);
               this.pet_gender_odd.push(response.data[i].pet_gender);
               this.pet_breed_odd.push(response.data[i].breed);
               this.type_of_animal_odd.push(response.data[i].type_of_animal);
               this.pet_med_hist_odd.push(response.data[i].med_hist);
               this.pet_special_req_odd.push(response.data[i].special_req);
+              this.payment_method_odd.push(response.data[i].payment_method);
+              this.payment_datetime_odd.push(response.data[i].payment_datetime);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].username);
               this.pet_even.push(response.data[i].pet_name);
-              this.job_start_even.push(response.data[i].job_start_datetime);
-              this.job_end_even.push(response.data[i].job_end_datetime);
+              let job_start =
+                response.data[i].job_start_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_start_datetime.split("T")[1];
+              this.job_start_even.push(job_start);
+              let job_end =
+                response.data[i].job_end_datetime.split("T")[0] +
+                " " +
+                response.data[i].job_end_datetime.split("T")[1];
+              this.job_end_even.push(job_end);
               this.start_transfer_method_even.push(
                 response.data[i].start_transfer_method
               );
@@ -452,12 +574,41 @@ export default {
               this.pet_owner_phone_even.push(response.data[i].phone);
               this.pet_owner_email_even.push(response.data[i].email);
               this.pet_owner_address_even.push(response.data[i].address);
-              this.pet_age_even.push(response.data[i].pet_age);
+              let pet_age = null;
+
+              if (
+                response.data[0].pet_age.months != undefined &&
+                pet_age == null
+              ) {
+                pet_age = response.data[0].pet_age.months + " months ";
+              } else if (
+                response.data[0].pet_age.months != undefined &&
+                pet_age != null
+              ) {
+                pet_age += response.data[0].pet_age.months + " months ";
+              }
+
+              if (
+                response.data[0].pet_age.days != undefined &&
+                pet_age == null
+              ) {
+                pet_age = response.data[0].pet_age.days + " days";
+              } else if (
+                response.data[0].pet_age.days != undefined &&
+                pet_age != null
+              ) {
+                pet_age += response.data[0].pet_age.days + " days";
+              }
+              this.pet_age_even.push(pet_age);
               this.pet_gender_even.push(response.data[i].pet_gender);
               this.pet_breed_even.push(response.data[i].breed);
               this.type_of_animal_even.push(response.data[i].type_of_animal);
               this.pet_med_hist_even.push(response.data[i].med_hist);
               this.pet_special_req_even.push(response.data[i].special_req);
+              this.payment_method_even.push(response.data[i].payment_method);
+              this.payment_datetime_even.push(
+                response.data[i].payment_datetime
+              );
             }
           }
         }

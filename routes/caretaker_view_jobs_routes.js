@@ -35,11 +35,12 @@ async function get_past_jobs_information(req, res) {
       `SELECT u.username AS username, p.pet_name AS pet_name, 
       bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
       bt.start_transfer_method AS start_transfer_method, bt.end_transfer_method AS end_transfer_method, 
+      bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime, 
       bt.amount AS amount, bt.rating AS rating, bt.review AS review, u.name AS name, 
       u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
       AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
       p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
-      FROM (users u INNER JOIN bid_transaction bt ON u.username = bt.pusername) NATURAL JOIN pet p 
+      FROM (users u NATURAL JOIN pet p) INNER JOIN bid_transaction bt ON u.username = bt.pusername  
       WHERE bt.cusername = '${username}' AND 
       bt.job_start_datetime < current_timestamp AND 
       bt.job_end_datetime < current_timestamp;`
@@ -66,7 +67,8 @@ async function get_specific_past_jobs_information(req, res) {
       query = `SELECT u.username AS username, p.pet_name AS pet_name, 
         bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, bt.end_transfer_method AS end_transfer_method, 
-        bt.amount AS amount, bt.rating AS rating, bt.review AS review, u.name AS name, 
+        bt.amount AS amount, bt.rating AS rating, bt.review AS review, 
+        bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime, u.name AS name, 
         u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
         AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
         p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
@@ -78,7 +80,8 @@ async function get_specific_past_jobs_information(req, res) {
       query = `SELECT u.username AS username, p.pet_name AS pet_name, 
         bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, bt.end_transfer_method AS end_transfer_method, 
-        bt.amount AS amount, bt.rating AS rating, bt.review AS review, u.name AS name, 
+        bt.amount AS amount, bt.rating AS rating, bt.review AS review, 
+        bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime, u.name AS name, 
         u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
         AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
         p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
@@ -108,7 +111,8 @@ async function get_ongoing_jobs_information(req, res) {
       `SELECT u.username AS username, p.pet_name AS pet_name, 
       bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
       bt.start_transfer_method AS start_transfer_method, bt.end_transfer_method AS end_transfer_method, 
-      bt.amount AS amount, u.name AS name, u.gender AS gender, u.phone AS phone, u.email AS email, 
+      bt.amount AS amount, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime, 
+      u.name AS name, u.gender AS gender, u.phone AS phone, u.email AS email, 
       u.address AS address, AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
       p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
       FROM (users u INNER JOIN bid_transaction bt ON u.username = bt.pusername) NATURAL JOIN pet p 
@@ -135,7 +139,8 @@ async function get_upcoming_jobs_information(req, res) {
       `SELECT u.username AS username, p.pet_name AS pet_name, 
       bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
       bt.start_transfer_method AS start_transfer_method, bt.end_transfer_method AS end_transfer_method, 
-      bt.amount AS amount, u.name AS name, u.gender AS gender, u.phone AS phone, u.email AS email, 
+      bt.amount AS amount, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime, 
+      u.name AS name, u.gender AS gender, u.phone AS phone, u.email AS email, 
       u.address AS address, AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
       p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
       FROM (users u INNER JOIN bid_transaction bt ON u.username = bt.pusername) NATURAL JOIN pet p 
@@ -165,8 +170,8 @@ async function get_specific_upcoming_jobs_information(req, res) {
       query = `SELECT u.username AS username, p.pet_name AS pet_name, 
         bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, bt.end_transfer_method AS end_transfer_method, 
-        bt.amount AS amount, bt.rating AS rating, bt.review AS review, u.name AS name, 
-        u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
+        bt.amount AS amount, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime, 
+        u.name AS name, u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
         AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
         p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
         FROM (users u INNER JOIN bid_transaction bt ON u.username = bt.pusername) NATURAL JOIN pet p 
@@ -177,8 +182,8 @@ async function get_specific_upcoming_jobs_information(req, res) {
       query = `SELECT u.username AS username, p.pet_name AS pet_name, 
         bt.job_start_datetime AS job_start_datetime, bt.job_end_datetime AS job_end_datetime, 
         bt.start_transfer_method AS start_transfer_method, bt.end_transfer_method AS end_transfer_method, 
-        bt.amount AS amount, bt.rating AS rating, bt.review AS review, u.name AS name, 
-        u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
+        bt.amount AS amount, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime,
+        u.name AS name, u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
         AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
         p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
         FROM (users u INNER JOIN bid_transaction bt ON u.username = bt.pusername) NATURAL JOIN pet p 

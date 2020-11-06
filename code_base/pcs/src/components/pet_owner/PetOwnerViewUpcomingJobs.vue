@@ -175,6 +175,10 @@ export default {
     start_transfer_method_even: [],
     end_transfer_method_odd: [],
     end_transfer_method_even: [],
+    payment_method_even: [],
+    payment_method_odd: [],
+    payment_datetime_even: [],
+    payment_datetime_odd: [],
   }),
   computed: {
     dateDisplay() {
@@ -279,6 +283,10 @@ export default {
             this.start_transfer_method_even = [];
             this.end_transfer_method_even = [];
             this.amount_even = [];
+            this.payment_method_even = [];
+            this.payment_method_odd = [];
+            this.payment_datetime_even = [];
+            this.payment_datetime_odd = [];
             this.loaded = false;
             let length = response.data.length;
             if (length == 0) {
@@ -308,6 +316,10 @@ export default {
                     response.data[i].end_transfer_method
                   );
                   this.amount_odd.push(response.data[i].amount);
+                  this.payment_method_odd.push(response.data[i].payment_method);
+                  this.payment_datetime_odd.push(
+                    response.data[i].payment_datetime
+                  );
                 } else {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].cusername);
@@ -329,6 +341,12 @@ export default {
                     response.data[i].end_transfer_method
                   );
                   this.amount_even.push(response.data[i].amount);
+                  this.payment_method_even.push(
+                    response.data[i].payment_method
+                  );
+                  this.payment_datetime_even.push(
+                    response.data[i].payment_datetime
+                  );
                 }
               }
               this.loaded = true;
@@ -395,6 +413,8 @@ export default {
                 response.data[i].end_transfer_method
               );
               this.amount_odd.push(response.data[i].amount);
+              this.payment_method_odd.push(response.data[i].payment_method);
+              this.payment_datetime_odd.push(response.data[i].payment_datetime);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].cusername);
@@ -416,6 +436,10 @@ export default {
                 response.data[i].end_transfer_method
               );
               this.amount_even.push(response.data[i].amount);
+              this.payment_method_even.push(response.data[i].payment_method);
+              this.payment_datetime_even.push(
+                response.data[i].payment_datetime
+              );
             }
           }
         }

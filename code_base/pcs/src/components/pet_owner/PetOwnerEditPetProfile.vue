@@ -17,7 +17,7 @@
             <b>Date of Birth:</b>
             <v-text-field v-model="pet_birth_date" outlined readonly />
             <br />
-            <b>Age:</b>
+            <b>pet_age:</b>
             <v-text-field v-model="pet_age" outlined readonly />
             <b>Gender:</b>
             <v-text-field v-model="pet_gender" outlined readonly />
@@ -185,13 +185,34 @@ export default {
         }
       )
       .then((response) => {
-        this.pet_age =
-          response.data[0].pet_age.years +
-          " years " +
-          response.data[0].pet_age.months +
-          " months " +
-          response.data[0].pet_age.days +
-          " days";
+        if (response.data[0].pet_age.years != undefined) {
+          this.pet_age = response.data[0].pet_age.years + " years ";
+        }
+
+        if (
+          response.data[0].pet_age.months != undefined &&
+          this.pet_age == null
+        ) {
+          this.pet_age = response.data[0].pet_age.months + " months ";
+        } else if (
+          response.data[0].pet_age.months != undefined &&
+          this.pet_age != null
+        ) {
+          this.pet_age += response.data[0].pet_age.months + " months ";
+        }
+
+        if (
+          response.data[0].pet_age.days != undefined &&
+          this.pet_age == null
+        ) {
+          this.pet_age = response.data[0].pet_age.days + " days";
+        } else if (
+          response.data[0].pet_age.days != undefined &&
+          this.pet_age != null
+        ) {
+          this.pet_age += response.data[0].pet_age.days + " days";
+        }
+
         this.pet_birth_date = response.data[0].birth_date
           .toString()
           .split("T")[0];

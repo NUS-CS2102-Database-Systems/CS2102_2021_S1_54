@@ -223,13 +223,23 @@ export default {
         for (let i = 0; i < length; i++) {
           if (i % 2 == 0) {
             this.pet_name_odd.push(response.data[i].pet_name);
-            let age =
-              response.data[0].age.years +
-              " years " +
-              response.data[0].age.months +
-              " months " +
-              response.data[0].age.days +
-              " days";
+            let age = null;
+
+            if (response.data[0].age.months != undefined && age == null) {
+              age = response.data[0].age.months + " months ";
+            } else if (
+              response.data[0].age.months != undefined &&
+              age != null
+            ) {
+              age += response.data[0].age.months + " months ";
+            }
+
+            if (response.data[0].age.days != undefined && age == null) {
+              age = response.data[0].age.days + " days";
+            } else if (response.data[0].age.days != undefined && age != null) {
+              age += response.data[0].age.days + " days";
+            }
+
             this.pet_age_odd.push(age);
             this.pet_birth_date_odd.push(
               response.data[i].birth_date.toString().split("T")[0]
@@ -251,13 +261,27 @@ export default {
             this.length_odd += 1;
           } else {
             this.pet_name_even.push(response.data[i].pet_name);
-            let age =
-              response.data[0].age.years +
-              " years " +
-              response.data[0].age.months +
-              " months " +
-              response.data[0].age.days +
-              " days";
+            if (response.data[0].age.years != undefined) {
+              this.age = response.data[0].age.years + " years ";
+            }
+
+            let age = null;
+
+            if (response.data[0].age.months != undefined && age == null) {
+              age = response.data[0].age.months + " months ";
+            } else if (
+              response.data[0].age.months != undefined &&
+              age != null
+            ) {
+              age += response.data[0].age.months + " months ";
+            }
+
+            if (response.data[0].age.days != undefined && age == null) {
+              age = response.data[0].age.days + " days";
+            } else if (response.data[0].age.days != undefined && age != null) {
+              age += response.data[0].age.days + " days";
+            }
+
             this.pet_age_even.push(age);
             this.pet_birth_date_even.push(
               response.data[i].birth_date.toString().split("T")[0]

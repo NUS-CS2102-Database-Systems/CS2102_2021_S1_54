@@ -59,7 +59,7 @@
                 Years Of Experience: {{ years_exp }} <br />
                 Average Rating: {{ avg_rating }} <br />
                 Can Take Care Of:
-                <v-list v-for="i in can_take_care" :key="i">
+                <v-list v-for="i in length" :key="i">
                   {{ can_take_care[i] }}
                   <br />
                 </v-list>
@@ -107,6 +107,7 @@ export default {
     avg_rating: null,
     years_exp: null,
     date_started: null,
+    length: 0,
     can_take_care: [],
   }),
   methods: {
@@ -128,26 +129,78 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-profile-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-profile-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         this.password = response.data[0].password;
         this.name = response.data[0].name;
-        this.age = response.data[0].age;
-        this.birth_date = response.data[0].birth_date;
+        if (response.data[0].age.years != undefined) {
+          this.age = response.data[0].age.years + " years ";
+        }
+
+        if (response.data[0].age.months != undefined && this.age == null) {
+          this.age = response.data[0].age.months + " months ";
+        } else if (
+          response.data[0].age.months != undefined &&
+          this.age != null
+        ) {
+          this.age += response.data[0].age.months + " months ";
+        }
+
+        if (response.data[0].age.days != undefined && this.age == null) {
+          this.age = response.data[0].age.days + " days";
+        } else if (response.data[0].age.days != undefined && this.age != null) {
+          this.age += response.data[0].age.days + " days";
+        }
+
+        this.birth_date = response.data[0].birth_date.toString().split("T")[0];
         this.gender = response.data[0].gender;
         this.phone = response.data[0].phone;
         this.email = response.data[0].email;
         this.address = response.data[0].address;
         this.avg_rating = response.data[0].average_rating;
-        this.years_exp = response.data[0].years_exp;
-        this.date_started = response.data[0].date_started;
+        if (response.data[0].years_exp.years != undefined) {
+          this.years_exp = response.data[0].years_exp.years + " years ";
+        }
+
+        if (
+          response.data[0].years_exp.months != undefined &&
+          this.years_exp == null
+        ) {
+          this.years_exp = response.data[0].years_exp.months + " months ";
+        } else if (
+          response.data[0].years_exp.months != undefined &&
+          this.years_exp != null
+        ) {
+          this.years_exp += response.data[0].years_exp.months + " months ";
+        }
+
+        if (
+          response.data[0].years_exp.days != undefined &&
+          this.years_exp == null
+        ) {
+          this.years_exp = response.data[0].years_exp.days + " days";
+        } else if (
+          response.data[0].years_exp.days != undefined &&
+          this.years_exp != null
+        ) {
+          this.years_exp += response.data[0].years_exp.days + " days";
+        }
+        this.date_started = response.data[0].date_started
+          .toString()
+          .split("T")[0];
 
         axios
-          .post("/caretakers/get-pets-take-care-information", {
-            toGet: get_info,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/caretakers/get-pets-take-care-information",
+            {
+              toGet: get_info,
+            }
+          )
           .then((response) => {
             let pet_length = response.data.length;
             let pets_can = [];
@@ -157,6 +210,7 @@ export default {
               pets_can.push(price);
             }
             this.can_take_care.push(pets_can);
+            this.length = this.can_take_care.length;
           });
       });
     this.loaded = true;

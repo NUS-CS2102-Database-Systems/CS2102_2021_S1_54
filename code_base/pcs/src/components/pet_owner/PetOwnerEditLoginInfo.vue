@@ -133,7 +133,7 @@ export default {
             }
           )
           .then((response) => {
-            if (this.password == response.data[0].password) {
+            if (this.new_password == response.data[0].password) {
               Swal.fire({
                 icon: "success",
                 title: "Updated!",

@@ -29,6 +29,8 @@
                   Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
                   <br />
                   Amount: {{ amount_odd[i] }} <br />
+                  Paid By: {{ payment_method_odd[i] }} <br />
+                  Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
                 </v-card-text>
               </v-card>
             </v-row>
@@ -55,6 +57,8 @@
                   Transfer Method (Drop Off): {{ end_transfer_method_even[i] }}
                   <br />
                   Amount: {{ amount_even[i] }} <br />
+                  Paid By: {{ payment_method_even[i] }} <br />
+                  Payment Date and Time: {{ payment_datetime_even[i] }} <br />
                 </v-card-text>
               </v-card>
             </v-row>
@@ -132,6 +136,10 @@ export default {
     caretaker_phone_even: [],
     caretaker_address_odd: [],
     caretaker_address_even: [],
+    payment_method_even: [],
+    payment_method_odd: [],
+    payment_datetime_even: [],
+    payment_datetime_odd: [],
   }),
   async mounted() {
     this.username = document.cookie.split("=")[1];
@@ -180,6 +188,8 @@ export default {
                 response.data[i].end_transfer_method
               );
               this.amount_odd.push(response.data[i].amount);
+              this.payment_method_odd.push(response.data[i].payment_method);
+              this.payment_datetime_odd.push(response.data[i].payment_datetime);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].username);
@@ -204,6 +214,10 @@ export default {
                 response.data[i].end_transfer_method
               );
               this.amount_even.push(response.data[i].amount);
+              this.payment_method_even.push(response.data[i].payment_method);
+              this.payment_datetime_even.push(
+                response.data[i].payment_datetime
+              );
             }
           }
         }
