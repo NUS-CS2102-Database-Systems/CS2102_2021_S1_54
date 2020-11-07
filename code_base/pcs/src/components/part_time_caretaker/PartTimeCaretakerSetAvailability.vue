@@ -110,6 +110,7 @@ export default {
       });
       this.value1_editable.push(true);
       this.value2_editable.push(true);
+      this.number_of_pets_allowed_arr.push(this.num_of_pets);
     },
     removeDates: function(index) {
       this.dateFields.splice(index, 1);
@@ -355,6 +356,7 @@ export default {
             this.number_of_pets_allowed_arr.push(
               response.data[i].number_of_pets_allowed
             );
+            this.num_of_pets = response.data[i].number_of_pets_allowed;
             if (new Date(response.data[i].start_date) <= today_date) {
               this.value1_editable.push(false);
             } else if (new Date(response.data[i].start_date) > today_date) {
