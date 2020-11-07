@@ -58,6 +58,7 @@
                 Date Started: {{ date_started }} <br />
                 Years Of Experience: {{ years_exp }} <br />
                 Average Rating: {{ avg_rating }} <br />
+                Number of Pets Allowed: {{ num_of_pets }} <br />
                 Can Take Care Of:
                 <v-list v-for="i in length" :key="i">
                   {{ can_take_care[i] }}
@@ -107,6 +108,7 @@ export default {
     avg_rating: null,
     years_exp: null,
     date_started: null,
+    num_of_pets: 0,
     length: 0,
     can_take_care: [],
   }),
@@ -193,6 +195,21 @@ export default {
         this.date_started = response.data[0].date_started
           .toString()
           .split("T")[0];
+
+        axios
+          .post(
+            "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets",
+            {
+              toGet: get_info,
+            }
+          )
+          .then((response) => {
+            if (response.data[0].number_of_pets_allowed == null) {
+              this.num_of_pets = 2;
+            } else {
+              this.num_of_pets = response.data[0].number_of_pets_allowed;
+            }
+          });
 
         axios
           .post(

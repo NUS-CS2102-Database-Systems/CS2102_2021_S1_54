@@ -282,7 +282,13 @@ export default {
           data_ok = false;
         } else {
           var dates =
-            '"' + this.selected_dates[0] + "," + this.selected_dates[1] + '"';
+            '"' +
+            this.selected_dates[0] +
+            "T00:00:00.000Z" +
+            "," +
+            this.selected_dates[1] +
+            "T23:59:59.999Z" +
+            '"';
         }
       } else {
         dates = null;
@@ -350,8 +356,8 @@ export default {
             this.payment_datetime_even = [];
             this.payment_datetime_odd = [];
             this.loaded = false;
-            let length = response.data;
-            console.log(length);
+            let length = response.data.length;
+            console.log(response.data);
             if (length == 0) {
               this.have_data = false;
             } else {

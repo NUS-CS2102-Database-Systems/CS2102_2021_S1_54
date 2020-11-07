@@ -42,10 +42,12 @@
                 />
               </template>
             </v-col>
-            <v-btn icon color="red" fab @click="removeDates(i)">
-              <v-icon>mdi-delete</v-icon>
-              Delete
-            </v-btn>
+            <template v-if="value1_editable[i] && value2_editable[i]">
+              <v-btn icon color="red" fab @click="removeDates(i)">
+                <v-icon>mdi-delete</v-icon>
+                Delete
+              </v-btn>
+            </template>
           </v-row>
         </v-list>
         <v-btn icon color="blue" fab @click="addDates">
@@ -260,7 +262,7 @@ export default {
               }
             )
             .then((response) => {
-              if (response.status == 200) {
+              if (response.data[0] == this.count) {
                 Swal.fire({
                   icon: "success",
                   title: "Submit Successful!",
@@ -283,11 +285,12 @@ export default {
             )
             .then((response) => {
               console.log(response.data);
-              if (response.data[0] == this.count) {
+              if (response.data[0].count == this.count) {
                 Swal.fire({
                   icon: "success",
                   title: "Update Successful!",
                 });
+                location.reload();
               } else {
                 Swal.fire({
                   icon: "error",
