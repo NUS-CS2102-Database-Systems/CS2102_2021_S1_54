@@ -63,9 +63,10 @@ async function get_specific_past_jobs_information(req, res) {
     const username = req.body.toGet.username;
     const dates = req.body.toGet.dates;
     let start_date = null;
+    let end_date = null;
     if (dates != null) {
       start_date = dates.split(",")[0];
-      const end_date = dates.split(",")[1];
+      end_date = dates.split(",")[1];
     }
     let query = "";
 
@@ -178,9 +179,10 @@ async function get_specific_upcoming_jobs_information(req, res) {
     const username = req.body.toGet.username;
     const dates = req.body.toGet.dates;
     let start_date = null;
+    let end_date = null;
     if (dates != null) {
       start_date = dates.split(",")[0];
-      const end_date = dates.split(",")[1];
+      end_date = dates.split(",")[1];
     }
 
     let query = "";

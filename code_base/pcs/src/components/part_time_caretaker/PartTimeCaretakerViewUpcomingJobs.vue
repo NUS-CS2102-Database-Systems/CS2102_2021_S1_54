@@ -49,38 +49,45 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  <h3>Job Information</h3>
-                  Pet Owner Username: {{ pet_owner_odd[i] }} <br />
-                  Pet Name: {{ pet_odd[i] }} <br />
-                  Job Started: {{ job_start_odd[i] }} <br />
-                  Job Ended: {{ job_end_odd[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_odd[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
-                  <br />
-                  Amount: {{ amount_odd[i] }} <br />
-                  Paid By: {{ payment_method_odd[i] }} <br />
-                  Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
-                  Rating: {{ rating_odd[i] }} <br />
-                  Review: {{ review_odd[i] }} <br />
+                  <h3 style="color:black">Job Information</h3>
+                  <p style="color:black">
+                    Pet Owner Username: {{ pet_owner_odd[i] }} <br />
+                    Pet Name: {{ pet_odd[i] }} <br />
+                    Job Started: {{ job_start_odd[i] }} <br />
+                    Job Ended: {{ job_end_odd[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_odd[i] }}
+                    <br />
+                    Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
+                    <br />
+                    Amount: {{ amount_odd[i] }} <br />
+                    Paid By: {{ payment_method_odd[i] }} <br />
+                    Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
+                    Rating: {{ rating_odd[i] }} <br />
+                    Review: {{ review_odd[i] }} <br />
+                  </p>
 
-                  <h3>Pet Owner Information</h3>
-                  Name: {{ pet_owner_name_odd[i] }} <br />
-                  Gender: {{ pet_owner_gender_odd[i] }} <br />
-                  Phone: {{ pet_owner_phone_odd[i] }}
-                  <br />
-                  Email: {{ pet_owner_email_odd[i] }} <br />
-                  Address: {{ pet_owner_address_odd[i] }} <br />
+                  <h3 style="color:black">Pet Owner Information</h3>
+                  <p style="color:black">
+                    Name: {{ pet_owner_name_odd[i] }} <br />
+                    Gender: {{ pet_owner_gender_odd[i] }} <br />
+                    Phone: {{ pet_owner_phone_odd[i] }}
+                    <br />
+                    Email: {{ pet_owner_email_odd[i] }} <br />
+                    Address: {{ pet_owner_address_odd[i] }} <br />
+                  </p>
 
-                  <h3>Pet Information</h3>
-                  Age: {{ pet_age_odd[i] }} <br />
-                  Gender: {{ pet_gender_odd[i] }} <br />
-                  Breed: {{ pet_breed_odd[i] }} <br />
-                  Type of Animal: {{ type_of_animal_odd[i] }}
-                  <br />
-                  Medical History: {{ pet_med_hist_odd[i] }}
-                  <br />
-                  Special Requirements: {{ pet_special_req_odd[i] }} <br />
+                  <h3 style="color:black">Pet Information</h3>
+                  <p style="color:black">
+                    Age: {{ pet_age_odd[i] }} <br />
+                    Gender: {{ pet_gender_odd[i] }} <br />
+                    Breed: {{ pet_breed_odd[i] }} <br />
+                    Type of Animal: {{ type_of_animal_odd[i] }}
+                    <br />
+                    Medical History: {{ pet_med_hist_odd[i] }}
+                    <br />
+                    Special Requirements: {{ pet_special_req_odd[i] }} <br />
+                  </p>
                 </v-card-text>
               </v-card>
             </v-row>
@@ -93,38 +100,46 @@
               <v-card width="45%">
                 <v-card-title> Job {{ number }} </v-card-title>
                 <v-card-text>
-                  <h3>Job Information</h3>
-                  Pet Owner Username: {{ pet_owner_even[i] }} <br />
-                  Pet Name: {{ pet_even[i] }} <br />
-                  Job Started: {{ job_start_even[i] }} <br />
-                  Job Ended: {{ job_end_even[i] }} <br />
-                  Transfer Method (Pick Up): {{ start_transfer_method_even[i] }}
-                  <br />
-                  Transfer Method (Drop Off): {{ end_transfer_method_even[i] }}
-                  <br />
-                  Amount: {{ amount_even[i] }} <br />
-                  Paid By: {{ payment_method_even[i] }} <br />
-                  Payment Date and Time: {{ payment_datetime_even[i] }} <br />
-                  Rating: {{ rating_even[i] }} <br />
-                  Review: {{ review_even[i] }} <br />
+                  <h3 style="color:black">Job Information</h3>
+                  <p style="color:black">
+                    Pet Owner Username: {{ pet_owner_even[i] }} <br />
+                    Pet Name: {{ pet_even[i] }} <br />
+                    Job Started: {{ job_start_even[i] }} <br />
+                    Job Ended: {{ job_end_even[i] }} <br />
+                    Transfer Method (Pick Up):
+                    {{ start_transfer_method_even[i] }}
+                    <br />
+                    Transfer Method (Drop Off):
+                    {{ end_transfer_method_even[i] }}
+                    <br />
+                    Amount: {{ amount_even[i] }} <br />
+                    Paid By: {{ payment_method_even[i] }} <br />
+                    Payment Date and Time: {{ payment_datetime_even[i] }} <br />
+                    Rating: {{ rating_even[i] }} <br />
+                    Review: {{ review_even[i] }} <br />
+                  </p>
 
-                  <h3>Pet Owner Information</h3>
-                  Name: {{ pet_owner_name_even[i] }} <br />
-                  Gender: {{ pet_owner_gender_even[i] }} <br />
-                  Phone: {{ pet_owner_phone_even[i] }}
-                  <br />
-                  Email: {{ pet_owner_email_even[i] }} <br />
-                  Address: {{ pet_owner_address_even[i] }} <br />
+                  <h3 style="color:black">Pet Owner Information</h3>
+                  <p style="color:black">
+                    Name: {{ pet_owner_name_even[i] }} <br />
+                    Gender: {{ pet_owner_gender_even[i] }} <br />
+                    Phone: {{ pet_owner_phone_even[i] }}
+                    <br />
+                    Email: {{ pet_owner_email_even[i] }} <br />
+                    Address: {{ pet_owner_address_even[i] }} <br />
+                  </p>
 
-                  <h3>Pet Information</h3>
-                  Age: {{ pet_age_even[i] }} <br />
-                  Gender: {{ pet_gender_even[i] }} <br />
-                  Breed: {{ pet_breed_even[i] }} <br />
-                  Type of Animal: {{ type_of_animal_even[i] }}
-                  <br />
-                  Medical History: {{ pet_med_hist_even[i] }}
-                  <br />
-                  Special Requirements: {{ pet_special_req_even[i] }} <br />
+                  <h3 style="color:black">Pet Information</h3>
+                  <p style="color:black">
+                    Age: {{ pet_age_even[i] }} <br />
+                    Gender: {{ pet_gender_even[i] }} <br />
+                    Breed: {{ pet_breed_even[i] }} <br />
+                    Type of Animal: {{ type_of_animal_even[i] }}
+                    <br />
+                    Medical History: {{ pet_med_hist_even[i] }}
+                    <br />
+                    Special Requirements: {{ pet_special_req_even[i] }} <br />
+                  </p>
                 </v-card-text>
               </v-card>
             </v-row>
