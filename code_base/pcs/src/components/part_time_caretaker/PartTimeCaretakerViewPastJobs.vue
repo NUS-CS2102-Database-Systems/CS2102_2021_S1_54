@@ -275,7 +275,7 @@ export default {
 
       if (data_ok == true) {
         const dataToSend =
-          '{"username":' + this.username + ', "dates":' + dates + "}";
+          '{"username":"' + this.username + '", "dates":' + dates + "}";
 
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
@@ -335,7 +335,8 @@ export default {
             this.payment_datetime_even = [];
             this.payment_datetime_odd = [];
             this.loaded = false;
-            let length = response.data.length;
+            let length = response.data;
+            console.log(length);
             if (length == 0) {
               this.have_data = false;
             } else {
