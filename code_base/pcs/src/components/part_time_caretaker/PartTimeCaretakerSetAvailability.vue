@@ -282,6 +282,7 @@ export default {
               }
             )
             .then((response) => {
+              console.log(response.data);
               if (response.data[0] == this.count) {
                 Swal.fire({
                   icon: "success",

@@ -84,7 +84,7 @@ async function add_availabilities_information(req, res) {
     let curr_year = date.getFullYear();
     let next_year = date.getFullYear() + 1;
 
-    for (let i = 0; i < req.body.datesToSubmit.length; i++) {
+    for (let i = 0; i < req.body.toEdit.length; i++) {
       username = req.body.toEdit[i].caretaker_username;
       let start_date = req.body.toEdit[i].start_date;
       let end_date = req.body.toEdit[i].end_date;
@@ -120,7 +120,9 @@ async function add_availabilities_information(req, res) {
 async function edit_availabilities_information(req, res) {
   try {
     const client = await pool.connect();
+    let query = "INSERT INTO availabilities VALUES";
     let username = req.body.toEdit[0].caretaker_username;
+    let date = new Date();
     let curr_year = date.getFullYear();
     let next_year = date.getFullYear() + 1;
 
@@ -134,16 +136,30 @@ async function edit_availabilities_information(req, res) {
     );
 
     for (let i = 0; i < req.body.toEdit.length; i++) {
-      let username = req.body.toEdit[i].caretaker_username;
+      username = req.body.toEdit[i].caretaker_username;
       let start_date = req.body.toEdit[i].start_date;
       let end_date = req.body.toEdit[i].end_date;
       let num_of_pets = req.body.toEdit[i].num_pets;
 
-      let query = `INSERT INTO availabilities VALUES 
-      ('${username}', '${start_date}', '${end_date}', ${num_of_pets});`;
-
-      await client.query(query);
+      query += ` ('${username}', '${start_date}', '${end_date}', ${num_of_pets}),`;
     }
+
+    query = query.slice(0, -1);
+    query += ";";
+
+    await client.query(query);
+
+    // for (let i = 0; i < req.body.toEdit.length; i++) {
+    //   let username = req.body.toEdit[i].caretaker_username;
+    //   let start_date = req.body.toEdit[i].start_date;
+    //   let end_date = req.body.toEdit[i].end_date;
+    //   let num_of_pets = req.body.toEdit[i].num_pets;
+
+    //   let query = `INSERT INTO availabilities VALUES
+    //   ('${username}', '${start_date}', '${end_date}', ${num_of_pets});`;
+
+    //   await client.query(query);
+    // }
 
     const result = await client.query(
       `SELECT COUNT(*) FROM availabilities 
