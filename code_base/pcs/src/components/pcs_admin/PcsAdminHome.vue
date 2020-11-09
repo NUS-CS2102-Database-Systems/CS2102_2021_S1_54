@@ -76,6 +76,13 @@ export default {
         this.num_pets = response.data[0].num_of_pets;
         this.amount_earned = response.data[0].amount_earned;
       });
+
+    await axios
+      .get("https://pet-care-service.herokuapp.com/pcs-admin/get-num-pet-days")
+      .then((response) => {
+        console.log(response.data);
+        this.num_pet_days = response.data[0].num_pet_days;
+      });
     this.loaded = true;
   },
 };
