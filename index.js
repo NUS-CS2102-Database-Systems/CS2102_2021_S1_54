@@ -15,6 +15,7 @@ const pet_owner_view_caretakers_routes = require("./routes/pet_owner_view_careta
 const pet_owner_view_jobs_routes = require("./routes/pet_owner_view_jobs_routes.js");
 const pet_profile_routes = require("./routes/pet_profile_routes.js");
 const review_routes = require("./routes/review_routes.js");
+const caretaker_view_salary_num_pets_and_days = require("./routes/caretaker_view_salary_num_pets_and_days.js");
 
 app.use(function (req, res, next) {
   res.header(
@@ -55,6 +56,7 @@ pet_owner_view_caretakers_routes(app);
 pet_owner_view_jobs_routes(app);
 pet_profile_routes(app);
 review_routes(app);
+caretaker_view_salary_num_pets_and_days(app);
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Example app listening on port %d", this.address().port);

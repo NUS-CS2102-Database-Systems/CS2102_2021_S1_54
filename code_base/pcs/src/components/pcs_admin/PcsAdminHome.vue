@@ -9,7 +9,7 @@
         <br />
         <v-card width="70%">
           <v-card-title style="font-weight:bold;">
-            For {{ month }} {{ year }}, we have:
+            For {{ month }} {{ year }} so far, we have:
           </v-card-title>
           <v-layout align-center>
             <v-card-text>
