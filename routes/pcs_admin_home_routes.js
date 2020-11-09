@@ -21,7 +21,7 @@ async function get_num_pets_cared_for_and_amount_earned(req, res) {
     let first_date = new Date(date.getFullYear(), date.getMonth(), 1);
 
     const result = await client.query(
-      `SELECT COUNT(*) AS num_of_pets, SUM(amount) 
+      `SELECT COUNT(*) AS num_of_pets, SUM(amount) AS amount_earned 
         FROM bid_transactions WHERE job_end_datetime >= '${first_date}' 
         AND job_end_datetime <= current_date;`
     );
