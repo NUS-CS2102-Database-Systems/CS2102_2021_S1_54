@@ -7,7 +7,7 @@ const pool = new Pool({
 });
 
 var appRouter = function (app) {
-  app.post(
+  app.get(
     "/pcs-admin/get-num-pets-cared-for-and-amount-earned",
     get_num_pets_cared_for_and_amount_earned
   );
