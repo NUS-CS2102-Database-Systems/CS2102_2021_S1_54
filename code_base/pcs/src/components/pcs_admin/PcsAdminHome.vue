@@ -55,11 +55,17 @@ export default {
   async mounted() {
     this.username = document.cookie.split("=")[1];
     let date = new Date();
+    console.log(date);
     this.month = date.toString().split(" ")[1];
     this.year = date.getFullYear();
     let first_date = new Date(date.getFullYear(), date.getMonth(), 1);
     let diff_time = date - first_date;
     this.num_days = Math.ceil(diff_time / (1000 * 60 * 60 * 24));
+    let first_day = new Date(date.getFullYear(), date.getMonth(), 1)
+      .toISOString()
+      .substr(0, 10);
+
+    console.log(first_day);
 
     await axios
       .get(

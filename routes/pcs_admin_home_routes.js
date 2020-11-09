@@ -18,15 +18,13 @@ async function get_num_pets_cared_for_and_amount_earned(req, res) {
   try {
     const client = await pool.connect();
     let date = new Date();
-    let first_date = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      1
-    ).toISOString.substr(0, 10);
+    let first_day = new Date(date.getFullYear(), date.getMonth(), 1);
+    first_day.setHours(first_day.getHours() + 8);
+    let firstDate = first_day.toISOString().substr(0, 10);
 
     const result = await client.query(
       `SELECT COUNT(*) AS num_of_pets, SUM(amount) AS amount_earned 
-        FROM bid_transaction WHERE job_end_datetime >= '${first_date}' 
+        FROM bid_transaction WHERE job_end_datetime >= '${firstDate}' 
         AND job_end_datetime <= current_date;`
     );
 
