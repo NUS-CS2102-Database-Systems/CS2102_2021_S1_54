@@ -7,7 +7,7 @@ import DeleteAccount from "./components/DeleteAccount";
 import PetOwnerSubmitReview from "./components/pet_owner/PetOwnerSubmitReview";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
 import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
-import PetOwnerBidCaretaker from "./components/pet_owner/PetOwnerBidCaretaker"
+import PetOwnerBidCaretaker from "./components/pet_owner/PetOwnerBidCaretaker";
 import PetOwnerViewPastJobs from "./components/pet_owner/PetOwnerViewPastJobs";
 import PetOwnerViewOngoingJobs from "./components/pet_owner/PetOwnerViewOngoingJobs";
 import PetOwnerViewUpcomingJobs from "./components/pet_owner/PetOwnerViewUpcomingJobs";
@@ -239,16 +239,21 @@ export default new VueRouter({
       component: FullTimeCaretakerViewSalary,
     },
     {
-      path: "/pcs-admins",
+      path: "/pcs-admin",
       name: "PcsAdminHome",
       component: PcsAdminHome,
     },
     {
-      path: "/pcs-admin-total-cared-pets-per-caretaker",
+      path: "/pcs-admin/home",
+      name: "PcsAdminHome",
+      component: PcsAdminHome,
+    },
+    {
+      path: "/pcs-admin/view-number-of-pets-cared-for-per-caretaker",
       name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
       component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
     },
-    {      
+    {
       path: "/admin-signup",
       name: "AdminSignUp",
       component: AdminSignUp,
@@ -257,7 +262,7 @@ export default new VueRouter({
       path: "/pet-owners/view-caretaker-reviews/:caretaker_username",
       name: "PetOwnersViewCaretakerReviews",
       component: PetOwnerViewCaretakerReviews,
-      props: true
+      props: true,
     },
     {
       path: "/full-time-caretakers/apply-for-leave",

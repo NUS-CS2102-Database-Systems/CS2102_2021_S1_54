@@ -53,7 +53,13 @@
 </template>
 
 <script>
-import { mdiLogout, mdiAccountGroup, mdiCurrencyUsd,mdiClipboardCheckMultipleOutline } from "@mdi/js";
+import {
+  mdiLogout,
+  mdiClipboardCheckMultipleOutline,
+  mdiHome,
+  mdiAccountCircle,
+  mdiCurrencyUsd,
+} from "@mdi/js";
 
 export default {
   name: "PcsAdminNavBar",
@@ -62,24 +68,26 @@ export default {
     return {
       items: [
         {
-          title: "Jobs",
-          icon: mdiAccountGroup,
-          route: "/pcs-admins/view-jobs",
+          title: "Home",
+          icon: mdiHome,
+          route: "/pcs-admin/home?" + document.cookie,
         },
         {
-          title: "View num of pets each caretaker has taken care of",
+          title: "Pets Cared For",
           icon: mdiClipboardCheckMultipleOutline,
-          route: "/pcs-admins/Pcs-Admin-View-Num-Of-Pets-Cared-By-Each-Caretaker",
+          route:
+            "/pcs-admin/view-number-of-pets-cared-for-per-caretaker?" +
+            document.cookie,
         },
         {
-          title: "Salary",
+          title: "Set Base Daily Price",
           icon: mdiCurrencyUsd,
-          route: "/pcs-admins/view-salary",
+          route: "/pcs-admin/set-base-daily-price?" + document.cookie,
         },
         {
-          title: "Revenue",
-          icon: mdiCurrencyUsd,
-          route: "/pcs-admins/view-revenue",
+          title: "My Profile",
+          icon: mdiAccountCircle,
+          route: "/pcs-admin/view-my-profile?" + document.cookie,
         },
         {
           title: "Log Out",
