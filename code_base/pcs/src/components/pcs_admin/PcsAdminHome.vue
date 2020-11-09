@@ -68,7 +68,7 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.num_pets = response.data[0].num_of_pets;
-        this.amount_earned = response.data[0].amount;
+        this.amount_earned = response.data[0].amount_earned;
       });
     this.loaded = true;
   },
