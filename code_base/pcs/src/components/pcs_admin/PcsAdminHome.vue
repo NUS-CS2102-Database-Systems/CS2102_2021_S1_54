@@ -33,6 +33,7 @@
 
 <script>
 import PcsAdminNavBar from "./PcsAdminNavBar";
+import axios from "axios";
 
 export default {
   name: "PcsAdminHome",
@@ -59,6 +60,17 @@ export default {
     let first_date = new Date(date.getFullYear(), date.getMonth(), 1);
     let diff_time = date - first_date;
     this.num_days = Math.ceil(diff_time / (1000 * 60 * 60 * 24));
+
+    await axios
+      .get(
+        "https://pet-care-service.herokuapp.com/pcs-admin/get-num-pets-cared-for-and-amount-earned"
+      )
+      .then((response) => {
+        console.log(response.data);
+        this.num_pets = response.data[0].num_of_pets;
+        this.amount_earned = response.data[0].amount;
+      });
+    this.loaded = true;
   },
 };
 </script>
