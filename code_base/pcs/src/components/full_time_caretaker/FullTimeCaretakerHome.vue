@@ -72,7 +72,13 @@ export default {
         }
       )
       .then((response) => {
-        this.num_pet_days = response.data[0].pet_days;
+        console.log(response);
+        console.log(response.data);
+        if (response.data[0].pet_days == undefined) {
+          this.num_pet_days = 0;
+        } else {
+          this.num_pet_days = response.data[0].pet_days;
+        }
       });
     this.loaded = true;
   },

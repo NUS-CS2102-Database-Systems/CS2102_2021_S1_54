@@ -14,7 +14,8 @@
           <v-layout align-center>
             <v-card-text>
               <p style="color:black;font-size:20px">
-                Taken care of <b>{{ num_pets }}</b> pets. <br />
+                Taken care of <b>{{ num_pets }}</b> pets in
+                {{ num_pet_days }} days. <br />
                 Earned <b>SGD {{ amount_earned }}</b
                 >. <br />
                 Our caretakers have earned <b>SGD {{ caretakers_salary }}.</b>
@@ -43,6 +44,7 @@ export default {
     month: null,
     year: null,
     num_pets: 0,
+    num_pet_days: 0,
     amount_earned: 0,
     caretakers_salary: 0,
   }),

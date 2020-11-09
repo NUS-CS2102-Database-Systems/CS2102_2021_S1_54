@@ -9,24 +9,23 @@
         <br />
         <h3>My Profile</h3>
         <br />
-        <v-list>
-          <v-layout align-center>
-            <v-card width="70%">
-              <v-card-title style="font-weight:bold;">
-                Account Login Details
-              </v-card-title>
-              <v-layout align-center>
-                <v-card-text>
-                  Username: {{ username }} <br />
-                  Password: {{ password }} <br />
-                </v-card-text>
-                <v-btn icon color="blue" fab @click="editLoginDetails">
-                  <v-icon>mdi-pencil</v-icon>
-                  Edit
-                </v-btn>
-              </v-layout>
-            </v-card>
-          </v-layout>
+        <v-layout align-center>
+          <v-card width="70%">
+            <v-card-title style="font-weight:bold;">
+              Account Login Details
+            </v-card-title>
+            <v-layout align-center>
+              <v-card-text>
+                Username: {{ username }} <br />
+                Password: {{ password }} <br />
+              </v-card-text>
+              <v-btn icon color="blue" fab @click="editLoginDetails">
+                <v-icon>mdi-pencil</v-icon>
+                Edit
+              </v-btn>
+            </v-layout>
+          </v-card>
+        </v-layout>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -45,7 +44,6 @@
 <script>
 import PcsAdminNavBar from "./PcsAdminNavBar";
 import * as constants from "../constants";
-import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {

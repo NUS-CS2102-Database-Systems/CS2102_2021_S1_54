@@ -39,23 +39,50 @@
 
 <script>
 import PartTimeCaretakerNavBar from "./PartTimeCaretakerNavBar";
+import axios from "axios";
 
 export default {
   name: "PartTimeCaretakerHome",
+
   components: {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
     loaded: true,
     username: null,
+    month: null,
+    year: null,
     num_pets: 0,
     amount_earned: 0,
+    num_pet_days: 0,
   }),
   async mounted() {
     this.username = document.cookie.split("=")[1];
     let date = new Date();
     this.month = date.toString().split(" ")[1];
     this.year = date.getFullYear();
+
+    const get_info = {
+      username: this.username,
+    };
+
+    await axios
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-num-pet-days",
+        {
+          toGet: get_info,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        console.log(response.data);
+        if (response.data[0].pet_days == undefined) {
+          this.num_pet_days = 0;
+        } else {
+          this.num_pet_days = response.data[0].pet_days;
+        }
+      });
+    this.loaded = true;
   },
 };
 </script>

@@ -36,12 +36,13 @@ import FullTimeCaretakerViewPastJobs from "./components/full_time_caretaker/Full
 import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewOngoingJobs";
 import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
 import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
-import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
-import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
-import AdminSignUp from "./components/AdminSignUp";
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
 import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
+import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
+import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
+import AdminSignUp from "./components/AdminSignUp";
+import PcsAdminViewMyProfile from "./components/pcs_admin/PcsAdminViewMyProfile";
 
 Vue.use(VueRouter);
 
@@ -256,6 +257,11 @@ export default new VueRouter({
       path: "/pcs-admin/home",
       name: "PcsAdminHome",
       component: PcsAdminHome,
+    },
+    {
+      path: "/pcs-admin/view-my-profile",
+      name: "PcsAdminViewMyProfile",
+      component: PcsAdminViewMyProfile,
     },
     {
       path: "/pcs-admin/view-number-of-pets-cared-for-per-caretaker",
