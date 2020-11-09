@@ -132,11 +132,16 @@ export default {
         };
 
         await axios
-          .post("/caretakers/edit-login-information", {
-            toEdit: new_login_details,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/caretakers/edit-login-information",
+            {
+              toEdit: new_login_details,
+            }
+          )
           .then((response) => {
-            if (this.password == response.data[0].password) {
+            console.log(response.data[0].password);
+            console.log(this.password);
+            if (this.new_password == response.data[0].password) {
               Swal.fire({
                 icon: "success",
                 title: "Updated!",
@@ -163,9 +168,12 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-login-information", {
-        toGet: get_login_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-login-information",
+        {
+          toGet: get_login_info,
+        }
+      )
       .then((response) => {
         this.password = response.data[0].password;
       });

@@ -161,8 +161,8 @@
               </v-row>
             </v-card-title>
             <p class="text-center">
-              Hi {{ username }}. You do not have any upcoming jobs at the
-              moment.
+              Hi {{ username }}. You do not have any upcoming jobs during this
+              period.
               <br />
             </p>
           </v-card>

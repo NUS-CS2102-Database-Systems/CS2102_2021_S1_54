@@ -58,8 +58,7 @@ import {
   mdiCheckBoxMultipleOutline,
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
-  mdiCurrencyUsd,
-  mdiCalendarRangeOutline
+  mdiCalendarRangeOutline,
 } from "@mdi/js";
 
 export default {
@@ -82,11 +81,6 @@ export default {
           title: "View Upcoming Jobs",
           icon: mdiCheckboxMultipleBlankOutline,
           route: "/full-time-caretakers/view-upcoming-jobs?" + document.cookie,
-        },
-        {
-          title: "View Salary",
-          icon: mdiCurrencyUsd,
-          route: "/full-time-caretakers/view-salary?" + document.cookie,
         },
         {
           title: "Apply For Leave",
