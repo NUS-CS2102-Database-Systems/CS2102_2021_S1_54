@@ -83,6 +83,16 @@ export default {
         console.log(response.data);
         this.num_pet_days = response.data[0].num_pet_days;
       });
+
+    await axios
+      .get(
+        "https://pet-care-service.herokuapp.com/pcs-admin/get-caretakers-total-salary"
+      )
+      .then((response) => {
+        console.log(response.data);
+        this.caretakers_salary =
+          response.data[0].salary_full_time + response.data[0].salary_part_time;
+      });
     this.loaded = true;
   },
 };
