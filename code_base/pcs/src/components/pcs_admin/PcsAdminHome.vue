@@ -90,8 +90,14 @@ export default {
       )
       .then((response) => {
         console.log(response.data);
-        this.caretakers_salary =
+        let total_salary =
           response.data[0].salary_full_time + response.data[0].salary_part_time;
+
+        if (total_salary == undefined) {
+          this.caretakers_salary = 0;
+        } else {
+          this.caretakers_salary = total_salary;
+        }
       });
     this.loaded = true;
   },

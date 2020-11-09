@@ -12,97 +12,98 @@
           Add Pets
         </v-btn>
         <br />
-        <v-col class="mx-auto">
-          <v-list v-for="i in length_odd" :key="i">
-            <v-row>
-              <v-card width="35%">
-                <v-card-title>
-                  {{ pet_name_odd[i - 1] }}
-                  <v-btn
-                    icon
-                    color="blue"
-                    fab
-                    @click="editPetInformation(pet_name_odd[i - 1])"
+        <v-row>
+          <v-col class="mx-auto">
+            <v-list v-for="i in length_odd" :key="i">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title>
+                    {{ pet_name_odd[i - 1] }}
+                    <v-btn
+                      icon
+                      color="blue"
+                      fab
+                      @click="editPetInformation(pet_name_odd[i - 1])"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                      Edit
+                    </v-btn>
+                    <v-spacer />
+                    <v-btn
+                      icon
+                      color="red"
+                      fab
+                      @click="deletePetInformation(pet_name_odd[i - 1])"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                      Delete
+                    </v-btn></v-card-title
                   >
-                    <v-icon>mdi-pencil</v-icon>
-                    Edit
-                  </v-btn>
-                  <v-spacer />
-                  <v-btn
-                    icon
-                    color="red"
-                    fab
-                    @click="deletePetInformation(pet_name_odd[i - 1])"
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                    Delete
-                  </v-btn></v-card-title
-                >
-                <v-card-text>
-                  <p style="color:black">
-                    Date of Birth: {{ pet_birth_date_odd[i - 1] }} <br />
-                    Age: {{ pet_age_odd[i - 1] }} <br />
-                    Gender: {{ pet_gender_odd[i - 1] }} <br />
-                    Breed: {{ pet_breed_odd[i - 1] }} <br />
-                    Type of Animal: {{ type_of_animal_odd[i - 1] }}
-                    <br />
-                    Medical History: {{ pet_med_hist_odd[i - 1] }}
-                    <br />
-                    Special Requirements: {{ pet_special_req_odd[i - 1] }}
-                    <br />
-                  </p>
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
-        <!-- <v-spacer /> -->
-        <v-col class="mx-auto">
-          <v-list v-for="i in length_even" :key="i">
-            <v-row>
-              <v-card width="35%">
-                <v-card-title>
-                  {{ pet_name_even[i - 1] }}
-                  <v-btn
-                    icon
-                    color="blue"
-                    fab
-                    @click="editPetInformation(pet_name_even[i - 1])"
-                  >
-                    <v-icon>mdi-pencil</v-icon>
-                    Edit
-                  </v-btn>
-                  <v-spacer />
-                  <v-btn
-                    icon
-                    color="red"
-                    fab
-                    @click="deletePetInformation(pet_name_even[i - 1])"
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                    Delete
-                  </v-btn>
-                </v-card-title>
-                <v-layout align-center>
                   <v-card-text>
                     <p style="color:black">
-                      Date of Birth: {{ pet_birth_date_even[i - 1] }} <br />
-                      Age: {{ pet_age_even[i - 1] }} <br />
-                      Gender: {{ pet_gender_even[i - 1] }} <br />
-                      Breed: {{ pet_breed_even[i - 1] }} <br />
-                      Type of Animal: {{ type_of_animal_even[i - 1] }}
+                      Date of Birth: {{ pet_birth_date_odd[i - 1] }} <br />
+                      Age: {{ pet_age_odd[i - 1] }} <br />
+                      Gender: {{ pet_gender_odd[i - 1] }} <br />
+                      Breed: {{ pet_breed_odd[i - 1] }} <br />
+                      Type of Animal: {{ type_of_animal_odd[i - 1] }}
                       <br />
-                      Medical History: {{ pet_med_hist_even[i - 1] }}
+                      Medical History: {{ pet_med_hist_odd[i - 1] }}
                       <br />
-                      Special Requirements: {{ pet_special_req_even[i - 1] }}
+                      Special Requirements: {{ pet_special_req_odd[i - 1] }}
                       <br />
                     </p>
                   </v-card-text>
-                </v-layout>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-list v-for="i in length_even" :key="i">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title>
+                    {{ pet_name_even[i - 1] }}
+                    <v-btn
+                      icon
+                      color="blue"
+                      fab
+                      @click="editPetInformation(pet_name_even[i - 1])"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                      Edit
+                    </v-btn>
+                    <v-spacer />
+                    <v-btn
+                      icon
+                      color="red"
+                      fab
+                      @click="deletePetInformation(pet_name_even[i - 1])"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                      Delete
+                    </v-btn>
+                  </v-card-title>
+                  <v-layout align-center>
+                    <v-card-text>
+                      <p style="color:black">
+                        Date of Birth: {{ pet_birth_date_even[i - 1] }} <br />
+                        Age: {{ pet_age_even[i - 1] }} <br />
+                        Gender: {{ pet_gender_even[i - 1] }} <br />
+                        Breed: {{ pet_breed_even[i - 1] }} <br />
+                        Type of Animal: {{ type_of_animal_even[i - 1] }}
+                        <br />
+                        Medical History: {{ pet_med_hist_even[i - 1] }}
+                        <br />
+                        Special Requirements: {{ pet_special_req_even[i - 1] }}
+                        <br />
+                      </p>
+                    </v-card-text>
+                  </v-layout>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+        </v-row>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
