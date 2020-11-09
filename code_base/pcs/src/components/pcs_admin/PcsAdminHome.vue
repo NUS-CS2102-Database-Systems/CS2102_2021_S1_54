@@ -14,11 +14,13 @@
           <v-layout align-center>
             <v-card-text>
               <p style="color:black;font-size:20px">
-                Taken care of <b>{{ num_pets }}</b> pets in
-                {{ num_pet_days }} days. <br />
-                Earned <b>SGD {{ amount_earned }}</b
-                >. <br />
-                Our caretakers have earned <b>SGD {{ caretakers_salary }}.</b>
+                Taken care of <b>{{ num_pets }}</b> pets and earned
+                <b>SGD {{ amount_earned }}</b> in <b>{{ num_days }}</b> days.
+                <br />
+                <br />
+                Our caretakers have earned a total of
+                <b>SGD {{ caretakers_salary }}</b> in
+                <b>{{ num_pet_days }}</b> pet-days.
                 <br />
               </p>
             </v-card-text>
@@ -45,6 +47,7 @@ export default {
     year: null,
     num_pets: 0,
     num_pet_days: 0,
+    num_days: 0,
     amount_earned: 0,
     caretakers_salary: 0,
   }),
@@ -53,6 +56,9 @@ export default {
     let date = new Date();
     this.month = date.toString().split(" ")[1];
     this.year = date.getFullYear();
+    let first_date = new Date(date.getFullYear(), date.getMonth(), 1);
+    let diff_time = date - first_date;
+    this.num_days = Math.ceil(diff_time / (1000 * 60 * 60 * 24));
   },
 };
 </script>

@@ -43,6 +43,7 @@ import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
 import AdminSignUp from "./components/AdminSignUp";
 import PcsAdminViewMyProfile from "./components/pcs_admin/PcsAdminViewMyProfile";
+import PcsAdminEditLoginInfo from "./components/pcs_admin/PcsAdminEditLoginInfo";
 
 Vue.use(VueRouter);
 
@@ -262,6 +263,11 @@ export default new VueRouter({
       path: "/pcs-admin/view-my-profile",
       name: "PcsAdminViewMyProfile",
       component: PcsAdminViewMyProfile,
+    },
+    {
+      path: "/pcs-admin/edit-login-information",
+      name: "PcsAdminEditLoginInfo",
+      component: PcsAdminEditLoginInfo,
     },
     {
       path: "/pcs-admin/view-number-of-pets-cared-for-per-caretaker",

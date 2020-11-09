@@ -140,7 +140,7 @@ export default {
                 text: "Password has been updated successfully.",
               });
               window.location.href =
-                constants.pet_owner_go_back_to_profile_page;
+                constants.pcs_admin_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",
