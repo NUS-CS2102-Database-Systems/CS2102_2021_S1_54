@@ -5,7 +5,7 @@
     </div>
     <div style="width: 80%; float: right">
       <v-row>
-        <v-col class="mx-auto" md="3">
+        <v-col class="mx-auto" md="4">
           <v-menu
             v-model="available_dates"
             :nudge-right="40"

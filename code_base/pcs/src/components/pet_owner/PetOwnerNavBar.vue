@@ -11,7 +11,7 @@
         permanent
       >
         <div id="logo">
-          <a href='/pet-owners'>
+          <a href="/pet-owners">
             <img
               :src="require('../../assets/petopia_logo_v4.png')"
               height="100px"
@@ -61,7 +61,8 @@ import {
   mdiCheckBoxMultipleOutline,
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
-  mdiPaw,
+  // mdiPaw,
+  mdiHome,
 } from "@mdi/js";
 
 export default {
@@ -70,6 +71,11 @@ export default {
   data() {
     return {
       items: [
+        {
+          title: "Home",
+          icon: mdiHome,
+          route: "/pet-owners/home?" + document.cookie,
+        },
         {
           title: "View Past Jobs",
           icon: mdiCheckBoxMultipleOutline,
@@ -94,11 +100,6 @@ export default {
           title: "My Profile",
           icon: mdiAccountCircle,
           route: "/pet-owners/view-my-profile?" + document.cookie,
-        },
-        {
-          title: "My Pets",
-          icon: mdiPaw,
-          route: "/pet-owners/view-my-pets?" + document.cookie,
         },
         {
           title: "Log Out",

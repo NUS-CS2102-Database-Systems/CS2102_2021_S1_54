@@ -9,13 +9,20 @@
         <br />
         <h3>My Profile</h3>
         <br />
+        <v-layout align-center justify-center>
+          <v-btn icon color="blue" fab @click="viewPetsProfile">
+            <v-icon>mdi-paw</v-icon>
+            View My Pets
+          </v-btn>
+        </v-layout>
+        <br />
         <v-list>
-          <v-layout align-center>
+          <v-layout align-center justify-center>
             <v-card width="70%">
               <v-card-title style="font-weight:bold;">
                 Account Login Details
               </v-card-title>
-              <v-layout align-center>
+              <v-layout align-center justify-center>
                 <v-card-text>
                   Username: {{ username }} <br />
                   Password: {{ password }} <br />
@@ -28,12 +35,12 @@
             </v-card>
           </v-layout>
           <br />
-          <v-layout align-center>
+          <v-layout align-center justify-center>
             <v-card width="70%">
               <v-card-title style="font-weight:bold;">
                 Personal Information
               </v-card-title>
-              <v-layout align-center>
+              <v-layout align-center justify-center>
                 <v-card-text>
                   Name: {{ name }} <br />
                   Date of Birth: {{ birth_date }} <br />
@@ -53,7 +60,7 @@
             </v-card>
           </v-layout>
           <br />
-          <v-layout align-center>
+          <v-layout align-center justify-center>
             <v-card width="70%">
               <v-card-title style="font-weight:bold;">
                 Credit Card Information
@@ -73,7 +80,7 @@
                   Delete
                 </v-btn>
               </v-card-title>
-              <v-layout align-center>
+              <v-layout align-center justify-center>
                 <v-card-text>
                   Credit Card Number: {{ credit_card_num }} <br />
                   Cardholder's Name: {{ credit_card_name }} <br />
@@ -126,6 +133,9 @@ export default {
     expiry_date: null,
   }),
   methods: {
+    viewPetsProfile: function() {
+      window.location.href = constants.pet_owner_view_pet_info;
+    },
     editLoginDetails: function() {
       window.location.href =
         constants.pet_owner_edit_login_info + document.cookie;

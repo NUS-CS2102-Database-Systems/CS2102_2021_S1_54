@@ -32,10 +32,12 @@
           v-model="end_date"
           required
         />
-        
+
         <div class="clearfix">
           <button type="button" class="cancelbtn">
-            <router-link tag="span" to="/full-time-caretakers">Cancel</router-link>
+            <router-link tag="span" to="/full-time-caretakers"
+              >Cancel</router-link
+            >
           </button>
           <button type="submit" class="signupbtn">Confirm</button>
         </div>
@@ -46,17 +48,17 @@
 
 <script>
 import Swal from "sweetalert2";
-import axios from 'axios';
+import axios from "axios";
 import * as constants from "../constants";
 
 export default {
   name: "FullTimeCaretakerApplyForLeave",
   data() {
     return {
-        username: null,
-        reason: "",
-        start_date: "",
-        end_date: ""
+      username: null,
+      reason: "",
+      start_date: "",
+      end_date: "",
     };
   },
   methods: {
@@ -144,30 +146,29 @@ export default {
         const result = await axios({
           method: "post",
           url: "https://pet-care-service.herokuapp.com/apply-leave",
-            data: {
-                username: this.username,
-                reason_for_leave: this.reason,
-                start_date: this.start_date,
-                end_date: this.end_date,
-            }
-        })
+          data: {
+            username: this.username,
+            reason_for_leave: this.reason,
+            start_date: this.start_date,
+            end_date: this.end_date,
+          },
+        });
 
         if (result.data === "Leave submitted!") {
-            console.log("apply leave successful");
-            Swal.fire({
-              icon: "success",
-              title: "Leave Submitted",
-              text: "Your leave application is submitted successfully!",
-            });
-            window.location.href = constants.full_time_caretaker_home;
+          console.log("apply leave successful");
+          Swal.fire({
+            icon: "success",
+            title: "Leave Submitted",
+            text: "Your leave application is submitted successfully!",
+          });
+          window.location.href = constants.full_time_caretaker_home;
         }
-
       }
     },
   },
   mounted() {
-      this.username = document.cookie.split("=")[1];
-  }
+    this.username = document.cookie.split("=")[1];
+  },
 };
 </script>
 
@@ -272,5 +273,4 @@ button:hover {
 #petType {
   display: none;
 }
-
 </style>

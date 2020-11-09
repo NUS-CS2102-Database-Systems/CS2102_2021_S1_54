@@ -4,15 +4,15 @@
       <PcsAdminNavBar />
     </div>
     <div style="width: 80%; float: right">
-     <v-data-table multi-sort=true
-     :headers="headers"
-     :items="bid_transaction"
-     :items-per-page="20"
-     class="elevation-1">
-
-
-     </v-data-table>
-     </div>
+      <v-data-table
+        multi-sort
+        :headers="headers"
+        :items="bid_transaction"
+        :items-per-page="20"
+        class="elevation-1"
+      >
+      </v-data-table>
+    </div>
   </v-container>
 </template>
 
@@ -27,10 +27,10 @@ export default {
   },
   data: () => ({
     bid_transaction: [],
-    headers:[
+    headers: [
       {
         text: "Caretaker",
-        value: "cusername"
+        value: "cusername",
       },
       {
         text: "Total Number Of Pets taken care of",
@@ -38,17 +38,8 @@ export default {
       },
     ],
   }),
-  computed: {
-  
-  },
-  methods: {
-    
-   
-    
-   
-  },
-  async mounted() {
-
-  },
+  computed: {},
+  methods: {},
+  async mounted() {},
 };
 </script>

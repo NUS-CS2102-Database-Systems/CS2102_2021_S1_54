@@ -6,7 +6,6 @@ import LogIn from "./components/LogIn";
 import DeleteAccount from "./components/DeleteAccount";
 import PetOwnerSubmitReview from "./components/pet_owner/PetOwnerSubmitReview";
 import PetOwnerViewCaretakers from "./components/pet_owner/PetOwnerViewCaretakers";
-import PetOwnerViewCaretakerProfile from "./components/pet_owner/PetOwnerViewCaretakerProfile";
 import PetOwnerBidCaretaker from "./components/pet_owner/PetOwnerBidCaretaker";
 import PetOwnerViewPastJobs from "./components/pet_owner/PetOwnerViewPastJobs";
 import PetOwnerViewOngoingJobs from "./components/pet_owner/PetOwnerViewOngoingJobs";
@@ -77,6 +76,11 @@ export default new VueRouter({
       component: PetOwnerHome,
     },
     {
+      path: "/pet-owners/home",
+      name: "PetOwnerHome",
+      component: PetOwnerHome,
+    },
+    {
       path: "/pet-owners/view-past-jobs",
       name: "PetOwnerViewPastJobs",
       component: PetOwnerViewPastJobs,
@@ -95,11 +99,6 @@ export default new VueRouter({
       path: "/pet-owners/view-caretakers-profiles",
       name: "PetOwnerViewCaretakers",
       component: PetOwnerViewCaretakers,
-    },
-    {
-      path: "/pet-owners/view-caretakers-profiles/caretaker",
-      name: "PetOwnerViewCaretakerProfile",
-      component: PetOwnerViewCaretakerProfile,
     },
     {
       path: "/pet-owners/view-caretakers-profiles/bid",
@@ -159,6 +158,11 @@ export default new VueRouter({
       component: PartTimeCaretakerHome,
     },
     {
+      path: "/part-time-caretakers/home",
+      name: "PartTimeCaretakerHome",
+      component: PartTimeCaretakerHome,
+    },
+    {
       path: "/part-time-caretakers/view-my-profile",
       name: "PartTimeCaretakerViewMyProfile",
       component: PartTimeCaretakerViewMyProfile,
@@ -200,6 +204,11 @@ export default new VueRouter({
     },
     {
       path: "/full-time-caretakers",
+      name: "FullTimeCaretakerHome",
+      component: FullTimeCaretakerHome,
+    },
+    {
+      path: "/full-time-caretakers/home",
       name: "FullTimeCaretakerHome",
       component: FullTimeCaretakerHome,
     },
