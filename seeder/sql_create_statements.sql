@@ -198,10 +198,11 @@ CREATE OR REPLACE FUNCTION update_avg_rating_of_caretaker()
 AS $$
 	DECLARE avg_rating NUMERIC;
 	BEGIN
--- IF NEW.rating IS NOT NULL AND OLD.rating IS NULL THEN
-	avg_rating := (SELECT AVG(rating) FROM bid_transaction WHERE username = NEW.username);
-UPDATE caretaker SET average_rating = avg_rating WHERE cusername = NEW.username;
--- END IF;
+	avg_rating := (SELECT AVG(rating) FROM bid_transaction B WHERE B.cusername = NEW.cusername);
+	IF avg_rating IS NOT NULL THEN
+		UPDATE caretaker SET average_rating = avg_rating WHERE username = NEW.cusername;
+	END IF;
+	RETURN NULL;
 END; $$
 LANGUAGE plpgsql;
 
@@ -226,6 +227,7 @@ AS $$
 				END IF;
 			END IF;
 		END IF;
+		RETURN NULL;
 	END; $$
 LANGUAGE plpgsql;
 
@@ -242,26 +244,26 @@ DECLARE price_increase NUMERIC;
 	IF NEW.average_rating != OLD.average_rating THEN
 			
 		IF NEW.average_rating <= 2.0 THEN
-		UPDATE daily_price_rate d
-		SET d.current_daily_price = base_daily_price
-		FROM can_take_care NATURAL JOIN set_base_daily_price
-		WHERE username = NEW.username AND d.username = NEW.username  AND d.type_name =  type_name;
+		UPDATE daily_price_rate
+		SET current_daily_price = S.base_daily_price
+		FROM can_take_care AS C NATURAL JOIN set_base_daily_price AS S
+		WHERE C.username = NEW.username AND daily_price_rate.username = NEW.username AND daily_price_rate.type_name = S.type_name;
 
 		ELSE
 			price_increase := ((NEW.average_rating - 2.0)/0.5) * 10;
-			UPDATE daily_price_rate d
-			SET d.current_daily_price = base_daily_price + price_increase
-			FROM can_take_care NATURAL JOIN set_base_daily_price
-			WHERE username = NEW.username AND d.username = NEW.username  AND d.type_name =  type_name;
+			UPDATE daily_price_rate
+			SET current_daily_price = S.base_daily_price + price_increase
+			FROM can_take_care AS C NATURAL JOIN set_base_daily_price AS S
+			WHERE C.username = NEW.username AND daily_price_rate.username = NEW.username AND daily_price_rate.type_name = S.type_name;
 		END IF;
 	END IF;
+	RETURN NULL;
 END; $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER update_daily_price
 AFTER UPDATE ON caretaker
 FOR EACH ROW EXECUTE FUNCTION new_current_daily_price_rate();
-
 
 -- trigger 5
 CREATE OR REPLACE FUNCTION check_caretaker_pet_limit()

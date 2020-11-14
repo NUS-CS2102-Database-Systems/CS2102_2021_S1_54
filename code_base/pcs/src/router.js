@@ -277,14 +277,11 @@ export default new VueRouter({
       component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
     },
     {
-<<<<<<< HEAD
-      path: "/pcs-admins/set-base-daily-price",
+      path: "/pcs-admin/set-base-daily-price",
       name: "PcsAdminSetBaseDailyPrice",
       component: PcsAdminSetBaseDailyPrice,
     },
     {      
-=======
->>>>>>> a5b3bafdfc5e1f90681cf31d7e9cb6c8d56bac9d
       path: "/admin-signup",
       name: "AdminSignUp",
       component: AdminSignUp,

@@ -62,7 +62,7 @@
 
         <div class="clearfix">
           <button type="button" class="cancelbtn">
-            <router-link tag="span" to="/pcs-admins">
+            <router-link tag="span" to="/pcs-admin">
               Cancel
             </router-link>
             </button>

@@ -90,11 +90,6 @@ export default {
           route: "/pcs-admin/view-my-profile?" + document.cookie,
         },
         {
-          title: "Set Base Daily Price",
-          icon: mdiCurrencyUsd,
-          route: "/pcs-admins/set-base-daily-price",
-        },
-        {
           title: "Log Out",
           icon: mdiLogout,
           route: "/",
