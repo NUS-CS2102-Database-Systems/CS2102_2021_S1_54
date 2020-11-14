@@ -79,7 +79,7 @@ export default {
             username: this.username,
             password: this.password,
           },
-        })
+        });
       } else {
         authResponse = await axios({
           method: "post",
@@ -87,7 +87,7 @@ export default {
           data: {
             username: this.username,
             password: this.password,
-            type: this.type
+            type: this.type,
           },
         });
       }
@@ -128,7 +128,7 @@ export default {
           document.cookie = "admin_username=" + username_logged_in;
           console.log("cookie: " + document.cookie);
           this.$router.push({
-            path: "pcs-admins",
+            path: "pcs-admin",
             query: { admin_username: username_logged_in },
           });
         }

@@ -58,8 +58,8 @@ import {
   mdiCheckBoxMultipleOutline,
   mdiCheckboxMarkedOutline,
   mdiCheckboxMultipleBlankOutline,
-  mdiCurrencyUsd,
   mdiCalendarCheckOutline,
+  mdiHome,
 } from "@mdi/js";
 
 export default {
@@ -68,6 +68,11 @@ export default {
   data() {
     return {
       items: [
+        {
+          title: "Home",
+          icon: mdiHome,
+          route: "/part-time-caretakers/home?" + document.cookie,
+        },
         {
           title: "View Past Jobs",
           icon: mdiCheckBoxMultipleOutline,
@@ -82,11 +87,6 @@ export default {
           title: "View Upcoming Jobs",
           icon: mdiCheckboxMultipleBlankOutline,
           route: "/part-time-caretakers/view-upcoming-jobs?" + document.cookie,
-        },
-        {
-          title: "View Salary",
-          icon: mdiCurrencyUsd,
-          route: "/part-time-caretakers/view-salary?" + document.cookie,
         },
         {
           title: "Set Availability",

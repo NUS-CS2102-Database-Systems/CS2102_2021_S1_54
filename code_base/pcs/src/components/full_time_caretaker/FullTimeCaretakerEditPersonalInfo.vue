@@ -64,16 +64,20 @@
             />
           </v-col>
         </v-layout>
-        <v-btn icon color="blue" fab @click="submit">
-          <v-icon> mdi-content-save</v-icon>
-          Save
-        </v-btn>
-        <v-layout align-right>
-          <v-btn icon color="red" fab @click="cancel">
-            <v-icon> mdi-close</v-icon>
-            Cancel
-          </v-btn>
-        </v-layout>
+        <v-row>
+          <v-col class="mx-auto">
+            <v-btn icon color="blue" fab @click="submit">
+              <v-icon> mdi-content-save</v-icon>
+              Save
+            </v-btn>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-btn icon color="red" fab @click="cancel">
+              <v-icon> mdi-close</v-icon>
+              Cancel
+            </v-btn>
+          </v-col>
+        </v-row>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -137,7 +141,7 @@ export default {
     submit: async function() {
       let data_ok = true;
       if (this.phone != null) {
-        if (this.phone.match(/^(9|8|6)[0-9]{7}$/)) {
+        if (this.phone.toString().match(/^(9|8|6)[0-9]{7}$/)) {
           var new_phone = '"' + this.phone + '"';
         } else {
           Swal.fire({
@@ -146,6 +150,7 @@ export default {
             text: "Please provide a valid phone number",
           });
           this.phone = null;
+          data_ok = false;
         }
       } else {
         Swal.fire({
@@ -182,50 +187,51 @@ export default {
         this.email = null;
       }
 
+      if (this.name != null) {
+        let name_lowercase = this.name.toString().toLowerCase();
+        this.name = name_lowercase.replace(/(^\w{1})|(\s{1}\w{1})/g, (match) =>
+          match.toUpperCase()
+        );
+        var new_name = '"' + this.name + '"';
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Name cannot be empty",
+        });
+        data_ok = false;
+        this.name = null;
+      }
+
+      if (this.gender != null) {
+        var new_gender = '"' + this.gender + '"';
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Gender cannot be empty",
+        });
+        data_ok = false;
+        this.gender = null;
+      }
+
+      if (this.address != null) {
+        var new_address = '"' + this.address + '"';
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Address cannot be empty",
+        });
+        data_ok = false;
+        this.address = null;
+      }
+
       if (data_ok == true) {
-        if (this.name != null) {
-          let name_lowercase = this.name.toString().toLowerCase();
-          this.name = name_lowercase.replace(
-            /(^\w{1})|(\s{1}\w{1})/g,
-            (match) => match.toUpperCase()
-          );
-          var new_name = '"' + this.name + '"';
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Name cannot be empty",
-          });
-          data_ok = false;
-          this.name = null;
-        }
-
-        if (this.gender != null) {
-          var new_gender = '"' + this.gender + '"';
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Gender cannot be empty",
-          });
-          data_ok = false;
-          this.gender = null;
-        }
-
-        if (this.address != null) {
-          var new_address = '"' + this.address + '"';
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Address cannot be empty",
-          });
-          data_ok = false;
-          this.address = null;
-        }
-
         const dataToSend =
-          '{"name":' +
+          '{"username":"' +
+          this.username +
+          '", "name":' +
           new_name +
           ', "gender":' +
           new_gender +
@@ -240,10 +246,14 @@ export default {
         const jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
         await axios
-          .post("/caretakers/edit-personal-information", {
-            toEdit: jsonDataToSend,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/caretakers/edit-personal-information",
+            {
+              toEdit: jsonDataToSend,
+            }
+          )
           .then((response) => {
+            console.log(response.data);
             if (
               response.data[0].name == this.name &&
               response.data[0].gender == this.gender &&
@@ -277,13 +287,33 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-personal-information", {
-        toGet: get_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-personal-information",
+        {
+          toGet: get_info,
+        }
+      )
       .then((response) => {
         this.name = response.data[0].name;
-        this.age = response.data[0].age;
-        this.birth_date = response.data[0].birth_date;
+        if (response.data[0].age.years != undefined) {
+          this.age = response.data[0].age.years + " years ";
+        }
+
+        if (response.data[0].age.months != undefined && this.age == null) {
+          this.age = response.data[0].age.months + " months ";
+        } else if (
+          response.data[0].age.months != undefined &&
+          this.age != null
+        ) {
+          this.age += response.data[0].age.months + " months ";
+        }
+
+        if (response.data[0].age.days != undefined && this.age == null) {
+          this.age = response.data[0].age.days + " days";
+        } else if (response.data[0].age.days != undefined && this.age != null) {
+          this.age += response.data[0].age.days + " days";
+        }
+        this.birth_date = response.data[0].birth_date.toString().split("T")[0];
         this.phone = response.data[0].phone;
         this.gender = response.data[0].gender;
         this.email = response.data[0].email;

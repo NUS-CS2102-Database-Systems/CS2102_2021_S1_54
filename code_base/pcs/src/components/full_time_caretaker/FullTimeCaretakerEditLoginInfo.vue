@@ -43,16 +43,20 @@
             />
           </v-col>
         </v-layout>
-        <v-btn icon color="blue" fab @click="submit">
-          <v-icon> mdi-content-save</v-icon>
-          Save
-        </v-btn>
-        <v-layout align-right>
-          <v-btn icon color="red" fab @click="cancel">
-            <v-icon> mdi-close</v-icon>
-            Cancel
-          </v-btn>
-        </v-layout>
+        <v-row>
+          <v-col class="mx-auto">
+            <v-btn icon color="blue" fab @click="submit">
+              <v-icon> mdi-content-save</v-icon>
+              Save
+            </v-btn>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-btn icon color="red" fab @click="cancel">
+              <v-icon> mdi-close</v-icon>
+              Cancel
+            </v-btn>
+          </v-col>
+        </v-row>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -132,11 +136,16 @@ export default {
         };
 
         await axios
-          .post("/caretakers/edit-login-information", {
-            toEdit: new_login_details,
-          })
+          .post(
+            "https://pet-care-service.herokuapp.com/caretakers/edit-login-information",
+            {
+              toEdit: new_login_details,
+            }
+          )
           .then((response) => {
-            if (this.password == response.data[0].password) {
+            console.log(response.data[0].password);
+            console.log(this.password);
+            if (this.new_password == response.data[0].password) {
               Swal.fire({
                 icon: "success",
                 title: "Updated!",
@@ -163,9 +172,12 @@ export default {
     };
 
     await axios
-      .post("/caretakers/get-login-information", {
-        toGet: get_login_info,
-      })
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-login-information",
+        {
+          toGet: get_login_info,
+        }
+      )
       .then((response) => {
         this.password = response.data[0].password;
       });

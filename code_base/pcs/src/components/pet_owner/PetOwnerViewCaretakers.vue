@@ -148,106 +148,120 @@
         </v-col>
       </v-row>
       <template v-if="have_data && loaded">
-        <v-col class="mx-auto">
-          <v-list v-for="i in length_odd" :key="i">
-            <v-row>
-              <v-card width="35%">
-                <v-card-title> {{ caretaker_username_odd[i] }} </v-card-title>
-                <v-btn
-                  depressed
-                  color="primary"
-                  @click="addABid(caretaker_username_odd[i])"
-                >
-                  Place a Bid
-                </v-btn>
-                <v-card-text>
-                  <p style="color:black">
-                    Name: {{ caretaker_name_odd[i] }} <br />
-                    Date of Birth: {{ caretaker_date_of_birth_odd[i] }} <br />
-                    Age: {{ caretaker_age_odd[i] }} <br />
-                    Gender: {{ caretaker_gender_odd[i] }} <br />
-                    Years of Experience: {{ caretaker_years_exp_odd[i] }} <br />
-                    Phone: {{ caretaker_phone_odd[i] }} <br />
-                    Email: {{ caretaker_email_odd[i] }}
-                    <br />
-                    Address: {{ caretaker_address_odd[i] }}
-                    <br />
-                    Average Rating: {{ caretaker_avg_rating_odd[i] }} <br />
-                    Can Take Care of: {{ caretaker_take_care_animals_odd[i] }}
-                    <!-- <v-list v-for="i in animals_length_odd" :key="i">
+        <v-row>
+          <v-col class="mx-auto">
+            <v-list v-for="i in length_odd" :key="i">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title
+                    >{{ caretaker_username_odd[i - 1] }}
+                  </v-card-title>
+                  <v-btn
+                    depressed
+                    color="primary"
+                    @click="addABid(caretaker_username_odd[i - 1])"
+                  >
+                    Place a Bid
+                  </v-btn>
+                  <v-card-text>
+                    <p style="color:black">
+                      Name: {{ caretaker_name_odd[i - 1] }} <br />
+                      Date of Birth: {{ caretaker_date_of_birth_odd[i - 1] }}
+                      <br />
+                      Age: {{ caretaker_age_odd[i - 1] }} <br />
+                      Gender: {{ caretaker_gender_odd[i - 1] }} <br />
+                      Years of Experience:
+                      {{ caretaker_years_exp_odd[i - 1] }}
+                      <br />
+                      Phone: {{ caretaker_phone_odd[i - 1] }} <br />
+                      Email: {{ caretaker_email_odd[i - 1] }}
+                      <br />
+                      Address: {{ caretaker_address_odd[i - 1] }}
+                      <br />
+                      Average Rating: {{ caretaker_avg_rating_odd[i - 1] }}
+                      <br />
+                      Can Take Care of:
+                      {{ caretaker_take_care_animals_odd[i - 1] }}
+                      <!-- <v-list v-for="i in animals_length_odd" :key="i">
                       {{ caretaker_take_care_animals_odd[i] }}
                       <br />
                     </v-list> -->
-                    <br />
-                    <v-btn elevation="2">
-                      <router-link
-                        tag="span"
-                        :to="{
-                          path:
-                            '/pet-owners/view-caretaker-reviews/' +
-                            caretaker_username_odd[i],
-                        }"
-                      >
-                        View Reviews
-                      </router-link>
-                    </v-btn>
-                  </p>
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
-        <v-spacer />
-        <v-col class="mx-auto">
-          <v-list v-for="i in length_even" :key="i">
-            <v-row>
-              <v-card width="35%">
-                <v-card-title> {{ caretaker_username_even[i] }} </v-card-title>
-                <v-btn
-                  depressed
-                  color="primary"
-                  @click="addABid(caretaker_username_odd[i])"
-                >
-                  Place a Bid
-                </v-btn>
-                <v-card-text>
-                  <p style="color:black">
-                    Name: {{ caretaker_name_even[i] }} <br />
-                    Date of Birth: {{ caretaker_date_of_birth_even[i] }} <br />
-                    Age: {{ caretaker_age_even[i] }} <br />
-                    Gender: {{ caretaker_gender_even[i] }} <br />
-                    Years of Experience: {{ caretaker_years_exp_even[i] }}
-                    <br />
-                    Phone: {{ caretaker_phone_even[i] }} <br />
-                    Email: {{ caretaker_email_even[i] }}
-                    <br />
-                    Address: {{ caretaker_address_even[i] }}
-                    <br />
-                    Average Rating: {{ caretaker_avg_rating_even[i] }} <br />
-                    Can Take Care of: {{ caretaker_take_care_animals_even[i] }}
-                    <!-- <v-list v-for="i in animals_length_even" :key="i">
+                      <br />
+                      <v-btn elevation="2">
+                        <router-link
+                          tag="span"
+                          :to="{
+                            path:
+                              '/pet-owners/view-caretaker-reviews/' +
+                              caretaker_username_odd[i - 1],
+                          }"
+                        >
+                          View Reviews
+                        </router-link>
+                      </v-btn>
+                    </p>
+                  </v-card-text>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-list v-for="i in length_even" :key="i">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title
+                    >{{ caretaker_username_even[i - 1] }}
+                  </v-card-title>
+                  <v-btn
+                    depressed
+                    color="primary"
+                    @click="addABid(caretaker_username_even[i - 1])"
+                  >
+                    Place a Bid
+                  </v-btn>
+                  <v-card-text>
+                    <p style="color:black">
+                      Name: {{ caretaker_name_even[i - 1] }} <br />
+                      Date of Birth: {{ caretaker_date_of_birth_even[i - 1] }}
+                      <br />
+                      Age: {{ caretaker_age_even[i - 1] }} <br />
+                      Gender: {{ caretaker_gender_even[i - 1] }} <br />
+                      Years of Experience:
+                      {{ caretaker_years_exp_even[i - 1] }}
+                      <br />
+                      Phone: {{ caretaker_phone_even[i - 1] }} <br />
+                      Email: {{ caretaker_email_even[i - 1] }}
+                      <br />
+                      Address: {{ caretaker_address_even[i - 1] }}
+                      <br />
+                      Average Rating: {{ caretaker_avg_rating_even[i - 1] }}
+                      <br />
+                      Can Take Care of:
+                      {{ caretaker_take_care_animals_even[i - 1] }}
+                      <!-- <v-list v-for="i in animals_length_even" :key="i">
                       {{ caretaker_take_care_animals_even[i] }}
                       <br />
                     </v-list> -->
-                    <br />
-                    <v-btn elevation="2">
-                      <router-link
-                        tag="span"
-                        :to="{
-                          path:
-                            '/pet-owners/view-caretaker-reviews/' +
-                            caretaker_username_even[i],
-                        }"
-                      >
-                        View Reviews
-                      </router-link>
-                    </v-btn>
-                  </p>
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
+                      <br />
+                      <v-btn elevation="2">
+                        <router-link
+                          tag="span"
+                          :to="{
+                            path:
+                              '/pet-owners/view-caretaker-reviews/' +
+                              caretaker_username_even[i],
+                          }"
+                        >
+                          View Reviews
+                        </router-link>
+                      </v-btn>
+                    </p>
+                  </v-card-text>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+        </v-row>
       </template>
       <template v-else-if="!have_data && loaded">
         <v-row>
@@ -981,7 +995,8 @@ export default {
           }
         }
       });
-    console.log(this.caretaker_take_care_animals_odd);
+    console.log(this.length_odd);
+    console.log(this.length_even);
     console.log(this.caretaker_username_even);
     this.loaded = true;
   },

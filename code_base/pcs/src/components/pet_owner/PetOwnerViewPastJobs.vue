@@ -5,7 +5,7 @@
     </div>
     <div style="width: 80%; float: right">
       <v-row>
-        <v-col class="mx-auto" md="3">
+        <v-col class="mx-auto" md="4">
           <v-menu
             v-model="available_dates"
             :nudge-right="40"
@@ -61,100 +61,104 @@
       </v-row>
       <template v-if="loaded && have_data">
         <br />
-        <v-col class="mx-auto">
-          <v-list v-for="(number, i) in id_odd" :key="number">
-            <v-row>
-              <v-card width="45%">
-                <v-card-title> Job {{ number }} </v-card-title>
-                <v-card-text>
-                  <p style="color:black">
-                    Caretaker Username: {{ caretaker_odd[i] }} <br />
-                    Pet Name: {{ pet_odd[i] }} <br />
-                    Job Started: {{ job_start_odd[i] }} <br />
-                    Job Ended: {{ job_end_odd[i] }} <br />
-                    Transfer Method (Pick Up):
-                    {{ start_transfer_method_odd[i] }}
-                    <br />
-                    Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
-                    <br />
-                    Amount: {{ amount_odd[i] }} <br />
-                    Paid By: {{ payment_method_odd[i] }} <br />
-                    Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
-                    Rating: {{ rating_odd[i] }} <br />
-                    Review: {{ review_odd[i] }} <br />
-                  </p>
-                </v-card-text>
-                <v-btn elevation="2">
-                  <router-link
-                    tag="span"
-                    :to="{
-                      path: '/pet-owners/submit-review/',
-                      query: {
-                        cusername: caretaker_odd[i],
-                        pusername: username,
-                        pet_name: pet_odd[i],
-                        job_start_datetime: job_start_odd[i],
-                        job_end_datetime: job_end_odd[i],
-                        rating: rating_odd[i],
-                        review: review_odd[i],
-                      },
-                    }"
-                  >
-                    Submit/Edit Review
-                  </router-link>
-                </v-btn>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
-        <v-spacer />
-        <v-col class="mx-auto">
-          <v-list v-for="(number, i) in id_even" :key="number">
-            <v-row>
-              <v-card width="45%">
-                <v-card-title> Job {{ number }} </v-card-title>
-                <v-card-text>
-                  <p style="color:black">
-                    Caretaker Username: {{ caretaker_even[i] }} <br />
-                    Pet Name: {{ pet_even[i] }} <br />
-                    Job Started: {{ job_start_even[i] }} <br />
-                    Job Ended: {{ job_end_even[i] }} <br />
-                    Transfer Method (Pick Up):
-                    {{ start_transfer_method_even[i] }}
-                    <br />
-                    Transfer Method (Drop Off):
-                    {{ end_transfer_method_even[i] }}
-                    <br />
-                    Amount: {{ amount_even[i] }} <br />
-                    Paid By: {{ payment_method_even[i] }} <br />
-                    Payment Date and Time: {{ payment_datetime_even[i] }} <br />
-                    Rating: {{ rating_even[i] }} <br />
-                    Review: {{ review_even[i] }} <br />
-                  </p>
-                </v-card-text>
-                <v-btn elevation="2">
-                  <router-link
-                    tag="span"
-                    :to="{
-                      path: '/pet-owners/submit-review/',
-                      query: {
-                        cusername: caretaker_odd[i],
-                        pusername: username,
-                        pet_name: pet_odd[i],
-                        job_start_datetime: job_start_odd[i],
-                        job_end_datetime: job_end_odd[i],
-                        rating: rating_odd[i],
-                        review: review_odd[i],
-                      },
-                    }"
-                  >
-                    Submit/Edit Review
-                  </router-link>
-                </v-btn>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
+        <v-row>
+          <v-col class="mx-auto">
+            <v-list v-for="(number, i) in id_odd" :key="number">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title> Job {{ number }} </v-card-title>
+                  <v-card-text>
+                    <p style="color:black">
+                      Caretaker Username: {{ caretaker_odd[i] }} <br />
+                      Pet Name: {{ pet_odd[i] }} <br />
+                      Job Started: {{ job_start_odd[i] }} <br />
+                      Job Ended: {{ job_end_odd[i] }} <br />
+                      Transfer Method (Pick Up):
+                      {{ start_transfer_method_odd[i] }}
+                      <br />
+                      Transfer Method (Drop Off):
+                      {{ end_transfer_method_odd[i] }}
+                      <br />
+                      Amount: {{ amount_odd[i] }} <br />
+                      Paid By: {{ payment_method_odd[i] }} <br />
+                      Payment Date and Time: {{ payment_datetime_odd[i] }}
+                      <br />
+                      Rating: {{ rating_odd[i] }} <br />
+                      Review: {{ review_odd[i] }} <br />
+                    </p>
+                  </v-card-text>
+                  <v-btn elevation="2">
+                    <router-link
+                      tag="span"
+                      :to="{
+                        path: '/pet-owners/submit-review/',
+                        query: {
+                          cusername: caretaker_odd[i],
+                          pusername: username,
+                          pet_name: pet_odd[i],
+                          job_start_datetime: job_start_odd[i],
+                          job_end_datetime: job_end_odd[i],
+                          rating: rating_odd[i],
+                          review: review_odd[i],
+                        },
+                      }"
+                    >
+                      Submit/Edit Review
+                    </router-link>
+                  </v-btn>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-list v-for="(number, i) in id_even" :key="number">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title> Job {{ number }} </v-card-title>
+                  <v-card-text>
+                    <p style="color:black">
+                      Caretaker Username: {{ caretaker_even[i] }} <br />
+                      Pet Name: {{ pet_even[i] }} <br />
+                      Job Started: {{ job_start_even[i] }} <br />
+                      Job Ended: {{ job_end_even[i] }} <br />
+                      Transfer Method (Pick Up):
+                      {{ start_transfer_method_even[i] }}
+                      <br />
+                      Transfer Method (Drop Off):
+                      {{ end_transfer_method_even[i] }}
+                      <br />
+                      Amount: {{ amount_even[i] }} <br />
+                      Paid By: {{ payment_method_even[i] }} <br />
+                      Payment Date and Time: {{ payment_datetime_even[i] }}
+                      <br />
+                      Rating: {{ rating_even[i] }} <br />
+                      Review: {{ review_even[i] }} <br />
+                    </p>
+                  </v-card-text>
+                  <v-btn elevation="2">
+                    <router-link
+                      tag="span"
+                      :to="{
+                        path: '/pet-owners/submit-review/',
+                        query: {
+                          cusername: caretaker_odd[i],
+                          pusername: username,
+                          pet_name: pet_odd[i],
+                          job_start_datetime: job_start_odd[i],
+                          job_end_datetime: job_end_odd[i],
+                          rating: rating_odd[i],
+                          review: review_odd[i],
+                        },
+                      }"
+                    >
+                      Submit/Edit Review
+                    </router-link>
+                  </v-btn>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+        </v-row>
       </template>
       <template v-else-if="loaded && !have_data">
         <v-row>

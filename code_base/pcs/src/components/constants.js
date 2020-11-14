@@ -47,4 +47,13 @@ export const full_time_caretaker_edit_personal_info =
 export const full_time_caretaker_go_back_to_profile_page =
   domain + "full-time-caretakers/view-my-profile?" + document.cookie;
 
+export const full_time_caretaker_apply_for_leave =
+  domain + "full-time-caretakers/apply-for-leave?" + document.cookie;
+
 export const full_time_caretaker_home = domain + "full-time-caretakers";
+
+export const pcs_admin_edit_login_info =
+  domain + "pcs-admin/edit-login-information?";
+
+export const pcs_admin_go_back_to_profile_page =
+  domain + "pcs-admin/view-my-profile?" + document.cookie;

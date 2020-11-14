@@ -4,38 +4,49 @@
       <FullTimeCaretakerNavBar />
     </div>
     <div style="width: 80%; float: right">
-        <h1> Viewing My Leaves </h1>
+      <h1>Viewing My Leaves</h1>
       <template v-if="loaded && have_data">
         <br />
-        <v-col class="mx-auto">
-          <v-list v-for="(number, i) in id_odd" :key="number">
-            <v-row>
-              <v-card width="45%">
-                <v-card-title> Leave {{ number }} </v-card-title>
-                <v-card-text>
-                  Reason: {{ reason_odd[i] }} <br />
-                  Start Date: {{ start_date_odd[i] }} <br />
-                  End Date: {{ end_date_odd[i] }} <br />
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
-        <v-spacer />
-        <v-col class="mx-auto">
-          <v-list v-for="(number, i) in id_even" :key="number">
-            <v-row>
-              <v-card width="45%">
-                <v-card-title> Leave {{ number }} </v-card-title>
-                <v-card-text>
-                  Reason: {{ reason_even[i] }} <br />
-                  Start Date: {{ start_date_even[i] }} <br />
-                  End Date: {{ end_date_even[i] }} <br />
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-list>
-        </v-col>
+        <v-layout justify-left>
+          <v-btn icon color="blue" fab @click="applyForLeave">
+            <v-icon>mdi-pencil</v-icon>
+            Apply For Leave
+          </v-btn>
+        </v-layout>
+        <v-row>
+          <v-col class="mx-auto">
+            <v-list v-for="(number, i) in id_odd" :key="number">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title> Leave {{ number }} </v-card-title>
+                  <v-card-text>
+                    <p style="color:black">
+                      Reason: {{ reason_odd[i] }} <br />
+                      Start Date: {{ start_date_odd[i] }} <br />
+                      End Date: {{ end_date_odd[i] }} <br />
+                    </p>
+                  </v-card-text>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-list v-for="(number, i) in id_even" :key="number">
+              <v-row>
+                <v-card width="55%">
+                  <v-card-title> Leave {{ number }} </v-card-title>
+                  <v-card-text>
+                    <p style="color:black">
+                      Reason: {{ reason_even[i] }} <br />
+                      Start Date: {{ start_date_even[i] }} <br />
+                      End Date: {{ end_date_even[i] }} <br />
+                    </p>
+                  </v-card-text>
+                </v-card>
+              </v-row>
+            </v-list>
+          </v-col>
+        </v-row>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -53,6 +64,7 @@
 
 <script>
 import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
+import * as constants from "../constants";
 import axios from "axios";
 
 export default {
@@ -72,12 +84,19 @@ export default {
     end_date_odd: [],
     end_date_even: [],
   }),
+  methods: {
+    applyForLeave: function() {
+      window.location.href =
+        constants.full_time_caretaker_apply_for_leave + document.cookie;
+    },
+  },
   async mounted() {
-    
     const username = document.cookie.split("=")[1];
 
     await axios
-      .get(`https://pet-care-service.herokuapp.com/apply-leave?username=${username}`)
+      .get(
+        `https://pet-care-service.herokuapp.com/apply-leave?username=${username}`
+      )
       .then((response) => {
         let length = response.data.length;
         if (length == 0) {
@@ -87,19 +106,35 @@ export default {
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
-              this.reason_odd.push(response.data[i].reason_for_leave)
-              this.start_date_odd.push(response.data[i].start_date);
-              this.end_date_odd.push(response.data[i].end_date);
+              this.reason_odd.push(response.data[i].reason_for_leave);
+              let start_date =
+                response.data[i].start_date.split("T")[0] +
+                " " +
+                response.data[i].start_date.split("T")[1].split(".")[0];
+              this.start_date_odd.push(start_date);
+              let end_date =
+                response.data[i].end_date.split("T")[0] +
+                " " +
+                response.data[i].end_date.split("T")[1].split(".")[0];
+              this.end_date_odd.push(end_date);
             } else {
               this.id_even.push(i + 1);
               this.reason_even.push(response.data[i].reason_for_leave);
-              this.start_date_even.push(response.data[i].start_date);
-              this.end_date_even.push(response.data[i].end_date);
+              let start_date =
+                response.data[i].start_date.split("T")[0] +
+                " " +
+                response.data[i].start_date.split("T")[1].split(".")[0];
+              this.start_date_even.push(start_date);
+              let end_date =
+                response.data[i].end_date.split("T")[0] +
+                " " +
+                response.data[i].end_date.split("T")[1].split(".")[0];
+              this.end_date_even.push(end_date);
             }
           }
         }
       });
     this.loaded = true;
-    },
+  },
 };
 </script>

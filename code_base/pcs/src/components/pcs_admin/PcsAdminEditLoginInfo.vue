@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <PcsAdminNavBar />
     </div>
     <div style="width: 80%; float: right">
       <template v-if="loaded">
@@ -73,16 +73,16 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import PcsAdminNavBar from "./PcsAdminNavBar";
 import * as constants from "../constants";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
-  name: "PetOwnerEditLoginInfo",
+  name: "PcsAdminEditLoginInfo",
 
   components: {
-    PetOwnerNavBar,
+    PcsAdminNavBar,
   },
   data: () => ({
     loaded: false,
@@ -100,7 +100,7 @@ export default {
       this.confirm_new_password = null;
     },
     cancel: function() {
-      window.location.href = constants.pet_owner_go_back_to_profile_page;
+      window.location.href = constants.pcs_admin_go_back_to_profile_page;
     },
     submit: async function() {
       if (this.confirm_new_password == null && this.new_password != null) {
@@ -120,7 +120,7 @@ export default {
         this.new_password == null &&
         this.confirm_new_password == null
       ) {
-        window.location.href = constants.pet_owner_go_back_to_profile_page;
+        window.location.href = constants.pcs_admin_go_back_to_profile_page;
       } else {
         console.log(this.new_password);
         console.log(this.confirm_new_password);
@@ -131,7 +131,7 @@ export default {
 
         await axios
           .post(
-            "https://pet-care-service.herokuapp.com/pet-owners/edit-login-information",
+            "https://pet-care-service.herokuapp.com/pcs-admin/edit-login-information",
             {
               toEdit: new_login_details,
             }
@@ -144,7 +144,7 @@ export default {
                 text: "Password has been updated successfully.",
               });
               window.location.href =
-                constants.pet_owner_go_back_to_profile_page;
+                constants.pcs_admin_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",
@@ -164,7 +164,7 @@ export default {
 
     await axios
       .post(
-        "https://pet-care-service.herokuapp.com/pet-owners/get-login-information",
+        "https://pet-care-service.herokuapp.com/pcs-admin/get-login-information",
         {
           toGet: get_login_info,
         }

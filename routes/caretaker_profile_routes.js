@@ -14,6 +14,7 @@ var appRouter = function (app) {
   app.post("/caretakers/get-personal-information", get_personal_information);
   app.post("/caretakers/edit-personal-information", edit_personal_information);
   app.post("/caretakers/add-can-take-care", add_can_take_care);
+  app.post("/part-time-caretakers/get-num-of-pets", get_num_of_pets);
 };
 
 async function get_profile_information(req, res) {
@@ -153,6 +154,26 @@ async function add_can_take_care(req, res) {
     );
 
     res.send("Added successfully!");
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+async function get_num_of_pets(req, res) {
+  try {
+    const client = await pool.connect();
+    const username = req.body.toGet.username;
+
+    const result = await client.query(
+      `SELECT number_of_pets_allowed 
+      FROM availabilities WHERE username = '${username}' 
+      ORDER BY start_date DESC, end_date DESC LIMIT 1;`
+    );
+
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify(result.rows));
     client.release();
   } catch (err) {
     console.error(err);

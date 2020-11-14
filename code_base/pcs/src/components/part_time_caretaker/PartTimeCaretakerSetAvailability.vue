@@ -42,26 +42,34 @@
                 />
               </template>
             </v-col>
-            <v-btn icon color="red" fab @click="removeDates(i)">
-              <v-icon>mdi-delete</v-icon>
-              Delete
-            </v-btn>
+            <template v-if="value1_editable[i] && value2_editable[i]">
+              <v-btn icon color="red" fab @click="removeDates(i)">
+                <v-icon>mdi-delete</v-icon>
+                Delete
+              </v-btn>
+            </template>
           </v-row>
         </v-list>
-        <v-btn icon color="blue" fab @click="addDates">
-          <v-icon>mdi-plus</v-icon>
-          Add
-        </v-btn>
-        <br />
-        <v-btn icon color="red" fab @click="cancel">
-          <v-icon>mdi-close</v-icon>
-          Cancel
-        </v-btn>
-        <br />
-        <v-btn icon color="blue" fab @click="submit">
-          <v-icon>mdi-content-save</v-icon>
-          Submit
-        </v-btn>
+        <v-row>
+          <v-col class="mx-auto">
+            <v-btn icon color="blue" fab @click="addDates">
+              <v-icon>mdi-plus</v-icon>
+              Add
+            </v-btn>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-btn icon color="red" fab @click="cancel">
+              <v-icon>mdi-close</v-icon>
+              Cancel
+            </v-btn>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-btn icon color="blue" fab @click="submit">
+              <v-icon>mdi-content-save</v-icon>
+              Submit
+            </v-btn>
+          </v-col>
+        </v-row>
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -110,6 +118,7 @@ export default {
       });
       this.value1_editable.push(true);
       this.value2_editable.push(true);
+      this.number_of_pets_allowed_arr.push(this.num_of_pets);
     },
     removeDates: function(index) {
       this.dateFields.splice(index, 1);
@@ -259,7 +268,7 @@ export default {
               }
             )
             .then((response) => {
-              if (response.status == 200) {
+              if (response.data[0] == this.count) {
                 Swal.fire({
                   icon: "success",
                   title: "Submit Successful!",
@@ -281,11 +290,13 @@ export default {
               }
             )
             .then((response) => {
-              if (response.data[0] == this.count) {
+              console.log(response.data);
+              if (response.data[0].count == this.count) {
                 Swal.fire({
                   icon: "success",
                   title: "Update Successful!",
                 });
+                location.reload();
               } else {
                 Swal.fire({
                   icon: "error",
@@ -355,6 +366,7 @@ export default {
             this.number_of_pets_allowed_arr.push(
               response.data[i].number_of_pets_allowed
             );
+            this.num_of_pets = response.data[i].number_of_pets_allowed;
             if (new Date(response.data[i].start_date) <= today_date) {
               this.value1_editable.push(false);
             } else if (new Date(response.data[i].start_date) > today_date) {
