@@ -40,7 +40,7 @@ async function get_past_jobs_information(req, res) {
       u.gender AS gender, u.phone AS phone, u.email AS email, u.address AS address, 
       AGE(p.birth_date) AS pet_age, p.gender AS pet_gender, p.breed AS breed, 
       p.type_of_animal AS type_of_animal, p.med_hist AS med_hist, p.special_req AS special_req
-      FROM (users u NATURAL JOIN pet p) INNER JOIN bid_transaction bt ON u.username = bt.pusername  
+      FROM (users u INNER JOIN pet p ON u.username = p.username) INNER JOIN bid_transaction bt ON u.username = bt.pusername  
       WHERE bt.cusername = '${username}' AND 
       bt.job_start_datetime < current_timestamp AND 
       bt.job_end_datetime < current_timestamp 

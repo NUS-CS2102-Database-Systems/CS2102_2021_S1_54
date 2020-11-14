@@ -198,15 +198,15 @@ CREATE OR REPLACE FUNCTION update_avg_rating_of_caretaker()
 AS $$
 	DECLARE avg_rating NUMERIC;
 	BEGIN
-IF NEW.rating IS NOT NULL AND OLD.rating IS NULL THEN
+-- IF NEW.rating IS NOT NULL AND OLD.rating IS NULL THEN
 	avg_rating := (SELECT AVG(rating) FROM bid_transaction WHERE username = NEW.username);
 UPDATE caretaker SET average_rating = avg_rating WHERE cusername = NEW.username;
-END IF;
+-- END IF;
 END; $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER update_avg_rating
-AFTER UPDATE ON bid_transaction
+AFTER INSERT OR UPDATE ON bid_transaction
 FOR EACH ROW EXECUTE FUNCTION update_avg_rating_of_caretaker();
 
 -- trigger 3
