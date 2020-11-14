@@ -39,11 +39,13 @@ import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTi
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
 import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
+import PcsAdminSetBaseDailyPrice from "./components/pcs_admin/PcsAdminSetBaseDailyPrice";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
 import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
 import AdminSignUp from "./components/AdminSignUp";
 import PcsAdminViewMyProfile from "./components/pcs_admin/PcsAdminViewMyProfile";
 import PcsAdminEditLoginInfo from "./components/pcs_admin/PcsAdminEditLoginInfo";
+
 
 Vue.use(VueRouter);
 
@@ -275,6 +277,11 @@ export default new VueRouter({
       component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
     },
     {
+      path: "/pcs-admin/set-base-daily-price",
+      name: "PcsAdminSetBaseDailyPrice",
+      component: PcsAdminSetBaseDailyPrice,
+    },
+    {      
       path: "/admin-signup",
       name: "AdminSignUp",
       component: AdminSignUp,

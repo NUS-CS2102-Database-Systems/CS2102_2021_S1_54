@@ -73,6 +73,12 @@ export default {
           this.$router.push({
             path: "/"
           });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Admin Already Exists!",
+            text: "An Administrator with the same username already exists. Please choose a different username.",
+          });
         }
       }
     },
