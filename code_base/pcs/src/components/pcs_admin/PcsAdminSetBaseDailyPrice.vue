@@ -182,10 +182,10 @@ export default {
           for (let elem of response.data) {
             const typeName = elem.type_name;
             switch (typeName) {
-              case "smallDog":
+              case "small dog":
                 this.smallDogPrice = elem.base_daily_price;
                 break;
-              case "bigDog":
+              case "big dog":
                 this.bigDogPrice = elem.base_daily_price;
                 break;
               case "cat":
