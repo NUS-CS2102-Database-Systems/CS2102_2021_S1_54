@@ -130,11 +130,8 @@ export default {
 
       const newPrices = [newSmallDogPrice, newBigDogPrice, newCatPrice, newBirdPrice, newRabbitPrice, newrRodentPrice];
 
-      console.log("LENGTH OF ARRAY Is " + newPrices.length);
-
       var updateSuccessful = true;
       for (let price of newPrices) {
-        console.log("INSIDE LOOP");
         if (price.base_daily_price === null) {
           continue;
         }
@@ -149,7 +146,7 @@ export default {
 
         // update database
         const response = await axios.post("https://pet-care-service.herokuapp.com/admins/base-daily-prices", price);
-        if (response.data !== "Base daily prices updated successfully.") {
+        if (response.data.rowCount === 0) {
           updateSuccessful = false;
         }
       }

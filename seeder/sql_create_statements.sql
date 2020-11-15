@@ -345,10 +345,11 @@ $$ DECLARE price_change NUMERIC;
 	BEGIN
 	IF NEW.base_daily_price != OLD.base_daily_price THEN
 		price_change := NEW.base_daily_price - OLD.base_daily_price;
-		UPDATE daily_price_rate d
-		SET d.current_daily_price = d.current_daily_price + price_change
-		WHERE d.type_name = NEW.type_name;
+		UPDATE daily_price_rate
+		SET current_daily_price = current_daily_price + price_change
+		WHERE daily_price_rate.type_name = NEW.type_name;
 	END IF;
+	RETURN NULL;
 END; $$
 LANGUAGE plpgsql;
 
