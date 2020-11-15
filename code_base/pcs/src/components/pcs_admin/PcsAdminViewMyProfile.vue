@@ -69,6 +69,8 @@ export default {
       username: this.username,
     };
 
+    console.log("user name is " + this.username);
+
     axios
       .post(
         "https://pet-care-service.herokuapp.com/pcs-admin/get-login-information",

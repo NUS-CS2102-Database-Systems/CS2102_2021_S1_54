@@ -32,7 +32,12 @@ async function setBaseDailyPrices(req, res) {
 
     try {
         const client = await pool.connect();
-        const query = `INSERT INTO set_base_daily_price VALUES('${type_name}', ${base_daily_price}, '${admin_username}');`;
+        const query = `
+            UPDATE set_base_daily_price SET base_daily_price = ${base_daily_price},
+                admin_username = '${admin_username}'
+                WHERE type_name = '${type_name}' 
+                    AND EXISTS (SELECT * FROM pcs_administrator WHERE username = '${admin_username}');
+        `;
         await client.query(query);
 
         res.send("Base daily prices updated successfully.");
