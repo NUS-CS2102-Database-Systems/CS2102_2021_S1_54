@@ -40,6 +40,7 @@
 <script>
 import Swal from "sweetalert2";
 import axios from "axios";
+import * as constants from "../constants";
 
 export default {
   name: "PetOwnerSubmitReview",
@@ -66,16 +67,13 @@ export default {
       axios
         .post("https://pet-care-service.herokuapp.com/reviews", review)
         .then((response) => {
-          if (
-            response.data === "Review submitted!"
-          ) {
+          if (response.data === "Review submitted!") {
             Swal.fire({
               icon: "success",
               title: "Updated!",
               text: "Review has been submitted successfully.",
             });
-            this.review = "";
-            this.rating = "";
+            window.location.href = constants.pet_owner_view_past_jobs;
           } else {
             Swal.fire({
               icon: "error",

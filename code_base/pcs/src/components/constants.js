@@ -27,7 +27,10 @@ export const pet_owner_go_back_to_profile_page =
   domain + "pet-owners/view-my-profile?" + document.cookie;
 
 export const pet_owner_view_caretaker_domain =
-  domain + "/pet-owners/view-caretakers-profiles?" + document.cookie;
+  domain + "pet-owners/view-caretakers-profiles?" + document.cookie;
+
+export const pet_owner_view_past_jobs =
+  domain + "pet-owners/view-past-jobs";
 
 export const part_time_caretaker_edit_login_info =
   domain + "part-time-caretakers/edit-login-information?";
