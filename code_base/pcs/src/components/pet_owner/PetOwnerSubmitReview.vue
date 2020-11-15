@@ -63,10 +63,8 @@ export default {
         rating: this.rating,
       };
 
-      console.log(review);
-
       axios
-        .post("/reviews", review)
+        .post("https://pet-care-service.herokuapp.com/reviews", review)
         .then((response) => {
           if (
             response.data === "Review submitted!"

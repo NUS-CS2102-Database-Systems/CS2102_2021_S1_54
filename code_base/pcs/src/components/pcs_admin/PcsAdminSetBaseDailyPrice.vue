@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit="submitReview" style="border:1px solid #ccc">
+    <form @submit="submitChanges" style="border:1px solid #ccc">
       <div class="container">
         <h1>Set Base Daily Prices</h1>
         <p>Set base daily prices for different animal types</p>
@@ -11,7 +11,7 @@
           type="text"
           placeholder="Enter price..."
           name="smallDog"
-          v-model="smallDog"
+          v-model="smallDogPrice"
           required
         />
 
@@ -20,7 +20,7 @@
           type="text"
           placeholder="Enter price..."
           name="bigDog"
-          v-model="bigDog"
+          v-model="bigDogPrice"
           required
         />
 
@@ -29,7 +29,7 @@
           type="text"
           placeholder="Enter price..."
           name="cat"
-          v-model="cat"
+          v-model="catPrice"
           required
         />
 
@@ -38,7 +38,7 @@
           type="text"
           placeholder="Enter price..."
           name="bird"
-          v-model="bird"
+          v-model="birdPrice"
           required
         />
 
@@ -47,7 +47,7 @@
           type="text"
           placeholder="Enter price..."
           name="rabbit"
-          v-model="rabbit"
+          v-model="rabbitPrice"
           required
         />
 
@@ -56,7 +56,7 @@
           type="text"
           placeholder="Enter price..."
           name="rodent"
-          v-model="rodent"
+          v-model="rodentPrice"
           required
         />
 
@@ -74,56 +74,137 @@
 </template>
 
 <script>
-// import Swal from "sweetalert2";
-// import axios from "axios";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PcsAdminSetBaseDailyPrice",
 
   data() {
     return {
-    //   review: this.$route.query.review === null ? "" : this.$route.query.review,
-    //   rating: this.$route.query.rating === null ? 5 : this.$route.query.rating,
+      username: null,
+      password: null,
+      smallDogPrice: null,
+      bigDogPrice: null,
+      catPrice: null,
+      birdPrice: null,
+      rabbitPrice: null,
+      rodentPrice: null
     };
   },
-//   methods: {
-//     submitReview(e) {
-//       e.preventDefault();
-//       const review = {
-//         pusername: this.$route.query.pusername,
-//         cusername: this.$route.query.cusername,
-//         pet_name: this.$route.query.pet_name,
-//         job_start_datetime: this.$route.query.job_start_datetime,
-//         job_end_datetime: this.$route.query.job_end_datetime,
-//         review: this.review,
-//         rating: this.rating,
-//       };
 
-//       console.log(review);
+  methods: {
+    submitChanges(e) {
+      e.preventDefault();
+      const newSmallDogPrice = {
+        type_name: "small dog",
+        base_daily_price: this.smallDogPrice,
+        admin_username: this.username
+      };
+      const newBigDogPrice = {
+        type_name: "big dog",
+        base_daily_price: this.bigDogPrice,
+        admin_username: this.username
+      };
+      const newCatPrice = {
+        type_name: "cat",
+        base_daily_price: this.catPrice,
+        admin_username: this.username
+      };
+      const newBirdPrice = {
+        type_name: "bird",
+        base_daily_price: this.birdPrice,
+        admin_username: this.username
+      };
+      const newRabbitPrice = {
+        type_name: "rabbit",
+        base_daily_price: this.rabbitPrice,
+        admin_username: this.username
+      };
+      const newrRodentPrice = {
+        type_name: "rodent",
+        base_daily_price: this.rodentPrice,
+        admin_username: this.username
+      };
 
-//       axios
-//         .post("/reviews", review)
-//         .then((response) => {
-//           if (
-//             response.data === "Review submitted!"
-//           ) {
-//             Swal.fire({
-//               icon: "success",
-//               title: "Updated!",
-//               text: "Review has been submitted successfully.",
-//             });
-//             this.review = "";
-//             this.rating = "";
-//           } else {
-//             Swal.fire({
-//               icon: "error",
-//               title: "Oops...",
-//               text: "Review submission failed. Please try again",
-//             });
-//           }
-//       });
-//     },
-//   },
+      const newPrices = [newSmallDogPrice, newBigDogPrice, newCatPrice, newBirdPrice, newRabbitPrice, newrRodentPrice];
+
+      var updateSuccessful = true;
+      for (let price of newPrices) {
+        if (price.base_daily_price === null) {
+          continue;
+        }
+        if (!/^\+?(0|[1-9]\d*)$/.test(price.base_daily_price)) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Price must be an integer. Please enter the correct value.",   
+          })
+          break;
+        }
+
+        // update database
+        axios.post("https://pet-care-service.herokuapp.com/admins/base-daily-prices", price)
+          .then((response) => {
+            if (response.data !== "Base daily prices updated successfully.") {
+              updateSuccessful = false;
+            }
+          });
+      }
+
+      if (updateSuccessful) {
+        Swal.fire({
+          icon: "success",
+          title: "Update Successful",
+          text: "Base daily prices have been updated successfully.",
+        });
+        this.$router.push({
+          path: "pcs-admin"
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong. Please try again later.",
+        });
+      }
+    },
+  },
+
+  async mounted() {
+    this.username = document.cookie.split("=")[1];
+
+    // load prices from backend if any
+    axios.get("https://pet-care-service.herokuapp.com/admins/base-daily-prices")
+      .then((response) => {
+          for (let elem of response.data) {
+            const typeName = elem.type_name;
+            switch (typeName) {
+              case "smallDog":
+                this.smallDogPrice = elem.base_daily_price;
+                break;
+              case "bigDog":
+                this.bigDogPrice = elem.base_daily_price;
+                break;
+              case "cat":
+                this.catPrice = elem.base_daily_price;
+                break;
+              case "bird":
+                this.birdPrice = elem.base_daily_price;
+                break;
+              case "rabbit":
+                this.rabbitPrice = elem.base_daily_price;
+                break;
+              case "rodent":
+                this.rodentPrice = elem.base_daily_price;
+                break;
+              default:
+                console.log("No animal type matches!");
+                break;
+            }
+          }
+    });
+  },
 };
 </script>
 
