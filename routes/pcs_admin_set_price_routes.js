@@ -38,9 +38,9 @@ async function setBaseDailyPrices(req, res) {
                 WHERE type_name = '${type_name}' 
                     AND EXISTS (SELECT * FROM pcs_administrator WHERE username = '${admin_username}');
         `;
-        await client.query(query);
+        const result = await client.query(query);
 
-        res.send("Base daily prices updated successfully.");
+        res.send(result);
         client.release();
     } catch (err) {
         console.error(err);
