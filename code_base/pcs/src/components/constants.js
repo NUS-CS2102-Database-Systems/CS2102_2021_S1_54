@@ -57,3 +57,6 @@ export const pcs_admin_edit_login_info =
 
 export const pcs_admin_go_back_to_profile_page =
   domain + "pcs-admin/view-my-profile?" + document.cookie;
+
+export const pcs_admin_home =
+  domain + "pcs-admin";

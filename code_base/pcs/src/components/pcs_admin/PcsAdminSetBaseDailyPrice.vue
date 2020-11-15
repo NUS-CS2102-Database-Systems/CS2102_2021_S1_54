@@ -76,6 +76,7 @@
 <script>
 import Swal from "sweetalert2";
 import axios from "axios";
+import * as constants from "../constants";
 
 export default {
   name: "PcsAdminSetBaseDailyPrice",
@@ -94,7 +95,7 @@ export default {
   },
 
   methods: {
-    submitChanges(e) {
+    async submitChanges(e) {
       e.preventDefault();
       const newSmallDogPrice = {
         type_name: "small dog",
@@ -129,8 +130,11 @@ export default {
 
       const newPrices = [newSmallDogPrice, newBigDogPrice, newCatPrice, newBirdPrice, newRabbitPrice, newrRodentPrice];
 
+      console.log("LENGTH OF ARRAY Is " + newPrices.length);
+
       var updateSuccessful = true;
       for (let price of newPrices) {
+        console.log("INSIDE LOOP");
         if (price.base_daily_price === null) {
           continue;
         }
@@ -144,12 +148,10 @@ export default {
         }
 
         // update database
-        axios.post("https://pet-care-service.herokuapp.com/admins/base-daily-prices", price)
-          .then((response) => {
-            if (response.data !== "Base daily prices updated successfully.") {
-              updateSuccessful = false;
-            }
-          });
+        const response = await axios.post("https://pet-care-service.herokuapp.com/admins/base-daily-prices", price);
+        if (response.data !== "Base daily prices updated successfully.") {
+          updateSuccessful = false;
+        }
       }
 
       if (updateSuccessful) {
@@ -158,9 +160,7 @@ export default {
           title: "Update Successful",
           text: "Base daily prices have been updated successfully.",
         });
-        this.$router.push({
-          path: "pcs-admin"
-        });
+        window.location.href = constants.pcs_admin_home;
       } else {
         Swal.fire({
           icon: "error",
@@ -173,6 +173,8 @@ export default {
 
   async mounted() {
     this.username = document.cookie.split("=")[1];
+
+    console.log("user name is " + this.username);
 
     // load prices from backend if any
     axios.get("https://pet-care-service.herokuapp.com/admins/base-daily-prices")
