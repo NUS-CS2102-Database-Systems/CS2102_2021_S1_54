@@ -3,7 +3,7 @@
     <form @submit="submitChanges" style="border:1px solid #ccc">
       <div class="container">
         <h1>Set Base Daily Prices</h1>
-        <p>Set base daily prices for different animal types</p>
+        <p>Set base daily prices for different animal types (unit: SGD)</p>
         <hr />
 
         <label for="smallDog"><b>Small Dog</b></label>

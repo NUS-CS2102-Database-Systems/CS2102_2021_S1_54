@@ -43,7 +43,7 @@ async function get_user_with_username_and_password(req, res) {
 
         const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
         const result = await client.query(query);
-        const authResult = JSON.stringify(result.rows);
+        const authResult = result.rows;
 
         if (authResult.length === 0) {
             res.setHeader('content-type', 'application/json');

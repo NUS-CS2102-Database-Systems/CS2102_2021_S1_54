@@ -81,6 +81,9 @@ export default {
         });
       }
 
+      console.log("response is ");
+      console.log(authResponse);
+
       if (authResponse.data.length === 1) {
         var result = [];
         if (this.type === "user") { // normal user
