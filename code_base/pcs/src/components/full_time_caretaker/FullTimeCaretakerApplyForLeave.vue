@@ -122,8 +122,6 @@ export default {
           },
         });
 
-        console.log("RESULT DATA");
-        console.log(result.data);
         if (result.data.rowCount === 1) {
           console.log("apply leave successful");
           Swal.fire({
@@ -131,7 +129,7 @@ export default {
             title: "Leave Submitted",
             text: "Your leave application is submitted successfully!",
           });
-          window.location.href = constants.full_time_caretaker_home;
+          window.location.href = constants.full_time_caretaker_view_leaves;
         } else {
           Swal.fire({
             icon: "error",

@@ -75,13 +75,13 @@ async function delete_leave(req, res) {
         const end_date = req.body.end_date;
         const query = ` DELETE FROM leave_days
             WHERE username = '${username}' 
-                AND start_date = TO_DATE('${start_date}', ‘YYYY-MM-DD’) 
-                AND end_date = TO_DATE('${end_date}', ‘YYYY-MM-DD’);
+                AND start_date = TO_DATE('${start_date}', 'YYYY-MM-DD') 
+                AND end_date = TO_DATE('${end_date}', 'YYYY-MM-DD');
         `;
         const result = await client.query(query);
 
         res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify(result.rows));
+        res.send(JSON.stringify(result));
         client.release();
     } catch (err) {
         console.error(err);
