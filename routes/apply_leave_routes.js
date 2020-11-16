@@ -55,7 +55,7 @@ async function submit_leave(req, res) {
                 AND (DATE_PART('YEAR', start_date) = DATE_PART('YEAR', NOW())
                 OR DATE_PART('YEAR', end_date) = DATE_PART('YEAR', NOW()));`;
         var leavesResult = await client.query(getLeavesQuery);
-        leavesResult = JSON.stringify(result.rows);
+        leavesResult = JSON.stringify(leavesResult.rows);
         var leavesArray = []
         for (var i = 0; i < leavesResult.length; i++) {
             const leave = leavesResult[i];
