@@ -363,14 +363,19 @@ FOR EACH ROW EXECUTE FUNCTION change_current_daily_price();
 -- trigger 8
 CREATE OR REPLACE FUNCTION check_leave_day_overlap()
 	RETURNS TRIGGER AS
-$$ DECLARE num_overlap_jobs NUMERIC;
+$$ DECLARE num_overlap_jobs NUMERIC; num_overlap_leaves NUMERIC;
 	BEGIN
 	SELECT COUNT(*) INTO num_overlap_jobs 
 		FROM bid_transaction B
 		WHERE B.cusername = NEW.username AND 
 			((B.job_start_datetime, B.job_end_datetime) OVERLAPS (NEW.start_date, NEW.end_date));
-		
-		IF num_overlap_jobs = 0 THEN
+	
+	SELECT COUNT(*) INTO num_overlap_leaves
+		FROM leave_days L
+		WHERE L.username = NEW.username AND
+			((L.start_date, L.end_date) OVERLAPS (NEW.start_date, NEW.end_date));
+
+		IF num_overlap_jobs = 0 AND num_overlap_leaves = 0 THEN
 			RETURN NEW;
 		ELSE 
 			RETURN NULL;
