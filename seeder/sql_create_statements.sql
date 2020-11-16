@@ -113,7 +113,9 @@ CREATE TABLE leave_days(
 	reason_for_leave VARCHAR NOT NULL,
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
-    PRIMARY KEY(username, start_date, end_date)	
+    PRIMARY KEY(username, start_date, end_date),
+	-- just added:
+	CHECK (start_date <= end_date)
 );
 
 -- CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS
@@ -162,6 +164,7 @@ CREATE OR REPLACE FUNCTION not_overlap()
 	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN;
 	BEGIN 
 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
+		-- TODO: change part_time_exists to a more explanatory name?
 
 		IF part_time_exists THEN
 			SELECT COUNT(*) INTO ctx1 FROM availabilities A
@@ -356,3 +359,25 @@ LANGUAGE plpgsql;
 CREATE TRIGGER update_current_daily_price
 AFTER UPDATE ON set_base_daily_price
 FOR EACH ROW EXECUTE FUNCTION change_current_daily_price();
+
+-- trigger 8
+CREATE OR REPLACE FUNCTION check_leave_day_overlap()
+	RETURNS TRIGGER AS
+$$ DECLARE num_overlap_jobs NUMERIC;
+	BEGIN
+	SELECT COUNT(*) INTO num_overlap_jobs 
+		FROM bid_transaction B
+		WHERE B.cusername = NEW.username AND 
+			((B.job_start_datetime, B.job_end_datetime) OVERLAPS (NEW.start_date, NEW.end_date));
+		
+		IF num_overlap_jobs = 0 THEN
+			RETURN NEW;
+		ELSE 
+			RETURN NULL;
+		END IF;
+	END;$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_leave_day_validity
+BEFORE INSERT OR UPDATE ON leave_days
+FOR EACH ROW EXECUTE FUNCTION check_leave_day_overlap();
