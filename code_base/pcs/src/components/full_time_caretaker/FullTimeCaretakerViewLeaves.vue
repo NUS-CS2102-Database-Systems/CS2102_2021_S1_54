@@ -26,6 +26,9 @@
                       End Date: {{ end_date_odd[i] }} <br />
                     </p>
                   </v-card-text>
+                  <v-btn elevation="2" @click="deleteLeave(start_date_odd[i], end_date_odd[i])">
+                      Delete Leave
+                  </v-btn>
                 </v-card>
               </v-row>
             </v-list>
@@ -42,6 +45,9 @@
                       End Date: {{ end_date_even[i] }} <br />
                     </p>
                   </v-card-text>
+                  <v-btn elevation="2" @click="deleteLeave(start_date_even[i], end_date_even[i])">
+                      Delete Leave
+                  </v-btn>
                 </v-card>
               </v-row>
             </v-list>
@@ -66,6 +72,7 @@
 import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import * as constants from "../constants";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 export default {
   name: "FullTimeCaretakerViewLeaves",
@@ -89,7 +96,37 @@ export default {
       window.location.href =
         constants.full_time_caretaker_apply_for_leave + document.cookie;
     },
+    
+    deleteLeave: async function(start, end) {
+      const username = document.cookie.split("=")[1];
+
+      const response = await axios({
+        method: 'delete',
+        url: 'https://pet-care-service.herokuapp.com/apply-leave',
+        data: {
+          username: username,
+          start_date: start,
+          end_date: end,
+        }
+      });
+
+      if (response.data.rowCount === 1) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Leave deleted successfully."
+        })
+        window.loaded.reload();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong. Please try again later."
+        });
+      }
+    }
   },
+
   async mounted() {
     const username = document.cookie.split("=")[1];
 
