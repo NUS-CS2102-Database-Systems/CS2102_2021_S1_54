@@ -233,7 +233,6 @@ export default {
         }
       )
       .then((response) => {
-        console.log("inside response!");
         this.password = response.data[0].password;
         this.name = response.data[0].name;
         if (response.data[0].age.years != undefined) {

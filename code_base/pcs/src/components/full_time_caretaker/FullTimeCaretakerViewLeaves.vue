@@ -96,7 +96,7 @@ export default {
       window.location.href =
         constants.full_time_caretaker_apply_for_leave + document.cookie;
     },
-    
+
     deleteLeave: async function(start, end) {
       const username = document.cookie.split("=")[1];
 
@@ -116,7 +116,7 @@ export default {
           title: "Success",
           text: "Leave deleted successfully."
         })
-        window.loaded.reload();
+        window.location.reload(true);
       } else {
         Swal.fire({
           icon: "error",
