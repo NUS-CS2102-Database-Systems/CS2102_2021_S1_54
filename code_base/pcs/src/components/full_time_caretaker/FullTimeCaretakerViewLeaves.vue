@@ -107,28 +107,16 @@ export default {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
               this.reason_odd.push(response.data[i].reason_for_leave);
-              let start_date =
-                response.data[i].start_date.split("T")[0] +
-                " " +
-                response.data[i].start_date.split("T")[1].split(".")[0];
+              let start_date = response.data[i].start_date.split("T")[0];
               this.start_date_odd.push(start_date);
-              let end_date =
-                response.data[i].end_date.split("T")[0] +
-                " " +
-                response.data[i].end_date.split("T")[1].split(".")[0];
+              let end_date = response.data[i].end_date.split("T")[0];
               this.end_date_odd.push(end_date);
             } else {
               this.id_even.push(i + 1);
               this.reason_even.push(response.data[i].reason_for_leave);
-              let start_date =
-                response.data[i].start_date.split("T")[0] +
-                " " +
-                response.data[i].start_date.split("T")[1].split(".")[0];
+              let start_date = response.data[i].start_date.split("T")[0];
               this.start_date_even.push(start_date);
-              let end_date =
-                response.data[i].end_date.split("T")[0] +
-                " " +
-                response.data[i].end_date.split("T")[1].split(".")[0];
+              let end_date = response.data[i].end_date.split("T")[0];
               this.end_date_even.push(end_date);
             }
           }

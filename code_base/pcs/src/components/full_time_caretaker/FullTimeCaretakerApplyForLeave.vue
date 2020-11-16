@@ -66,78 +66,46 @@ export default {
       e.preventDefault();
       let data_ok = true;
 
-      if (this.start_date != null) {
-        if (this.start_date.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
-          var date = new Date(this.start_date);
-          if (date instanceof Date && !isNaN(date.valueOf())) {
-            let year = this.start_date.slice(0, 4);
-            let curr_date = new Date();
-            let curr_year = curr_date.getFullYear();
-            if (parseInt(year) > curr_year) {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Please provide a valid start date",
-              });
-              this.start_date = null;
-              data_ok = false;
-            } else {
-              console.log(this.start_date);
-            }
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Please provide a valid start date",
-            });
-            this.start_date = null;
-            data_ok = false;
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Please provide a valid start date",
-          });
-          this.start_date = null;
-          data_ok = false;
-        }
-      }
+      if (this.start_date != null && this.end_date != null) {
+        const isDateFormatValid = this.start_date.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) 
+          && this.end_date.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/);
+        if (isDateFormatValid) {
+          var startDate = new Date(this.start_date);
+          var endDate = new Date(this.end_date);
+          var todayDate = new Date();
 
-      if (this.end_date != null) {
-        if (this.end_date.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
-          date = new Date(this.end_date);
-          if (date instanceof Date && !isNaN(date.valueOf())) {
-            let year = this.end_date.slice(0, 4);
-            let curr_date = new Date();
-            let curr_year = curr_date.getFullYear();
-            if (parseInt(year) > curr_year) {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Please provide a valid end date",
-              });
-              this.end_date = null;
-              data_ok = false;
-            } else {
-              console.log(this.end_date);
-            }
+          if (startDate instanceof Date && !isNaN(startDate.valueOf())
+            && endDate instanceof Date && !isNaN(endDate.valueOf())) {
+              if (startDate < todayDate || endDate < todayDate) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Start Date and End Date must be after today.",
+                });
+                data_ok = false;
+              } else if (startDate > endDate) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Start Date must be before End Date.",
+                });
+                data_ok = false;
+              }
+
           } else {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: "Please provide a valid end date",
+              text: "Please provide a valid date.",
             });
-            this.end_date = null;
             data_ok = false;
           }
         } else {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Please provide a valid end date",
+            text: "Please provide a valid date.",
           });
-          this.end_date = null;
           data_ok = false;
         }
       }
@@ -154,7 +122,7 @@ export default {
           },
         });
 
-        if (result.data === "Leave submitted!") {
+        if (result.data.rowCount === 1) {
           console.log("apply leave successful");
           Swal.fire({
             icon: "success",
@@ -162,6 +130,12 @@ export default {
             text: "Your leave application is submitted successfully!",
           });
           window.location.href = constants.full_time_caretaker_home;
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Something Went Wrong",
+            text: "Please try again later. Note: You cannot apply for leave if you'll have at least one pet under your care during the applied leave period!",
+          });
         }
       }
     },
