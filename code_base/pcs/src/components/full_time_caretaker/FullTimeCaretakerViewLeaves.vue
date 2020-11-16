@@ -5,13 +5,13 @@
     </div>
     <div style="width: 80%; float: right">
       <h1>Viewing My Leaves</h1>
+      <v-btn icon color="blue" fab @click="applyForLeave">
+        <v-icon>mdi-pencil</v-icon>
+        Apply For Leave
+      </v-btn>
       <template v-if="loaded && have_data">
         <br />
         <v-layout justify-left>
-          <v-btn icon color="blue" fab @click="applyForLeave">
-            <v-icon>mdi-pencil</v-icon>
-            Apply For Leave
-          </v-btn>
         </v-layout>
         <v-row>
           <v-col class="mx-auto">

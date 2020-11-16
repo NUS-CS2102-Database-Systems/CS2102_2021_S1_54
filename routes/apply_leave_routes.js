@@ -70,7 +70,7 @@ async function submit_leave(req, res) {
             leavesArray.push([firstDayOfYear, firstDayOfYear]);
         } 
         const lastDayOfYear = new Date(new Date(start_date).getFullYear(), 11, 31);
-        if (leavesArray.length > 0 && leavesArray[0][0] > firstDayOfYear) {
+        if (leavesArray.length > 0 && leavesArray[leavesArray.length - 1][1] < lastDayOfYear) {
             leavesArray.push([lastDayOfYear, lastDayOfYear]);
         }
         if (leavesArray.length === 0) {
@@ -104,7 +104,7 @@ async function submit_leave(req, res) {
         if (count < 2) {
             res.send("You need to fulfil the requirement of 2 x 150 consecutive work days!");
         } else {
-            const query = ` INSERT INTO leave_days
+            const query = `INSERT INTO leave_days
                 VALUES('${username}', '${reason_for_leave}', '${start_date}', '${end_date}');
             `;
             const result = await client.query(query);

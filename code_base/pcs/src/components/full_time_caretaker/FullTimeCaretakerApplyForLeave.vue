@@ -4,6 +4,12 @@
       <div class="container">
         <h1>Apply For Leave</h1>
         <p>Please fill in this form to apply for leave.</p>
+        <p>Instructions for leave application:</p>
+        <p>1. Both the Start Date and End Date must be after today's date.</p>
+        <p>2. The Start Date should not be later than the End Date.</p>
+        <p>3. The leave period should not overlap with existing leaves.</p>
+        <p>4. You must work for a minimum of 2 × 150 consecutive days a year.</p>
+        <p>A leave appication that violates any of the above rules won't be submitted successfully.</p>
         <hr />
 
         <label for="reason"><b>Reason for Leave</b></label>
