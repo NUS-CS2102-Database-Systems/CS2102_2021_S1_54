@@ -122,6 +122,8 @@ export default {
           },
         });
 
+        console.log("RESULT DATA");
+        console.log(result.data);
         if (result.data.rowCount === 1) {
           console.log("apply leave successful");
           Swal.fire({
