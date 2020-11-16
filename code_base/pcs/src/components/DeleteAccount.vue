@@ -66,7 +66,8 @@ export default {
           url: "https://pet-care-service.herokuapp.com/users/authenticate",
           data: {
             username: this.username,
-            password: this.password
+            password: this.password,
+            type: "general"
           }
         });
       } else { // administrator

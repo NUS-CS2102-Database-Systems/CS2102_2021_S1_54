@@ -140,7 +140,7 @@ export default {
           Swal.fire({
             icon: "error",
             title: "Something Went Wrong",
-            text: "Please try again later. Note: You cannot apply for leave if you'll have at least one pet under your care during the applied leave period!",
+            text: "Please try again later. Note: You cannot apply for leave if you'll have at least one pet under your care during the applied leave period. Your leave period shouldn't overlap with existing leaves, either.",
           });
         }
       }

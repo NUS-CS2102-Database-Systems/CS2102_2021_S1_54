@@ -64,6 +64,10 @@ async function get_user_with_username_and_password(req, res) {
             const fulltimeCaretakerResult = await client.query(`SELECT * FROM full_time_caretaker WHERE username = '${username}';`);
             res.setHeader('content-type', 'application/json');
             res.send(JSON.stringify(fulltimeCaretakerResult.rows));
+        } else if (type === "general") { // for deleting an account
+            const generalResult = await client.query(`SELECT * FROM users WHERE username = '${username}';`);
+            res.setHeader('content-type', 'application/json');
+            res.send(JSON.stringify(generalResult.rows));
         } else {
             res.send("Invalid user type.");
         }
