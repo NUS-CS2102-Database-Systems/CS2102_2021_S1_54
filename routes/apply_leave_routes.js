@@ -94,8 +94,10 @@ async function submit_leave(req, res) {
             const secondStartDate = leavesArray[i + 1][0];
             const differenceInTime = secondStartDate.getTime() - firstEndDate.getTime();
             const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-            if (differenceInDays >= 150) {
-                count++;
+            if (differenceInDays >= 2 * 150) {
+                count += 2;
+            } else if (differenceInDays >= 150) {
+                count += 1;
             }
         }
 
