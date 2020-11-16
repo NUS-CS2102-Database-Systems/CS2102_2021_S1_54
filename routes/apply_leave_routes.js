@@ -53,7 +53,7 @@ async function submit_leave(req, res) {
         const result = await client.query(query);
 
         res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify(result.rows));
+        res.send(JSON.stringify(result));
         client.release();
     } catch (err) {
         console.error(err);
