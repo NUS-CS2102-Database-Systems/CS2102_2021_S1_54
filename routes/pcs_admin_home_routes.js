@@ -64,22 +64,16 @@ async function get_caretakers_total_salary(req, res) {
 
     let salaryObj = { fullTime: {}, partTime: {} };
 
-    const fullTimeSalary = await client.query(
-      `SELECT SUM(salary) AS salary_full_time 
-        FROM salary_calculation_for_full_time;`
+    const result = await client.query(
+      `SELECT SUM(salary) AS salary 
+        FROM salary_calculation_for_full_time 
+        UNION 
+        SELECT SUM(salary) AS salary FROM 
+        salary_calculation_for_part_time;`
     );
-
-    salaryObj.fullTime = fullTimeSalary;
-
-    const partTimeSalary = await client.query(
-      `SELECT SUM(salary) AS salary_part_time 
-        FROM salary_calculation_for_part_time;`
-    );
-
-    salaryObj.partTime = partTimeSalary;
 
     res.setHeader("content-type", "application/json");
-    res.send(JSON.stringify(salaryObj));
+    res.send(JSON.stringify(result.rows));
     client.release();
   } catch (err) {
     console.error(err);
