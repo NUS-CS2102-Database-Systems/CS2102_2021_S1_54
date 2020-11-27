@@ -79,7 +79,7 @@ async function get_caretakers_total_salary(req, res) {
     salaryObj.partTime = partTimeSalary;
 
     res.setHeader("content-type", "application/json");
-    res.send(JSON.stringify(result.rows));
+    res.send(JSON.stringify(salaryObj));
     client.release();
   } catch (err) {
     console.error(err);
