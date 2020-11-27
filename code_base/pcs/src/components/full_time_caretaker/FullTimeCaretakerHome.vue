@@ -74,10 +74,17 @@ export default {
       .then((response) => {
         console.log(response);
         console.log(response.data);
-        if (response.data[0].pet_days == undefined) {
+        console.log(response.data.length);
+        if (response.data.length == 0) {
           this.num_pet_days = 0;
+          this.amount_earned = 3000;
         } else {
-          this.num_pet_days = response.data[0].pet_days;
+          if (response.data[0].pet_days == undefined) {
+            this.num_pet_days = 0;
+            this.amount_earned = 3000;
+          } else {
+            this.num_pet_days = response.data[0].pet_days;
+          }
         }
       });
     this.loaded = true;

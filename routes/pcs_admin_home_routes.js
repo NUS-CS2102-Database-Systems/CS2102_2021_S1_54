@@ -62,13 +62,21 @@ async function get_caretakers_total_salary(req, res) {
   try {
     const client = await pool.connect();
 
-    const result = await client.query(
+    let salaryObj = { fullTime: {}, partTime: {} };
+
+    const fullTimeSalary = await client.query(
       `SELECT SUM(salary) AS salary_full_time 
-        FROM salary_calculation_for_full_time 
-        UNION 
-        SELECT SUM(salary) AS salary_part_time FROM 
-        salary_calculation_for_part_time;`
+        FROM salary_calculation_for_full_time;`
     );
+
+    salaryObj.fullTime = fullTimeSalary;
+
+    const partTimeSalary = await client.query(
+      `SELECT SUM(salary) AS salary_part_time 
+        FROM salary_calculation_for_part_time;`
+    );
+
+    salaryObj.partTime = partTimeSalary;
 
     res.setHeader("content-type", "application/json");
     res.send(JSON.stringify(result.rows));
