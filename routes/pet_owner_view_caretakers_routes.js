@@ -104,7 +104,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (rating_wanted != null) {
         let add_rating_requested =
-          " (rating >= " + parseFloat(rating_wanted) + ")";
+          " (rating >= " + parseFloat(rating_wanted).toString() + ")";
 
         request_full_time = request_full_time + add_rating_requested + " AND";
       }
@@ -120,20 +120,24 @@ async function get_specific_caretakers_information(req, res) {
 
       if (price_range_from != null && price_range_to == null) {
         let add_min_price =
-          " (current_daily_price >= " + parseFloat(price_range_from) + ")";
+          " (current_daily_price >= " +
+          parseFloat(price_range_from).toString() +
+          ")";
 
         request_full_time = request_full_time + add_min_price + " AND";
       } else if (price_range_from == null && price_range_to != null) {
         let add_max_price =
-          " (current_daily_price <= " + parseFloat(price_range_to) + ")";
+          " (current_daily_price <= " +
+          parseFloat(price_range_to).toString() +
+          ")";
 
         request_full_time = request_full_time + add_max_price + " AND";
       } else if (price_range_from != null && price_range_to != null) {
         let add_price_range =
           " (current_daily_price BETWEEN " +
-          parseFloat(price_range_from) +
+          parseFloat(price_range_from).toString() +
           " AND " +
-          parseFloat(price_range_to) +
+          parseFloat(price_range_to).toString() +
           ")";
 
         request_full_time = request_full_time + add_price_range + " AND";
@@ -255,7 +259,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (rating_wanted != null) {
         let add_rating_requested =
-          " (rating >= " + parseFloat(rating_wanted) + ")";
+          " (rating >= " + parseFloat(rating_wanted).toString() + ")";
 
         request_part_time = request_part_time + add_rating_requested + " AND";
       }
@@ -271,20 +275,24 @@ async function get_specific_caretakers_information(req, res) {
 
       if (price_range_from != null && price_range_to == null) {
         let add_min_price =
-          " (current_daily_price >= " + parseFloat(price_range_from) + ")";
+          " (current_daily_price >= " +
+          parseFloat(price_range_from).toString() +
+          ")";
 
         request_part_time = request_part_time + add_min_price + " AND";
       } else if (price_range_from == null && price_range_to != null) {
         let add_max_price =
-          " (current_daily_price <= " + parseFloat(price_range_to) + ")";
+          " (current_daily_price <= " +
+          parseFloat(price_range_to).toString() +
+          ")";
 
         request_part_time = request_part_time + add_max_price + " AND";
       } else if (price_range_from != null && price_range_to != null) {
         let add_price_range =
           " (current_daily_price BETWEEN " +
-          parseFloat(price_range_from) +
+          parseFloat(price_range_from).toString() +
           " AND " +
-          parseFloat(price_range_to) +
+          parseFloat(price_range_to).toString() +
           ")";
 
         request_part_time = request_part_time + add_price_range + " AND";
@@ -437,7 +445,7 @@ async function get_specific_caretakers_information(req, res) {
 
         if (rating_wanted != null) {
           let add_rating_requested =
-            " (rating >= " + parseFloat(rating_wanted) + ")";
+            " (rating >= " + parseFloat(rating_wanted).toString() + ")";
 
           request_full_time = request_full_time + add_rating_requested + " AND";
           request_part_time = request_part_time + add_rating_requested + " AND";
@@ -457,14 +465,18 @@ async function get_specific_caretakers_information(req, res) {
 
         if (price_range_from != null && price_range_to == null) {
           let add_min_price =
-            " (current_daily_price >= " + parseFloat(price_range_from) + ")";
+            " (current_daily_price >= " +
+            parseFloat(price_range_from).toString() +
+            ")";
 
           request_full_time = request_full_time + add_min_price + " AND";
 
           request_part_time = request_part_time + add_min_price + " AND";
         } else if (price_range_from == null && price_range_to != null) {
           let add_max_price =
-            " (current_daily_price <= " + parseFloat(price_range_to) + ")";
+            " (current_daily_price <= " +
+            parseFloat(price_range_to).toString() +
+            ")";
 
           request_full_time = request_full_time + add_max_price + " AND";
 
@@ -472,9 +484,9 @@ async function get_specific_caretakers_information(req, res) {
         } else if (price_range_from != null && price_range_to != null) {
           let add_price_range =
             " (current_daily_price BETWEEN " +
-            parseFloat(price_range_from) +
+            parseFloat(price_range_from).toString() +
             " AND " +
-            parseFloat(price_range_to) +
+            parseFloat(price_range_to).toString() +
             ")";
 
           request_full_time = request_full_time + add_price_range + " AND";
