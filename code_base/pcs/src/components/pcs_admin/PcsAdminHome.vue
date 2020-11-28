@@ -14,8 +14,8 @@
           <v-layout align-center>
             <v-card-text>
               <p style="color:black;font-size:20px">
-                Taken care of <b>{{ num_pets }}</b> pets and earned
-                <b>SGD {{ amount_earned }}</b> in <b>{{ num_days }}</b> days.
+                Taken care of <b>{{ num_pets }}</b> pets and providing a revenue
+                of <b>SGD {{ amount_earned }}</b> in <b>{{ num_days }}</b> days.
                 <br />
                 <br />
                 Our caretakers have earned a total of
