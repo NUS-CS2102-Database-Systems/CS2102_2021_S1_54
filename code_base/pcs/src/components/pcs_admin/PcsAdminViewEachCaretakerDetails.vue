@@ -16,6 +16,7 @@
           :items="bid_transaction"
           :items-per-page="10"
           class="elevation-1"
+          @click:row="handleClick"
         >
         </v-data-table>
       </template>
@@ -91,12 +92,6 @@ export default {
         value: "totalNumDays",
         align: "center",
       },
-      {
-        text: "Action",
-        value: "action",
-        sortable: false,
-        align: "center",
-      },
       // {
       //   text: "Salary",
       //   value: "salary",
@@ -104,6 +99,13 @@ export default {
       // },
     ],
   }),
+  methods: {
+    handleClick: function(value) {
+      console.log(value.number);
+      console.log(this.bid_transaction[value.number - 1].cusername);
+      // console.log(this.bid_transaction[index]);
+    },
+  },
   async mounted() {
     this.loaded = false;
     let date = new Date();
