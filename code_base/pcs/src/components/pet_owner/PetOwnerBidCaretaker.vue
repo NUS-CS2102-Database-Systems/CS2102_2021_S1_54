@@ -179,8 +179,8 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    //loaded: false,
-    loaded: true,
+    loaded: false,
+    //loaded: true,
     today_date: null,
 
     username: null,
