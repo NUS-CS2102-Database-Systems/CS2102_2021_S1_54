@@ -12,8 +12,8 @@
         <v-layout align-center>
           <v-row>
             <v-col>
-              <template v-if="pet_arr.length != 0">
               <H3>Select Pet:</H3>
+              <template v-if="pet_arr.length != 0">
               <v-select
                 :items="pet_arr"
                 label="Select Pet"
@@ -23,14 +23,15 @@
                 @input = "setPetPriceRate"
               ></v-select>
               </template>
-              <template v-else>>
+              
+              <template v-else>
               <v-select
                 disabled
                 label="No Pets Suitable"
                 outlined
               ></v-select>
               </template>
-              <p v-if="price_rate != NULL">
+              <p v-if="price_rate != null">
                 Price rate for {{pet_selected}} is ${{price_rate}} SGD/day.
               </p> 
               <br />
@@ -42,6 +43,7 @@
                   <v-date-picker
                     v-model="selected_dates"
                     range
+                    :min='today_date'
                     @input = "setNumOfDays"
                   ></v-date-picker>
                     <!-- :allowed-dates="allowedDates" -->
@@ -93,7 +95,7 @@
               <v-row align="center">
                 <v-col>
                   <b>Start:</b> 
-                  <v-select v-if="method_to_arr != NULL"
+                  <v-select v-if="method_to_arr != null"
                     :items="method_to_arr"
                     label="Select Transfer To Method"
                     item-text="mtd"
@@ -108,7 +110,7 @@
                 </v-col>
                 <v-col>
                   <b>End:</b> 
-                  <v-select v-if="method_from_arr != NULL"
+                  <v-select v-if="method_from_arr != null"
                     :items="method_from_arr"
                     label="Select Transfer From Method"
                     item-text="mtd"
@@ -177,12 +179,15 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: false,
+    //loaded: false,
+    loaded: true,
+    today_date: null,
 
     username: null,
     caretaker: null,
 
     pet_arr: [], 
+    //pet_arr: ["a", "b", "c"],
     dict_pet_price: {},
     pet_selected: null,
     price_rate: null,
@@ -212,8 +217,8 @@ export default {
   methods: {
     // allowedDates: val => parseInt(val.split('-')[2], 10) % 2 === 0,
     setPetPriceRate: function() {
-      this.price_rate = dict_pet_price[this.pet_selected];
-      if (this.num_pet_days != NULL){
+      this.price_rate = this.dict_pet_price[this.pet_selected];
+      if (this.num_pet_days != null){
         this.price = this.price_rate * this.num_pet_days
       }
     },
@@ -225,7 +230,7 @@ export default {
       const diffTime = Math.abs(date2 - date1);
       this.num_pet_days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 
-      if (this.price_rate != NULL){
+      if (this.price_rate != null){
         this.price = this.price_rate * this.num_pet_days
       }
     },
@@ -286,7 +291,7 @@ export default {
         data_ok = false;
       }
 
-      if (this.selected_dates[0] == this.selected_dates[1] && end_time < start_time) {
+      if (this.selected_dates[0] == this.selected_dates[1] && this.end_time < this.start_time) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -328,10 +333,11 @@ export default {
 
           // Get current datetime
           let date = new Date();
-          let hours = date.setHours(date.getHours() + 8);
+          //let hours = date.setHours(date.getHours() + 8);
+          date.setHours(date.getHours() + 8);
           let sg_bid_date = date.toISOString().toString();
           sg_bid_date = sg_bid_date.replace(/T/, " ");
-          sg_bid_date = sg_bid_date.substring(0, str.length - 1);
+          sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
           
           // Format date and time into datetime for db
           var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
@@ -370,7 +376,7 @@ export default {
                   " till " + this.selected_dates[1] + " is comfirmed. \n Please pay " + this.amount + 
                   " to the caretaker upon the start of the care taking session! ",
               });
-              window.location.href = constants.pet_owner_view_past_job;
+              window.location.href = constants.pet_owner_view_caretaker_domain;
             } 
             else if (response.data[0] == 2) {
               Swal.fire({
@@ -446,7 +452,7 @@ export default {
         data_ok = false;
       }
 
-      if (this.selected_dates[0] == this.selected_dates[1] && end_time < start_time) {
+      if (this.selected_dates[0] == this.selected_dates[1] && this.end_time < this.start_time) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -460,10 +466,11 @@ export default {
 
         // Get current datetime
         let date = new Date();
-        let hours = date.setHours(date.getHours() + 8);
+        //let hours = date.setHours(date.getHours() + 8);
+        date.setHours(date.getHours() + 8);
         let sg_bid_date = date.toISOString().toString();
         sg_bid_date = sg_bid_date.replace(/T/, " ");
-        sg_bid_date = sg_bid_date.substring(0, str.length - 1);
+        sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
 
         // Format date and time into datetime for db
         var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
@@ -501,7 +508,7 @@ export default {
                 this.pet_name + "'s bid with " + this.caretaker + " starting from " + this.selected_dates[0] + 
                 " till " + this.selected_dates[1] + " is comfirmed.",
             });
-            window.location.href = constants.pet_owner_view_past_job;
+            window.location.href = constants.pet_owner_view_caretaker_domain;
           } 
           else if (response.data[0] == 2) {
             Swal.fire({
@@ -539,6 +546,12 @@ export default {
     //
     //}
     //pet_name_arr
+    
+    let date = new Date();
+    date.setHours(date.getHours() + 8);
+    let sg_current_date = date.toISOString().toString();
+    sg_current_date = sg_current_date.split(/T/, 2)[0];
+    this.today_date = sg_current_date
 
     const get_info = {
       username: this.username,
@@ -552,7 +565,7 @@ export default {
         }
       )
       .then((response) => {
-        for (i = 0; i < response.data.length; i++) { 
+        for (var i = 0; i < response.data.length; i++) { 
           let pet_name_opt = {
             name: response.data[i].pet_name,
             value: response.data[i].pet_name

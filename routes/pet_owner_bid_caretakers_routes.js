@@ -29,7 +29,7 @@ async function get_bidding_options_for_pets(req, res) {
     //const caretaker = req.body.toGet.caretaker;
 
     const result = await client.query(
-      `SELECT pet_name, current_daily_price AS p.pet_name, r.current_daily_price
+      `SELECT pet_name AS p.pet_name, current_daily_price AS r.current_daily_price 
         FROM pet p JOIN daily_price_rate r ON p.username = r.username AND p.type_of_animal = r.type_name
         WHERE p.username = '${username}';`
     );
@@ -135,3 +135,5 @@ async function submit_a_bid(req, res) {
     res.send("Error " + err);
   }
 }
+
+module.exports = appRouter;

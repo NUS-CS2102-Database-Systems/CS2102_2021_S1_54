@@ -78,8 +78,6 @@ for i in range(0, len(partTimeCaretakerNames)):
     
 f.close()
 
-    
-
 
 # INSERT INTO animal_type VALUES ('big dog');
 # INSERT INTO animal_type VALUES ('bird');

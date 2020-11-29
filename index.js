@@ -19,7 +19,7 @@ const caretaker_view_salary_num_pets_and_days = require("./routes/caretaker_view
 const pcs_admin_profile = require("./routes/pcs_admin_profile_routes.js");
 const pcs_admin_home_routes = require("./routes/pcs_admin_home_routes.js");
 const pcs_admin_set_price_routes = require("./routes/pcs_admin_set_price_routes.js");
-
+const pet_owner_bid_caretakers_route = require("./routes/pet_owner_bid_caretakers_routes");
 
 app.use(function (req, res, next) {
   res.header(
@@ -64,6 +64,7 @@ review_routes(app);
 pcs_admin_profile(app);
 pcs_admin_home_routes(app);
 pcs_admin_set_price_routes(app);
+pet_owner_bid_caretakers_route(app);
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Example app listening on port %d", this.address().port);
