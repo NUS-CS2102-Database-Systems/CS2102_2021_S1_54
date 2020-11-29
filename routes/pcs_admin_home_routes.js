@@ -93,7 +93,7 @@ async function get_num_pets_and_petdays_by_each_caretaker(req, res) {
       `SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary FROM bid_transaction NATURAL JOIN pet_days_past_30_days 
       NATURAL JOIN salary_calculation_for_full_time NATURAL JOIN salary_calculation_for_part_time 
       WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  DATE_TRUNC('DAY', NOW()) 
-      GROUP BY cusername;`
+      GROUP BY cusername, salary;`
     );
 
     res.setHeader("content-type", "application/json");

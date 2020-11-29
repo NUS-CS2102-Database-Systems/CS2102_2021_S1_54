@@ -68,6 +68,11 @@ export default {
         value: "totalNumDays",
         align: "center",
       },
+      {
+        text: "Salary",
+        value: "salary",
+        align: "center",
+      },
     ],
   }),
   async mounted() {
@@ -88,6 +93,7 @@ export default {
             cusername: response.data[i].cusername,
             totalNumPets: response.data[i].num_pets,
             totalNumDays: response.data[i].num_pet_days,
+            salary: response.data[i].salary,
           };
           this.bid_transaction.push(caretaker_data);
         }
