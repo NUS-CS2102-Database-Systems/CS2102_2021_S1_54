@@ -9,7 +9,7 @@
         {{ month }} {{ year }}
       </h2>
       <br />
-      <template v-if="loaded">
+      <template v-if="loaded && bid_transaction.length > 0">
         <v-data-table
           multi-sort
           :headers="headers"
@@ -19,7 +19,30 @@
         >
         </v-data-table>
       </template>
-      <template v-else>
+      <template v-else-if="loaded && bid_transaction == 0">
+        <v-row>
+          <v-card
+            class="mx-auto"
+            width="60%"
+            height="160"
+            color="#ECEFF1"
+            rounded
+          >
+            <v-card-title>
+              <v-row align="center" justify="center">
+                <v-icon light large center>mdi-emoticon-sad</v-icon>
+              </v-row>
+            </v-card-title>
+            <p class="text-center">
+              No information regarding the salary, number of pet-days and number
+              of pets taken care of by each caretaker for this month can be
+              found at the moment.
+              <br />Sorry!
+            </p>
+          </v-card>
+        </v-row>
+      </template>
+      <template v-else-if="!loaded">
         <v-row justify="center">
           <v-progress-circular
             indeterminate
