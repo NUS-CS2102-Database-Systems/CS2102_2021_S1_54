@@ -73,11 +73,10 @@ export default {
           route: "/pcs-admin/home?" + document.cookie,
         },
         {
-          title: "Pets Cared For",
+          title: "For Each Caretaker",
           icon: mdiClipboardCheckMultipleOutline,
           route:
-            "/pcs-admin/view-number-of-pets-cared-for-per-caretaker?" +
-            document.cookie,
+            "/pcs-admin/view-details-for-each-caretaker?" + document.cookie,
         },
         {
           title: "Set Base Daily Price",

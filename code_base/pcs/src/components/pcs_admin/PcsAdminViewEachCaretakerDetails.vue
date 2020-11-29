@@ -61,7 +61,7 @@ import PcsAdminNavBar from "./PcsAdminNavBar";
 import axios from "axios";
 
 export default {
-  name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
+  name: "PcsAdminViewEachCaretakerDetails",
   components: {
     PcsAdminNavBar,
   },
