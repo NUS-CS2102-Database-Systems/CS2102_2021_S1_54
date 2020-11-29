@@ -15,7 +15,7 @@
             <v-card-text>
               <p style="color:black;font-size:20px">
                 Taken care of <b>{{ num_pets }}</b> pets in
-                <b>{{ num_pet_days }}</b> days. <br />
+                <b>{{ num_pet_days }}</b> pet-days. <br />
                 Earned <b>SGD {{ amount_earned }}</b
                 >. <br />
               </p>
@@ -76,10 +76,27 @@ export default {
       .then((response) => {
         console.log(response);
         console.log(response.data);
-        if (response.data[0].pet_days == undefined) {
+        if (response.data.length == 0) {
           this.num_pet_days = 0;
         } else {
           this.num_pet_days = response.data[0].pet_days;
+        }
+      });
+
+    await axios
+      .post(
+        "https://pet-care-service.herokuapp.com/part-time-caretakers/get-salary",
+        {
+          toGet: get_info,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        console.log(response.data);
+        if (response.data.length == 0) {
+          this.amount_earned = 0;
+        } else {
+          this.amount_earned = response.data[0].salary;
         }
       });
     this.loaded = true;
