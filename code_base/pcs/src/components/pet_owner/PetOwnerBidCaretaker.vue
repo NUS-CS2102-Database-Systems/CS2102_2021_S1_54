@@ -12,24 +12,28 @@
         <v-layout align-center>
           <v-row>
             <v-col>
+              <template v-if="pet_arr.length != 0">
               <H3>Select Pet:</H3>
-              <v-select v-if="pet_arr != NULL"
+              <v-select
                 :items="pet_arr"
                 label="Select Pet"
                 item-text="name"
                 outlined
                 v-model="pet_selected"
+                @input = "setPetPriceRate"
               ></v-select>
-              <v-select v-else
+              </template>
+              <template v-else>>
+              <v-select
                 disabled
                 label="No Pets Suitable"
                 outlined
               ></v-select>
+              </template>
               <p v-if="price_rate != NULL">
                 Price rate for {{pet_selected}} is ${{price_rate}} SGD/day.
               </p> 
               <br />
-
 
               <H3>Select Caretaking Dates:</H3>
               <p>Select Start Date and End Date in the calendar below</p>
@@ -38,6 +42,7 @@
                   <v-date-picker
                     v-model="selected_dates"
                     range
+                    @input = "setNumOfDays"
                   ></v-date-picker>
                     <!-- :allowed-dates="allowedDates" -->
                 </v-col>
@@ -162,20 +167,23 @@
 <script>
 import PetOwnerNavBar from "./PetOwnerNavBar";
 import * as constants from "../constants";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
-  name: "PetOwnerEditPetProfile",
+  name: "PetOwnerBidCaretaker",
 
   components: {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
 
     username: null,
     caretaker: null,
 
-    pet_arr: null, 
+    pet_arr: [], 
+    dict_pet_price: {},
     pet_selected: null,
     price_rate: null,
 
@@ -203,48 +211,320 @@ export default {
   },
   methods: {
     // allowedDates: val => parseInt(val.split('-')[2], 10) % 2 === 0,
-    
+    setPetPriceRate: function() {
+      this.price_rate = dict_pet_price[this.pet_selected];
+      if (this.num_pet_days != NULL){
+        this.price = this.price_rate * this.num_pet_days
+      }
+    },
+
+    setNumOfDays: function(){
+      this.selected_dates.sort();
+      let date1 = new Date(this.selected_dates[0]);
+      let date2 = new Date(this.selected_dates[1]);
+      const diffTime = Math.abs(date2 - date1);
+      this.num_pet_days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+      if (this.price_rate != NULL){
+        this.price = this.price_rate * this.num_pet_days
+      }
+    },
+
     cancel: function() {
       window.location.href = constants.pet_owner_view_caretaker_domain;
     },
-    paybycard: function(){
-      
-    },
-    paybycash: function(){
-      
-    },
-    submit: function() {
-      // if (this.pet_med_hist != null) {
-      //   this.pet_med_hist = this.pet_med_hist.replace(/"/g, "");
-      //   this.pet_med_hist = this.pet_med_hist.replace(/\n/g, " ");
-      //   var med_hist = '"' + this.pet_med_hist + '"';
-      // } else {
-      //   med_hist = null;
-      // }
 
-      // if (this.pet_special_req != null) {
-      //   this.pet_special_req = this.pet_special_req.replace(/"/g, "");
-      //   this.pet_special_req = this.pet_special_req.replace(/\n/g, " ");
-      //   var special_req = '"' + this.pet_special_req + '"';
-      // } else {
-      //   special_req = null;
-      // }
-      // const dataToSend =
-      //   '{"pet_owner_name":"' +
-      //   this.pet_owner_name +
-      //   '", "pet_name":"' +
-      //   this.pet_name +
-      //   '", "med_hist":' +
-      //   med_hist +
-      //   ', "special_req":' +
-      //   special_req +
-      //   "}";
-      // console.log(dataToSend);
-      // const jsonDataToSend = JSON.parse(dataToSend);
-      // console.log(jsonDataToSend);
-      // window.location.href = constants.pet_owner_view_pet_info;
+    paybycard: async function(){
+      //Check all fills are filled
+      let data_ok = true;
+      if (this.pet_selected == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select a pet",
+        });
+        data_ok = false;
+      }
+      else if (this.selected_dates[0] == null || this.selected_dates[1] == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select a pair of start date and end date",
+        });
+        data_ok = false;
+      }
+      else if (this.start_time == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select the start time",
+        });
+        data_ok = false;
+      }
+      else if (this.end_time == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select the end time",
+        });
+        data_ok = false;
+      }
+      else if (this.start_method == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select starting transfer method",
+        });
+        data_ok = false;
+      }
+      else if (this.end_method == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select ending transfer method",
+        });
+        data_ok = false;
+      }
+
+      if (this.selected_dates[0] == this.selected_dates[1] && end_time < start_time) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please ensure that the start time is after the end time for single day booking",
+        });
+        data_ok = false;
+      }
+
+      if (data_ok == true) {
+        // Check if person have credit card
+        let valid_card = false;
+        const get_info = {
+          username: this.username,
+        };
+        
+        await axios
+        .post(
+          "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid/able-to-pay_by-card",
+          {
+            toGet: get_info,
+          }
+        )
+        .then((response) => {
+          if (response.data[0] != 1) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text:
+                "Card error! Go to profile and add a card.",
+            });
+          } 
+          else {
+            valid_card = true;
+          }
+        });
+
+        if(valid_card == true){
+          // Insert into db
+
+          // Get current datetime
+          let date = new Date();
+          let hours = date.setHours(date.getHours() + 8);
+          let sg_bid_date = date.toISOString().toString();
+          sg_bid_date = sg_bid_date.replace(/T/, " ");
+          sg_bid_date = sg_bid_date.substring(0, str.length - 1);
+          
+          // Format date and time into datetime for db
+          var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
+          var startDateObj = new Date(this.selected_dates[0] + ' ' + startTimeString);
+
+          var endTimeString = this.end_time.hour + ':' + this.end_time.minute + ':00';
+          var endDateObj = new Date(this.selected_dates[1] + ' ' + endTimeString);
+
+          const send_info = {
+            username: this.username,
+            pet: this.pet_selected,
+            caretaker: this.caretaker,
+            bidding_time: sg_bid_date, 
+            job_start_datetime: startDateObj,
+            job_end_datetime: endDateObj,
+            payment_datetime: sg_bid_date,
+            amount: this.price,
+            payment_method: "card",
+            start_transfer_method: this.start_method,
+            end_transfer_method: this.end_method
+          };
+          await axios
+          .post(
+            "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid/pay",
+            {
+              toBid: send_info,
+            }
+          )
+          .then((response) => {
+            if (response.data[0] == 1) {
+              Swal.fire({
+                icon: "success",
+                title: "Sucessfully bidded!",
+                text:
+                  this.pet_name + "'s bid with " + this.caretaker + " starting from " + this.selected_dates[0] + 
+                  " till " + this.selected_dates[1] + " is comfirmed. \n Please pay " + this.amount + 
+                  " to the caretaker upon the start of the care taking session! ",
+              });
+              window.location.href = constants.pet_owner_view_past_job;
+            } 
+            else if (response.data[0] == 2) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text:
+                  this.pet_name + "'s bid with " + this.caretaker + " starting from " + this.selected_dates[0] + 
+                  " till " + this.selected_dates[1] + " already exist!",
+              });
+            } 
+            else { 
+              // TODO: Do more checking on the type of error 
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text:
+                  "Bidding error! Please try again",
+              });
+            }
+          });
+        }
+      }
     },
-    fetchData: async function() {},
+    paybycash: async function(){
+      //Check all fills are filled
+      let data_ok = true;
+      if (this.pet_selected == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select a pet",
+        });
+        data_ok = false;
+      }
+      else if (this.selected_dates[0] == null || this.selected_dates[1] == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select a pair of start date and end date",
+        });
+        data_ok = false;
+      }
+      else if (this.start_time == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select the start time",
+        });
+        data_ok = false;
+      }
+      else if (this.end_time == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select the end time",
+        });
+        data_ok = false;
+      }
+      else if (this.start_method == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select starting transfer method",
+        });
+        data_ok = false;
+      }
+      else if (this.end_method == null) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please select ending transfer method",
+        });
+        data_ok = false;
+      }
+
+      if (this.selected_dates[0] == this.selected_dates[1] && end_time < start_time) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please ensure that the start time is after the end time for single day booking",
+        });
+        data_ok = false;
+      }
+
+      if (data_ok == true) {
+        // Insert into db
+
+        // Get current datetime
+        let date = new Date();
+        let hours = date.setHours(date.getHours() + 8);
+        let sg_bid_date = date.toISOString().toString();
+        sg_bid_date = sg_bid_date.replace(/T/, " ");
+        sg_bid_date = sg_bid_date.substring(0, str.length - 1);
+
+        // Format date and time into datetime for db
+        var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
+        var startDateObj = new Date(this.selected_dates[0] + ' ' + startTimeString);
+
+        var endTimeString = this.end_time.hour + ':' + this.end_time.minute + ':00';
+        var endDateObj = new Date(this.selected_dates[1] + ' ' + endTimeString);
+
+        const send_info = {
+          username: this.username,
+          pet: this.pet_selected,
+          caretaker: this.caretaker,
+          bidding_time: sg_bid_date, 
+          job_start_datetime: startDateObj,
+          job_end_datetime: endDateObj,
+          payment_datetime: startDateObj,
+          amount: this.price,
+          payment_method: "cash",
+          start_transfer_method: this.start_method,
+          end_transfer_method: this.end_method
+        };
+        await axios
+        .post(
+          "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid/pay",
+          {
+            toBid: send_info,
+          }
+        )
+        .then((response) => {
+          if (response.data[0] == 1) {
+            Swal.fire({
+              icon: "success",
+              title: "Sucessfully bidded!",
+              text:
+                this.pet_name + "'s bid with " + this.caretaker + " starting from " + this.selected_dates[0] + 
+                " till " + this.selected_dates[1] + " is comfirmed.",
+            });
+            window.location.href = constants.pet_owner_view_past_job;
+          } 
+          else if (response.data[0] == 2) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text:
+                this.pet_name + "'s bid with " + this.caretaker + " starting from " + this.selected_dates[0] + 
+                " till " + this.selected_dates[1] + " already exist!",
+            });
+          } 
+          else {
+            Swal.fire({
+            // TODO: Do more checking on the type of error 
+              icon: "error",
+              title: "Oops...",
+              text:
+                "Bidding error! Please try again",
+            });
+          }
+        });
+      }
+    },
+
   },
   async mounted() {
     this.username = document.cookie.split("=")[1];
@@ -252,22 +532,56 @@ export default {
     const urlParams = new URLSearchParams(queryString);
     this.caretaker = urlParams.get("caretaker");
 
-    this.pet_arr = [{name: "AnimalA"}, {name: "AnimalB"}, {name: "AnimalC"}];
+    //this.pet_arr = [{name: "AnimalA"}, {name: "AnimalB"}, {name: "AnimalC"}];
     //const response = await axios.get("/pet-owners/view-caretakers-profiles");
     //number_of_pets = response.data.belongstotabledata[0].data_set;
     //for(var i = 1; i <= number_of_pets; i++){
     //
     //}
     //pet_name_arr
+
+    const get_info = {
+      username: this.username,
+      caretaker: this.caretaker,
+    };
+    await axios
+      .post(
+        "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid-pets-options",
+        {
+          toGet: get_info,
+        }
+      )
+      .then((response) => {
+        for (i = 0; i < response.data.length; i++) { 
+          let pet_name_opt = {
+            name: response.data[i].pet_name,
+            value: response.data[i].pet_name
+          };
+          this.pet_arr.push(pet_name_opt);
+          this.dict_pet_price[response.data[i].pet_name] = response.data[i].current_daily_price
+          // let pet_and_its_price ={
+          //   pet_name: response.data[i].pet_name,
+          //   price: response.data[i].price //dothis in sql
+          // };
+          // this.pet_arr.push(pet_and_its_price);
+
+        }
+      });
+    // await axios
+    //  .post(
+    //    "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid-date-options",
+    //    {
+    //      toGet: get_info,
+    //     }
+    //   )
+    //   .then((response) => {
+
+    //   });
+    this.loaded = true;
   },
 };
 </script>
-// PETS (pet_arr): Pets that can be select are those that belongs to the user
-// PRICE_RATE: When pet is selected, it should cross with caretaker current price rate to have and then show price rate
-// AVAILABILTIES & NUM OF PETS AT THAT SLOT: Caretaking dates that can be selected are drom the caretaker's avalilties (parttime) or not leave days (fulltime)
+
+// Double check that AVAILABILTIES & NUM OF PETS AT THAT SLOT: Caretaking dates that can be selected are drom the caretaker's avalilties (parttime) or not leave days (fulltime)
 // and that the number of slots does not exceed
-// Ensure that the DATETIME of the end is after the start! (aka on same day, must impose the condition on time!)
-// NUM_PET_DAYS: Caculate when the dates are selected
-// PRICE: price_rate * availabilities --> Enable payment methods
-// Payment button only enabled with price
-// Decide - What to do after the pay by cash/ pay by credit card button is pressed??
+// Differentiate between failures of inserting
