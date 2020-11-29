@@ -9,6 +9,11 @@
         {{ month }} {{ year }}
       </h2>
       <br />
+      <h4>
+        To view a caretaker's profile, click on the row containing the desired
+        caretaker's username.
+      </h4>
+      <br />
       <template v-if="loaded && bid_transaction.length > 0">
         <v-data-table
           multi-sort
@@ -79,7 +84,7 @@ export default {
         align: "left",
       },
       {
-        text: "Caretaker",
+        text: "Caretaker's Username",
         value: "cusername",
         align: "center",
       },
