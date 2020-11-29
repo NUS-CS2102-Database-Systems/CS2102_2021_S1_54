@@ -67,3 +67,6 @@ export const pcs_admin_home = domain + "pcs-admin";
 
 export const pcs_admin_show_caretaker_details =
   domain + "pcs-admin/view-caretaker?" + document.cookie;
+
+export const pcs_admin_view_each_caretaker =
+  domain + "pcs-admin/view-details-for-each-caretaker?" + document.cookie;

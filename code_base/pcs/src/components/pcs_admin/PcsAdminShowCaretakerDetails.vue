@@ -4,7 +4,12 @@
       <PcsAdminNavBar />
     </div>
     <div style="width: 80%; float: right">
-      <h1>Viewing {{ this.caretaker_username }}'s Details</h1>
+      <v-row>
+        <v-btn icon color="blue" @click="goBack">
+          <v-icon>mdi-arrow-left-bold</v-icon>
+        </v-btn>
+        <h1>Viewing {{ this.caretaker_username }}'s Details</h1>
+      </v-row>
       <template v-if="loaded">
         <br />
         <v-list>
@@ -63,6 +68,7 @@
 
 <script>
 import PcsAdminNavBar from "./PcsAdminNavBar";
+import * as constants from "../constants";
 import axios from "axios";
 
 export default {
@@ -86,6 +92,11 @@ export default {
     length: 0,
     can_take_care: [],
   }),
+  methods: {
+    goBack: function() {
+      window.location.href = constants.pcs_admin_view_each_caretaker;
+    },
+  },
   async mounted() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
