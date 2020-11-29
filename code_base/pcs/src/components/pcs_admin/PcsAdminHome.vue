@@ -27,6 +27,16 @@
           </v-layout>
         </v-card>
       </template>
+      <template v-else-if="!loaded">
+        <v-row justify="center">
+          <v-progress-circular
+            indeterminate
+            :size="70"
+            :width="7"
+            color="#01579B"
+          />
+        </v-row>
+      </template>
     </div>
   </v-container>
 </template>
@@ -53,6 +63,7 @@ export default {
     caretakers_salary: 0,
   }),
   async mounted() {
+    this.loaded = false;
     this.username = document.cookie.split("=")[1];
     let date = new Date();
     console.log(date);
