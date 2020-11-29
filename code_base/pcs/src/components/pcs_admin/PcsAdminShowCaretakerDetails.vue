@@ -4,12 +4,7 @@
       <PcsAdminNavBar />
     </div>
     <div style="width: 80%; float: right">
-      <v-row>
-        <v-btn icon color="blue" @click="goBack">
-          <v-icon>mdi-arrow-left-bold</v-icon>
-        </v-btn>
-        <h1>Viewing {{ this.caretaker_username }}'s Details</h1>
-      </v-row>
+      <h1>Viewing Caretaker's Details</h1>
       <template v-if="loaded">
         <br />
         <v-list>
@@ -19,6 +14,7 @@
             </v-card-title>
             <v-layout align-center>
               <v-card-text>
+                Username: {{ caretaker_username }} <br />
                 Name: {{ name }} <br />
                 Date of Birth: {{ birth_date }} <br />
                 Age: {{ age }} <br />
@@ -46,6 +42,18 @@
                 <v-list v-for="i in length" :key="i">
                   {{ can_take_care[i] }}
                   <br />
+                  <v-btn elevation="2">
+                    <router-link
+                      tag="span"
+                      :to="{
+                        path:
+                          '/pcs-admin/view-caretaker-reviews/' +
+                          caretaker_username,
+                      }"
+                    >
+                      View Reviews
+                    </router-link>
+                  </v-btn>
                 </v-list>
               </v-card-text>
             </v-layout>
@@ -68,7 +76,6 @@
 
 <script>
 import PcsAdminNavBar from "./PcsAdminNavBar";
-import * as constants from "../constants";
 import axios from "axios";
 
 export default {
@@ -92,11 +99,6 @@ export default {
     length: 0,
     can_take_care: [],
   }),
-  methods: {
-    goBack: function() {
-      window.location.href = constants.pcs_admin_view_each_caretaker;
-    },
-  },
   async mounted() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);

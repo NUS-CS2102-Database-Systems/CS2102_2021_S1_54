@@ -46,6 +46,7 @@ import AdminSignUp from "./components/AdminSignUp";
 import PcsAdminViewMyProfile from "./components/pcs_admin/PcsAdminViewMyProfile";
 import PcsAdminEditLoginInfo from "./components/pcs_admin/PcsAdminEditLoginInfo";
 import PcsAdminShowCaretakerDetails from "./components/pcs_admin/PcsAdminShowCaretakerDetails";
+import PcsAdminViewCaretakerReviews from "./components/pcs_admin/PcsAdminViewCaretakerReviews";
 
 Vue.use(VueRouter);
 
@@ -306,6 +307,12 @@ export default new VueRouter({
       path: "/pcs-admin/view-caretaker",
       name: "PcsAdminShowCaretakerDetails",
       component: PcsAdminShowCaretakerDetails,
+    },
+    {
+      path: "/pcs-admin/view-caretaker-reviews/:caretaker_username",
+      name: "PcsAdminViewCaretakerReviews",
+      component: PcsAdminViewCaretakerReviews,
+      props: true,
     },
   ],
 });
