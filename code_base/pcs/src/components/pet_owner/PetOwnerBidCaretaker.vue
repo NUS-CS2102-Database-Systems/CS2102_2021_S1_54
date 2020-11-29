@@ -334,7 +334,7 @@ export default {
           // Get current datetime
           let date = new Date();
           //let hours = date.setHours(date.getHours() + 8);
-          date.setHours(date.getHours() + 8);
+          //date.setHours(date.getHours() + 8);
           let sg_bid_date = date.toISOString().toString();
           sg_bid_date = sg_bid_date.replace(/T/, " ");
           sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
@@ -467,7 +467,7 @@ export default {
         // Get current datetime
         let date = new Date();
         //let hours = date.setHours(date.getHours() + 8);
-        date.setHours(date.getHours() + 8);
+        //date.setHours(date.getHours() + 8);
         let sg_bid_date = date.toISOString().toString();
         sg_bid_date = sg_bid_date.replace(/T/, " ");
         sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
@@ -548,7 +548,7 @@ export default {
     //pet_name_arr
     
     let date = new Date();
-    date.setHours(date.getHours() + 8);
+    //date.setHours(date.getHours() + 8);
     let sg_current_date = date.toISOString().toString();
     sg_current_date = sg_current_date.split(/T/, 2)[0];
     this.today_date = sg_current_date
