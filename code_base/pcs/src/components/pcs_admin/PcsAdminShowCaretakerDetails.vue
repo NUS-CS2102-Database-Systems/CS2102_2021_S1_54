@@ -115,6 +115,7 @@ export default {
         }
       )
       .then((response) => {
+        console.log(response.data[0]);
         this.name = response.data[0].name;
         if (response.data[0].age.years != undefined) {
           this.age = response.data[0].age.years + " years ";
