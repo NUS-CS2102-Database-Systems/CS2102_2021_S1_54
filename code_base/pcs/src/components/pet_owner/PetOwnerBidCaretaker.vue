@@ -566,6 +566,7 @@ export default {
       )
       .then((response) => {
         for (var i = 0; i < response.data.length; i++) { 
+          console.log(response.data[i])
           let pet_name_opt = {
             name: response.data[i].pet_name,
             value: response.data[i].pet_name

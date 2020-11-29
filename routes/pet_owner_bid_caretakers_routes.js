@@ -29,8 +29,8 @@ async function get_bidding_options_for_pets(req, res) {
     //const caretaker = req.body.toGet.caretaker;
 
     const result = await client.query(
-      `SELECT pet_name AS p.pet_name, current_daily_price AS r.current_daily_price 
-        FROM pet p JOIN daily_price_rate r ON p.username = r.username AND p.type_of_animal = r.type_name
+      `SELECT p.pet_name AS pet_name, r.current_daily_price AS current_daily_price 
+        FROM pet p JOIN daily_price_rate r ON (p.username = r.username AND p.type_of_animal = r.type_name)
         WHERE p.username = '${username}';`
     );
 
