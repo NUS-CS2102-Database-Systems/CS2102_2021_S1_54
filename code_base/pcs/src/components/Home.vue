@@ -1,6 +1,22 @@
 <template>
   <v-container>
-    <GeneralNavBar />
+    <div style="width: 20%; float: left">
+      <GeneralNavBar />
+    </div>
+    <div style="width: 80%; float: right">
+      <h1 style="text-align:center">Welcome to Petopia!</h1>
+      <br />
+      <p style="font-size:30px">
+        Need someone to help you to take care of your pet while you are away?
+        Fret not, Petopia is here!<br /><br />
+        At Petopia, we are commited to providing the best care for your pets.
+        Established in 2000, we have around 2000 caretakers, both full-time and
+        part-time at various price points to suit your needs. We cater to
+        various types of pets, such as birds, big dogs, small dogs, cats,
+        rabbits, rabbits and rodents. <br /><br />
+        What are you waiting for? Send your pets to Petopia, Care For Your Pet!
+      </p>
+    </div>
   </v-container>
 </template>
 

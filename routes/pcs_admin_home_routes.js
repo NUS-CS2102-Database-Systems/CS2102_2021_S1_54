@@ -16,6 +16,10 @@ var appRouter = function (app) {
     "/pcs-admin/get-caretakers-total-salary",
     get_caretakers_total_salary
   );
+  app.get(
+    "/pcs-admin/get-num-pets-and-pet-days-by-each-caretaker",
+    get_num_pets_and_petdays_by_each_caretaker
+  );
 };
 
 async function get_num_pets_cared_for_and_amount_earned(req, res) {
@@ -62,13 +66,46 @@ async function get_caretakers_total_salary(req, res) {
   try {
     const client = await pool.connect();
 
+    let salaryObj = { fullTime: {}, partTime: {} };
+
     const result = await client.query(
-      `SELECT SUM(salary) AS salary_full_time 
+      `SELECT SUM(salary) AS salary 
         FROM salary_calculation_for_full_time 
         UNION 
-        SELECT SUM(salary) AS salary_part_time FROM 
+        SELECT SUM(salary) AS salary FROM 
         salary_calculation_for_part_time;`
     );
+
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify(result.rows));
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+async function get_num_pets_and_petdays_by_each_caretaker(req, res) {
+  try {
+    const client = await pool.connect();
+
+    const result = await client.query(
+      `SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days FROM bid_transaction NATURAL JOIN pet_days_past_30_days  
+      WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  DATE_TRUNC('DAY', NOW()) 
+      GROUP BY cusername;`
+    );
+
+    // const result = await client.query(
+    //   `SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary FROM bid_transaction NATURAL JOIN pet_days_past_30_days
+    //   NATURAL JOIN salary_calculation_for_full_time
+    //   WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  DATE_TRUNC('DAY', NOW())
+    //   GROUP BY cusername, salary
+    //   UNION
+    //   SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary FROM bid_transaction NATURAL JOIN pet_days_past_30_days
+    //   NATURAL JOIN salary_calculation_for_part_time
+    //   WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  DATE_TRUNC('DAY', NOW())
+    //   GROUP BY cusername, salary;`
+    // );
 
     res.setHeader("content-type", "application/json");
     res.send(JSON.stringify(result.rows));
