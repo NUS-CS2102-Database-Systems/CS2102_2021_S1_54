@@ -7,14 +7,13 @@ const pool = new Pool({
 });
 
 var appRouter = function (app) {
-  app.get("/pcs-admin/caretaker-details", get_caretaker_details);
+  app.post("/pcs-admin/caretaker-details", get_caretaker_details);
 };
 
 async function get_caretaker_details(req, res) {
-  const cusername = req.body.toGet.username;
   try {
     const client = await pool.connect();
-    const cusername = req.params.cusername;
+    const cusername = req.body.toGet.username;
     const query = `SELECT name, birth_date, AGE(birth_date) AS age, gender, phone, email, 
         address, AGE(date_started) AS years_exp, date_started, average_rating, 
         CASE 
