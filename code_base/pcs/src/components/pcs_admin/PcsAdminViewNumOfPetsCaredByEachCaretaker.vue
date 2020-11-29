@@ -18,7 +18,7 @@
 
 <script>
 import PcsAdminNavBar from "./PcsAdminNavBar";
-//import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
@@ -38,8 +38,14 @@ export default {
       },
     ],
   }),
-  computed: {},
-  methods: {},
-  async mounted() {},
+  async mounted() {
+    await axios
+      .get(
+        "https://pet-care-service.herokuapp.com/pcs-admin/get-num-pets-and-pet-days-by-each-caretaker"
+      )
+      .then((response) => {
+        console.log(response.data);
+      });
+  },
 };
 </script>
