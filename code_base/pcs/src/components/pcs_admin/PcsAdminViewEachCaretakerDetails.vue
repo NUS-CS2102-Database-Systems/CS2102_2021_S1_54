@@ -59,6 +59,7 @@
 
 <script>
 import PcsAdminNavBar from "./PcsAdminNavBar";
+import * as constants from "../constants";
 import axios from "axios";
 
 export default {
@@ -103,6 +104,10 @@ export default {
     handleClick: function(value) {
       console.log(value.number);
       console.log(this.bid_transaction[value.number - 1].cusername);
+      window.location.href =
+        constants.pcs_admin_show_caretaker_details +
+        "&caretaker_username=" +
+        this.bid_transaction[value.number - 1].cusername;
       // console.log(this.bid_transaction[index]);
     },
   },

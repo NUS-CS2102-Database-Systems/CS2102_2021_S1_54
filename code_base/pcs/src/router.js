@@ -45,6 +45,7 @@ import PcsAdminViewEachCaretakerDetails from "./components/pcs_admin/PcsAdminVie
 import AdminSignUp from "./components/AdminSignUp";
 import PcsAdminViewMyProfile from "./components/pcs_admin/PcsAdminViewMyProfile";
 import PcsAdminEditLoginInfo from "./components/pcs_admin/PcsAdminEditLoginInfo";
+import PcsAdminShowCaretakerDetails from "./components/pcs_admin/PcsAdminShowCaretakerDetails";
 
 Vue.use(VueRouter);
 
@@ -300,6 +301,11 @@ export default new VueRouter({
       path: "/full-time-caretakers/view-leaves",
       name: "FullTimeCaretakerViewLeaves",
       component: FullTimeCaretakerViewLeaves,
+    },
+    {
+      path: "/pcs-admin/view-caretaker",
+      name: "PcsAdminShowCaretakerDetails",
+      component: PcsAdminShowCaretakerDetails,
     },
   ],
 });

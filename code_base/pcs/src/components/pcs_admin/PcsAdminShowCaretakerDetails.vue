@@ -86,16 +86,22 @@ export default {
     length: 0,
     can_take_care: [],
   }),
-  props: {
-    caretaker_username: {
-      type: String,
-      default: "caretaker",
-    },
-  },
   async mounted() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    this.caretaker_username = urlParams.get("caretaker_username");
+    console.log(this.caretaker_username);
+
+    const get_info = {
+      username: this.caretaker_username,
+    };
+
     await axios
-      .get(
-        `https://pet-care-service.herokuapp.com/pcs-admin/caretaker-details/${this.caretaker_username}`
+      .post(
+        "https://pet-care-service.herokuapp.com/pcs-admin/caretaker-details",
+        {
+          toGet: get_info,
+        }
       )
       .then((response) => {
         this.name = response.data[0].name;
@@ -156,10 +162,6 @@ export default {
           .toString()
           .split("T")[0];
       });
-
-    const get_info = {
-      username: this.caretaker_username,
-    };
 
     await axios
       .post(

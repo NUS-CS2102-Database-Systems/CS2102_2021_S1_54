@@ -7,10 +7,11 @@ const pool = new Pool({
 });
 
 var appRouter = function (app) {
-  app.get("/pcs-admin/caretaker-details/:cusername", get_caretaker_details);
+  app.get("/pcs-admin/caretaker-details", get_caretaker_details);
 };
 
 async function get_caretaker_details(req, res) {
+  const cusername = req.body.toGet.username;
   try {
     const client = await pool.connect();
     const cusername = req.params.cusername;
