@@ -104,8 +104,12 @@ async function submit_a_bid(req, res) {
     const end_transfer_method = req.body.toBid.end_transfer_method;
 
     // check wether caretaker's pet limit has been reached
-    var date = new Date(job_start_datetime);
-    const differenceInTime = new Date(job_start_datetime).getTime() - new Date(job_end_datetime).getTime();
+    var start = new Date(job_start_datetime);
+    start.setHours(0,0,0,0);
+    var end = new Date(job_end_datetime);
+    end.setHours(0,0,0,0);
+    var date = start;
+    const differenceInTime = end.getTime() - start.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     var maxNumOfPets = 0;
     console.log("number of days is \n");
