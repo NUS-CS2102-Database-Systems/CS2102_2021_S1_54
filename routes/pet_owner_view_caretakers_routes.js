@@ -520,39 +520,41 @@ async function get_specific_caretakers_information(req, res) {
         if (sort_by != null) {
           if (sort_by.length > 1) {
             if (sort_by[0] == "alphabetical a to z") {
-              let add_sort_alphebatically_a_to_z = " username ASC,";
+              let add_sort_alphebatically_a_to_z = " X.username ASC,";
 
               general_query += add_sort_alphebatically_a_to_z;
             } else if (sort_by[0] == "alphabetical z to a") {
-              let add_sort_alphebatically_z_to_a = " username DESC,";
+              let add_sort_alphebatically_z_to_a = " X.username DESC,";
 
               general_query += add_sort_alphebatically_z_to_a;
             }
 
             if (sort_by[1] == "price low to high") {
-              let add_sort_price_low_to_high = " current_daily_price ASC";
+              let add_sort_price_low_to_high = " X.current_daily_price ASC";
 
               general_query += add_sort_price_low_to_high;
             } else if (sort_by[1] == "price high to low") {
-              let add_sort_price_high_to_low = " current_daily_price DESC";
+              let add_sort_price_high_to_low = " X.current_daily_price DESC";
 
               general_query += add_sort_price_high_to_low;
             }
           } else {
             if (sort_by == "alphabetical a to z") {
-              let add_sort_alphebatically_a_to_z_only = " username ASC";
+              let add_sort_alphebatically_a_to_z_only = " X.username ASC";
 
               general_query += add_sort_alphebatically_a_to_z_only;
             } else if (sort_by == "alphabetical z to a") {
-              let add_sort_alphebatically_z_to_a_only = " username DESC";
+              let add_sort_alphebatically_z_to_a_only = " X.username DESC";
 
               general_query += add_sort_alphebatically_z_to_a_only;
             } else if (sort_by == "price low to high") {
-              let add_sort_price_low_to_high_only = " current_daily_price ASC";
+              let add_sort_price_low_to_high_only =
+                " X.current_daily_price ASC";
 
               general_query += add_sort_price_low_to_high_only;
             } else if (sort_by == "price high to low") {
-              let add_sort_price_high_to_low_only = " current_daily_price DESC";
+              let add_sort_price_high_to_low_only =
+                " X.current_daily_price DESC";
 
               general_query += add_sort_price_high_to_low_only;
             }
