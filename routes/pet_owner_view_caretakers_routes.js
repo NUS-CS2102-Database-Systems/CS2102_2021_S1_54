@@ -524,7 +524,7 @@ async function get_specific_caretakers_information(req, res) {
         } else {
           query = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
         phone, email, address, average_rating, AGE(date_started) AS years_exp 
-        FROM users NATURAL JOIN caretakers WHERE username LIKE '%${caretaker_username}%';`;
+        FROM users NATURAL JOIN caretaker WHERE username LIKE '%${caretaker_username}%';`;
         }
 
         // if (sort_by != null) {
