@@ -134,7 +134,7 @@ CREATE TABLE leave_days(
 -- );
 
 CREATE VIEW pet_days_per_job(cusername, pet_days, job_end_datetime) AS (
-	SELECT cusername, DATE_PART('DAY', job_end_datetime - job_start_datetime) AS pet_days, job_end_datetime
+	SELECT cusername, DATE_PART('DAY', job_end_datetime - job_start_datetime) + 1 AS pet_days, job_end_datetime
 	FROM bid_transaction
 );
 
@@ -157,7 +157,7 @@ CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
 	SELECT DPR.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate WHERE username = DPR.username) * PD.pet_days * 0.75)
 	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD
 );
- 
+
 -- trigger 1
 CREATE OR REPLACE FUNCTION not_overlap()
 	RETURNS TRIGGER AS 
