@@ -406,6 +406,9 @@ async function get_specific_caretakers_information(req, res) {
           ORDER BY random() LIMIT 20;`;
       } else {
         // both full-time and part-time
+        let general_query = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
+        phone, email, address, average_rating, AGE(date_started) AS years_exp FROM (`;
+
         let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
       caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
@@ -532,95 +535,63 @@ async function get_specific_caretakers_information(req, res) {
           request_part_time = request_part_time_split_by_space.join(" ");
         }
 
-        request_full_time += " ORDER BY random(),";
-        request_part_time += " ORDER BY random(),";
+        general_query +=
+          request_full_time +
+          " UNION " +
+          request_part_time +
+          ") ORDER BY random(),";
 
         if (sort_by != null) {
           if (sort_by.length > 1) {
             if (sort_by[0] == "alphabetical a to z") {
               let add_sort_alphebatically_a_to_z = " username ASC,";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_a_to_z;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_a_to_z;
+              general_query += add_sort_alphebatically_a_to_z;
             } else if (sort_by[0] == "alphabetical z to a") {
               let add_sort_alphebatically_z_to_a = " username DESC,";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_z_to_a;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_z_to_a;
+              general_query += add_sort_alphebatically_z_to_a;
             }
 
             if (sort_by[1] == "price low to high") {
               let add_sort_price_low_to_high = " current_daily_price ASC";
 
-              request_full_time =
-                request_full_time + add_sort_price_low_to_high;
+              general_query += add_sort_price_low_to_high;
             } else if (sort_by[1] == "price high to low") {
               let add_sort_price_high_to_low = " current_daily_price DESC";
 
-              request_full_time =
-                request_full_time + add_sort_price_high_to_low;
-
-              request_part_time =
-                request_part_time + add_sort_price_high_to_low;
+              general_query += add_sort_price_high_to_low;
             }
           } else {
             if (sort_by == "alphabetical a to z") {
               let add_sort_alphebatically_a_to_z_only = " username ASC";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_a_to_z_only;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_a_to_z_only;
+              general_query += add_sort_alphebatically_a_to_z_only;
             } else if (sort_by == "alphabetical z to a") {
               let add_sort_alphebatically_z_to_a_only = " username DESC";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_z_to_a_only;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_z_to_a_only;
+              general_query += add_sort_alphebatically_z_to_a_only;
             } else if (sort_by == "price low to high") {
               let add_sort_price_low_to_high_only = " current_daily_price ASC";
 
-              request_full_time =
-                request_full_time + add_sort_price_low_to_high_only;
-
-              request_part_time =
-                request_part_time + add_sort_price_low_to_high_only;
+              general_query += add_sort_price_low_to_high_only;
             } else if (sort_by == "price high to low") {
               let add_sort_price_high_to_low_only = " current_daily_price DESC";
 
-              request_full_time =
-                request_full_time + add_sort_price_high_to_low_only;
-
-              request_part_time =
-                request_part_time + add_sort_price_high_to_low_only;
+              general_query += add_sort_price_high_to_low_only;
             }
           }
         }
 
-        let req_len_full = request_full_time.length;
-        if (request_full_time.charAt(req_len_full - 1) == ",") {
-          request_full_time = request_full_time.slice(0, -1);
+        // i.e. no other sort by specifications
+        let general_query = general_query.length;
+        if (general_query.charAt(general_query - 1) == ",") {
+          general_query = general_query.slice(0, -1);
         }
 
-        request_full_time += " LIMIT 20 UNION ";
+        general_query += " LIMIT 20;";
 
-        let req_len_part = request_part_time.length;
-        if (request_part_time.charAt(req_len_part - 1) == ",") {
-          request_part_time = request_part_time.slice(0, -1);
-        }
-
-        request_part_time += " LIMIT 20;";
-
-        query = request_full_time + request_part_time;
+        query = general_query;
       }
 
       const result = await client.query(query);
