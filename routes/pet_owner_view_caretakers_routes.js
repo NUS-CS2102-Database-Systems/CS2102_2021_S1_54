@@ -512,7 +512,11 @@ async function get_specific_caretakers_information(req, res) {
         }
 
         general_query +=
-          request_full_time + " UNION " + request_part_time + ") AS X";
+          request_full_time +
+          "WHERE random() < 0.1" +
+          " UNION " +
+          request_part_time +
+          " WHERE random() < 0.1) AS X";
 
         if (sort_by != null) {
           if (sort_by.length > 1) {
@@ -565,16 +569,7 @@ async function get_specific_caretakers_information(req, res) {
           general_query = general_query.slice(0, -1);
         }
 
-        general_query += ` LIMIT 20 OFFSET floor(random() * (SELECT COUNT(*) FROM (
-            SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-                  phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-                  caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
-                  NATURAL JOIN daily_price_rate 
-            UNION 
-            SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-                  phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-                  caretaker NATURAL JOIN part_time_caretaker NATURAL JOIN can_take_care 
-                  NATURAL JOIN availabilities NATURAL JOIN daily_price_rate) AS T));`;
+        general_query += ` LIMIT 20;`;
 
         query = general_query;
       }
