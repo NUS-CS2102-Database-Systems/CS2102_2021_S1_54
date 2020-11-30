@@ -512,11 +512,7 @@ async function get_specific_caretakers_information(req, res) {
         }
 
         general_query +=
-          request_full_time +
-          " WHERE random() < 0.1" +
-          " UNION " +
-          request_part_time +
-          " WHERE random() < 0.1) AS X";
+          request_full_time + " UNION " + request_part_time + ") AS X";
 
         if (sort_by != null) {
           if (sort_by.length > 1) {
@@ -562,6 +558,8 @@ async function get_specific_caretakers_information(req, res) {
               general_query += add_sort_price_high_to_low_only;
             }
           }
+        } else {
+          general_query += " ORDER BY random()";
         }
 
         // i.e. no other sort by specifications
