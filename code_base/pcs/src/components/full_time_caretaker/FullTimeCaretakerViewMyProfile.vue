@@ -58,10 +58,10 @@
                 Date Started: {{ date_started }} <br />
                 Years Of Experience: {{ years_exp }} <br />
                 Average Rating: {{ avg_rating }} <br />
-                Number of Pets Allowed: {{ num_of_pets }} <br />
-                Can Take Care Of:
-                <v-list v-for="i in length" :key="i">
-                  {{ can_take_care[i] }}
+                Number of Pets Allowed: {{ num_of_pets }} <br /><br />
+                <u>Can Take Care Of</u>
+                <v-list v-for="(number, index) in length" :key="index">
+                  {{ can_take_care[index] }} - {{ prices[index] }}
                   <br />
                 </v-list>
               </v-card-text>
@@ -111,6 +111,7 @@ export default {
     num_of_pets: 5,
     length: 0,
     can_take_care: [],
+    prices: [],
   }),
   methods: {
     editLoginDetails: function() {
@@ -205,15 +206,22 @@ export default {
         }
       )
       .then((response) => {
-        let pet_length = response.data.length;
-        let pets_can = [];
-        for (let j = 0; j < pet_length; j++) {
-          pets_can.push(response.data[j].type_name);
-          let price = "$" + response.data[j].current_daily_price;
-          pets_can.push(price);
+        console.log(response.data);
+        for (let j = 0; j < response.data.length; j++) {
+          let pet_type_mixed = response.data[j].type_name
+            .toString()
+            .toLowerCase();
+          let pet_type = pet_type_mixed.replace(
+            /(^\w{1})|(\s{1}\w{1})/g,
+            (match) => match.toUpperCase()
+          );
+          this.can_take_care.push(pet_type);
+          let price = "SGD " + response.data[j].current_daily_price.toString();
+          this.prices.push(price);
         }
-        this.can_take_care.push(pets_can);
-        this.length = this.can_take_care.length;
+        this.length = response.data.length;
+        console.log("Pets: " + this.can_take_care);
+        console.log("Prices: " + this.prices);
       });
     this.loaded = true;
   },

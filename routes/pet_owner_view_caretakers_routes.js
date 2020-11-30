@@ -104,7 +104,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (rating_wanted != null) {
         let add_rating_requested =
-          " (rating >= " + parseFloat(rating_wanted).toString() + ")";
+          " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
 
         request_full_time = request_full_time + add_rating_requested + " AND";
       }
@@ -223,18 +223,6 @@ async function get_specific_caretakers_information(req, res) {
       res.setHeader("content-type", "application/json");
       res.send(JSON.stringify(result.rows));
       client.release();
-
-      // await client.query(request_full_time).then((resp) => {
-      //   let arr = [];
-      //   let len = resp.rows.length;
-      //   for (var i = 0; i < len; i++) {
-      //     let result = resp.rows[i];
-      //     arr.push(result);
-      //   }
-      //   caretakerObject.fullTime = arr;
-      //   res.setHeader("content-type", "application/json");
-      //   res.send(JSON.stringify(caretakerObject));
-      // });
     } else if (commitment == "part-time") {
       let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN
@@ -259,7 +247,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (rating_wanted != null) {
         let add_rating_requested =
-          " (rating >= " + parseFloat(rating_wanted).toString() + ")";
+          " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
 
         request_part_time = request_part_time + add_rating_requested + " AND";
       }
@@ -378,18 +366,6 @@ async function get_specific_caretakers_information(req, res) {
       res.setHeader("content-type", "application/json");
       res.send(JSON.stringify(result.rows));
       client.release();
-
-      // await client.query(request_part_time).then((resp) => {
-      //   let arr = [];
-      //   let len = resp.rows.length;
-      //   for (var i = 0; i < len; i++) {
-      //     let result = resp.rows[i];
-      //     arr.push(result);
-      //   }
-      //   caretakerObject.partTime = arr;
-      //   res.setHeader("content-type", "application/json");
-      //   res.send(JSON.stringify(caretakerObject));
-      // });
     } else {
       if (
         commitment == null &&
@@ -406,13 +382,16 @@ async function get_specific_caretakers_information(req, res) {
           ORDER BY random() LIMIT 20;`;
       } else {
         // both full-time and part-time
+        let general_query = `SELECT X.username AS username, X.name AS name, X.age AS age, X.birth_date AS birth_date, X.gender AS gender, 
+        X.phone AS phone, X.email AS email, X.address AS address, X.average_rating AS average_rating, X.years_exp AS years_exp FROM (`;
+
         let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
       caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
       NATURAL JOIN daily_price_rate WHERE`;
 
         let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-      phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN
+      phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
       caretaker NATURAL JOIN part_time_caretaker NATURAL JOIN can_take_care 
       NATURAL JOIN availabilities NATURAL JOIN daily_price_rate WHERE`;
 
@@ -445,7 +424,7 @@ async function get_specific_caretakers_information(req, res) {
 
         if (rating_wanted != null) {
           let add_rating_requested =
-            " (rating >= " + parseFloat(rating_wanted).toString() + ")";
+            " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
 
           request_full_time = request_full_time + add_rating_requested + " AND";
           request_part_time = request_part_time + add_rating_requested + " AND";
@@ -532,125 +511,74 @@ async function get_specific_caretakers_information(req, res) {
           request_part_time = request_part_time_split_by_space.join(" ");
         }
 
-        request_full_time += " ORDER BY random(),";
-        request_part_time += " ORDER BY random(),";
+        general_query +=
+          request_full_time +
+          " UNION " +
+          request_part_time +
+          " ORDER BY random()) AS X";
 
         if (sort_by != null) {
           if (sort_by.length > 1) {
             if (sort_by[0] == "alphabetical a to z") {
-              let add_sort_alphebatically_a_to_z = " username ASC,";
+              let add_sort_alphebatically_a_to_z = " ORDER BY X.username ASC,";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_a_to_z;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_a_to_z;
+              general_query += add_sort_alphebatically_a_to_z;
             } else if (sort_by[0] == "alphabetical z to a") {
-              let add_sort_alphebatically_z_to_a = " username DESC,";
+              let add_sort_alphebatically_z_to_a = " ORDER BY X.username DESC,";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_z_to_a;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_z_to_a;
+              general_query += add_sort_alphebatically_z_to_a;
             }
 
             if (sort_by[1] == "price low to high") {
-              let add_sort_price_low_to_high = " current_daily_price ASC";
+              let add_sort_price_low_to_high = " X.current_daily_price ASC";
 
-              request_full_time =
-                request_full_time + add_sort_price_low_to_high;
+              general_query += add_sort_price_low_to_high;
             } else if (sort_by[1] == "price high to low") {
-              let add_sort_price_high_to_low = " current_daily_price DESC";
+              let add_sort_price_high_to_low = " X.current_daily_price DESC";
 
-              request_full_time =
-                request_full_time + add_sort_price_high_to_low;
-
-              request_part_time =
-                request_part_time + add_sort_price_high_to_low;
+              general_query += add_sort_price_high_to_low;
             }
           } else {
             if (sort_by == "alphabetical a to z") {
-              let add_sort_alphebatically_a_to_z_only = " username ASC";
+              let add_sort_alphebatically_a_to_z_only =
+                " ORDER BY X.username ASC";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_a_to_z_only;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_a_to_z_only;
+              general_query += add_sort_alphebatically_a_to_z_only;
             } else if (sort_by == "alphabetical z to a") {
-              let add_sort_alphebatically_z_to_a_only = " username DESC";
+              let add_sort_alphebatically_z_to_a_only =
+                " ORDER BY X.username DESC";
 
-              request_full_time =
-                request_full_time + add_sort_alphebatically_z_to_a_only;
-
-              request_part_time =
-                request_part_time + add_sort_alphebatically_z_to_a_only;
+              general_query += add_sort_alphebatically_z_to_a_only;
             } else if (sort_by == "price low to high") {
-              let add_sort_price_low_to_high_only = " current_daily_price ASC";
+              let add_sort_price_low_to_high_only =
+                " ORDER BY X.current_daily_price ASC";
 
-              request_full_time =
-                request_full_time + add_sort_price_low_to_high_only;
-
-              request_part_time =
-                request_part_time + add_sort_price_low_to_high_only;
+              general_query += add_sort_price_low_to_high_only;
             } else if (sort_by == "price high to low") {
-              let add_sort_price_high_to_low_only = " current_daily_price DESC";
+              let add_sort_price_high_to_low_only =
+                " ORDER BY X.current_daily_price DESC";
 
-              request_full_time =
-                request_full_time + add_sort_price_high_to_low_only;
-
-              request_part_time =
-                request_part_time + add_sort_price_high_to_low_only;
+              general_query += add_sort_price_high_to_low_only;
             }
           }
         }
 
-        let req_len_full = request_full_time.length;
-        if (request_full_time.charAt(req_len_full - 1) == ",") {
-          request_full_time = request_full_time.slice(0, -1);
-        }
+        // // i.e. no other sort by specifications
+        // if (general_query.charAt(general_query.length - 1) == ",") {
+        //   general_query = general_query.slice(0, -1);
+        // }
 
-        request_full_time += " LIMIT 20 UNION ";
+        general_query += " LIMIT 20;";
 
-        let req_len_part = request_part_time.length;
-        if (request_part_time.charAt(req_len_part - 1) == ",") {
-          request_part_time = request_part_time.slice(0, -1);
-        }
-
-        request_part_time += " LIMIT 20;";
-
-        query = request_full_time + request_part_time;
+        query = general_query;
       }
 
       const result = await client.query(query);
 
       res.setHeader("content-type", "application/json");
       res.send(JSON.stringify(result.rows));
-
-      // await client.query(request_full_time).then((resp) => {
-      //   let full_time_arr = [];
-      //   let full_time_len = resp.rows.length;
-      //   for (var i = 0; i < full_time_len; i++) {
-      //     let result = resp.rows[i];
-      //     full_time_arr.push(result);
-      //   }
-      //   caretakerObject.fullTime = full_time_arr;
-      // });
-
-      // await client.query(request_part_time).then((resp) => {
-      //   let part_time_arr = [];
-      //   let part_time_len = resp.rows.length;
-      //   for (var i = 0; i < part_time_len; i++) {
-      //     let result = resp.rows[i];
-      //     part_time_arr.push(result);
-      //   }
-      //   caretakerObject.partTime = part_time_arr;
-      //   res.setHeader("content-type", "application/json");
-      //   res.send(JSON.stringify(caretakerObject));
-      // });
+      client.release();
     }
-    client.release();
   } catch (err) {
     console.error(err);
     res.send("Error " + err);

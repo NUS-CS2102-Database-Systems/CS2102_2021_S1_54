@@ -93,8 +93,9 @@ export default {
           },
         });
       }
-
+      console.log(authResponse.data);
       const loggedIn = authResponse.data.length === 1;
+      console.log(loggedIn);
       if (!loggedIn) {
         Swal.fire({
           icon: "error",

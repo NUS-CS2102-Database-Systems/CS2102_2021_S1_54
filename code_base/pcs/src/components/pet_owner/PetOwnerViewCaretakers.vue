@@ -175,13 +175,17 @@
                       Address: {{ caretaker_address_odd[i - 1] }}
                       <br />
                       Average Rating: {{ caretaker_avg_rating_odd[i - 1] }}
-                      <br />
-                      Can Take Care of:
-                      {{ caretaker_take_care_animals_odd[i - 1] }}
-                      <!-- <v-list v-for="i in animals_length_odd" :key="i">
-                      {{ caretaker_take_care_animals_odd[i] }}
-                      <br />
-                    </v-list> -->
+                      <br /><br />
+                      <u>Can Take Care Of</u>
+                      <v-list
+                        v-for="(number,
+                        index) in caretaker_take_care_animals_odd[i - 1].length"
+                        :key="index"
+                      >
+                        {{ caretaker_take_care_animals_odd[i - 1][index] }} -
+                        {{ prices_odd[i - 1][index] }}
+                        <br />
+                      </v-list>
                       <br />
                       <v-btn elevation="2">
                         <router-link
@@ -231,13 +235,18 @@
                       Address: {{ caretaker_address_even[i - 1] }}
                       <br />
                       Average Rating: {{ caretaker_avg_rating_even[i - 1] }}
-                      <br />
-                      Can Take Care of:
-                      {{ caretaker_take_care_animals_even[i - 1] }}
-                      <!-- <v-list v-for="i in animals_length_even" :key="i">
-                      {{ caretaker_take_care_animals_even[i] }}
-                      <br />
-                    </v-list> -->
+                      <br /><br />
+                      <u>Can Take Care Of</u>
+                      <v-list
+                        v-for="(number,
+                        index) in caretaker_take_care_animals_even[i - 1]
+                          .length"
+                        :key="index"
+                      >
+                        {{ caretaker_take_care_animals_even[i - 1][index] }} -
+                        {{ prices_even[i - 1][index] }}
+                        <br />
+                      </v-list>
                       <br />
                       <v-btn elevation="2">
                         <router-link
@@ -355,6 +364,7 @@ export default {
     caretaker_avg_rating_even: [],
     caretaker_years_exp_even: [],
     caretaker_take_care_animals_even: [],
+    prices_even: [],
     caretaker_username_odd: [],
     caretaker_name_odd: [],
     caretaker_age_odd: [],
@@ -366,6 +376,7 @@ export default {
     caretaker_avg_rating_odd: [],
     caretaker_years_exp_odd: [],
     caretaker_take_care_animals_odd: [],
+    prices_odd: [],
     selected_commitment_level: null,
     selected_available_dates: null,
     selected_rating: null,
@@ -600,6 +611,7 @@ export default {
             this.caretaker_avg_rating_odd = [];
             this.caretaker_years_exp_odd = [];
             this.caretaker_take_care_animals_odd = [];
+            this.prices_odd = [];
             this.caretaker_username_even = [];
             this.caretaker_name_even = [];
             this.caretaker_age_even = [];
@@ -611,6 +623,7 @@ export default {
             this.caretaker_avg_rating_even = [];
             this.caretaker_years_exp_even = [];
             this.caretaker_take_care_animals_even = [];
+            this.prices_even = [];
             this.length_even = 0;
             this.length_odd = 0;
             this.loaded = false;
@@ -687,29 +700,6 @@ export default {
                     years += response.data[0].years_exp.days + " days";
                   }
                   this.caretaker_years_exp_odd.push(years);
-
-                  const get_info = {
-                    username: response.data[i].username,
-                  };
-
-                  axios
-                    .post(
-                      "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
-                      {
-                        toGet: get_info,
-                      }
-                    )
-                    .then((response) => {
-                      let pet_length = response.data.length;
-                      let pets_can = [];
-                      for (let j = 0; j < pet_length; j++) {
-                        pets_can.push(response.data[j].type_name);
-                        let price = "$" + response.data[j].current_daily_price;
-                        pets_can.push(price);
-                      }
-                      this.caretaker_take_care_animals_odd.push(pets_can);
-                      this.animals_length_odd += 1;
-                    });
                 } else {
                   this.length_even += 1;
                   this.caretaker_username_even.push(response.data[i].username);
@@ -773,33 +763,84 @@ export default {
                     years += response.data[0].years_exp.days + " days";
                   }
                   this.caretaker_years_exp_even.push(years);
-
-                  const get_pet_info = {
-                    username: response.data[i].username,
-                  };
-                  axios
-                    .post(
-                      "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
-                      {
-                        toGet: get_pet_info,
-                      }
-                    )
-                    .then((response) => {
-                      let pet_length = response.data.length;
-                      let pets_can = [];
-                      for (let j = 0; j < pet_length; j++) {
-                        pets_can.push(response.data[j].type_name);
-                        let price = "$" + response.data[j].current_daily_price;
-                        pets_can.push(price);
-                      }
-                      this.caretaker_take_care_animals_even.push(pets_can);
-                      this.animals_length_even += 1;
-                    });
                 }
               }
-              this.loaded = true;
             }
           });
+
+        for (let k = 0; k < this.caretaker_username_odd.length; k++) {
+          const get_info = {
+            username: this.caretaker_username_odd[k],
+          };
+
+          await axios
+            .post(
+              "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+              {
+                toGet: get_info,
+              }
+            )
+            .then((response) => {
+              let pet_types = [];
+              let prices = [];
+              for (let j = 0; j < response.data.length; j++) {
+                let pet_type_mixed = response.data[j].type_name
+                  .toString()
+                  .toLowerCase();
+                let pet_type = pet_type_mixed.replace(
+                  /(^\w{1})|(\s{1}\w{1})/g,
+                  (match) => match.toUpperCase()
+                );
+                pet_types.push(pet_type);
+
+                let price =
+                  "SGD " + response.data[j].current_daily_price.toString();
+                prices.push(price);
+              }
+              this.caretaker_take_care_animals_odd.push(pet_types);
+              this.prices_odd.push(prices);
+              this.animals_length_odd += 1;
+            });
+        }
+
+        for (let k = 0; k < this.caretaker_username_even.length; k++) {
+          const get_info = {
+            username: this.caretaker_username_even[k],
+          };
+
+          await axios
+            .post(
+              "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+              {
+                toGet: get_info,
+              }
+            )
+            .then((response) => {
+              let pet_types = [];
+              let prices = [];
+              for (let j = 0; j < response.data.length; j++) {
+                let pet_type_mixed = response.data[j].type_name
+                  .toString()
+                  .toLowerCase();
+                let pet_type = pet_type_mixed.replace(
+                  /(^\w{1})|(\s{1}\w{1})/g,
+                  (match) => match.toUpperCase()
+                );
+                pet_types.push(pet_type);
+
+                let price =
+                  "SGD " + response.data[j].current_daily_price.toString();
+                prices.push(price);
+              }
+              this.caretaker_take_care_animals_even.push(pet_types);
+              this.prices_even.push(prices);
+              this.animals_length_even += 1;
+            });
+        }
+        console.log(this.length_odd);
+        console.log(this.length_even);
+        console.log(this.caretaker_username_even);
+        this.loaded = true;
       }
     },
   },
@@ -881,29 +922,6 @@ export default {
                 years += response.data[0].years_exp.days + " days";
               }
               this.caretaker_years_exp_odd.push(years);
-
-              const get_info = {
-                username: response.data[i].username,
-              };
-
-              axios
-                .post(
-                  "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
-                  {
-                    toGet: get_info,
-                  }
-                )
-                .then((response) => {
-                  let pet_length = response.data.length;
-                  let pets_can = [];
-                  for (let j = 0; j < pet_length; j++) {
-                    pets_can.push(response.data[j].type_name);
-                    let price = "$" + response.data[j].current_daily_price;
-                    pets_can.push(price);
-                  }
-                  this.caretaker_take_care_animals_odd.push(pets_can);
-                  this.animals_length_odd += 1;
-                });
             } else {
               this.length_even += 1;
               this.caretaker_username_even.push(response.data[i].username);
@@ -966,31 +984,80 @@ export default {
                 years += response.data[0].years_exp.days + " days";
               }
               this.caretaker_years_exp_even.push(years);
-              const get_pet_info = {
-                username: response.data[i].username,
-              };
-              axios
-                .post(
-                  "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
-                  {
-                    toGet: get_pet_info,
-                  }
-                )
-                .then((response) => {
-                  let pet_length = response.data.length;
-                  let pets_can = [];
-                  for (let j = 0; j < pet_length; j++) {
-                    pets_can.push(response.data[j].type_name);
-                    let price = "$" + response.data[j].current_daily_price;
-                    pets_can.push(price);
-                  }
-                  this.caretaker_take_care_animals_even.push(pets_can);
-                  this.animals_length_even += 1;
-                });
             }
           }
         }
       });
+
+    for (let k = 0; k < this.caretaker_username_odd.length; k++) {
+      const get_info = {
+        username: this.caretaker_username_odd[k],
+      };
+
+      await axios
+        .post(
+          "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+          {
+            toGet: get_info,
+          }
+        )
+        .then((response) => {
+          let pet_types = [];
+          let prices = [];
+          for (let j = 0; j < response.data.length; j++) {
+            let pet_type_mixed = response.data[j].type_name
+              .toString()
+              .toLowerCase();
+            let pet_type = pet_type_mixed.replace(
+              /(^\w{1})|(\s{1}\w{1})/g,
+              (match) => match.toUpperCase()
+            );
+            pet_types.push(pet_type);
+
+            let price =
+              "SGD " + response.data[j].current_daily_price.toString();
+            prices.push(price);
+          }
+          this.caretaker_take_care_animals_odd.push(pet_types);
+          this.prices_odd.push(prices);
+          this.animals_length_odd += 1;
+        });
+    }
+
+    for (let k = 0; k < this.caretaker_username_even.length; k++) {
+      const get_info = {
+        username: this.caretaker_username_even[k],
+      };
+
+      await axios
+        .post(
+          "https://pet-care-service.herokuapp.com/pet-owners/get-caretaker-pets-information",
+          {
+            toGet: get_info,
+          }
+        )
+        .then((response) => {
+          let pet_types = [];
+          let prices = [];
+          for (let j = 0; j < response.data.length; j++) {
+            let pet_type_mixed = response.data[j].type_name
+              .toString()
+              .toLowerCase();
+            let pet_type = pet_type_mixed.replace(
+              /(^\w{1})|(\s{1}\w{1})/g,
+              (match) => match.toUpperCase()
+            );
+            pet_types.push(pet_type);
+
+            let price =
+              "SGD " + response.data[j].current_daily_price.toString();
+            prices.push(price);
+          }
+          this.caretaker_take_care_animals_even.push(pet_types);
+          this.prices_even.push(prices);
+          this.animals_length_even += 1;
+        });
+    }
     console.log(this.length_odd);
     console.log(this.length_even);
     console.log(this.caretaker_username_even);
