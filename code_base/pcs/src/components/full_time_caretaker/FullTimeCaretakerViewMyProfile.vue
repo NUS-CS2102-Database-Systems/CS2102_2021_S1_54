@@ -193,6 +193,14 @@ export default {
         ) {
           this.years_exp += response.data[0].years_exp.days + " days";
         }
+
+        // for the case when the user is created today - age is 0 and the object returned from DB is empty
+        if (
+          this.years_exp == null
+        ) {
+          this.years_exp = "0 days";
+        }
+
         this.date_started = response.data[0].date_started
           .toString()
           .split("T")[0];

@@ -93,7 +93,7 @@
             @click:clear="clearMaximumPrice"
           />
         </v-col>
-        <v-col class="mx-auto" md="3">
+        <!-- <v-col class="mx-auto" md="3">
           <v-select
             v-model="selected_sort_by"
             :items="sort_by"
@@ -109,7 +109,7 @@
             @input="selectSortBy"
             @click:clear="clearSortBy"
           />
-        </v-col>
+        </v-col> -->
         <v-col class="mx-auto" md="3">
           <v-text-field
             v-model="search"
@@ -380,7 +380,7 @@ export default {
     selected_commitment_level: null,
     selected_available_dates: null,
     selected_rating: null,
-    selected_sort_by: null,
+    // selected_sort_by: null,
     selected_price_from: null,
     selected_price_to: null,
     selected_pet_type: null,
@@ -429,38 +429,38 @@ export default {
     clearMaximumPrice: function() {
       this.selected_price_to = null;
     },
-    selectSortBy: function() {
-      console.log(this.selected_sort_by);
-      if (
-        this.selected_sort_by.includes("alphabetical a to z") &&
-        this.selected_sort_by.includes("alphabetical z to a")
-      ) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Can sort in Ascending or Descending order, not both",
-        });
-        this.selected_sort_by.pop();
-      }
+    // selectSortBy: function() {
+    //   console.log(this.selected_sort_by);
+    //   if (
+    //     this.selected_sort_by.includes("alphabetical a to z") &&
+    //     this.selected_sort_by.includes("alphabetical z to a")
+    //   ) {
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Oops...",
+    //       text: "Can sort in Ascending or Descending order, not both",
+    //     });
+    //     this.selected_sort_by.pop();
+    //   }
 
-      if (
-        this.selected_sort_by.includes("price low to high") &&
-        this.selected_sort_by.includes("price high to low")
-      ) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Can sort in Ascending or Descending order, not both",
-        });
-        this.selected_sort_by.pop();
-      }
-    },
+    //   if (
+    //     this.selected_sort_by.includes("price low to high") &&
+    //     this.selected_sort_by.includes("price high to low")
+    //   ) {
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Oops...",
+    //       text: "Can sort in Ascending or Descending order, not both",
+    //     });
+    //     this.selected_sort_by.pop();
+    //   }
+    // },
     clearSearch: function() {
       this.search = null;
     },
-    clearSortBy: function() {
-      this.selected_sort_by = null;
-    },
+    // clearSortBy: function() {
+    //   this.selected_sort_by = null;
+    // },
     selectPetType: function() {
       console.log(this.selected_pet_type);
     },
@@ -477,21 +477,21 @@ export default {
         commitment_level = null;
       }
 
-      if (this.selected_sort_by != null) {
-        if (this.selected_sort_by.length > 0) {
-          this.selected_sort_by = this.selected_sort_by.sort();
-          var order_by = '"';
-          for (let k = 0; k < this.selected_sort_by.length; k++) {
-            order_by += this.selected_sort_by[k] + ",";
-          }
-          order_by = order_by.slice(0, -1);
-          order_by += '"';
-        } else {
-          order_by = null;
-        }
-      } else {
-        order_by = null;
-      }
+      // if (this.selected_sort_by != null) {
+      //   if (this.selected_sort_by.length > 0) {
+      //     this.selected_sort_by = this.selected_sort_by.sort();
+      //     var order_by = '"';
+      //     for (let k = 0; k < this.selected_sort_by.length; k++) {
+      //       order_by += this.selected_sort_by[k] + ",";
+      //     }
+      //     order_by = order_by.slice(0, -1);
+      //     order_by += '"';
+      //   } else {
+      //     order_by = null;
+      //   }
+      // } else {
+      //   order_by = null;
+      // }
 
       if (this.selected_price_from != null) {
         var min_price = '"' + this.selected_price_from + '"';
@@ -576,8 +576,8 @@ export default {
           dates +
           ', "rating":' +
           rating_wanted +
-          ', "order_by":' +
-          order_by +
+          // ', "order_by":' +
+          // order_by +
           ', "start_price":' +
           min_price +
           ', "end_price":' +
@@ -591,7 +591,8 @@ export default {
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-
+        this.loaded = false;
+        this.have_data = false;
         await axios
           .post(
             "https://pet-care-service.herokuapp.com/pet-owners/get-specific-caretakers-information",
@@ -626,8 +627,7 @@ export default {
             this.prices_even = [];
             this.length_even = 0;
             this.length_odd = 0;
-            this.loaded = false;
-            this.have_data = false;
+
             console.log("Axios");
             console.log(response.data);
             if (response.data.length == 0) {
@@ -837,9 +837,9 @@ export default {
               this.animals_length_even += 1;
             });
         }
-        console.log(this.length_odd);
-        console.log(this.length_even);
-        console.log(this.caretaker_username_even);
+        // console.log(this.length_odd);
+        // console.log(this.length_even);
+        // console.log(this.caretaker_username_even);
         this.loaded = true;
       }
     },
@@ -1058,9 +1058,9 @@ export default {
           this.animals_length_even += 1;
         });
     }
-    console.log(this.length_odd);
-    console.log(this.length_even);
-    console.log(this.caretaker_username_even);
+    // console.log(this.length_odd);
+    // console.log(this.length_even);
+    // console.log(this.caretaker_username_even);
     this.loaded = true;
   },
 };
