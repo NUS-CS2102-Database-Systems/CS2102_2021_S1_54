@@ -127,11 +127,8 @@ export default {
 
     // Get current date with time = 00:00:00
     let today = new Date();
-    //today.setHours(today.getHours() + 8);
     let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
     let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 0, 0, 0);
-    // let date = new Date();
-    // let hours = date.setHours(date.getHours() + 8);
     let myToday_str = myToday.toISOString().toString();
     myToday_str = myToday_str.replace(/T/, " ");
     myToday_str = myToday_str.substring(0, myToday_str.length - 1);
@@ -139,9 +136,6 @@ export default {
     let myTomorrow_str = myTomorrow.toISOString().toString();
     myTomorrow_str = myTomorrow_str.replace(/T/, " ");
     myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
-    //console.log(today)
-    //console.log(myToday)
-    //console.log(myTomorrow)
 
     const get_info = {
       username: this.username,
@@ -185,20 +179,16 @@ export default {
 
     await axios
       .post(
-        "https://pet-care-service.herokuapp.com/part-time-caretakers/home-current-event",
+        "https://pet-care-service.herokuapp.com/caretakers/home-current-event",
         {
           toGet: get_info
         }
       )
       .then((response) => {
-        //console.log("In response of current")
         var i
         for (i = 0; i < response.data.length; i++) { 
           let comment_arr_temp = []
 
-          //let date_string = response.data[i].job_start_datetime.toString().split("T")[0];
-          //let job_start_date = new Date(date_string);
-          //console.log(response.data[i].job_start_datetime)
           let job_start_date = new Date(response.data[i].job_start_datetime.toString().split("T")[0]);
           console.log(job_start_date)
           if (job_start_date >= myToday && job_start_date < myTomorrow){
@@ -213,19 +203,19 @@ export default {
 
           let event_data = {
             pet_name: response.data[i].pet_name,
-            cusername: response.data[i].pusername, //Caretaker
+            cusername: response.data[i].pusername, 
             job_start_datetime: response.data[i].job_start_datetime,
             job_end_datetime: response.data[i].job_end_datetime,
-            comment_arr: comment_arr_temp, //["Start day", "End day"],
-            start_transfer_method: response.data[i].start_transfer_method, //{mtd: "Pet Owner Deliver"}, {mtd: "Care Taker Pickup"}, {mtd: "Transfer thorugh PCS Building"}
-            end_transfer_method: response.data[i].end_transfer_method, //{mtd: "Pet Owner Pickup"}, {mtd: "Care Taker Deliver"}, {mtd: "Transfer thorugh PCS Building"}
+            comment_arr: comment_arr_temp, 
+            start_transfer_method: response.data[i].start_transfer_method, 
+            end_transfer_method: response.data[i].end_transfer_method, 
           };
           this.current_event.push(event_data);
         }
       });
     await axios
       .post(
-        "https://pet-care-service.herokuapp.com/part-time-caretakers/home-upcoming-event",
+        "https://pet-care-service.herokuapp.com/caretakers/home-upcoming-event",
         {
           toGet: get_info
         }
@@ -234,29 +224,13 @@ export default {
         var i
         for (i = 0; i < response.data.length; i++) { 
 
-          // let comment_arr_temp = []
-          // console.log(myToday)
-          // console.log(myTomorrow)
-          // let job_start_date = new Date(response.data[i].job_start_datetime.toString().split("T")[0]);
-          // console.log(job_start_date)
-          // if (job_start_date >= myToday && job_start_date < myTomorrow){
-          //   comment_arr_temp.push("Start day")
-          // }
-          // let job_end_date = new Date(response.data[i].job_end_datetime.toString().split("T")[0]);
-          // console.log(job_end_date)
-          // if (job_end_date >= myToday && job_end_date < myTomorrow){
-          //   comment_arr_temp.push("End day")
-          // }
-          // console.log(comment_arr_temp)
-
           let event_data = {
             pet_name: response.data[i].pet_name,
-            cusername: response.data[i].pusername, //Caretaker
+            cusername: response.data[i].pusername, 
             job_start_datetime: response.data[i].job_start_datetime.toString().replace(/T/, " at ").substring(0, myToday_str.length - 4),
             job_end_datetime: response.data[i].job_end_datetime.toString().replace(/T/, " at ").substring(0, myToday_str.length - 4),
-            //comment_arr: [], //["Start day", "End day"],
-            start_transfer_method: response.data[i].start_transfer_method, //{mtd: "Pet Owner Deliver"}, {mtd: "Care Taker Pickup"}, {mtd: "Transfer thorugh PCS Building"}
-            end_transfer_method: response.data[i].end_transfer_method, //{mtd: "Pet Owner Pickup"}, {mtd: "Care Taker Deliver"}, {mtd: "Transfer thorugh PCS Building"}
+            start_transfer_method: response.data[i].start_transfer_method,
+            end_transfer_method: response.data[i].end_transfer_method, 
           };
           this.upcoming_event.push(event_data);
         }

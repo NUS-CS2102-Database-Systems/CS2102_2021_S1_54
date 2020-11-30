@@ -10,14 +10,8 @@ var appRouter = function (app) {
   app.post("/caretakers/get-num-pet-days", get_num_pet_days);
   app.post("/full-time-caretakers/get-salary", get_fulltime_salary);
   app.post("/part-time-caretakers/get-salary", get_parttime_salary);
-  app.post(
-    "/part-time-caretakers/home-current-event",
-    get_current_event_information
-  );
-  app.post(
-    "/part-time-caretakers/home-upcoming-event",
-    get_upcoming_event_information
-  );
+  app.post("/caretakers/home-current-event", get_current_event_information);
+  app.post("/caretakers/home-upcoming-event", get_upcoming_event_information);
 };
 
 async function get_num_pet_days(req, res) {
