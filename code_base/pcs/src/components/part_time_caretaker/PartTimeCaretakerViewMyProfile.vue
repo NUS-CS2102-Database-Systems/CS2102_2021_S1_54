@@ -206,7 +206,7 @@ export default {
         }
       )
       .then((response) => {
-        if (response.data[0].number_of_pets_allowed == null) {
+        if (response.data.length == 0 || response.data[0].number_of_pets_allowed == null) {
           this.num_of_pets = 2;
         } else {
           this.num_of_pets = response.data[0].number_of_pets_allowed;
