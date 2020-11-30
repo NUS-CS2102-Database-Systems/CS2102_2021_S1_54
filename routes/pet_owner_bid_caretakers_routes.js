@@ -122,21 +122,26 @@ async function submit_a_bid(req, res) {
       WHERE cusername = '${caretaker}' 
         AND (job_start_datetime, job_end_datetime) OVERLAPS ('${dateString}', '${dateString}');
       `);
-            
+
       console.log("date is \n");
       console.log(date);
 
       date.setDate(date.getDate() + 1);
     }
 
+    console.log("max number is:");
+    console.log(maxNumOfPets);
+
     const checkFulltime = await client.query(`SELECT * FROM full_time_caretaker WHERE username = '${caretaker}';`);
     if (checkFulltime.rowCount === 1) { // caretaker is full time
+      console.log("it's a full time caretaker");
       if (maxNumOfPets >= 5) {
         res.send("Pet limit reached for full time caretaker.");
         client.release();
         return;
       }
     } else { // caretaker is part time
+      console.log("it's a part time caretaker");
       const checkPetLimit = await client.query(`
         SELECT number_of_pets_allowed
         FROM availabilities 
