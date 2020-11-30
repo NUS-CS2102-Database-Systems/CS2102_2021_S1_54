@@ -515,7 +515,7 @@ async function get_specific_caretakers_information(req, res) {
           request_full_time +
           " UNION " +
           request_part_time +
-          "ORDER BY random()) AS X ORDER BY";
+          " ORDER BY random()) AS X ORDER BY";
 
         if (sort_by != null) {
           if (sort_by.length > 1) {
