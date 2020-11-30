@@ -382,8 +382,8 @@ async function get_specific_caretakers_information(req, res) {
           ORDER BY random() LIMIT 20;`;
       } else {
         // both full-time and part-time
-        let general_query = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-        phone, email, address, average_rating, AGE(date_started) AS years_exp FROM (`;
+        let general_query = `SELECT X.username AS username, X.name AS name, AGE(X.birth_date) AS age, X.birth_date AS birth_date, X.gender AS gender, 
+        X.phone AS phone, X.email AS email, X.address AS address, X.average_rating AS average_rating, AGE(X.date_started) AS years_exp FROM (`;
 
         let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
@@ -515,7 +515,7 @@ async function get_specific_caretakers_information(req, res) {
           request_full_time +
           " UNION " +
           request_part_time +
-          ") ORDER BY random(),";
+          ") AS X ORDER BY random(),";
 
         if (sort_by != null) {
           if (sort_by.length > 1) {
