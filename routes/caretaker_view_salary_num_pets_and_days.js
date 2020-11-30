@@ -106,7 +106,7 @@ async function get_current_event_information(req, res) {
     const tomorrow_datetime = req.body.toGet.tomorrow_datetime;
 
     const result = await client.query(
-      `SELECT pet_name, pusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method
+      `SELECT pet_name, pusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method, payment_method, amount
       FROM bid_transaction 
       WHERE cusername = '${username}' AND job_start_datetime < '${tomorrow_datetime}' AND job_end_datetime >= '${current_datetime}';`
     );

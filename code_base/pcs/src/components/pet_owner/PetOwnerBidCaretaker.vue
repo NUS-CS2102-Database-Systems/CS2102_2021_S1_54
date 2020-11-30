@@ -377,7 +377,7 @@ export default {
             job_end_datetime: endDateObj,
             payment_datetime: sg_bid_date,
             amount: this.price,
-            payment_method: "card",
+            payment_method: "Credit Card",
             start_transfer_method: this.start_method,
             end_transfer_method: this.end_method
           };
@@ -510,7 +510,7 @@ export default {
           job_end_datetime: endDateObj,
           payment_datetime: startDateObj,
           amount: this.price,
-          payment_method: "cash",
+          payment_method: "Cash",
           start_transfer_method: this.start_method,
           end_transfer_method: this.end_method
         };

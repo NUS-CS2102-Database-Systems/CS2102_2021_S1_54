@@ -388,3 +388,23 @@ LANGUAGE plpgsql;
 CREATE TRIGGER check_leave_day_validity
 BEFORE INSERT OR UPDATE ON leave_days
 FOR EACH ROW EXECUTE FUNCTION check_leave_day_overlap();
+
+-- trigger 9
+CREATE OR REPLACE FUNCTION new_daily_price_rate()
+ RETURNS TRIGGER
+AS $$
+DECLARE base_price_rate NUMERIC;
+	BEGIN
+	SELECT base_daily_price INTO base_price_rate --Only 1 base_daily_price per animal type
+		FROM set_base_daily_price 
+		WHERE type_name = NEW.type_name;
+
+	INSERT INTO daily_price_rate VALUES (NEW.username, NEW.type_name, base_price_rate);
+	RETURN NEW;
+END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER add_daily_price
+AFTER INSERT ON can_take_care -- At the moment, cannot edit can_take_care and hence does not care about update
+FOR EACH ROW EXECUTE FUNCTION new_daily_price_rate();
+

@@ -104,7 +104,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (rating_wanted != null) {
         let add_rating_requested =
-          " (rating >= " + parseFloat(rating_wanted).toString() + ")";
+          " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
 
         request_full_time = request_full_time + add_rating_requested + " AND";
       }
@@ -259,7 +259,7 @@ async function get_specific_caretakers_information(req, res) {
 
       if (rating_wanted != null) {
         let add_rating_requested =
-          " (rating >= " + parseFloat(rating_wanted).toString() + ")";
+          " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
 
         request_part_time = request_part_time + add_rating_requested + " AND";
       }
@@ -445,7 +445,7 @@ async function get_specific_caretakers_information(req, res) {
 
         if (rating_wanted != null) {
           let add_rating_requested =
-            " (rating >= " + parseFloat(rating_wanted).toString() + ")";
+            " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
 
           request_full_time = request_full_time + add_rating_requested + " AND";
           request_part_time = request_part_time + add_rating_requested + " AND";
