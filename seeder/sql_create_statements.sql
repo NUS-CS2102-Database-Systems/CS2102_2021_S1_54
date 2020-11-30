@@ -172,7 +172,8 @@ CREATE OR REPLACE FUNCTION not_overlap()
 			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <= A.end_date);
 
 			IF ctx1 = 0 THEN
-				RETURN NULL;
+				-- Replaced RETURN NULL with RAISE EXCEPTION
+				RAISE EXCEPTION 'We regret to inform you that % is unavailable from % to %', NEW.cusername, NEW.job_start_datetime, NEW.job_end_datetime;
 			ELSE
 				RETURN NEW;
 			END IF;
@@ -183,7 +184,8 @@ CREATE OR REPLACE FUNCTION not_overlap()
 			(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, L.end_date);
 
 		IF ctx2 > 0 THEN
-			RETURN NULL;
+			-- Replaced RETURN NULL with RAISE EXCEPTION
+			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, L.start_date, L.end_date;
 		ELSE
 			RETURN NEW;
 		END IF;
