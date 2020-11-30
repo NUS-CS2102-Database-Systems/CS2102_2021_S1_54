@@ -35,6 +35,7 @@
                 Price rate for {{pet_selected}} is ${{price_rate}} SGD/day.
               </p> 
               <br />
+              <br />
 
               <H3>Select Caretaking Dates:</H3>
               <p>Select Start Date and End Date in the calendar below</p>
@@ -58,8 +59,12 @@
                   <p v-if="num_pet_days != null">
                     Number of pet-days: {{num_pet_days}}
                   </p>
+                  <p v-else-if="num_pet_days == null">
+                    Select two dates - Start Date and End Date!
+                  </p>
                 </v-col>
               </v-row>
+              <br />
 
               <H3>Select Transfers Time</H3>
               <v-row>
@@ -89,6 +94,7 @@
                 </v-col>
               </v-row>
 
+              <br />
               <br />
               <br />
               <H3>Select Transfers Method</H3>
@@ -124,6 +130,12 @@
                   ></v-select>
                 </v-col>
               </v-row>
+              <br/>
+              <br/>
+              <p v-if="price != null">
+                Total price is ${{price}} SGD/day.
+              </p> 
+              <br />
 
             </v-col>
           </v-row>
@@ -218,20 +230,30 @@ export default {
     // allowedDates: val => parseInt(val.split('-')[2], 10) % 2 === 0,
     setPetPriceRate: function() {
       this.price_rate = this.dict_pet_price[this.pet_selected];
-      if (this.num_pet_days != null){
+
+      if (this.num_pet_days != null){ // && !this.num_pet_days.isNaN){
         this.price = this.price_rate * this.num_pet_days
       }
     },
 
     setNumOfDays: function(){
-      this.selected_dates.sort();
-      let date1 = new Date(this.selected_dates[0]);
-      let date2 = new Date(this.selected_dates[1]);
-      const diffTime = Math.abs(date2 - date1);
-      this.num_pet_days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      if (this.selected_dates.length == 2){
+        this.selected_dates.sort();
+        let date1 = new Date(this.selected_dates[0]);
+        let date2 = new Date(this.selected_dates[1]);
+        const diffTime = Math.abs(date2 - date1);
+        this.num_pet_days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
 
-      if (this.price_rate != null){
-        this.price = this.price_rate * this.num_pet_days
+        // if (this.num_pet_days.isNaN){
+        //   this.price = null
+        //   console.log("isNanN!!")
+        // }
+        if (this.price_rate != null){
+          this.price = this.price_rate * this.num_pet_days
+        }
+      } else{
+        this.price = null
+        this.num_pet_days = null
       }
     },
 

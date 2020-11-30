@@ -10,6 +10,14 @@ var appRouter = function (app) {
   app.post("/caretakers/get-num-pet-days", get_num_pet_days);
   app.post("/full-time-caretakers/get-salary", get_fulltime_salary);
   app.post("/part-time-caretakers/get-salary", get_parttime_salary);
+  app.post(
+    "/part-time-caretakers/home-current-event",
+    get_current_event_information
+  );
+  app.post(
+    "part-time-caretakers/home-upcoming-event",
+    get_upcoming_event_information
+  );
 };
 
 async function get_num_pet_days(req, res) {
@@ -61,6 +69,50 @@ async function get_parttime_salary(req, res) {
       `SELECT salary 
       FROM salary_calculation_for_part_time 
       WHERE cusername = '${username}';`
+    );
+
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify(result.rows));
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+async function get_current_event_information(req, res) {
+  try {
+    const client = await pool.connect();
+    const username = req.body.toGet.username;
+    const current_datetime = req.body.toGet.current_datetime;
+    const tomorrow_datetime = req.body.toGet.tomorrow_datetime;
+
+    const result = await client.query(
+      `SELECT pet_name, pusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method
+      FROM bid_transaction 
+      WHERE cusername = '${username}' AND job_start_datetime < '${tomorrow_datetime}' AND job_end_datetime >= '${current_datetime}';`
+    );
+
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify(result.rows));
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+async function get_upcoming_event_information(req, res) {
+  try {
+    const client = await pool.connect();
+    const username = req.body.toGet.username;
+    //const current_datetime = req.body.toGet.current_datetime;
+    const tomorrow_datetime = req.body.toGet.tomorrow_datetime;
+
+    const result = await client.query(
+      `SELECT pet_name, pusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method
+        FROM bid_transaction 
+        WHERE cusername = '${username}' AND job_start_datetime > '${tomorrow_datetime}'; `
     );
 
     res.setHeader("content-type", "application/json");

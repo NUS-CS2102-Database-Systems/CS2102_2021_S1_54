@@ -111,9 +111,9 @@ export default {
     let myTomorrow_str = myTomorrow.toISOString().toString();
     myTomorrow_str = myTomorrow_str.replace(/T/, " ");
     myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
-    console.log(today)
-    console.log(myToday)
-    console.log(myTomorrow)
+    //console.log(today)
+    //console.log(myToday)
+    //console.log(myTomorrow)
 
     const get_info = {
       username: this.username,
@@ -129,39 +129,37 @@ export default {
         }
       )
       .then((response) => {
-        console.log("In response of current")
+        //console.log("In response of current")
         var i
         for (i = 0; i < response.data.length; i++) { 
-          //let comment_arr_temp = []
+          let comment_arr_temp = []
 
           //let date_string = response.data[i].job_start_datetime.toString().split("T")[0];
           //let job_start_date = new Date(date_string);
-          // console.log(response.data[i].job_start_datetime)
-          // let job_start_date = new Date(response.data[i].job_start_datetime);
-          // //console.log(job_start_date)
-          // if (job_start_date >= myToday && job_start_date < myTomorrow){
-          //   comment_arr_temp.push("Start day")
-          // }
+          //console.log(response.data[i].job_start_datetime)
+          let job_start_date = new Date(response.data[i].job_start_datetime.toString().split("T")[0]);
+          console.log(job_start_date)
+          if (job_start_date >= myToday && job_start_date < myTomorrow){
+            comment_arr_temp.push("Start day")
+          }
 
-          // let job_end_date = new Date(response.data[i].job_end_datetime);
-          // //console.log(job_start_date)
-          // if (job_end_date >= myToday && job_end_date < myTomorrow){
-          //   comment_arr_temp.push("End day")
-          // }
+          let job_end_date = new Date(response.data[i].job_end_datetime.toString().split("T")[0]);
+          console.log(job_end_date)
+          if (job_end_date >= myToday && job_end_date < myTomorrow){
+            comment_arr_temp.push("End day")
+          }
 
           let event_data = {
             pet_name: response.data[i].pet_name,
             cusername: response.data[i].cusername, //Caretaker
             job_start_datetime: response.data[i].job_start_datetime,
             job_end_datetime: response.data[i].job_end_datetime,
-            comment_arr: ["Start day", "End day"],//comment_arr_temp, //["Start day", "End day"],
+            comment_arr: comment_arr_temp, //["Start day", "End day"],
             start_transfer_method: response.data[i].start_transfer_method, //{mtd: "Pet Owner Deliver"}, {mtd: "Care Taker Pickup"}, {mtd: "Transfer thorugh PCS Building"}
             end_transfer_method: response.data[i].end_transfer_method, //{mtd: "Pet Owner Pickup"}, {mtd: "Care Taker Deliver"}, {mtd: "Transfer thorugh PCS Building"}
           };
-          console.log(i)
           this.current_event.push(event_data);
         }
-        console.log("End loop in current")
       });
     await axios
       .post(
@@ -173,11 +171,27 @@ export default {
       .then((response) => {
         var i
         for (i = 0; i < response.data.length; i++) { 
+
+          // let comment_arr_temp = []
+          // console.log(myToday)
+          // console.log(myTomorrow)
+          // let job_start_date = new Date(response.data[i].job_start_datetime.toString().split("T")[0]);
+          // console.log(job_start_date)
+          // if (job_start_date >= myToday && job_start_date < myTomorrow){
+          //   comment_arr_temp.push("Start day")
+          // }
+          // let job_end_date = new Date(response.data[i].job_end_datetime.toString().split("T")[0]);
+          // console.log(job_end_date)
+          // if (job_end_date >= myToday && job_end_date < myTomorrow){
+          //   comment_arr_temp.push("End day")
+          // }
+          // console.log(comment_arr_temp)
+
           let event_data = {
             pet_name: response.data[i].pet_name,
             cusername: response.data[i].cusername, //Caretaker
-            job_start_datetime: response.data[i].job_start_datetime,
-            job_end_datetime: response.data[i].job_end_datetime,
+            job_start_datetime: response.data[i].job_start_datetime.toString().replace(/T/, " at ").substring(0, myToday_str.length - 4),
+            job_end_datetime: response.data[i].job_end_datetime.toString().replace(/T/, " at ").substring(0, myToday_str.length - 4),
             //comment_arr: [], //["Start day", "End day"],
             start_transfer_method: response.data[i].start_transfer_method, //{mtd: "Pet Owner Deliver"}, {mtd: "Care Taker Pickup"}, {mtd: "Transfer thorugh PCS Building"}
             end_transfer_method: response.data[i].end_transfer_method, //{mtd: "Pet Owner Pickup"}, {mtd: "Care Taker Deliver"}, {mtd: "Transfer thorugh PCS Building"}
