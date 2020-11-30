@@ -137,11 +137,33 @@ export default {
     myTomorrow_str = myTomorrow_str.replace(/T/, " ");
     myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
 
+    let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0);
+    //let firstDayOfNextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1, 0, 0, 0);
+
     const get_info = {
       username: this.username,
       current_datetime: myToday_str,
       tomorrow_datetime: myTomorrow_str,
+      startMonth: firstDayOfMonth,
+      //endMonth: firstDayOfNextMonth,
     };
+
+    await axios
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-num-bid-transactions",
+        {
+          toGet: get_info,
+        }
+      )
+      .then((response) => {
+        if (response.data.length == 0) {
+          this.num_pets = 0;
+        } else if (response.data[0].num_pets == undefined) {
+          this.num_pets = 0;
+        } else {
+          this.num_pets = response.data[0].num_pets;
+        }
+      });
 
     await axios
       .post(
@@ -151,8 +173,6 @@ export default {
         }
       )
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
         if (response.data.length == 0) {
           this.num_pet_days = 0;
         } else {
@@ -168,8 +188,6 @@ export default {
         }
       )
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
         if (response.data.length == 0) {
           this.amount_earned = 0;
         } else {

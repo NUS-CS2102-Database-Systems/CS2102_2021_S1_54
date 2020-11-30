@@ -20,12 +20,13 @@ async function num_bid_transactions(req, res) {
     const client = await pool.connect();
     const username = req.body.toGet.username;
     const startMonth = req.body.toGet.startMonth;
-    const endMonth = req.body.toGet.endMonth;
+    const tomorrow_datetime = req.body.toGet.tomorrow_datetime;
+    //const endMonth = req.body.toGet.endMonth;
 
     const result = await client.query(
       `SELECT COUNT(*) as num_pets
       FROM bid_transaction
-      WHERE cusername = '${username}' AND job_end_datetime >= '${startMonth}' AND job_end_datetime < '${endMonth}';`
+      WHERE cusername = '${username}' AND job_end_datetime >= '${startMonth}' AND job_end_datetime < '${tomorrow_datetime}';`
     );
 
     res.setHeader("content-type", "application/json");
