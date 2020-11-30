@@ -26,7 +26,6 @@ import PartTimeCaretakerEditPersonalInfo from "./components/part_time_caretaker/
 import PartTimeCaretakerViewPastJobs from "./components/part_time_caretaker/PartTimeCaretakerViewPastJobs";
 import PartTimeCaretakerViewOngoingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewOngoingJobs";
 import PartTimeCaretakerViewUpcomingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewUpcomingJobs";
-import PartTimeCaretakerViewSalary from "./components/part_time_caretaker/PartTimeCaretakerViewSalary";
 import PartTimeCaretakerSetAvailability from "./components/part_time_caretaker/PartTimeCaretakerSetAvailability";
 import FullTimeCaretakerHome from "./components/full_time_caretaker/FullTimeCaretakerHome";
 import FullTimeCaretakerViewMyProfile from "./components/full_time_caretaker/FullTimeCaretakerViewMyProfile";
@@ -35,7 +34,6 @@ import FullTimeCaretakerEditPersonalInfo from "./components/full_time_caretaker/
 import FullTimeCaretakerViewPastJobs from "./components/full_time_caretaker/FullTimeCaretakerViewPastJobs";
 import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewOngoingJobs";
 import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
-import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
 import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
@@ -198,11 +196,6 @@ export default new VueRouter({
       component: PartTimeCaretakerEditPersonalInfo,
     },
     {
-      path: "/part-time-caretakers/view-salary",
-      name: "PartTimeCaretakerViewSalary",
-      component: PartTimeCaretakerViewSalary,
-    },
-    {
       path: "/part-time-caretakers/set-availability",
       name: "PartTimeCaretakerSetAvailability",
       component: PartTimeCaretakerSetAvailability,
@@ -246,11 +239,6 @@ export default new VueRouter({
       path: "/full-time-caretakers/view-upcoming-jobs",
       name: "FullTimeCaretakerViewUpcomingJobs",
       component: FullTimeCaretakerViewUpcomingJobs,
-    },
-    {
-      path: "/full-time-caretakers/view-salary",
-      name: "FullTimeCaretakerViewSalary",
-      component: FullTimeCaretakerViewSalary,
     },
     {
       path: "/pcs-admin",
