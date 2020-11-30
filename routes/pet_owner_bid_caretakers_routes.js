@@ -26,12 +26,12 @@ async function get_bidding_options_for_pets(req, res) {
   try {
     const client = await pool.connect();
     const username = req.body.toGet.username;
-    //const caretaker = req.body.toGet.caretaker;
+    const caretaker = req.body.toGet.caretaker;
 
     const result = await client.query(
       `SELECT p.pet_name AS pet_name, r.current_daily_price AS current_daily_price 
-        FROM pet p JOIN daily_price_rate r ON (p.username = r.username AND p.type_of_animal = r.type_name)
-        WHERE p.username = '${username}';`
+        FROM pet p JOIN daily_price_rate r ON p.type_of_animal = r.type_name
+        WHERE p.username = '${username}' AND r.username = '${caretaker}';`
     );
 
     res.setHeader("content-type", "application/json");
@@ -105,16 +105,17 @@ async function submit_a_bid(req, res) {
 
     // check wether caretaker's pet limit has been reached
     var start = new Date(job_start_datetime);
-    start.setHours(0,0,0,0);
+    start.setHours(0, 0, 0, 0);
     var end = new Date(job_end_datetime);
-    end.setHours(0,0,0,0);
+    end.setHours(0, 0, 0, 0);
     var date = start;
     const differenceInTime = end.getTime() - start.getTime();
-    const differenceInDays = (differenceInTime / (1000 * 3600 * 24)) + 1;
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24) + 1;
     var maxNumOfPets = 0;
     console.log("number of days is \n");
     console.log(differenceInDays);
-    for (var i = 0; i < differenceInDays; i++) { // check day by day
+    for (var i = 0; i < differenceInDays; i++) {
+      // check day by day
       const dateString = date.toISOString().substring(0, 10); // YYYY-MM-DD format
       const numberOfPets = await client.query(`
       SELECT COUNT(*) AS num_pets
@@ -138,15 +139,19 @@ async function submit_a_bid(req, res) {
     console.log("max number is:");
     console.log(maxNumOfPets);
 
-    const checkFulltime = await client.query(`SELECT * FROM full_time_caretaker WHERE username = '${caretaker}';`);
-    if (checkFulltime.rowCount === 1) { // caretaker is full time
+    const checkFulltime = await client.query(
+      `SELECT * FROM full_time_caretaker WHERE username = '${caretaker}';`
+    );
+    if (checkFulltime.rowCount === 1) {
+      // caretaker is full time
       console.log("it's a full time caretaker");
       if (maxNumOfPets >= 5) {
         res.send("Pet limit reached for full time caretaker.");
         client.release();
         return;
       }
-    } else { // caretaker is part time
+    } else {
+      // caretaker is part time
       console.log("it's a part time caretaker");
       const checkPetLimit = await client.query(`
         SELECT number_of_pets_allowed
