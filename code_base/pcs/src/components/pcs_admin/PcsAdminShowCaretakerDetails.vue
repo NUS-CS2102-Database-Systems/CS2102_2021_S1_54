@@ -1,37 +1,20 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <FullTimeCaretakerNavBar />
+      <PcsAdminNavBar />
     </div>
     <div style="width: 80%; float: right">
+      <h1>Viewing Caretaker's Details</h1>
       <template v-if="loaded">
-        <h2>Welcome, {{ username }}!</h2>
-        <br />
-        <h3>My Profile</h3>
         <br />
         <v-list>
-          <v-card width="70%">
-            <v-card-title style="font-weight:bold;">
-              Account Login Details
-            </v-card-title>
-            <v-layout align-center>
-              <v-card-text>
-                Username: {{ username }} <br />
-                Password: {{ password }} <br />
-              </v-card-text>
-              <v-btn icon color="blue" fab @click="editLoginDetails">
-                <v-icon>mdi-pencil</v-icon>
-                Edit
-              </v-btn>
-            </v-layout>
-          </v-card>
-          <br />
           <v-card width="70%">
             <v-card-title style="font-weight:bold;">
               Personal Information
             </v-card-title>
             <v-layout align-center>
               <v-card-text>
+                Username: {{ caretaker_username }} <br />
                 Name: {{ name }} <br />
                 Date of Birth: {{ birth_date }} <br />
                 Age: {{ age }} <br />
@@ -42,10 +25,6 @@
                 Email: {{ email }} <br />
                 Address: {{ address }} <br />
               </v-card-text>
-              <v-btn icon color="blue" fab @click="editPersonalInfo">
-                <v-icon>mdi-pencil</v-icon>
-                Edit
-              </v-btn>
             </v-layout>
           </v-card>
           <br />
@@ -63,6 +42,18 @@
                 <v-list v-for="i in length" :key="i">
                   {{ can_take_care[i] }}
                   <br />
+                  <v-btn elevation="2">
+                    <router-link
+                      tag="span"
+                      :to="{
+                        path:
+                          '/pcs-admin/view-caretaker-reviews/' +
+                          caretaker_username,
+                      }"
+                    >
+                      View Reviews
+                    </router-link>
+                  </v-btn>
                 </v-list>
               </v-card-text>
             </v-layout>
@@ -84,20 +75,16 @@
 </template>
 
 <script>
-import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
-import * as constants from "../constants";
+import PcsAdminNavBar from "./PcsAdminNavBar";
 import axios from "axios";
 
 export default {
-  name: "FullTimeCaretakerViewMyProfile",
-
+  name: "PcsAdminShowCaretakerDetails",
   components: {
-    FullTimeCaretakerNavBar,
+    PcsAdminNavBar,
   },
   data: () => ({
     loaded: false,
-    username: null,
-    password: null,
     name: null,
     age: null,
     birth_date: null,
@@ -108,37 +95,29 @@ export default {
     avg_rating: null,
     years_exp: null,
     date_started: null,
-    num_of_pets: 5,
+    num_of_pets: null,
     length: 0,
     can_take_care: [],
   }),
-  methods: {
-    editLoginDetails: function() {
-      window.location.href =
-        constants.full_time_caretaker_edit_login_info + document.cookie;
-    },
-    editPersonalInfo: function() {
-      window.location.href =
-        constants.full_time_caretaker_edit_personal_info + document.cookie;
-    },
-  },
   async mounted() {
-    console.log("CT_Profile: " + document.cookie);
-    this.username = document.cookie.split("=")[1];
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    this.caretaker_username = urlParams.get("caretaker_username");
+    console.log(this.caretaker_username);
 
     const get_info = {
-      username: this.username,
+      username: this.caretaker_username,
     };
 
     await axios
       .post(
-        "https://pet-care-service.herokuapp.com/caretakers/get-profile-information",
+        "https://pet-care-service.herokuapp.com/pcs-admin/caretaker-details",
         {
           toGet: get_info,
         }
       )
       .then((response) => {
-        this.password = response.data[0].password;
+        console.log(response.data[0]);
         this.name = response.data[0].name;
         if (response.data[0].age.years != undefined) {
           this.age = response.data[0].age.years + " years ";
@@ -165,6 +144,7 @@ export default {
         this.email = response.data[0].email;
         this.address = response.data[0].address;
         this.avg_rating = response.data[0].average_rating;
+        this.num_of_pets = response.data[0].num_pets_allowed;
         if (response.data[0].years_exp.years != undefined) {
           this.years_exp = response.data[0].years_exp.years + " years ";
         }
@@ -215,6 +195,7 @@ export default {
         this.can_take_care.push(pets_can);
         this.length = this.can_take_care.length;
       });
+
     this.loaded = true;
   },
 };

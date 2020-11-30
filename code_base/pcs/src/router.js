@@ -26,7 +26,6 @@ import PartTimeCaretakerEditPersonalInfo from "./components/part_time_caretaker/
 import PartTimeCaretakerViewPastJobs from "./components/part_time_caretaker/PartTimeCaretakerViewPastJobs";
 import PartTimeCaretakerViewOngoingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewOngoingJobs";
 import PartTimeCaretakerViewUpcomingJobs from "./components/part_time_caretaker/PartTimeCaretakerViewUpcomingJobs";
-import PartTimeCaretakerViewSalary from "./components/part_time_caretaker/PartTimeCaretakerViewSalary";
 import PartTimeCaretakerSetAvailability from "./components/part_time_caretaker/PartTimeCaretakerSetAvailability";
 import FullTimeCaretakerHome from "./components/full_time_caretaker/FullTimeCaretakerHome";
 import FullTimeCaretakerViewMyProfile from "./components/full_time_caretaker/FullTimeCaretakerViewMyProfile";
@@ -35,17 +34,17 @@ import FullTimeCaretakerEditPersonalInfo from "./components/full_time_caretaker/
 import FullTimeCaretakerViewPastJobs from "./components/full_time_caretaker/FullTimeCaretakerViewPastJobs";
 import FullTimeCaretakerViewOngoingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewOngoingJobs";
 import FullTimeCaretakerViewUpcomingJobs from "./components/full_time_caretaker/FullTimeCaretakerViewUpcomingJobs";
-import FullTimeCaretakerViewSalary from "./components/full_time_caretaker/FullTimeCaretakerViewSalary";
 import PetOwnerViewCaretakerReviews from "./components/pet_owner/PetOwnerViewCaretakerReviews";
 import FullTimeCaretakerApplyForLeave from "./components/full_time_caretaker/FullTimeCaretakerApplyForLeave";
 import FullTimeCaretakerViewLeaves from "./components/full_time_caretaker/FullTimeCaretakerViewLeaves";
 import PcsAdminSetBaseDailyPrice from "./components/pcs_admin/PcsAdminSetBaseDailyPrice";
 import PcsAdminHome from "./components/pcs_admin/PcsAdminHome";
-import PcsAdminViewNumOfPetsCaredByEachCaretaker from "./components/pcs_admin/PcsAdminViewNumOfPetsCaredByEachCaretaker";
+import PcsAdminViewEachCaretakerDetails from "./components/pcs_admin/PcsAdminViewEachCaretakerDetails";
 import AdminSignUp from "./components/AdminSignUp";
 import PcsAdminViewMyProfile from "./components/pcs_admin/PcsAdminViewMyProfile";
 import PcsAdminEditLoginInfo from "./components/pcs_admin/PcsAdminEditLoginInfo";
-
+import PcsAdminShowCaretakerDetails from "./components/pcs_admin/PcsAdminShowCaretakerDetails";
+import PcsAdminViewCaretakerReviews from "./components/pcs_admin/PcsAdminViewCaretakerReviews";
 
 Vue.use(VueRouter);
 
@@ -197,11 +196,6 @@ export default new VueRouter({
       component: PartTimeCaretakerEditPersonalInfo,
     },
     {
-      path: "/part-time-caretakers/view-salary",
-      name: "PartTimeCaretakerViewSalary",
-      component: PartTimeCaretakerViewSalary,
-    },
-    {
       path: "/part-time-caretakers/set-availability",
       name: "PartTimeCaretakerSetAvailability",
       component: PartTimeCaretakerSetAvailability,
@@ -247,11 +241,6 @@ export default new VueRouter({
       component: FullTimeCaretakerViewUpcomingJobs,
     },
     {
-      path: "/full-time-caretakers/view-salary",
-      name: "FullTimeCaretakerViewSalary",
-      component: FullTimeCaretakerViewSalary,
-    },
-    {
       path: "/pcs-admin",
       name: "PcsAdminHome",
       component: PcsAdminHome,
@@ -272,16 +261,16 @@ export default new VueRouter({
       component: PcsAdminEditLoginInfo,
     },
     {
-      path: "/pcs-admin/view-number-of-pets-cared-for-per-caretaker",
-      name: "PcsAdminViewNumOfPetsCaredByEachCaretaker",
-      component: PcsAdminViewNumOfPetsCaredByEachCaretaker,
+      path: "/pcs-admin/view-details-for-each-caretaker",
+      name: "PcsAdminViewEachCaretakerDetails",
+      component: PcsAdminViewEachCaretakerDetails,
     },
     {
       path: "/pcs-admin/set-base-daily-price",
       name: "PcsAdminSetBaseDailyPrice",
       component: PcsAdminSetBaseDailyPrice,
     },
-    {      
+    {
       path: "/admin-signup",
       name: "AdminSignUp",
       component: AdminSignUp,
@@ -301,6 +290,17 @@ export default new VueRouter({
       path: "/full-time-caretakers/view-leaves",
       name: "FullTimeCaretakerViewLeaves",
       component: FullTimeCaretakerViewLeaves,
+    },
+    {
+      path: "/pcs-admin/view-caretaker",
+      name: "PcsAdminShowCaretakerDetails",
+      component: PcsAdminShowCaretakerDetails,
+    },
+    {
+      path: "/pcs-admin/view-caretaker-reviews/:caretaker_username",
+      name: "PcsAdminViewCaretakerReviews",
+      component: PcsAdminViewCaretakerReviews,
+      props: true,
     },
   ],
 });

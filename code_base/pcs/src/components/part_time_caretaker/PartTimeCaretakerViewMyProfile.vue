@@ -195,40 +195,40 @@ export default {
         this.date_started = response.data[0].date_started
           .toString()
           .split("T")[0];
+      });
 
-        axios
-          .post(
-            "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets",
-            {
-              toGet: get_info,
-            }
-          )
-          .then((response) => {
-            if (response.data[0].number_of_pets_allowed == null) {
-              this.num_of_pets = 2;
-            } else {
-              this.num_of_pets = response.data[0].number_of_pets_allowed;
-            }
-          });
+    await axios
+      .post(
+        "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets",
+        {
+          toGet: get_info,
+        }
+      )
+      .then((response) => {
+        if (response.data[0].number_of_pets_allowed == null) {
+          this.num_of_pets = 2;
+        } else {
+          this.num_of_pets = response.data[0].number_of_pets_allowed;
+        }
+      });
 
-        axios
-          .post(
-            "https://pet-care-service.herokuapp.com/caretakers/get-pets-take-care-information",
-            {
-              toGet: get_info,
-            }
-          )
-          .then((response) => {
-            let pet_length = response.data.length;
-            let pets_can = [];
-            for (let j = 0; j < pet_length; j++) {
-              pets_can.push(response.data[j].type_name);
-              let price = "$" + response.data[j].current_daily_price;
-              pets_can.push(price);
-            }
-            this.can_take_care.push(pets_can);
-            this.length = this.can_take_care.length;
-          });
+    await axios
+      .post(
+        "https://pet-care-service.herokuapp.com/caretakers/get-pets-take-care-information",
+        {
+          toGet: get_info,
+        }
+      )
+      .then((response) => {
+        let pet_length = response.data.length;
+        let pets_can = [];
+        for (let j = 0; j < pet_length; j++) {
+          pets_can.push(response.data[j].type_name);
+          let price = "$" + response.data[j].current_daily_price;
+          pets_can.push(price);
+        }
+        this.can_take_care.push(pets_can);
+        this.length = this.can_take_care.length;
       });
     this.loaded = true;
   },

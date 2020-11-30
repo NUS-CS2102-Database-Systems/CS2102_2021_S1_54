@@ -29,8 +29,7 @@ export const pet_owner_go_back_to_profile_page =
 export const pet_owner_view_caretaker_domain =
   domain + "pet-owners/view-caretakers-profiles?" + document.cookie;
 
-export const pet_owner_view_past_jobs =
-  domain + "pet-owners/view-past-jobs";
+export const pet_owner_view_past_jobs = domain + "pet-owners/view-past-jobs";
 
 export const part_time_caretaker_edit_login_info =
   domain + "part-time-caretakers/edit-login-information?";
@@ -64,5 +63,10 @@ export const pcs_admin_edit_login_info =
 export const pcs_admin_go_back_to_profile_page =
   domain + "pcs-admin/view-my-profile?" + document.cookie;
 
-export const pcs_admin_home =
-  domain + "pcs-admin";
+export const pcs_admin_home = domain + "pcs-admin";
+
+export const pcs_admin_show_caretaker_details =
+  domain + "pcs-admin/view-caretaker?" + document.cookie;
+
+export const pcs_admin_view_each_caretaker =
+  domain + "pcs-admin/view-details-for-each-caretaker?" + document.cookie;

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div style="width: 20%; float: left">
-      <PetOwnerNavBar />
+      <PcsAdminNavBar />
     </div>
     <div style="width: 80%; float: right">
       <h1>Viewing {{ this.caretaker_username }}'s Reviews</h1>
@@ -58,13 +58,13 @@
 </template>
 
 <script>
-import PetOwnerNavBar from "./PetOwnerNavBar";
+import PcsAdminNavBar from "./PcsAdminNavBar";
 import axios from "axios";
 
 export default {
-  name: "PetOwnerViewCaretakerReviews",
+  name: "PcsAdminViewCaretakerReviews",
   components: {
-    PetOwnerNavBar,
+    PcsAdminNavBar,
   },
   data: () => ({
     have_data: false,

@@ -4,10 +4,6 @@
       <PetOwnerNavBar />
     </div>
     <div style="width: 80%; float: right">
-      <v-btn depressed color="primary" @click="addABid('hey')">
-        Place a Bid
-      </v-btn>
-
       <v-row>
         <v-col class="mx-auto" md="2">
           <v-select

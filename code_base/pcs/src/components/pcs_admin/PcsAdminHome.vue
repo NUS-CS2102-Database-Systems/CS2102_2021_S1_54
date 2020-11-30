@@ -14,8 +14,8 @@
           <v-layout align-center>
             <v-card-text>
               <p style="color:black;font-size:20px">
-                Taken care of <b>{{ num_pets }}</b> pets and earned
-                <b>SGD {{ amount_earned }}</b> in <b>{{ num_days }}</b> days.
+                Taken care of <b>{{ num_pets }}</b> pets and providing a revenue
+                of <b>SGD {{ amount_earned }}</b> in <b>{{ num_days }}</b> days.
                 <br />
                 <br />
                 Our caretakers have earned a total of
@@ -26,6 +26,16 @@
             </v-card-text>
           </v-layout>
         </v-card>
+      </template>
+      <template v-else-if="!loaded">
+        <v-row justify="center">
+          <v-progress-circular
+            indeterminate
+            :size="70"
+            :width="7"
+            color="#01579B"
+          />
+        </v-row>
       </template>
     </div>
   </v-container>
@@ -53,6 +63,7 @@ export default {
     caretakers_salary: 0,
   }),
   async mounted() {
+    this.loaded = false;
     this.username = document.cookie.split("=")[1];
     let date = new Date();
     console.log(date);
@@ -90,8 +101,7 @@ export default {
       )
       .then((response) => {
         console.log(response.data);
-        let total_salary =
-          response.data[0].salary_full_time + response.data[0].salary_part_time;
+        let total_salary = response.data[0].salary + response.data[1].salary;
 
         if (total_salary == undefined) {
           this.caretakers_salary = 0;
