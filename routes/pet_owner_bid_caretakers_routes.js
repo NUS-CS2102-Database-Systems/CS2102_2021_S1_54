@@ -123,6 +123,12 @@ async function submit_a_bid(req, res) {
         AND (job_start_datetime, job_end_datetime) OVERLAPS ('${dateString}', '${dateString}');
       `);
 
+      if (numberOfPets.rows[0].num_pets > maxNumOfPets) {
+        console.log("numberOfPets is \n");
+        console.log(numberOfPets.rows[0].num_pets);
+        maxNumOfPets = numberOfPets.rows[0].num_pets;
+      }  
+
       console.log("date is \n");
       console.log(date);
 
