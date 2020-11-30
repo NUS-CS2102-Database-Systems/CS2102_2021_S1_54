@@ -271,40 +271,40 @@ AFTER UPDATE ON caretaker
 FOR EACH ROW EXECUTE FUNCTION new_current_daily_price_rate();
 
 -- trigger 5
-CREATE OR REPLACE FUNCTION check_caretaker_pet_limit()
- RETURNS TRIGGER
-AS $$
-	DECLARE num_pets INT;
-	DECLARE part_time_pets INT;
-	DECLARE part_time_exists BOOLEAN;
-	DECLARE full_time_exists BOOLEAN;
-	BEGIN
-		SELECT COUNT(*) INTO num_pets FROM bid_transaction WHERE cusername = NEW.cusername AND (job_start_datetime, job_end_datetime) OVERLAPS (NEW.job_start_datetime, NEW.job_end_datetime);
+-- CREATE OR REPLACE FUNCTION check_caretaker_pet_limit()
+--  RETURNS TRIGGER
+-- AS $$
+-- 	DECLARE num_pets INT;
+-- 	DECLARE part_time_pets INT;
+-- 	DECLARE part_time_exists BOOLEAN;
+-- 	DECLARE full_time_exists BOOLEAN;
+-- 	BEGIN
+-- 		SELECT COUNT(*) INTO num_pets FROM bid_transaction WHERE cusername = NEW.cusername AND (job_start_datetime, job_end_datetime) OVERLAPS (NEW.job_start_datetime, NEW.job_end_datetime);
 		
-		full_time_exists := (SELECT EXISTS (SELECT 1 FROM full_time_caretaker WHERE username = NEW.cusername));
+-- 		full_time_exists := (SELECT EXISTS (SELECT 1 FROM full_time_caretaker WHERE username = NEW.cusername));
 
-		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
+-- 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
 
-		IF full_time_exists THEN 
-			IF num_pets >= 5 THEN
-				RETURN NULL;
-			ELSIF num_pets < 5 THEN
-				RETURN NEW;
-			END IF;
-		ELSIF part_time_exists THEN
-			SELECT number_of_pets_allowed INTO part_time_pets FROM availabilities WHERE username = NEW.cusername ORDER BY start_date DESC LIMIT 1;
-			IF num_pets >= part_time_pets THEN
-				RETURN NULL;
-			ELSIF num_pets < part_time_pets THEN
-				RETURN NEW;
-			END IF;
-		END IF;
-END; $$
-LANGUAGE plpgsql;
+-- 		IF full_time_exists THEN 
+-- 			IF num_pets >= 5 THEN
+-- 				RETURN NULL;
+-- 			ELSIF num_pets < 5 THEN
+-- 				RETURN NEW;
+-- 			END IF;
+-- 		ELSIF part_time_exists THEN
+-- 			SELECT number_of_pets_allowed INTO part_time_pets FROM availabilities WHERE username = NEW.cusername ORDER BY start_date DESC LIMIT 1;
+-- 			IF num_pets >= part_time_pets THEN
+-- 				RETURN NULL;
+-- 			ELSIF num_pets < part_time_pets THEN
+-- 				RETURN NEW;
+-- 			END IF;
+-- 		END IF;
+-- END; $$
+-- LANGUAGE plpgsql;
 
-CREATE TRIGGER check_pet_limit
-BEFORE INSERT ON bid_transaction
-FOR EACH ROW EXECUTE FUNCTION check_caretaker_pet_limit();
+-- CREATE TRIGGER check_pet_limit
+-- BEFORE INSERT ON bid_transaction
+-- FOR EACH ROW EXECUTE FUNCTION check_caretaker_pet_limit();
 
 
 -- trigger 6
