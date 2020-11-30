@@ -382,140 +382,144 @@ async function get_specific_caretakers_information(req, res) {
           ORDER BY random() LIMIT 20;`;
       } else {
         // both full-time and part-time
-        let general_query = `SELECT X.username AS username, X.name AS name, X.age AS age, X.birth_date AS birth_date, X.gender AS gender, 
+        if (caretaker_username == null) {
+          let general_query = `SELECT X.username AS username, X.name AS name, X.age AS age, X.birth_date AS birth_date, X.gender AS gender, 
         X.phone AS phone, X.email AS email, X.address AS address, X.average_rating AS average_rating, X.years_exp AS years_exp FROM (`;
 
-        let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
+          let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
       caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
       NATURAL JOIN daily_price_rate WHERE`;
 
-        let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
+          let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
       caretaker NATURAL JOIN part_time_caretaker NATURAL JOIN can_take_care 
       NATURAL JOIN availabilities NATURAL JOIN daily_price_rate WHERE`;
 
-        if (caretaker_username != null) {
-          request_full_time =
-            request_full_time + ` username LIKE '${caretaker_username}' AND`;
-
-          request_part_time =
-            request_part_time + ` username LIKE '${caretaker_username}' AND`;
-        }
-
-        if (date_from != null && date_to != null) {
-          let add_dates_requested_full_time = ` (start_date NOT BETWEEN date('${date_from}') AND 
+          if (date_from != null && date_to != null) {
+            let add_dates_requested_full_time = ` (start_date NOT BETWEEN date('${date_from}') AND 
         date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
         date('${date_to}'))`;
 
-          let add_dates_requested_part_time =
-            " (start_date <= date('" +
-            date_from +
-            "') AND end_date >= date('" +
-            date_to +
-            "'))";
+            let add_dates_requested_part_time =
+              " (start_date <= date('" +
+              date_from +
+              "') AND end_date >= date('" +
+              date_to +
+              "'))";
 
-          request_full_time =
-            request_full_time + add_dates_requested_full_time + " AND";
+            request_full_time =
+              request_full_time + add_dates_requested_full_time + " AND";
 
-          request_part_time =
-            request_part_time + add_dates_requested_part_time + " AND";
-        }
+            request_part_time =
+              request_part_time + add_dates_requested_part_time + " AND";
+          }
 
-        if (rating_wanted != null) {
-          let add_rating_requested =
-            " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
+          if (rating_wanted != null) {
+            let add_rating_requested =
+              " (average_rating >= " +
+              parseFloat(rating_wanted).toString() +
+              ")";
 
-          request_full_time = request_full_time + add_rating_requested + " AND";
-          request_part_time = request_part_time + add_rating_requested + " AND";
-        }
+            request_full_time =
+              request_full_time + add_rating_requested + " AND";
+            request_part_time =
+              request_part_time + add_rating_requested + " AND";
+          }
 
-        if (type_of_animal != null) {
-          type_of_animal = type_of_animal.replace(/,/g, "' OR type_name = '");
-          let add_animal_type_requested =
-            " (type_name = '" + type_of_animal + "')";
+          if (type_of_animal != null) {
+            type_of_animal = type_of_animal.replace(/,/g, "' OR type_name = '");
+            let add_animal_type_requested =
+              " (type_name = '" + type_of_animal + "')";
 
-          request_full_time =
-            request_full_time + add_animal_type_requested + " AND";
+            request_full_time =
+              request_full_time + add_animal_type_requested + " AND";
 
-          request_part_time =
-            request_part_time + add_animal_type_requested + " AND";
-        }
+            request_part_time =
+              request_part_time + add_animal_type_requested + " AND";
+          }
 
-        if (price_range_from != null && price_range_to == null) {
-          let add_min_price =
-            " (current_daily_price >= " +
-            parseFloat(price_range_from).toString() +
-            ")";
+          if (price_range_from != null && price_range_to == null) {
+            let add_min_price =
+              " (current_daily_price >= " +
+              parseFloat(price_range_from).toString() +
+              ")";
 
-          request_full_time = request_full_time + add_min_price + " AND";
+            request_full_time = request_full_time + add_min_price + " AND";
 
-          request_part_time = request_part_time + add_min_price + " AND";
-        } else if (price_range_from == null && price_range_to != null) {
-          let add_max_price =
-            " (current_daily_price <= " +
-            parseFloat(price_range_to).toString() +
-            ")";
+            request_part_time = request_part_time + add_min_price + " AND";
+          } else if (price_range_from == null && price_range_to != null) {
+            let add_max_price =
+              " (current_daily_price <= " +
+              parseFloat(price_range_to).toString() +
+              ")";
 
-          request_full_time = request_full_time + add_max_price + " AND";
+            request_full_time = request_full_time + add_max_price + " AND";
 
-          request_part_time = request_part_time + add_max_price + " AND";
-        } else if (price_range_from != null && price_range_to != null) {
-          let add_price_range =
-            " (current_daily_price BETWEEN " +
-            parseFloat(price_range_from).toString() +
-            " AND " +
-            parseFloat(price_range_to).toString() +
-            ")";
+            request_part_time = request_part_time + add_max_price + " AND";
+          } else if (price_range_from != null && price_range_to != null) {
+            let add_price_range =
+              " (current_daily_price BETWEEN " +
+              parseFloat(price_range_from).toString() +
+              " AND " +
+              parseFloat(price_range_to).toString() +
+              ")";
 
-          request_full_time = request_full_time + add_price_range + " AND";
+            request_full_time = request_full_time + add_price_range + " AND";
 
-          request_part_time = request_part_time + add_price_range + " AND";
-        }
+            request_part_time = request_part_time + add_price_range + " AND";
+          }
 
-        let request_full_time_split_by_space = request_full_time
-          .trim()
-          .split(" ");
+          let request_full_time_split_by_space = request_full_time
+            .trim()
+            .split(" ");
 
-        if (
-          request_full_time_split_by_space[
-            request_full_time_split_by_space.length - 1
-          ] == "AND" ||
-          request_full_time_split_by_space[
-            request_full_time_split_by_space.length - 1
-          ] == "WHERE"
-        ) {
-          request_full_time = request_full_time_split_by_space
-            .slice(0, -1)
-            .join(" ");
+          if (
+            request_full_time_split_by_space[
+              request_full_time_split_by_space.length - 1
+            ] == "AND" ||
+            request_full_time_split_by_space[
+              request_full_time_split_by_space.length - 1
+            ] == "WHERE"
+          ) {
+            request_full_time = request_full_time_split_by_space
+              .slice(0, -1)
+              .join(" ");
+          } else {
+            request_full_time = request_full_time_split_by_space.join(" ");
+          }
+
+          let request_part_time_split_by_space = request_part_time
+            .trim()
+            .split(" ");
+
+          if (
+            request_part_time_split_by_space[
+              request_part_time_split_by_space.length - 1
+            ] == "AND" ||
+            request_part_time_split_by_space[
+              request_part_time_split_by_space.length - 1
+            ] == "WHERE"
+          ) {
+            request_part_time = request_part_time_split_by_space
+              .slice(0, -1)
+              .join(" ");
+          } else {
+            request_part_time = request_part_time_split_by_space.join(" ");
+          }
+
+          general_query +=
+            request_full_time +
+            " UNION " +
+            request_part_time +
+            ") AS X ORDER BY random() LIMIT 20;";
+
+          query = general_query;
         } else {
-          request_full_time = request_full_time_split_by_space.join(" ");
+          query = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
+        phone, email, address, average_rating, AGE(date_started) AS years_exp 
+        FROM users NATURAL JOIN caretakers WHERE username LIKE '${caretaker_username}';`;
         }
-
-        let request_part_time_split_by_space = request_part_time
-          .trim()
-          .split(" ");
-
-        if (
-          request_part_time_split_by_space[
-            request_part_time_split_by_space.length - 1
-          ] == "AND" ||
-          request_part_time_split_by_space[
-            request_part_time_split_by_space.length - 1
-          ] == "WHERE"
-        ) {
-          request_part_time = request_part_time_split_by_space
-            .slice(0, -1)
-            .join(" ");
-        } else {
-          request_part_time = request_part_time_split_by_space.join(" ");
-        }
-
-        general_query +=
-          request_full_time +
-          " UNION " +
-          request_part_time +
-          ") AS X ORDER BY random() LIMIT 20;";
 
         // if (sort_by != null) {
         //   if (sort_by.length > 1) {
@@ -571,8 +575,6 @@ async function get_specific_caretakers_information(req, res) {
         // }
 
         // general_query += ` LIMIT 20;`;
-
-        query = general_query;
       }
 
       const result = await client.query(query);

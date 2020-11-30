@@ -591,7 +591,8 @@ export default {
         console.log(dataToSend);
         let jsonDataToSend = JSON.parse(dataToSend);
         console.log(jsonDataToSend);
-
+        this.loaded = false;
+        this.have_data = false;
         await axios
           .post(
             "https://pet-care-service.herokuapp.com/pet-owners/get-specific-caretakers-information",
@@ -626,8 +627,7 @@ export default {
             this.prices_even = [];
             this.length_even = 0;
             this.length_odd = 0;
-            this.loaded = false;
-            this.have_data = false;
+
             console.log("Axios");
             console.log(response.data);
             if (response.data.length == 0) {
