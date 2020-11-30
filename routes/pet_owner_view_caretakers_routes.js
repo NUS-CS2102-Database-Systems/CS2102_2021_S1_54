@@ -573,30 +573,8 @@ async function get_specific_caretakers_information(req, res) {
 
       res.setHeader("content-type", "application/json");
       res.send(JSON.stringify(result.rows));
-
-      // await client.query(request_full_time).then((resp) => {
-      //   let full_time_arr = [];
-      //   let full_time_len = resp.rows.length;
-      //   for (var i = 0; i < full_time_len; i++) {
-      //     let result = resp.rows[i];
-      //     full_time_arr.push(result);
-      //   }
-      //   caretakerObject.fullTime = full_time_arr;
-      // });
-
-      // await client.query(request_part_time).then((resp) => {
-      //   let part_time_arr = [];
-      //   let part_time_len = resp.rows.length;
-      //   for (var i = 0; i < part_time_len; i++) {
-      //     let result = resp.rows[i];
-      //     part_time_arr.push(result);
-      //   }
-      //   caretakerObject.partTime = part_time_arr;
-      //   res.setHeader("content-type", "application/json");
-      //   res.send(JSON.stringify(caretakerObject));
-      // });
+      client.release();
     }
-    client.release();
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
