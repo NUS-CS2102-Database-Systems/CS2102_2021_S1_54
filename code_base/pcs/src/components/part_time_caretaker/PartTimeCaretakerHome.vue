@@ -210,6 +210,9 @@ export default {
           let job_start_date = new Date(response.data[i].job_start_datetime.toString().split("T")[0]);
           console.log(job_start_date)
           if (job_start_date >= myToday && job_start_date < myTomorrow){
+            if (response.data[i].payment_method.toString() == "Cash"){
+              comment_arr_temp.push("Collect $" + response.data[i].amount.toString())
+            }
             comment_arr_temp.push("Start day")
           }
 

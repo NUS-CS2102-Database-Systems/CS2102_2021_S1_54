@@ -103,11 +103,72 @@ async function submit_a_bid(req, res) {
     const start_transfer_method = req.body.toBid.start_transfer_method;
     const end_transfer_method = req.body.toBid.end_transfer_method;
 
+    // check wether caretaker's pet limit has been reached
+    var start = new Date(job_start_datetime);
+    start.setHours(0,0,0,0);
+    var end = new Date(job_end_datetime);
+    end.setHours(0,0,0,0);
+    var date = start;
+    const differenceInTime = end.getTime() - start.getTime();
+    const differenceInDays = (differenceInTime / (1000 * 3600 * 24)) + 1;
+    var maxNumOfPets = 0;
+    console.log("number of days is \n");
+    console.log(differenceInDays);
+    for (var i = 0; i < differenceInDays; i++) { // check day by day
+      const dateString = date.toISOString().substring(0, 10); // YYYY-MM-DD format
+      const numberOfPets = await client.query(`
+      SELECT COUNT(*) AS num_pets
+      FROM bid_transaction 
+      WHERE cusername = '${caretaker}' 
+        AND (job_start_datetime, job_end_datetime) OVERLAPS ('${dateString}', '${dateString}');
+      `);
+
+      if (numberOfPets.rows[0].num_pets > maxNumOfPets) {
+        console.log("numberOfPets is \n");
+        console.log(numberOfPets.rows[0].num_pets);
+        maxNumOfPets = numberOfPets.rows[0].num_pets;
+      }  
+
+      console.log("date is \n");
+      console.log(date);
+
+      date.setDate(date.getDate() + 1);
+    }
+
+    console.log("max number is:");
+    console.log(maxNumOfPets);
+
+    const checkFulltime = await client.query(`SELECT * FROM full_time_caretaker WHERE username = '${caretaker}';`);
+    if (checkFulltime.rowCount === 1) { // caretaker is full time
+      console.log("it's a full time caretaker");
+      if (maxNumOfPets >= 5) {
+        res.send("Pet limit reached for full time caretaker.");
+        client.release();
+        return;
+      }
+    } else { // caretaker is part time
+      console.log("it's a part time caretaker");
+      const checkPetLimit = await client.query(`
+        SELECT number_of_pets_allowed
+        FROM availabilities 
+        WHERE username = '${caretaker}' 
+        ORDER BY start_date DESC LIMIT 1;
+      `);
+      if (maxNumOfPets >= checkPetLimit.rows[0].number_of_pets_allowed) {
+        console.log("checkPetLimit is \n");
+        console.log(checkPetLimit.rows[0].number_of_pets_allowed);
+
+        res.send("Pet limit reached for part time caretaker.");
+        client.release();
+        return;
+      }
+    }
+
     const result = await client.query(
       // Check if the same bid exist!
       `SELECT 2
         FROM bid_transaction
-        WHERE username = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
+        WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
         job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
     );
 
@@ -123,7 +184,7 @@ async function submit_a_bid(req, res) {
       const result = await client.query(
         `SELECT 1
         FROM bid_transaction
-        WHERE username = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
+        WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
         job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
       );
     }
