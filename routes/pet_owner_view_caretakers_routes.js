@@ -513,7 +513,7 @@ async function get_specific_caretakers_information(req, res) {
 
         general_query +=
           request_full_time +
-          "WHERE random() < 0.1" +
+          " WHERE random() < 0.1" +
           " UNION " +
           request_part_time +
           " WHERE random() < 0.1) AS X";
