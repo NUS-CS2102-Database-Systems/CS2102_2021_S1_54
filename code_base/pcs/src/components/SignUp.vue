@@ -17,8 +17,8 @@
           <option value="petOwner">Pet Owner only</option>
           <option value="fulltimeCaretaker">Full Time Caretaker only</option>
           <option value="parttimeCaretaker">Part Time Caretaker only</option>
-          <option value="poAndFt"> Both Pet Owner and Part Time Caretaker</option>
-          <option value="poAndPt">Both Pet Owner and Full Time Caretaker</option>
+          <option value="poAndFt"> Both Pet Owner and Full Time Caretaker</option>
+          <option value="poAndPt">Both Pet Owner and Part Time Caretaker</option>
         </select>
 
         <div id="petType">
