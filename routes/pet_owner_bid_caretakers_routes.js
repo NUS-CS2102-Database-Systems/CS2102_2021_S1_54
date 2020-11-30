@@ -108,6 +108,8 @@ async function submit_a_bid(req, res) {
     const differenceInTime = new Date(job_start_datetime).getTime() - new Date(job_end_datetime).getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     var maxNumOfPets = 0;
+    console.log("number of days is \n");
+    console.log(differenceInDays);
     for (var i = 0; i < differenceInDays; i++) { // check day by day
       const dateString = date.toISOString().substring(0, 10); // YYYY-MM-DD format
       const numberOfPets = await client.query(`
@@ -156,7 +158,7 @@ async function submit_a_bid(req, res) {
       // Check if the same bid exist!
       `SELECT 2
         FROM bid_transaction
-        WHERE username = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
+        WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
         job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
     );
 
@@ -172,7 +174,7 @@ async function submit_a_bid(req, res) {
       const result = await client.query(
         `SELECT 1
         FROM bid_transaction
-        WHERE username = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
+        WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
         job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
       );
     }
