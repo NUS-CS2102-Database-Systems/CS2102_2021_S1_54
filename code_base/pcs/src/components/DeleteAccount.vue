@@ -129,6 +129,7 @@ export default {
 </script>
 
 <style scoped>
+/* Credits: The following CSS is adapted from https://www.w3schools.com/howto/howto_css_signup_form.asp */
 form {
   display: flex;
 }
