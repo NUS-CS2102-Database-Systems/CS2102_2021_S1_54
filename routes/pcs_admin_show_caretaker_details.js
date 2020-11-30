@@ -24,7 +24,7 @@ async function get_caretaker_details(req, res) {
     //         THEN 5
     //         ELSE (SELECT number_of_pets_allowed
     //             FROM availabilities WHERE username = '${cusername}'
-    //             ORDER BY start_date DESC, end_date DESC LIMIT 1) AS num_pets_allowed
+    //             ORDER BY start_date DESC, end_date DESC LIMIT 1) END AS num_pets_allowed
     //     FROM users NATURAL JOIN caretaker WHERE username = '${cusername}';`;
 
     const result = await client.query(query);
