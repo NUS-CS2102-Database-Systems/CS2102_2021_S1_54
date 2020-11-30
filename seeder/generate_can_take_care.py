@@ -53,28 +53,33 @@ f = open("can_take_care.sql", "a")
 # from part time caretakers
 for i in range(0, len(fulltimeCaretakerNames)):
     username = fulltimeCaretakerNames[i]
-    numberOfPetTypes = randint(0, len(animal_type))
-    availablePetTypesIndex = [0, 1, 2, 3, 4, 5]
+    # numberOfPetTypes = randint(0, len(animal_type))
+    # availablePetTypesIndex = [0, 1, 2, 3, 4, 5]
 
-    for j in range(0, numberOfPetTypes):
-        selectedIndex = availablePetTypesIndex[randint(0, len(availablePetTypesIndex)-1)]
-        type_name = animal_type[selectedIndex]
-        availablePetTypesIndex.remove(selectedIndex)
+    # for j in range(0, numberOfPetTypes):
+    #     selectedIndex = availablePetTypesIndex[randint(0, len(availablePetTypesIndex)-1)]
+    #     type_name = animal_type[selectedIndex]
+    #     availablePetTypesIndex.remove(selectedIndex)
 
-        f.write(f"INSERT INTO can_take_care VALUES ('{username}', '{type_name}');\n")
+    #     f.write(f"INSERT INTO can_take_care VALUES ('{username}', '{type_name}');\n")
+    type_name = animal_type[randint(0, len(animal_type)-1)]
+    f.write(f"INSERT INTO can_take_care VALUES ('{username}', '{type_name}');\n")
 
 # from full time caretakers
 for i in range(0, len(partTimeCaretakerNames)):
     username = partTimeCaretakerNames[i]
-    numberOfPetTypes = randint(0, len(animal_type))
-    availablePetTypesIndex = [0, 1, 2, 3, 4, 5]
+    # numberOfPetTypes = randint(0, len(animal_type))
+    # availablePetTypesIndex = [0, 1, 2, 3, 4, 5]
 
-    for j in range(0, numberOfPetTypes):
-        selectedIndex = availablePetTypesIndex[randint(0, len(availablePetTypesIndex)-1)]
-        type_name = animal_type[selectedIndex]
-        availablePetTypesIndex.remove(selectedIndex)
+    # for j in range(0, numberOfPetTypes):
+    #     selectedIndex = availablePetTypesIndex[randint(0, len(availablePetTypesIndex)-1)]
+    #     type_name = animal_type[selectedIndex]
+    #     availablePetTypesIndex.remove(selectedIndex)
 
-        f.write(f"INSERT INTO can_take_care VALUES ('{username}', '{type_name}');\n")
+    #     f.write(f"INSERT INTO can_take_care VALUES ('{username}', '{type_name}');\n")
+    
+    type_name = animal_type[randint(0, len(animal_type)-1)]
+    f.write(f"INSERT INTO can_take_care VALUES ('{username}', '{type_name}');\n")
     
 f.close()
 

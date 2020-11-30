@@ -61,11 +61,11 @@
         />
 
         <div class="clearfix">
-          <button type="button" class="cancelbtn">
-            <router-link tag="span" to="/pcs-admin">
+          <router-link tag="span" to="/pcs-admin">
+            <button type="button" class="cancelbtn">
               Cancel
-            </router-link>
             </button>
+          </router-link>
           <button type="submit" class="signupbtn">Confirm Changes</button>
         </div>
       </div>

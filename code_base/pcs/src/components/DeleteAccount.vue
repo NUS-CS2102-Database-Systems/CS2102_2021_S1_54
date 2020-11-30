@@ -31,9 +31,11 @@
         />
 
         <div class="clearfix">
-          <button type="button" class="cancelbtn">
-            <router-link tag="span" to="/">Cancel</router-link>
-          </button>
+          <router-link tag="span" to="/">
+            <button type="button" class="cancelbtn">
+              Cancel
+            </button>
+          </router-link>
           <button type="submit" class="signupbtn">Delete Account</button>
         </div>
       </div>
@@ -129,6 +131,7 @@ export default {
 </script>
 
 <style scoped>
+/* Credits: The following CSS is adapted from https://www.w3schools.com/howto/howto_css_signup_form.asp */
 form {
   display: flex;
 }

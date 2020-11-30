@@ -25,11 +25,11 @@
         </select>
 
         <div class="clearfix">
-          <button type="button" class="cancelbtn">
-            <router-link tag="span" to="/pet-owners/view-past-jobs">
+          <router-link tag="span" to="/pet-owners/view-past-jobs">
+            <button type="button" class="cancelbtn">
               Cancel
-            </router-link>
             </button>
+          </router-link>
           <button type="submit" class="signupbtn">Submit Review</button>
         </div>
       </div>
