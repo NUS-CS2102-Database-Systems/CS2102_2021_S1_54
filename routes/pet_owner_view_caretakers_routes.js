@@ -223,18 +223,6 @@ async function get_specific_caretakers_information(req, res) {
       res.setHeader("content-type", "application/json");
       res.send(JSON.stringify(result.rows));
       client.release();
-
-      // await client.query(request_full_time).then((resp) => {
-      //   let arr = [];
-      //   let len = resp.rows.length;
-      //   for (var i = 0; i < len; i++) {
-      //     let result = resp.rows[i];
-      //     arr.push(result);
-      //   }
-      //   caretakerObject.fullTime = arr;
-      //   res.setHeader("content-type", "application/json");
-      //   res.send(JSON.stringify(caretakerObject));
-      // });
     } else if (commitment == "part-time") {
       let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN
@@ -378,18 +366,6 @@ async function get_specific_caretakers_information(req, res) {
       res.setHeader("content-type", "application/json");
       res.send(JSON.stringify(result.rows));
       client.release();
-
-      // await client.query(request_part_time).then((resp) => {
-      //   let arr = [];
-      //   let len = resp.rows.length;
-      //   for (var i = 0; i < len; i++) {
-      //     let result = resp.rows[i];
-      //     arr.push(result);
-      //   }
-      //   caretakerObject.partTime = arr;
-      //   res.setHeader("content-type", "application/json");
-      //   res.send(JSON.stringify(caretakerObject));
-      // });
     } else {
       if (
         commitment == null &&
@@ -415,7 +391,7 @@ async function get_specific_caretakers_information(req, res) {
       NATURAL JOIN daily_price_rate WHERE`;
 
         let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-      phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN
+      phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
       caretaker NATURAL JOIN part_time_caretaker NATURAL JOIN can_take_care 
       NATURAL JOIN availabilities NATURAL JOIN daily_price_rate WHERE`;
 
@@ -584,8 +560,7 @@ async function get_specific_caretakers_information(req, res) {
         }
 
         // i.e. no other sort by specifications
-        let general_query = general_query.length;
-        if (general_query.charAt(general_query - 1) == ",") {
+        if (general_query.charAt(general_query.length - 1) == ",") {
           general_query = general_query.slice(0, -1);
         }
 
