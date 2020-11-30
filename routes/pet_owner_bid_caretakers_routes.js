@@ -110,7 +110,7 @@ async function submit_a_bid(req, res) {
     end.setHours(0,0,0,0);
     var date = start;
     const differenceInTime = end.getTime() - start.getTime();
-    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    const differenceInDays = (differenceInTime / (1000 * 3600 * 24)) + 1;
     var maxNumOfPets = 0;
     console.log("number of days is \n");
     console.log(differenceInDays);
@@ -122,16 +122,11 @@ async function submit_a_bid(req, res) {
       WHERE cusername = '${caretaker}' 
         AND (job_start_datetime, job_end_datetime) OVERLAPS ('${dateString}', '${dateString}');
       `);
-      if (numberOfPets.rows[0].num_pets >= maxNumOfPets) {
-        console.log("numberOfPets is \n");
-        console.log(numberOfPets.rows[0].num_pets);
-        maxNumOfPets = numberOfPets.rows[0].num_pets;
-      }  
-      
+            
       console.log("date is \n");
       console.log(date);
 
-      date = date.setDate(date.getDate() + 1);
+      date.setDate(date.getDate() + 1);
     }
 
     const checkFulltime = await client.query(`SELECT * FROM full_time_caretaker WHERE username = '${caretaker}';`);
