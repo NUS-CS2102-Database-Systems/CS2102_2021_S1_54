@@ -148,14 +148,16 @@ CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS (
 CREATE VIEW salary_calculation_for_full_time (cusername, salary) AS (
 	SELECT DPR.username, CASE
 		WHEN PD.pet_days <= 60 THEN 3000
-		ELSE 3000 + (PD.pet_days - 60) * (SELECT AVG(current_daily_price) FROM daily_price_rate WHERE username = DPR.username) * 0.8
+		ELSE 3000 + (PD.pet_days - 60) * (SELECT AVG(current_daily_price) FROM daily_price_rate DPR2 WHERE DPR2.username = DPR.username) * 0.8
 		END AS salary
 	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD 
+	WHERE EXISTS (SELECT 1 FROM full_time_caretaker F WHERE F.username = DPR.username)
 );
 
 CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
-	SELECT DPR.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate WHERE username = DPR.username) * PD.pet_days * 0.75)
+	SELECT DPR.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate DPR2 WHERE DPR2.username = DPR.username) * PD.pet_days * 0.75)
 	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD
+	WHERE EXISTS (SELECT 1 FROM part_time_caretaker P WHERE P.username = DPR.username)
 );
 
 -- trigger 1
