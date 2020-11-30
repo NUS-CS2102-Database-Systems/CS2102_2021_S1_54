@@ -127,7 +127,7 @@ async function submit_a_bid(req, res) {
         console.log("numberOfPets is \n");
         console.log(numberOfPets.rows[0].num_pets);
         maxNumOfPets = numberOfPets.rows[0].num_pets;
-      }  
+      }
 
       console.log("date is \n");
       console.log(date);
