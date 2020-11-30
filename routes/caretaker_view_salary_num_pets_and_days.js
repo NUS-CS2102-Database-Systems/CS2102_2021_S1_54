@@ -15,7 +15,7 @@ var appRouter = function (app) {
     get_current_event_information
   );
   app.post(
-    "part-time-caretakers/home-upcoming-event",
+    "/part-time-caretakers/home-upcoming-event",
     get_upcoming_event_information
   );
 };
