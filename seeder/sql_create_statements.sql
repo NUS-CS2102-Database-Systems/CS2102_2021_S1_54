@@ -134,7 +134,7 @@ CREATE TABLE leave_days(
 -- );
 
 CREATE VIEW pet_days_per_job(cusername, pet_days, job_end_datetime) AS (
-	SELECT cusername, DATE_PART('DAY', job_end_datetime - job_start_datetime) AS pet_days, job_end_datetime
+	SELECT cusername, DATE_PART('DAY', job_end_datetime - job_start_datetime) + 1 AS pet_days, job_end_datetime
 	FROM bid_transaction
 );
 
@@ -157,7 +157,7 @@ CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
 	SELECT DPR.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate WHERE username = DPR.username) * PD.pet_days * 0.75)
 	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD
 );
- 
+
 -- trigger 1
 CREATE OR REPLACE FUNCTION not_overlap()
 	RETURNS TRIGGER AS 
@@ -172,7 +172,8 @@ CREATE OR REPLACE FUNCTION not_overlap()
 			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <= A.end_date);
 
 			IF ctx1 = 0 THEN
-				RETURN NULL;
+				-- Replaced RETURN NULL with RAISE EXCEPTION
+				RAISE EXCEPTION 'We regret to inform you that % is unavailable from % to %', NEW.cusername, NEW.job_start_datetime, NEW.job_end_datetime;
 			ELSE
 				RETURN NEW;
 			END IF;
@@ -183,7 +184,8 @@ CREATE OR REPLACE FUNCTION not_overlap()
 			(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, L.end_date);
 
 		IF ctx2 > 0 THEN
-			RETURN NULL;
+			-- Replaced RETURN NULL with RAISE EXCEPTION
+			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, L.start_date, L.end_date;
 		ELSE
 			RETURN NEW;
 		END IF;
@@ -269,40 +271,40 @@ AFTER UPDATE ON caretaker
 FOR EACH ROW EXECUTE FUNCTION new_current_daily_price_rate();
 
 -- trigger 5
-CREATE OR REPLACE FUNCTION check_caretaker_pet_limit()
- RETURNS TRIGGER
-AS $$
-	DECLARE num_pets INT;
-	DECLARE part_time_pets INT;
-	DECLARE part_time_exists BOOLEAN;
-	DECLARE full_time_exists BOOLEAN;
-	BEGIN
-		SELECT COUNT(*) INTO num_pets FROM bid_transaction WHERE cusername = NEW.cusername AND (job_start_datetime, job_end_datetime) OVERLAPS (NEW.job_start_datetime, NEW.job_end_datetime);
+-- CREATE OR REPLACE FUNCTION check_caretaker_pet_limit()
+--  RETURNS TRIGGER
+-- AS $$
+-- 	DECLARE num_pets INT;
+-- 	DECLARE part_time_pets INT;
+-- 	DECLARE part_time_exists BOOLEAN;
+-- 	DECLARE full_time_exists BOOLEAN;
+-- 	BEGIN
+-- 		SELECT COUNT(*) INTO num_pets FROM bid_transaction WHERE cusername = NEW.cusername AND (job_start_datetime, job_end_datetime) OVERLAPS (NEW.job_start_datetime, NEW.job_end_datetime);
 		
-		full_time_exists := (SELECT EXISTS (SELECT 1 FROM full_time_caretaker WHERE username = NEW.cusername));
+-- 		full_time_exists := (SELECT EXISTS (SELECT 1 FROM full_time_caretaker WHERE username = NEW.cusername));
 
-		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
+-- 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
 
-		IF full_time_exists THEN 
-			IF num_pets >= 5 THEN
-				RETURN NULL;
-			ELSIF num_pets < 5 THEN
-				RETURN NEW;
-			END IF;
-		ELSIF part_time_exists THEN
-			SELECT number_of_pets_allowed INTO part_time_pets FROM availabilities WHERE username = NEW.cusername ORDER BY start_date DESC LIMIT 1;
-			IF num_pets >= part_time_pets THEN
-				RETURN NULL;
-			ELSIF num_pets < part_time_pets THEN
-				RETURN NEW;
-			END IF;
-		END IF;
-END; $$
-LANGUAGE plpgsql;
+-- 		IF full_time_exists THEN 
+-- 			IF num_pets >= 5 THEN
+-- 				RETURN NULL;
+-- 			ELSIF num_pets < 5 THEN
+-- 				RETURN NEW;
+-- 			END IF;
+-- 		ELSIF part_time_exists THEN
+-- 			SELECT number_of_pets_allowed INTO part_time_pets FROM availabilities WHERE username = NEW.cusername ORDER BY start_date DESC LIMIT 1;
+-- 			IF num_pets >= part_time_pets THEN
+-- 				RETURN NULL;
+-- 			ELSIF num_pets < part_time_pets THEN
+-- 				RETURN NEW;
+-- 			END IF;
+-- 		END IF;
+-- END; $$
+-- LANGUAGE plpgsql;
 
-CREATE TRIGGER check_pet_limit
-BEFORE INSERT ON bid_transaction
-FOR EACH ROW EXECUTE FUNCTION check_caretaker_pet_limit();
+-- CREATE TRIGGER check_pet_limit
+-- BEFORE INSERT ON bid_transaction
+-- FOR EACH ROW EXECUTE FUNCTION check_caretaker_pet_limit();
 
 
 -- trigger 6
