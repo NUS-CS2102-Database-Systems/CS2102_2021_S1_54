@@ -512,62 +512,65 @@ async function get_specific_caretakers_information(req, res) {
         }
 
         general_query +=
-          request_full_time + " UNION " + request_part_time + ") AS X";
+          request_full_time +
+          " UNION " +
+          request_part_time +
+          ") AS X ORDER BY random() LIMIT 20;";
 
-        if (sort_by != null) {
-          if (sort_by.length > 1) {
-            if (sort_by[0] == "alphabetical a to z") {
-              let add_sort_alphebatically_a_to_z = " ORDER BY X.username ASC,";
+        // if (sort_by != null) {
+        //   if (sort_by.length > 1) {
+        //     if (sort_by[0] == "alphabetical a to z") {
+        //       let add_sort_alphebatically_a_to_z = " ORDER BY X.username ASC,";
 
-              general_query += add_sort_alphebatically_a_to_z;
-            } else if (sort_by[0] == "alphabetical z to a") {
-              let add_sort_alphebatically_z_to_a = " ORDER BY X.username DESC,";
+        //       general_query += add_sort_alphebatically_a_to_z;
+        //     } else if (sort_by[0] == "alphabetical z to a") {
+        //       let add_sort_alphebatically_z_to_a = " ORDER BY X.username DESC,";
 
-              general_query += add_sort_alphebatically_z_to_a;
-            }
+        //       general_query += add_sort_alphebatically_z_to_a;
+        //     }
 
-            if (sort_by[1] == "price low to high") {
-              let add_sort_price_low_to_high = " X.current_daily_price ASC";
+        //     if (sort_by[1] == "price low to high") {
+        //       let add_sort_price_low_to_high = " X.current_daily_price ASC";
 
-              general_query += add_sort_price_low_to_high;
-            } else if (sort_by[1] == "price high to low") {
-              let add_sort_price_high_to_low = " X.current_daily_price DESC";
+        //       general_query += add_sort_price_low_to_high;
+        //     } else if (sort_by[1] == "price high to low") {
+        //       let add_sort_price_high_to_low = " X.current_daily_price DESC";
 
-              general_query += add_sort_price_high_to_low;
-            }
-          } else {
-            if (sort_by == "alphabetical a to z") {
-              let add_sort_alphebatically_a_to_z_only =
-                " ORDER BY X.username ASC";
+        //       general_query += add_sort_price_high_to_low;
+        //     }
+        //   } else {
+        //     if (sort_by == "alphabetical a to z") {
+        //       let add_sort_alphebatically_a_to_z_only =
+        //         " ORDER BY X.username ASC";
 
-              general_query += add_sort_alphebatically_a_to_z_only;
-            } else if (sort_by == "alphabetical z to a") {
-              let add_sort_alphebatically_z_to_a_only =
-                " ORDER BY X.username DESC";
+        //       general_query += add_sort_alphebatically_a_to_z_only;
+        //     } else if (sort_by == "alphabetical z to a") {
+        //       let add_sort_alphebatically_z_to_a_only =
+        //         " ORDER BY X.username DESC";
 
-              general_query += add_sort_alphebatically_z_to_a_only;
-            } else if (sort_by == "price low to high") {
-              let add_sort_price_low_to_high_only =
-                " ORDER BY X.current_daily_price ASC";
+        //       general_query += add_sort_alphebatically_z_to_a_only;
+        //     } else if (sort_by == "price low to high") {
+        //       let add_sort_price_low_to_high_only =
+        //         " ORDER BY X.current_daily_price ASC";
 
-              general_query += add_sort_price_low_to_high_only;
-            } else if (sort_by == "price high to low") {
-              let add_sort_price_high_to_low_only =
-                " ORDER BY X.current_daily_price DESC";
+        //       general_query += add_sort_price_low_to_high_only;
+        //     } else if (sort_by == "price high to low") {
+        //       let add_sort_price_high_to_low_only =
+        //         " ORDER BY X.current_daily_price DESC";
 
-              general_query += add_sort_price_high_to_low_only;
-            }
-          }
-        } else {
-          general_query += " ORDER BY random()";
-        }
+        //       general_query += add_sort_price_high_to_low_only;
+        //     }
+        //   }
+        // } else {
+        //   general_query += " ORDER BY random()";
+        // }
 
-        // i.e. no other sort by specifications
-        if (general_query.charAt(general_query.length - 1) == ",") {
-          general_query = general_query.slice(0, -1);
-        }
+        // // i.e. no other sort by specifications
+        // if (general_query.charAt(general_query.length - 1) == ",") {
+        //   general_query = general_query.slice(0, -1);
+        // }
 
-        general_query += ` LIMIT 20;`;
+        // general_query += ` LIMIT 20;`;
 
         query = general_query;
       }
