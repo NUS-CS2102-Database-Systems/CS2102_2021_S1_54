@@ -81,7 +81,7 @@ export default {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false, //true,
     username: null,
     month: null,
     year: null,

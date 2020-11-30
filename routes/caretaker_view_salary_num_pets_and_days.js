@@ -7,12 +7,35 @@ const pool = new Pool({
 });
 
 var appRouter = function (app) {
+  app.post("/caretakers/get-num-bid-transactions", num_bid_transactions);
   app.post("/caretakers/get-num-pet-days", get_num_pet_days);
   app.post("/full-time-caretakers/get-salary", get_fulltime_salary);
   app.post("/part-time-caretakers/get-salary", get_parttime_salary);
   app.post("/caretakers/home-current-event", get_current_event_information);
   app.post("/caretakers/home-upcoming-event", get_upcoming_event_information);
 };
+
+async function num_bid_transactions(req, res) {
+  try {
+    const client = await pool.connect();
+    const username = req.body.toGet.username;
+    const startMonth = req.body.toGet.startMonth;
+    const endMonth = req.body.toGet.endMonth;
+
+    const result = await client.query(
+      `SELECT COUNT(*) as num_pets
+      FROM bid_transaction
+      WHERE cusername = '${username}' AND job_end_datetime >= '${startMonth}' AND job_end_datetime < '${endMonth}';`
+    );
+
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify(result.rows));
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
 
 async function get_num_pet_days(req, res) {
   try {
@@ -106,7 +129,7 @@ async function get_upcoming_event_information(req, res) {
     const result = await client.query(
       `SELECT pet_name, pusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method
         FROM bid_transaction 
-        WHERE cusername = '${username}' AND job_start_datetime > '${tomorrow_datetime}'; `
+        WHERE cusername = '${username}' AND job_start_datetime >= '${tomorrow_datetime}'; `
     );
 
     res.setHeader("content-type", "application/json");

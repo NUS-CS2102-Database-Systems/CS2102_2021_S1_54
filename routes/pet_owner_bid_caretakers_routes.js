@@ -104,6 +104,7 @@ async function submit_a_bid(req, res) {
     const end_transfer_method = req.body.toBid.end_transfer_method;
 
     const result = await client.query(
+      // Check if the same bid exist!
       `SELECT 2
         FROM bid_transaction
         WHERE username = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND

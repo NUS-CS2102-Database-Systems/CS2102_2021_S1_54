@@ -43,7 +43,7 @@ async function get_upcoming_event_information(req, res) {
     const result = await client.query(
       `SELECT pet_name, cusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method
         FROM bid_transaction 
-        WHERE pusername = '${username}' AND job_start_datetime > '${tomorrow_datetime}'; `
+        WHERE pusername = '${username}' AND job_start_datetime >= '${tomorrow_datetime}'; `
     );
 
     res.setHeader("content-type", "application/json");
