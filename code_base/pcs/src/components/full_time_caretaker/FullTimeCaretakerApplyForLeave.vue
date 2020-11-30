@@ -40,11 +40,11 @@
         />
 
         <div class="clearfix">
-          <button type="button" class="cancelbtn">
-            <router-link tag="span" to="/full-time-caretakers"
-              >Cancel</router-link
-            >
-          </button>
+          <router-link tag="span" to="/full-time-caretakers">
+            <button type="button" class="cancelbtn">
+              Cancel
+            </button>
+          </router-link>
           <button type="submit" class="signupbtn">Confirm</button>
         </div>
       </div>

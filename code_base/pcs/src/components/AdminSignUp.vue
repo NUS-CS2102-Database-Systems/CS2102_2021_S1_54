@@ -24,9 +24,11 @@
           required
         />
         <div class="clearfix">
-            <button type="button" class="cancelbtn">
-            <router-link tag="span" to="/">Cancel</router-link>
-            </button>
+            <router-link tag="span" to="/">
+              <button type="button" class="cancelbtn">
+                Cancel
+              </button>
+            </router-link>
             <button type="submit" class="signupbtn">Sign Up</button>
         </div>
         </div>
