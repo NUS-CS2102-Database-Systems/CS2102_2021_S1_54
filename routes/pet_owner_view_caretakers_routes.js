@@ -85,22 +85,35 @@ async function get_specific_caretakers_information(req, res) {
 
     if (commitment == "full-time") {
       if (caretaker_username == null) {
-        let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-      phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
-      NATURAL JOIN daily_price_rate WHERE`;
+        let request_full_time = `SELECT X.username AS username, X.name AS name, 
+        AGE(X.birth_date) AS age, X.birth_date AS birth_date, X.gender AS gender, 
+      X.phone AS phone, X.email AS email, X.address AS address, 
+      X.average_rating AS average_rating, AGE(X.date_started) AS years_exp FROM (users NATURAL JOIN 
+      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN 
+      daily_price_rate) AS X WHERE`;
 
+        // SELECT COUNT(*) FROM full_time_caretaker WHERE (SELECT COUNT(*) FROM leave_days L WHERE
+        // (date '2020-12-01', date '2020-12-24') OVERLAPS (L.start_date, L.end_date) AND
+        // L.username = username) > 0;
         if (date_from != null && date_to != null) {
-          let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}'))`;
+          let add_dates_requested = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = X.username) = 0) 
+          OR (SELECT NOT EXISTS(SELECT (date '${date_from}', date '${date_to}') 
+          OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username))`;
+          // let add_dates_requested = ` (((SELECT (date '${date_from}', date '${date_to}')
+          // OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username) = 'f')
+          // OR (SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0)`;
+          //   let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND
+          // date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND
+          // date('${date_to}'))`;
 
           request_full_time = request_full_time + add_dates_requested + " AND";
         }
 
         if (rating_wanted != null) {
           let add_rating_requested =
-            " (average_rating >= " + parseFloat(rating_wanted).toString() + ")";
+            " (X.average_rating >= " +
+            parseFloat(rating_wanted).toString() +
+            ")";
 
           request_full_time = request_full_time + add_rating_requested + " AND";
         }
@@ -108,7 +121,7 @@ async function get_specific_caretakers_information(req, res) {
         if (type_of_animal != null) {
           type_of_animal = type_of_animal.replace(/,/g, "' OR type_name = '");
           let add_animal_type_requested =
-            " (type_name = '" + type_of_animal + "')";
+            " (X.type_name = '" + type_of_animal + "')";
 
           request_full_time =
             request_full_time + add_animal_type_requested + " AND";
@@ -116,21 +129,21 @@ async function get_specific_caretakers_information(req, res) {
 
         if (price_range_from != null && price_range_to == null) {
           let add_min_price =
-            " (current_daily_price >= " +
+            " (X.current_daily_price >= " +
             parseFloat(price_range_from).toString() +
             ")";
 
           request_full_time = request_full_time + add_min_price + " AND";
         } else if (price_range_from == null && price_range_to != null) {
           let add_max_price =
-            " (current_daily_price <= " +
+            " (X.current_daily_price <= " +
             parseFloat(price_range_to).toString() +
             ")";
 
           request_full_time = request_full_time + add_max_price + " AND";
         } else if (price_range_from != null && price_range_to != null) {
           let add_price_range =
-            " (current_daily_price BETWEEN " +
+            " (X.current_daily_price BETWEEN " +
             parseFloat(price_range_from).toString() +
             " AND " +
             parseFloat(price_range_to).toString() +
