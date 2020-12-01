@@ -290,12 +290,14 @@ export default {
                 console.log(response.data);
                 let error_msg = "";
                 error_msg = response.data;
+                console.log(error_msg);
                 if (
                   error_msg ==
-                  'Error error: duplicate key value violates unique constraint "availabilities_pkey".'
+                  'Error error: duplicate key value violates unique constraint "availabilities_pkey"'
                 ) {
+                  console.log("1");
                   error_msg =
-                    "Pairs of start dates and end dates cannot repeat!";
+                    "Pairs of start dates and end dates cannot repeat";
                 }
                 Swal.fire({
                   icon: "error",
@@ -303,7 +305,7 @@ export default {
                   text:
                     "Adding availabilities failed. " +
                     error_msg +
-                    " Please try again.",
+                    ". Please try again.",
                 });
               }
             });
@@ -327,12 +329,14 @@ export default {
               } else {
                 let error_msg = "";
                 error_msg = response.data;
+                console.log(error_msg);
                 if (
                   error_msg ==
-                  'Error error: duplicate key value violates unique constraint "availabilities_pkey".'
+                  'Error error: duplicate key value violates unique constraint "availabilities_pkey"'
                 ) {
+                  console.log("2");
                   error_msg =
-                    "Pairs of start dates and end dates cannot repeat!";
+                    "Pairs of start dates and end dates cannot repeat";
                 }
                 Swal.fire({
                   icon: "error",

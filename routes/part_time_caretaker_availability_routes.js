@@ -79,6 +79,7 @@ async function add_availabilities_information(req, res) {
   try {
     const client = await pool.connect();
     let username = "";
+    let query = "INSERT INTO availabilities VALUES";
     let date = new Date();
     let curr_year = date.getFullYear();
     let next_year = date.getFullYear() + 1;
@@ -89,9 +90,13 @@ async function add_availabilities_information(req, res) {
       let end_date = req.body.toEdit[i].end_date;
       let num_of_pets = req.body.toEdit[i].num_pets;
 
-      let query = `INSERT INTO availabilities VALUES ('${username}', '${start_date}', '${end_date}', ${num_of_pets});`;
-      await client.query(query);
+      let query = ` ('${username}', '${start_date}', '${end_date}', ${num_of_pets}),`;
     }
+
+    query = query.slice(0, -1);
+    query += ";";
+
+    await client.query(query);
 
     const result = await client.query(
       `SELECT COUNT(*) AS num
