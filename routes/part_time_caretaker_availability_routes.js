@@ -78,7 +78,6 @@ async function get_num_of_pets_information(req, res) {
 async function add_availabilities_information(req, res) {
   try {
     const client = await pool.connect();
-    let query = "INSERT INTO availabilities VALUES";
     let username = "";
     let date = new Date();
     let curr_year = date.getFullYear();
@@ -90,16 +89,12 @@ async function add_availabilities_information(req, res) {
       let end_date = req.body.toEdit[i].end_date;
       let num_of_pets = req.body.toEdit[i].num_pets;
 
-      query += ` ('${username}', '${start_date}', '${end_date}', ${num_of_pets}),`;
+      let query = `INSERT INTO availabilities VALUES ('${username}', '${start_date}', '${end_date}', ${num_of_pets});`;
+      await client.query(query);
     }
 
-    query = query.slice(0, -1);
-    query += ";";
-
-    await client.query(query);
-
     const result = await client.query(
-      `SELECT COUNT(*) 
+      `SELECT COUNT(*) AS num
       FROM availabilities 
       WHERE username = '${username}' AND 
       ((SELECT EXTRACT(YEAR FROM start_date) = '${curr_year}') OR 

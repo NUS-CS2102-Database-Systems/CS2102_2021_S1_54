@@ -205,13 +205,13 @@ export default {
     method_to_arr: [
       { mtd: "Pet Owner Deliver" },
       { mtd: "Care Taker Pickup" },
-      { mtd: "Transfer thorugh PCS Building" },
+      { mtd: "Transfer through PCS Building" },
     ],
     start_method: null,
     method_from_arr: [
       { mtd: "Pet Owner Pickup" },
       { mtd: "Care Taker Deliver" },
-      { mtd: "Transfer thorugh PCS Building" },
+      { mtd: "Transfer through PCS Building" },
     ],
     end_method: null,
 
@@ -662,7 +662,7 @@ export default {
                   " till " +
                   this.selected_dates[1] +
                   " is comfirmed. Please pay " +
-                  this.amount +
+                  this.price +
                   " to the caretaker upon the start of the caretaking session. Thank you!",
               }).then(function() {
                 window.location.href = constants.pet_owner_view_upcoming_jobs;

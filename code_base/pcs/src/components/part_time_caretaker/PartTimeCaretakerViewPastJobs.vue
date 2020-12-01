@@ -440,7 +440,7 @@ export default {
                   this.payment_datetime_odd.push(date_time);
                 } else {
                   this.id_even.push(i + 1);
-                  this.caretaker_even.push(response.data[i].username);
+                  this.pet_owner_even.push(response.data[i].username);
                   this.pet_even.push(response.data[i].pet_name);
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
@@ -610,7 +610,7 @@ export default {
               this.payment_datetime_odd.push(date_time);
             } else {
               this.id_even.push(i + 1);
-              this.caretaker_even.push(response.data[i].username);
+              this.pet_owner_even.push(response.data[i].username);
               this.pet_even.push(response.data[i].pet_name);
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +

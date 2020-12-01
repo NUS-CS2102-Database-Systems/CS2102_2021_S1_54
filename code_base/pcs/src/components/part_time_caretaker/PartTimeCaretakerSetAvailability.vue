@@ -16,7 +16,7 @@
                   value="dateField.value1"
                 />
               </template>
-              <template v-elseif="!value1_editable[i]">
+              <template v-else>
                 <v-text-field
                   :label="dateField.label1"
                   v-model="dateField.value1"
@@ -33,7 +33,7 @@
                   value="dateField.value2"
                 />
               </template>
-              <template v-elseif="!value2_editable[i]">
+              <template v-else>
                 <v-text-field
                   :label="dateField.label2"
                   v-model="dateField.value2"
@@ -156,6 +156,7 @@ export default {
                     (i + 1) +
                     ")",
                 });
+                data_ok_val1 = false;
                 break;
               } else {
                 data_ok_val1 = true;
@@ -167,6 +168,7 @@ export default {
                 text:
                   "Please provide a valid start date(at row " + (i + 1) + ")",
               });
+              data_ok_val1 = false;
               break;
             }
           } else {
@@ -178,6 +180,7 @@ export default {
                 (i + 1) +
                 ")",
             });
+            data_ok_val1 = false;
             break;
           }
 
@@ -199,6 +202,7 @@ export default {
                     (i + 1) +
                     ")",
                 });
+                data_ok_val2 = false;
                 break;
               } else {
                 data_ok_val2 = true;
@@ -209,6 +213,7 @@ export default {
                 title: "Oops...",
                 text: "Please provide a valid end date(at row " + (i + 1) + ")",
               });
+              data_ok_val2 = false;
               break;
             }
           } else {
@@ -220,6 +225,7 @@ export default {
                 (i + 1) +
                 ")",
             });
+            data_ok_val2 = false;
             break;
           }
 
@@ -237,6 +243,10 @@ export default {
             this.count += 1;
             var setAvailability = {};
             if (this.have_data == false) {
+              if (this.number_of_pets_allowed == undefined) {
+                this.number_of_pets_allowed = 2;
+              }
+
               setAvailability = {
                 caretaker_username: this.username,
                 start_date: this.dateFields[i].value1,
@@ -268,7 +278,8 @@ export default {
               }
             )
             .then((response) => {
-              if (response.data[0] == this.count) {
+              console.log(response.data);
+              if (response.data[0].num == this.count) {
                 Swal.fire({
                   icon: "success",
                   title: "Submit Successful!",
@@ -276,6 +287,7 @@ export default {
                   location.reload();
                 });
               } else {
+                console.log(response.data[0]);
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
@@ -304,7 +316,10 @@ export default {
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
-                  text: "Updating availabilities failed. Please try again.",
+                  text:
+                    "Updating availabilities failed. " +
+                    response.data +
+                    ". Please try again.",
                 });
               }
             });
