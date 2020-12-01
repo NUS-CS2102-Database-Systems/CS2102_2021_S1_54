@@ -14,6 +14,23 @@
         caretaker's username.
       </h4>
       <br />
+      <h4>
+        Note:
+      </h4>
+      <h4>
+        1. "Total Number of Pets Taken Care of" considers jobs that ended between the start of the month
+        and the current time.
+      </h4>
+      <h4>
+        2. "Total Number of Pet Days" considers jobs that ended between the start of the month
+        and the current time. All days within a job are counted (even if some of the days fall within the previous month).
+      </h4>
+      <h4>
+        3. For a full-time Caretaker, "Salary" shows the expected salary of the whole month. 
+        For a part-time Caretaker, "Salary" shows how much he/she has earned from the jobs that ended between the start of the month
+        and the current time.  
+      </h4>
+      <br />
       <template v-if="loaded && bid_transaction.length > 0">
         <v-data-table
           multi-sort
@@ -89,12 +106,12 @@ export default {
         align: "center",
       },
       {
-        text: "Total Number Of Pets taken care of",
+        text: "Total Number of Pets Taken Care of",
         value: "totalNumPets",
         align: "center",
       },
       {
-        text: "Total Number Of Pet-Days",
+        text: "Total Number of Pet-Days",
         value: "totalNumDays",
         align: "center",
       },
