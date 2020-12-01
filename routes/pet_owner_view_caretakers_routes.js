@@ -81,8 +81,6 @@ async function get_specific_caretakers_information(req, res) {
       date_to = null;
     }
 
-    // var caretakerObject = { fullTime: {}, partTime: {} };
-
     if (commitment == "full-time") {
       if (caretaker_username == null) {
         let request_full_time = `SELECT X.username AS username, X.name AS name, 
@@ -96,15 +94,9 @@ async function get_specific_caretakers_information(req, res) {
         // (date '2020-12-01', date '2020-12-24') OVERLAPS (L.start_date, L.end_date) AND
         // L.username = username) > 0;
         if (date_from != null && date_to != null) {
-          let add_dates_requested = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = X.username) = 0) 
-          OR (SELECT NOT EXISTS(SELECT (date '${date_from}', date '${date_to}') 
-          OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username))`;
-          // let add_dates_requested = ` (((SELECT (date '${date_from}', date '${date_to}')
-          // OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username) = 'f')
-          // OR (SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0)`;
-          //   let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND
-          // date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND
-          // date('${date_to}'))`;
+          let add_dates_requested = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = X.username) = 0 
+          OR (SELECT COUNT(*) FROM leave_days L WHERE L.username = X.username 
+          AND (date '${date_from}', date '${date_to}') OVERLAPS (L.start_date, L.end_date)) = 0)`;
 
           request_full_time = request_full_time + add_dates_requested + " AND";
         }
@@ -405,10 +397,11 @@ async function get_specific_caretakers_information(req, res) {
           let general_query = `SELECT X.username AS username, X.name AS name, X.age AS age, X.birth_date AS birth_date, X.gender AS gender, 
         X.phone AS phone, X.email AS email, X.address AS address, X.average_rating AS average_rating, X.years_exp AS years_exp FROM (`;
 
-          let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-      phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
-      NATURAL JOIN daily_price_rate WHERE`;
+          let request_full_time = `SELECT T.username AS username, T.name AS name, AGE(T.birth_date) AS T.age, 
+          T.birth_date AS birth_date, T.gender AS gender, T.phone AS phone, T.email AS email, 
+          T.address AS address, T.average_rating AS average_rating, AGE(T.date_started) AS years_exp 
+          FROM (users NATURAL JOIN caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care 
+            NATURAL JOIN daily_price_rate) AS T WHERE`;
 
           let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
@@ -416,9 +409,10 @@ async function get_specific_caretakers_information(req, res) {
       NATURAL JOIN availabilities NATURAL JOIN daily_price_rate WHERE`;
 
           if (date_from != null && date_to != null) {
-            let add_dates_requested_full_time = ` (start_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}'))`;
+            let add_dates_requested_full_time = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE 
+            L1.username = T.username) = 0 OR 
+            (SELECT COUNT(*) FROM leave_days L WHERE L.username = T.username 
+            AND (date '${date_from}', date '${date_to}') OVERLAPS (L.start_date, L.end_date)) = 0)`;
 
             let add_dates_requested_part_time =
               " (start_date <= date('" +
@@ -435,58 +429,84 @@ async function get_specific_caretakers_information(req, res) {
           }
 
           if (rating_wanted != null) {
-            let add_rating_requested =
+            let add_rating_requested_full_time =
+              " (T.average_rating >= " +
+              parseFloat(rating_wanted).toString() +
+              ")";
+
+            let add_rating_requested_part_time =
               " (average_rating >= " +
               parseFloat(rating_wanted).toString() +
               ")";
 
             request_full_time =
-              request_full_time + add_rating_requested + " AND";
+              request_full_time + add_rating_requested_full_time + " AND";
+
             request_part_time =
-              request_part_time + add_rating_requested + " AND";
+              request_part_time + add_rating_requested_part_time + " AND";
           }
 
           if (type_of_animal != null) {
             type_of_animal = type_of_animal.replace(/,/g, "' OR type_name = '");
-            let add_animal_type_requested =
+            let add_animal_type_requested_full_time =
+              " (T.type_name = '" + type_of_animal + "')";
+
+            let add_animal_type_requested_part_time =
               " (type_name = '" + type_of_animal + "')";
 
             request_full_time =
-              request_full_time + add_animal_type_requested + " AND";
+              request_full_time + add_animal_type_requested_full_time + " AND";
 
             request_part_time =
-              request_part_time + add_animal_type_requested + " AND";
+              request_part_time + add_animal_type_requested_part_time + " AND";
           }
 
           if (price_range_from != null && price_range_to == null) {
-            let add_min_price =
+            let add_min_price_full_time =
+              " (T.current_daily_price >= " +
+              parseFloat(price_range_from).toString() +
+              ")";
+
+            let add_min_price_part_time =
               " (current_daily_price >= " +
               parseFloat(price_range_from).toString() +
               ")";
 
-            request_full_time = request_full_time + add_min_price + " AND";
+            request_full_time += add_min_price_full_time + " AND";
 
-            request_part_time = request_part_time + add_min_price + " AND";
+            request_part_time += add_min_price_part_time + " AND";
           } else if (price_range_from == null && price_range_to != null) {
-            let add_max_price =
+            let add_max_price_full_time =
+              " (T.current_daily_price <= " +
+              parseFloat(price_range_to).toString() +
+              ")";
+
+            let add_max_price_part_time =
               " (current_daily_price <= " +
               parseFloat(price_range_to).toString() +
               ")";
 
-            request_full_time = request_full_time + add_max_price + " AND";
+            request_full_time += add_max_price_full_time + " AND";
 
-            request_part_time = request_part_time + add_max_price + " AND";
+            request_part_time += add_max_price_part_time + " AND";
           } else if (price_range_from != null && price_range_to != null) {
-            let add_price_range =
+            let add_price_range_full_time =
+              " (T.current_daily_price BETWEEN " +
+              parseFloat(price_range_from).toString() +
+              " AND " +
+              parseFloat(price_range_to).toString() +
+              ")";
+
+            let add_price_range_part_time =
               " (current_daily_price BETWEEN " +
               parseFloat(price_range_from).toString() +
               " AND " +
               parseFloat(price_range_to).toString() +
               ")";
 
-            request_full_time = request_full_time + add_price_range + " AND";
+            request_full_time += add_price_range_full_time + " AND";
 
-            request_part_time = request_part_time + add_price_range + " AND";
+            request_part_time += add_price_range_part_time + " AND";
           }
 
           let request_full_time_split_by_space = request_full_time
