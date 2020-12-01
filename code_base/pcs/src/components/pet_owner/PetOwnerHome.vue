@@ -73,7 +73,7 @@ export default {
       },
       { text: "Caretaker", value: "cusername" },
       { text: "Start Date and Time", value: "job_start_datetime" },
-      { text: "Start Transfer Methodd", value: "start_transfer_method" },
+      { text: "Start Transfer Method", value: "start_transfer_method" },
       { text: "End Date and Time", value: "job_end_datetime" },
       { text: "End Transfer Method", value: "end_transfer_method" },
       { text: "Note", value: "comment_arr" },
