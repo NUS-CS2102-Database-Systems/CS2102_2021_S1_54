@@ -22,39 +22,40 @@
             </v-card-text>
           </v-layout>
         </v-card>
-        
+
         <br />
         <br />
         <br />
         <h3>Current Event</h3>
         <br />
-        <v-data-table	v-if="current_event.length!=0"
-          :headers="headers_current"	
-          :items="current_event"	
+        <v-data-table
+          v-if="current_event.length != 0"
+          :headers="headers_current"
+          :items="current_event"
           :sort-by="['comment_arr', 'job_end_datetime']"
           :sort-desc="[true, false]"
           multi-sort
-          hide-default-footer	
-          class="elevation-1"	
+          hide-default-footer
+          class="elevation-1"
         ></v-data-table>
         <p v-else>No pet is in caretaking today</p>
         <br />
-        
+
         <br />
         <h3>Upcoming Events</h3>
         <br />
-        <v-data-table	v-if="upcoming_event.length!=0"
-          :headers="headers_upcoming"	
-          :items="upcoming_event"	
+        <v-data-table
+          v-if="upcoming_event.length != 0"
+          :headers="headers_upcoming"
+          :items="upcoming_event"
           :sort-by="['job_start_datetime', 'start_transfer_method']"
           :sort-desc="[false, false]"
           multi-sort
-          hide-default-footer	
-          class="elevation-1"	
+          hide-default-footer
+          class="elevation-1"
         ></v-data-table>
         <p v-else>No upcoming pet care event</p>
         <br />
-
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -88,32 +89,32 @@ export default {
     num_pets: 0,
     amount_earned: 0,
     num_pet_days: 0,
-    
+
     headers_current: [
       {
-        text: 'Animal',
-        align: 'start',
-        value: 'pet_name',
+        text: "Animal",
+        align: "start",
+        value: "pet_name",
       },
-      { text: 'Owner', value: 'pusername' },
-      { text: 'Start Date and Time', value: 'job_start_datetime' },
-      { text: 'Start Transfer Mtd', value: 'start_transfer_method' },
-      { text: 'End Date and Time', value: 'job_end_datetime' },
-      { text: 'End Transfer Mtd', value: 'end_transfer_method' },
-      { text: 'Note', value: 'comment_arr' },
+      { text: "Owner", value: "pusername" },
+      { text: "Start Date and Time", value: "job_start_datetime" },
+      { text: "Start Transfer Method", value: "start_transfer_method" },
+      { text: "End Date and Time", value: "job_end_datetime" },
+      { text: "End Transfer Method", value: "end_transfer_method" },
+      { text: "Note", value: "comment_arr" },
     ],
-    
+
     headers_upcoming: [
       {
-        text: 'Animal',
-        align: 'start',
-        value: 'pet_name',
+        text: "Animal",
+        align: "start",
+        value: "pet_name",
       },
-      { text: 'Owner', value: 'pusername' },
-      { text: 'Start Date and Time', value: 'job_start_datetime' },
-      { text: 'Start Transfer Mtd', value: 'start_transfer_method' },
-      { text: 'End Date and Time', value: 'job_end_datetime' },
-      { text: 'End Transfer Mtd', value: 'end_transfer_method' },
+      { text: "Owner", value: "pusername" },
+      { text: "Start Date and Time", value: "job_start_datetime" },
+      { text: "Start Transfer Method", value: "start_transfer_method" },
+      { text: "End Date and Time", value: "job_end_datetime" },
+      { text: "End Transfer Method", value: "end_transfer_method" },
     ],
 
     current_event: [],
@@ -127,24 +128,53 @@ export default {
 
     // Get current date with time = 00:00:00
     let today = new Date();
-    let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
-    let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
-    
+    let myToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      8,
+      0,
+      0
+    );
+    let myTomorrow = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 1,
+      8,
+      0,
+      0
+    );
+
     let myToday_str = myToday.toISOString().toString();
     myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
 
     let myTomorrow_str = myTomorrow.toISOString().toString();
     myTomorrow_str = myTomorrow_str.replace(/T/, " ").substring(0, 19);
 
-    let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1, 8, 0, 0);
-    let firstDayOfMonth_str = firstDayOfMonth.toISOString().toString().replace(/T/, " ").substring(0, 19);
+    let firstDayOfMonth = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      1,
+      8,
+      0,
+      0
+    );
+    let firstDayOfMonth_str = firstDayOfMonth
+      .toISOString()
+      .toString()
+      .replace(/T/, " ")
+      .substring(0, 19);
     //let firstDayOfNextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1, 0, 0, 0);
     // console.log(firstDayOfMonth)
     // console.log(firstDayOfNextMonth)
-    
+
     let anothertoday = new Date();
     anothertoday.setHours(today.getHours() + 8);
-    let currentMoment_str = anothertoday.toISOString().toString().replace(/T/, " ").substring(0, 19);
+    let currentMoment_str = anothertoday
+      .toISOString()
+      .toString()
+      .replace(/T/, " ")
+      .substring(0, 19);
 
     const get_info = {
       username: this.username,
@@ -156,7 +186,6 @@ export default {
     };
     // console.log("get_info is")
     // console.log(get_info)
-
 
     await axios
       .post(
@@ -219,40 +248,50 @@ export default {
       .post(
         "https://pet-care-service.herokuapp.com/caretakers/home-current-event",
         {
-          toGet: get_info
+          toGet: get_info,
         }
       )
       .then((response) => {
-        var i
-        for (i = 0; i < response.data.length; i++) { 
-          let comment_arr_temp = []
+        var i;
+        for (i = 0; i < response.data.length; i++) {
+          let comment_arr_temp = [];
 
-          let job_start_date = new Date(response.data[i].job_start_datetime.toString().split("T")[0]);
+          let job_start_date = new Date(
+            response.data[i].job_start_datetime.toString().split("T")[0]
+          );
           //console.log(job_start_date)
-          if (job_start_date >= myToday && job_start_date < myTomorrow){
-            if (response.data[i].payment_method.toString() == "Cash"){
-              comment_arr_temp.push("Collect $" + response.data[i].amount.toString())
+          if (job_start_date >= myToday && job_start_date < myTomorrow) {
+            if (response.data[i].payment_method.toString() == "Cash") {
+              comment_arr_temp.push(
+                "Collect $" + response.data[i].amount.toString()
+              );
             }
-            comment_arr_temp.push("Start day")
+            comment_arr_temp.push("Start day");
           }
 
-          let job_end_date = new Date(response.data[i].job_end_datetime.toString().split("T")[0]);
+          let job_end_date = new Date(
+            response.data[i].job_end_datetime.toString().split("T")[0]
+          );
           //console.log(job_end_date)
-          if (job_end_date >= myToday && job_end_date < myTomorrow){
-            comment_arr_temp.push("End day")
+          if (job_end_date >= myToday && job_end_date < myTomorrow) {
+            comment_arr_temp.push("End day");
           }
 
-          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
-          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
+          let formatted_job_start_datetime = response.data[i].job_start_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
+          let formatted_job_end_datetime = response.data[i].job_end_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
 
           let event_data = {
             pet_name: response.data[i].pet_name,
-            pusername: response.data[i].pusername, 
+            pusername: response.data[i].pusername,
             job_start_datetime: formatted_job_start_datetime,
             job_end_datetime: formatted_job_end_datetime,
-            comment_arr: comment_arr_temp, 
-            start_transfer_method: response.data[i].start_transfer_method, 
-            end_transfer_method: response.data[i].end_transfer_method, 
+            comment_arr: comment_arr_temp,
+            start_transfer_method: response.data[i].start_transfer_method,
+            end_transfer_method: response.data[i].end_transfer_method,
           };
           this.current_event.push(event_data);
         }
@@ -261,23 +300,26 @@ export default {
       .post(
         "https://pet-care-service.herokuapp.com/caretakers/home-upcoming-event",
         {
-          toGet: get_info
+          toGet: get_info,
         }
       )
       .then((response) => {
-        var i
-        for (i = 0; i < response.data.length; i++) { 
-
-          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
-          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
+        var i;
+        for (i = 0; i < response.data.length; i++) {
+          let formatted_job_start_datetime = response.data[i].job_start_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
+          let formatted_job_end_datetime = response.data[i].job_end_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
 
           let event_data = {
             pet_name: response.data[i].pet_name,
-            pusername: response.data[i].pusername, 
+            pusername: response.data[i].pusername,
             job_start_datetime: formatted_job_start_datetime,
             job_end_datetime: formatted_job_end_datetime,
             start_transfer_method: response.data[i].start_transfer_method,
-            end_transfer_method: response.data[i].end_transfer_method, 
+            end_transfer_method: response.data[i].end_transfer_method,
           };
           this.upcoming_event.push(event_data);
         }

@@ -22,7 +22,8 @@ async function get_current_event_information(req, res) {
     const result = await client.query(
       `SELECT pet_name, cusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method, payment_method, amount
       FROM bid_transaction 
-      WHERE pusername = '${username}' AND job_start_datetime < '${moment_datetime}' AND job_end_datetime >= '${startOfToday_datetime}';`
+      WHERE pusername = '${username}' AND job_start_datetime < '${moment_datetime}' AND job_end_datetime >= '${startOfToday_datetime}' 
+      ORDER BY job_start_datetime ASC, job_end_datetime ASC;`
     );
 
     res.setHeader("content-type", "application/json");
@@ -44,7 +45,8 @@ async function get_upcoming_event_information(req, res) {
     const result = await client.query(
       `SELECT pet_name, cusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method
         FROM bid_transaction 
-        WHERE pusername = '${username}' AND job_start_datetime >= '${tomorrow_datetime}'; `
+        WHERE pusername = '${username}' AND job_start_datetime >= '${tomorrow_datetime}' 
+        ORDER BY job_start_datetime ASC, job_end_datetime ASC; `
     );
 
     res.setHeader("content-type", "application/json");
