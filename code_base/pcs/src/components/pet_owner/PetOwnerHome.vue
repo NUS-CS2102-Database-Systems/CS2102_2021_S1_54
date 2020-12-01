@@ -126,7 +126,7 @@ export default {
     console.log(startOfToday)
     console.log(myTomorrow)
     console.log(today);
-    console.log(myToday);
+    //console.log(myToday);
     console.log(myTomorrow);
 
     const get_info = {
