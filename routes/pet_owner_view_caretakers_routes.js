@@ -429,58 +429,84 @@ async function get_specific_caretakers_information(req, res) {
           }
 
           if (rating_wanted != null) {
-            let add_rating_requested =
+            let add_rating_requested_full_time =
+              " (T.average_rating >= " +
+              parseFloat(rating_wanted).toString() +
+              ")";
+
+            let add_rating_requested_part_time =
               " (average_rating >= " +
               parseFloat(rating_wanted).toString() +
               ")";
 
             request_full_time =
-              request_full_time + add_rating_requested + " AND";
+              request_full_time + add_rating_requested_full_time + " AND";
+
             request_part_time =
-              request_part_time + add_rating_requested + " AND";
+              request_part_time + add_rating_requested_part_time + " AND";
           }
 
           if (type_of_animal != null) {
             type_of_animal = type_of_animal.replace(/,/g, "' OR type_name = '");
-            let add_animal_type_requested =
+            let add_animal_type_requested_full_time =
+              " (T.type_name = '" + type_of_animal + "')";
+
+            let add_animal_type_requested_part_time =
               " (type_name = '" + type_of_animal + "')";
 
             request_full_time =
-              request_full_time + add_animal_type_requested + " AND";
+              request_full_time + add_animal_type_requested_full_time + " AND";
 
             request_part_time =
-              request_part_time + add_animal_type_requested + " AND";
+              request_part_time + add_animal_type_requested_part_time + " AND";
           }
 
           if (price_range_from != null && price_range_to == null) {
-            let add_min_price =
+            let add_min_price_full_time =
+              " (T.current_daily_price >= " +
+              parseFloat(price_range_from).toString() +
+              ")";
+
+            let add_min_price_part_time =
               " (current_daily_price >= " +
               parseFloat(price_range_from).toString() +
               ")";
 
-            request_full_time = request_full_time + add_min_price + " AND";
+            request_full_time += add_min_price_full_time + " AND";
 
-            request_part_time = request_part_time + add_min_price + " AND";
+            request_part_time += add_min_price_part_time + " AND";
           } else if (price_range_from == null && price_range_to != null) {
-            let add_max_price =
+            let add_max_price_full_time =
+              " (T.current_daily_price <= " +
+              parseFloat(price_range_to).toString() +
+              ")";
+
+            let add_max_price_part_time =
               " (current_daily_price <= " +
               parseFloat(price_range_to).toString() +
               ")";
 
-            request_full_time = request_full_time + add_max_price + " AND";
+            request_full_time += add_max_price_full_time + " AND";
 
-            request_part_time = request_part_time + add_max_price + " AND";
+            request_part_time += add_max_price_part_time + " AND";
           } else if (price_range_from != null && price_range_to != null) {
-            let add_price_range =
+            let add_price_range_full_time =
+              " (T.current_daily_price BETWEEN " +
+              parseFloat(price_range_from).toString() +
+              " AND " +
+              parseFloat(price_range_to).toString() +
+              ")";
+
+            let add_price_range_part_time =
               " (current_daily_price BETWEEN " +
               parseFloat(price_range_from).toString() +
               " AND " +
               parseFloat(price_range_to).toString() +
               ")";
 
-            request_full_time = request_full_time + add_price_range + " AND";
+            request_full_time += add_price_range_full_time + " AND";
 
-            request_part_time = request_part_time + add_price_range + " AND";
+            request_part_time += add_price_range_part_time + " AND";
           }
 
           let request_full_time_split_by_space = request_full_time
