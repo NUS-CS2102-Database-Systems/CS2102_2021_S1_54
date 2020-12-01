@@ -85,14 +85,22 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.num_pets = response.data[0].num_of_pets;
-        this.amount_earned = response.data[0].amount_earned;
+        if (response.data[0].amount_earned == null) {
+          this.amount_earned = 0;
+        } else {
+          this.amount_earned = response.data[0].amount_earned;
+        }
       });
 
     await axios
       .get("https://pet-care-service.herokuapp.com/pcs-admin/get-num-pet-days")
       .then((response) => {
         console.log(response.data);
-        this.num_pet_days = response.data[0].num_pet_days;
+        if (response.data[0].num_pet_days == null) {
+          this.num_pet_days = 0;
+        } else {
+          this.num_pet_days = response.data[0].num_pet_days;
+        }
       });
 
     await axios

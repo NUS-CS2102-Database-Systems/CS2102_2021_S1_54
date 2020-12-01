@@ -43,8 +43,8 @@ async function get_past_jobs_information(req, res) {
       FROM (users u INNER JOIN pet p ON u.username = p.username) 
       INNER JOIN bid_transaction bt ON u.username = bt.pusername  
       WHERE bt.cusername = '${username}' AND 
-      bt.job_start_datetime < current_timestamp AND 
-      bt.job_end_datetime < current_timestamp 
+      bt.job_start_datetime < (select (now() at time zone 'sgt')) AND 
+      bt.job_end_datetime < (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`
     );
 
@@ -97,8 +97,8 @@ async function get_specific_past_jobs_information(req, res) {
         FROM (users u INNER JOIN pet p ON u.username = p.username) 
         INNER JOIN bid_transaction bt ON u.username = bt.pusername  
         WHERE bt.cusername = '${username}' AND 
-        bt.job_start_datetime < current_timestamp AND 
-        bt.job_end_datetime < current_timestamp 
+        bt.job_start_datetime < (select (now() at time zone 'sgt')) AND 
+        bt.job_end_datetime < (select (now() at time zone 'sgt')) 
         ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
     }
 
@@ -129,8 +129,8 @@ async function get_ongoing_jobs_information(req, res) {
       FROM (users u INNER JOIN pet p ON u.username = p.username) 
       INNER JOIN bid_transaction bt ON u.username = bt.pusername  
       WHERE bt.cusername = '${username}' AND 
-      bt.job_start_datetime <= current_timestamp AND 
-      bt.job_end_datetime >= current_timestamp 
+      bt.job_start_datetime <= (select (now() at time zone 'sgt')) AND 
+      bt.job_end_datetime >= (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`
     );
 
@@ -159,7 +159,7 @@ async function get_upcoming_jobs_information(req, res) {
       FROM (users u INNER JOIN pet p ON u.username = p.username) 
       INNER JOIN bid_transaction bt ON u.username = bt.pusername  
       WHERE bt.cusername = '${username}' AND  
-      bt.job_start_datetime > current_timestamp 
+      bt.job_start_datetime > (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`
     );
 
@@ -212,7 +212,7 @@ async function get_specific_upcoming_jobs_information(req, res) {
         FROM (users u INNER JOIN pet p ON u.username = p.username) 
       INNER JOIN bid_transaction bt ON u.username = bt.pusername  
         WHERE bt.cusername = '${username}' AND bt.is_successful_bid = 'true' AND
-        bt.job_start_datetime > current_timestamp 
+        bt.job_start_datetime > (select (now() at time zone 'sgt')) 
         ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
     }
 
