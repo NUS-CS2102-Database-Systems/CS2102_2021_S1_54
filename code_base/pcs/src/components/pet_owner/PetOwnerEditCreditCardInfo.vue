@@ -213,9 +213,10 @@ export default {
                 icon: "success",
                 title: "Updated!",
                 text: "Credit Card information has been updated successfully.",
+              }).then(function() {
+                window.location.href =
+                  constants.pet_owner_go_back_to_profile_page;
               });
-              window.location.href =
-                constants.pet_owner_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",
@@ -252,9 +253,10 @@ export default {
             title: "Oops...",
             text:
               "You do not have a credit card to edit. Please add credit card information.",
+          }).then(function() {
+            window.location.href =
+              constants.pet_owner_add_credit_card_info + document.cookie;
           });
-          window.location.href =
-            constants.pet_owner_add_credit_card_info + document.cookie;
         }
       });
     this.loaded = true;

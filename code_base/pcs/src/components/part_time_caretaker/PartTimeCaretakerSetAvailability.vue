@@ -272,6 +272,8 @@ export default {
                 Swal.fire({
                   icon: "success",
                   title: "Submit Successful!",
+                }).then(function() {
+                  location.reload();
                 });
               } else {
                 Swal.fire({
@@ -295,8 +297,9 @@ export default {
                 Swal.fire({
                   icon: "success",
                   title: "Update Successful!",
+                }).then(function() {
+                  location.reload();
                 });
-                location.reload();
               } else {
                 Swal.fire({
                   icon: "error",

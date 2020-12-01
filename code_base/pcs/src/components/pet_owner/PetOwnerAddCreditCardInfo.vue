@@ -210,9 +210,10 @@ export default {
                 icon: "success",
                 title: "Added!",
                 text: "Credit Card information has been added successfully.",
+              }).then(function() {
+                window.location.href =
+                  constants.pet_owner_go_back_to_profile_page;
               });
-              window.location.href =
-                constants.pet_owner_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",

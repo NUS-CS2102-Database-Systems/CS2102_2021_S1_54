@@ -265,9 +265,10 @@ export default {
                 icon: "success",
                 title: "Updated!",
                 text: "Personal information has been updated successfully.",
+              }).then(function() {
+                window.location.href =
+                  constants.part_time_caretaker_go_back_to_profile_page;
               });
-              window.location.href =
-                constants.part_time_caretaker_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",

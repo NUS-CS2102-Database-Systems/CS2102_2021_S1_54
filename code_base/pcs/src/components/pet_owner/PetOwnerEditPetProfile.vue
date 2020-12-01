@@ -157,8 +157,9 @@ export default {
               title: "Updated!",
               text:
                 this.pet_name + "'s information has been updated successfully.",
+            }).then(function() {
+              window.location.href = constants.pet_owner_view_pet_info;
             });
-            window.location.href = constants.pet_owner_view_pet_info;
           } else {
             Swal.fire({
               icon: "error",
