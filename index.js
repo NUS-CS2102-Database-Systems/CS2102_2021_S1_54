@@ -1,8 +1,9 @@
 const express = require("express");
+const serveStatic = require("serve-static");
+const path = require("path");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const routes = require("./routes/routes.js");
 const login_signup_routes = require("./routes/login_signup_routes.js");
 const admin_routes = require("./routes/admin_routes.js");
 const apply_leave_routes = require("./routes/apply_leave_routes.js");
@@ -22,6 +23,14 @@ const pcs_admin_set_price_routes = require("./routes/pcs_admin_set_price_routes.
 const pcs_admin_show_caretaker_details = require("./routes/pcs_admin_show_caretaker_details.js");
 const pet_owner_bid_caretakers_route = require("./routes/pet_owner_bid_caretakers_routes.js");
 const pet_owner_home_route = require("./routes/pet_owner_home.js");
+
+//here we are configuring dist to serve app files
+app.use("/", serveStatic(path.join(__dirname, "/code_base/pcs/dist")));
+
+// this * route is to serve project on different page routes except root `/`
+// app.get(/.*/, function (req, res) {
+//   res.sendFile(path.join(__dirname, "/code_base/pcs/dist/index.html"));
+// });
 
 app.use(function (req, res, next) {
   res.header(
@@ -49,7 +58,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // our routes go here
-routes(app);
 login_signup_routes(app);
 admin_routes(app);
 apply_leave_routes(app);

@@ -13,7 +13,7 @@
         Established in 2000, we have around 2000 caretakers, both full-time and
         part-time at various price points to suit your needs. We cater to
         various types of pets, such as birds, big dogs, small dogs, cats,
-        rabbits, rabbits and rodents. <br /><br />
+        rabbits and rodents. <br /><br />
         What are you waiting for? Send your pets to Petopia, Care For Your Pet!
       </p>
     </div>

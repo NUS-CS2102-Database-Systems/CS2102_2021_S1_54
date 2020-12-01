@@ -9,33 +9,34 @@
         <br />
         <h3>Current Event</h3>
         <br />
-        <v-data-table	v-if="current_event.length!=0"
-          :headers="headers_current"	
-          :items="current_event"	
-          :sort-by="['comment_arr', 'job_start_datetime']"
+        <v-data-table
+          v-if="current_event.length != 0"
+          :headers="headers_current"
+          :items="current_event"
+          :sort-by="['comment_arr', 'job_end_datetime']"
           :sort-desc="[true, false]"
           multi-sort
-          hide-default-footer	
-          class="elevation-1"	
+          hide-default-footer
+          class="elevation-1"
         ></v-data-table>
-        <p v-else>No pet is in caretaking today</p>
+        <p v-else>You do not have any pets with us today.</p>
         <br />
-        
+
         <br />
         <h3>Upcoming Events</h3>
         <br />
-        <v-data-table	v-if="upcoming_event.length!=0"
-          :headers="headers_upcoming"	
-          :items="upcoming_event"	
+        <v-data-table
+          v-if="upcoming_event.length != 0"
+          :headers="headers_upcoming"
+          :items="upcoming_event"
           :sort-by="['job_start_datetime', 'start_transfer_method']"
           :sort-desc="[false, false]"
           multi-sort
-          hide-default-footer	
-          class="elevation-1"	
+          hide-default-footer
+          class="elevation-1"
         ></v-data-table>
-        <p v-else>No upcoming pet care event</p>
+        <p v-else>You do not have any plans with us in the future yet.</p>
         <br />
-
       </template>
       <template v-else-if="!loaded">
         <v-row justify="center">
@@ -61,42 +62,43 @@ export default {
     PetOwnerNavBar,
   },
   data: () => ({
-    loaded: false,
+    loaded: true,
     username: null,
 
     headers_current: [
       {
-        text: 'Animal',
-        align: 'start',
-        value: 'pet_name',
+        text: "Animal",
+        align: "start",
+        value: "pet_name",
       },
-      { text: 'Caretaker', value: 'cusername' },
-      { text: 'Start Date and Time', value: 'job_start_datetime' },
-      { text: 'Start Transfer Mtd', value: 'start_transfer_method' },
-      { text: 'End Date and Time', value: 'job_end_datetime' },
-      { text: 'End Transfer Mtd', value: 'end_transfer_method' },
-      { text: 'Note', value: 'comment_arr' },
+      { text: "Caretaker", value: "cusername" },
+      { text: "Start Date and Time", value: "job_start_datetime" },
+      { text: "Start Transfer Mtd", value: "start_transfer_method" },
+      { text: "End Date and Time", value: "job_end_datetime" },
+      { text: "End Transfer Mtd", value: "end_transfer_method" },
+      { text: "Note", value: "comment_arr" },
     ],
-    
+
     headers_upcoming: [
       {
-        text: 'Animal',
-        align: 'start',
-        value: 'pet_name',
+        text: "Animal",
+        align: "start",
+        value: "pet_name",
       },
-      { text: 'Caretaker', value: 'cusername' },
-      { text: 'Start Date and Time', value: 'job_start_datetime' },
-      { text: 'Start Transfer Mtd', value: 'start_transfer_method' },
-      { text: 'End Date and Time', value: 'job_end_datetime' },
-      { text: 'End Transfer Mtd', value: 'end_transfer_method' },
+      { text: "Caretaker", value: "cusername" },
+      { text: "Start Date and Time", value: "job_start_datetime" },
+      { text: "Start Transfer Mtd", value: "start_transfer_method" },
+      { text: "End Date and Time", value: "job_end_datetime" },
+      { text: "End Transfer Mtd", value: "end_transfer_method" },
     ],
 
     current_event: [],
     upcoming_event: [],
   }),
   async mounted() {
+    this.loaded = false;
     this.username = document.cookie.split("=")[1];
-    
+
     // Get current date with time = 00:00:00
     let today = new Date();
     //today.setHours(today.getHours() + 8);
@@ -104,6 +106,24 @@ export default {
     // console.log(today.getDate())
     let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
     let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
+
+    // let myToday = new Date(
+    //   today.getFullYear(),
+    //   today.getMonth(),
+    //   today.getDate(),
+    //   0,
+    //   0,
+    //   0
+    // );
+    // let myTomorrow = new Date(
+    //   today.getFullYear(),
+    //   today.getMonth(),
+    //   today.getDate() + 1,
+    //   0,
+    //   0,
+    //   0
+    // );
+
     // let date = new Date();
     // let hours = date.setHours(date.getHours() + 8);
     let myToday_str = myToday.toISOString().toString();
@@ -129,31 +149,37 @@ export default {
       .post(
         "https://pet-care-service.herokuapp.com/pet-owners/home-current-event",
         {
-          toGet: get_info
+          toGet: get_info,
         }
       )
       .then((response) => {
         //console.log("In response of current")
-        var i
-        for (i = 0; i < response.data.length; i++) { 
-          let comment_arr_temp = []
+        var i;
+        for (i = 0; i < response.data.length; i++) {
+          let comment_arr_temp = [];
 
           //let date_string = response.data[i].job_start_datetime.toString().split("T")[0];
           //let job_start_date = new Date(date_string);
           //console.log(response.data[i].job_start_datetime)
-          let job_start_date = new Date(response.data[i].job_start_datetime.toString().split("T")[0]);
-          console.log(job_start_date)
-          if (job_start_date >= myToday && job_start_date < myTomorrow){
-            if (response.data[i].payment_method.toString() == "Cash"){
-              comment_arr_temp.push("Cash Payment of $" + response.data[i].amount.toString())
+          let job_start_date = new Date(
+            response.data[i].job_start_datetime.toString().split("T")[0]
+          );
+          console.log(job_start_date);
+          if (job_start_date >= myToday && job_start_date < myTomorrow) {
+            if (response.data[i].payment_method.toString() == "Cash") {
+              comment_arr_temp.push(
+                "Cash Payment of $" + response.data[i].amount.toString()
+              );
             }
-            comment_arr_temp.push("Start day")
+            comment_arr_temp.push("Start day");
           }
 
-          let job_end_date = new Date(response.data[i].job_end_datetime.toString().split("T")[0]);
-          console.log(job_end_date)
-          if (job_end_date >= myToday && job_end_date < myTomorrow){
-            comment_arr_temp.push("End day")
+          let job_end_date = new Date(
+            response.data[i].job_end_datetime.toString().split("T")[0]
+          );
+          console.log(job_end_date);
+          if (job_end_date >= myToday && job_end_date < myTomorrow) {
+            comment_arr_temp.push("End day");
           }
 
           let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
@@ -175,13 +201,12 @@ export default {
       .post(
         "https://pet-care-service.herokuapp.com/pet-owners/home-upcoming-event",
         {
-          toGet: get_info
+          toGet: get_info,
         }
       )
       .then((response) => {
-        var i
-        for (i = 0; i < response.data.length; i++) { 
-
+        var i;
+        for (i = 0; i < response.data.length; i++) {
           // let comment_arr_temp = []
           // console.log(myToday)
           // console.log(myTomorrow)
@@ -215,7 +240,7 @@ export default {
     this.loaded = true;
 
     // //Get this kind of data for current event!!
-    // this.current_event = [ 
+    // this.current_event = [
     //   {
     //     // pusername:,
     //     pet_name: "AnimalA",
@@ -260,7 +285,7 @@ export default {
     //   },
     // ];
 
-    // this.upcoming_event = [ 
+    // this.upcoming_event = [
     //   {
     //     // pusername:,
     //     pet_name: "AnimalD",

@@ -138,28 +138,12 @@ CREATE VIEW pet_days_per_job(cusername, pet_days, job_end_datetime) AS (
 	FROM bid_transaction
 );
 
-CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS (
-	SELECT cusername, SUM(pet_days)
-	FROM pet_days_per_job
-	WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  DATE_TRUNC('DAY'  , NOW())
-	GROUP BY cusername
-);
-
 -- Modified pet_days_past_30_days, so job_end_datetime is less than or equal to time now in SGT
 CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS (
 	SELECT cusername, SUM(pet_days)
 	FROM pet_days_per_job
 	WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  (SELECT (now() at time zone 'sgt'))
 	GROUP BY cusername
-);
-
-CREATE VIEW salary_calculation_for_full_time (cusername, salary) AS (
-	SELECT DPR.username, CASE
-		WHEN PD.pet_days <= 60 THEN 3000
-		ELSE 3000 + (PD.pet_days - 60) * (SELECT AVG(current_daily_price) FROM daily_price_rate DPR2 WHERE DPR2.username = DPR.username) * 0.8
-		END AS salary
-	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD 
-	WHERE EXISTS (SELECT 1 FROM full_time_caretaker F WHERE F.username = DPR.username)
 );
 
 --Modified salary_calculation
@@ -171,10 +155,10 @@ CREATE VIEW salary_calculation_for_full_time (cusername, salary) AS (
 	FROM full_time_caretaker F LEFT JOIN pet_days_past_30_days PD ON F.username = PD.cusername
 );
 
+--Modified salary calculation
 CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
-	SELECT DPR.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate DPR2 WHERE DPR2.username = DPR.username) * PD.pet_days * 0.75)
-	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD
-	WHERE EXISTS (SELECT 1 FROM part_time_caretaker P WHERE P.username = DPR.username)
+	SELECT P.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate DPR WHERE DPR.username = P.username) * PD.pet_days * 0.75)
+	FROM part_time_caretaker P NATURAL JOIN pet_days_past_30_days PD
 );
 
 -- trigger 1

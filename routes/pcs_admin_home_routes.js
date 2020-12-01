@@ -101,10 +101,7 @@ async function get_ft_caretakers_count(req, res) {
   }
 }
 
-async function get_num_pets_and_petdays_and_salary_for_each_caretaker(
-  req,
-  res
-) {
+async function get_num_pets_and_petdays_and_salary_for_each_caretaker(req, res) {
   try {
     const client = await pool.connect();
 
@@ -135,30 +132,38 @@ async function get_num_pets_and_petdays_and_salary_for_each_caretaker(
     //   GROUP BY SFT.cusername, SFT.salary;`
 
     const result = await client.query(
-      `SELECT SFT.cusername, CASE 
-                                WHEN (SELECT COUNT(*) 
-                                      FROM bid_transaction 
-                                      WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND 
-                                      job_end_datetime <=  (DATE_TRUNC('DAY', NOW()) + interval '1 day' - interval '1 millisecond') 
-                                      AND cusername = SFT.cusername) > 0 THEN (SELECT COUNT(*) 
-                                                                              FROM bid_transaction 
-                                                                              WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND 
-                                                                              job_end_datetime <=  (DATE_TRUNC('DAY', NOW()) + interval '1 day' - interval '1 millisecond') 
-                                                                              AND cusername = SFT.cusername) 
-                                ELSE 0 END AS num_pets, CASE 
-                                                            WHEN (SELECT SUM(pet_days) 
-                                                                  FROM pet_days_past_30_days 
-                                                                  WHERE cusername = SFT.cusername) > 0 THEN (SELECT SUM(pet_days) 
-                                                                                                            FROM pet_days_past_30_days 
-                                                                                                            WHERE cusername = SFT.cusername) 
-                                                            ELSE 0 END AS num_pet_days, SFT.salary 
+      `SELECT SFT.cusername, (SELECT COUNT(*) 
+                              FROM bid_transaction BT
+                              WHERE BT.job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND 
+                                BT.job_end_datetime <=  (SELECT (now() at time zone 'sgt'))
+                                AND BT.cusername = SPT.cusername) AS num_pets, 
+                              
+                              COALESCE((SELECT SUM(pet_days) 
+                                FROM pet_days_past_30_days PD
+                                WHERE PD.cusername = SFT.cusername), 0) 
+                              AS num_pet_days, 
+                              
+                              SFT.salary 
+
       FROM salary_calculation_for_full_time SFT 
-      GROUP BY SFT.cusername, SFT.salary 
+      
       UNION 
-      SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary FROM bid_transaction NATURAL JOIN pet_days_past_30_days 
-      NATURAL JOIN salary_calculation_for_part_time 
-      WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  (DATE_TRUNC('DAY', NOW()) + interval '1 day' - interval '1 millisecond') 
-      GROUP BY cusername, salary 
+
+      SELECT SPT.cusername, (SELECT COUNT(*) 
+                              FROM bid_transaction BT
+                              WHERE BT.job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND 
+                                BT.job_end_datetime <=  (SELECT (now() at time zone 'sgt'))
+                                AND BT.cusername = SPT.cusername) AS num_pets, 
+                              
+                              COALESCE((SELECT SUM(pet_days) 
+                                FROM pet_days_past_30_days PD
+                                WHERE PD.cusername = SPT.cusername), 0) 
+                              AS num_pet_days, 
+                              
+                              SPT.salary 
+
+      FROM salary_calculation_for_part_time SPT 
+     
       ORDER BY num_pets DESC, num_pet_days DESC;`
     );
 

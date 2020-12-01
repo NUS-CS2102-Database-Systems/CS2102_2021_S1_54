@@ -628,7 +628,6 @@ export default {
             this.length_even = 0;
             this.length_odd = 0;
 
-            console.log("Axios");
             console.log(response.data);
             if (response.data.length == 0) {
               this.have_data = false;
