@@ -102,40 +102,48 @@ export default {
     // Get current date with time = 00:00:00
     let today = new Date();
     //today.setHours(today.getHours() + 8);
-    let myToday = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate(),
-      0,
-      0,
-      0
-    );
-    let myTomorrow = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + 1,
-      0,
-      0,
-      0
-    );
+    // console.log(today)
+    // console.log(today.getDate())
+    let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
+    let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
+
+    // let myToday = new Date(
+    //   today.getFullYear(),
+    //   today.getMonth(),
+    //   today.getDate(),
+    //   0,
+    //   0,
+    //   0
+    // );
+    // let myTomorrow = new Date(
+    //   today.getFullYear(),
+    //   today.getMonth(),
+    //   today.getDate() + 1,
+    //   0,
+    //   0,
+    //   0
+    // );
+
     // let date = new Date();
     // let hours = date.setHours(date.getHours() + 8);
     let myToday_str = myToday.toISOString().toString();
-    myToday_str = myToday_str.replace(/T/, " ");
-    myToday_str = myToday_str.substring(0, myToday_str.length - 1);
+    myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
+    // myToday_str = myToday_str.substring(0, myToday_str.length - 1);
 
     let myTomorrow_str = myTomorrow.toISOString().toString();
-    myTomorrow_str = myTomorrow_str.replace(/T/, " ");
-    myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
-    //console.log(today)
-    //console.log(myToday)
-    //console.log(myTomorrow)
+    myTomorrow_str = myTomorrow_str.replace(/T/, " ").substring(0, 19);
+    // myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
+    console.log(today)
+    console.log(myToday)
+    console.log(myTomorrow)
 
     const get_info = {
       username: this.username,
       current_datetime: myToday_str,
       tomorrow_datetime: myTomorrow_str,
     };
+    console.log("get_info is")
+    console.log(get_info)
 
     await axios
       .post(
@@ -174,11 +182,14 @@ export default {
             comment_arr_temp.push("End day");
           }
 
+          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
+          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
+
           let event_data = {
             pet_name: response.data[i].pet_name,
             cusername: response.data[i].cusername, //Caretaker
-            job_start_datetime: response.data[i].job_start_datetime,
-            job_end_datetime: response.data[i].job_end_datetime,
+            job_start_datetime: formatted_job_start_datetime,
+            job_end_datetime: formatted_job_end_datetime,
             comment_arr: comment_arr_temp, //["Start day", "End day"],
             start_transfer_method: response.data[i].start_transfer_method, //{mtd: "Pet Owner Deliver"}, {mtd: "Care Taker Pickup"}, {mtd: "Transfer thorugh PCS Building"}
             end_transfer_method: response.data[i].end_transfer_method, //{mtd: "Pet Owner Pickup"}, {mtd: "Care Taker Deliver"}, {mtd: "Transfer thorugh PCS Building"}
@@ -211,17 +222,14 @@ export default {
           // }
           // console.log(comment_arr_temp)
 
+          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
+          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
+
           let event_data = {
             pet_name: response.data[i].pet_name,
             cusername: response.data[i].cusername, //Caretaker
-            job_start_datetime: response.data[i].job_start_datetime
-              .toString()
-              .replace(/T/, " at ")
-              .substring(0, myToday_str.length - 4),
-            job_end_datetime: response.data[i].job_end_datetime
-              .toString()
-              .replace(/T/, " at ")
-              .substring(0, myToday_str.length - 4),
+            job_start_datetime: formatted_job_start_datetime,
+            job_end_datetime: formatted_job_end_datetime,
             //comment_arr: [], //["Start day", "End day"],
             start_transfer_method: response.data[i].start_transfer_method, //{mtd: "Pet Owner Deliver"}, {mtd: "Care Taker Pickup"}, {mtd: "Transfer thorugh PCS Building"}
             end_transfer_method: response.data[i].end_transfer_method, //{mtd: "Pet Owner Pickup"}, {mtd: "Care Taker Deliver"}, {mtd: "Transfer thorugh PCS Building"}
