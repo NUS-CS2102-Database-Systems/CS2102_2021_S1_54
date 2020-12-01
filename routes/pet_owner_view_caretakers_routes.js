@@ -81,8 +81,6 @@ async function get_specific_caretakers_information(req, res) {
       date_to = null;
     }
 
-    // var caretakerObject = { fullTime: {}, partTime: {} };
-
     if (commitment == "full-time") {
       if (caretaker_username == null) {
         let request_full_time = `SELECT X.username AS username, X.name AS name, 
@@ -99,12 +97,6 @@ async function get_specific_caretakers_information(req, res) {
           let add_dates_requested = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = X.username) = 0 
           OR (SELECT COUNT(*) FROM leave_days L WHERE L.username = X.username 
           AND (date '${date_from}', date '${date_to}') OVERLAPS (L.start_date, L.end_date)) = 0)`;
-          // let add_dates_requested = ` (((SELECT (date '${date_from}', date '${date_to}')
-          // OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username) = 'f')
-          // OR (SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0)`;
-          //   let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND
-          // date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND
-          // date('${date_to}'))`;
 
           request_full_time = request_full_time + add_dates_requested + " AND";
         }
@@ -405,10 +397,11 @@ async function get_specific_caretakers_information(req, res) {
           let general_query = `SELECT X.username AS username, X.name AS name, X.age AS age, X.birth_date AS birth_date, X.gender AS gender, 
         X.phone AS phone, X.email AS email, X.address AS address, X.average_rating AS average_rating, X.years_exp AS years_exp FROM (`;
 
-          let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
-      phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
-      NATURAL JOIN daily_price_rate WHERE`;
+          let request_full_time = `SELECT T.username AS username, T.name AS name, AGE(T.birth_date) AS T.age, 
+          T.birth_date AS birth_date, T.gender AS gender, T.phone AS phone, T.email AS email, 
+          T.address AS address, T.average_rating AS average_rating, AGE(T.date_started) AS years_exp 
+          FROM (users NATURAL JOIN caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care 
+            NATURAL JOIN daily_price_rate) AS T WHERE`;
 
           let request_part_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
@@ -416,9 +409,10 @@ async function get_specific_caretakers_information(req, res) {
       NATURAL JOIN availabilities NATURAL JOIN daily_price_rate WHERE`;
 
           if (date_from != null && date_to != null) {
-            let add_dates_requested_full_time = ` (start_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}'))`;
+            let add_dates_requested_full_time = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE 
+            L1.username = T.username) = 0 OR 
+            (SELECT COUNT(*) FROM leave_days L WHERE L.username = T.username 
+            AND (date '${date_from}', date '${date_to}') OVERLAPS (L.start_date, L.end_date)) = 0)`;
 
             let add_dates_requested_part_time =
               " (start_date <= date('" +
