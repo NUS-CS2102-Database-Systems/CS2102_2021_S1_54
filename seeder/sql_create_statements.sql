@@ -187,7 +187,7 @@ CREATE OR REPLACE FUNCTION not_overlap()
 
 		IF ctx2 > 0 THEN
 			-- Replaced RETURN NULL with RAISE EXCEPTION
-			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, L.start_date, L.end_date;
+			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, NEW.job_start_datetime, NEW.job_end_datetime;
 		ELSE
 			RETURN NEW;
 		END IF;
