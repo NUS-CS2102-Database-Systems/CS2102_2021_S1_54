@@ -183,6 +183,17 @@ export default {
     // console.log("get_info is")
     // console.log(get_info)
 
+    // console.log(today)
+    // console.log(myToday)
+    // console.log(myTomorrow)
+    // console.log(anothertoday)
+    // console.log(get_info)
+    myToday.setHours(myToday.getHours() -8);
+    myTomorrow.setHours(myTomorrow.getHours() -8);
+    // console.log("after")
+    // console.log(myToday)
+    // console.log(myTomorrow)
+
     await axios
       .post(
         "https://pet-care-service.herokuapp.com/caretakers/get-num-bid-transactions",
