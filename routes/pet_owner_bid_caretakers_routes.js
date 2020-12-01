@@ -192,12 +192,12 @@ async function submit_a_bid(req, res) {
 
       await client.query(query);
 
-      // const result = await client.query(
-      //   `SELECT 1
-      //   FROM bid_transaction
-      //   WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
-      //   job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
-      // );
+      const result = await client.query(
+        `SELECT 1
+        FROM bid_transaction
+        WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
+        job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
+      );
     }
 
     res.setHeader("content-type", "application/json");
