@@ -271,8 +271,10 @@ export default {
         });
         data_ok = false;
       } else if (
+        this.selected_dates == null ||
+        this.selected_dates == undefined ||
         this.selected_dates[0] == null ||
-        this.selected_dates[1] == null
+        this.selected_dates[1] == null 
       ) {
         Swal.fire({
           icon: "error",
@@ -490,6 +492,7 @@ export default {
     },
     paybycash: async function() {
       //Check all fills are filled
+      console.log(this.selected_dates)
       let data_ok = true;
       if (this.pet_selected == null) {
         Swal.fire({
@@ -499,8 +502,10 @@ export default {
         });
         data_ok = false;
       } else if (
+        this.selected_dates == null ||
+        this.selected_dates == undefined ||
         this.selected_dates[0] == null ||
-        this.selected_dates[1] == null
+        this.selected_dates[1] == null 
       ) {
         Swal.fire({
           icon: "error",
@@ -712,6 +717,23 @@ export default {
     const urlParams = new URLSearchParams(queryString);
     this.caretaker = urlParams.get("caretaker");
 
+    // console.log("Understanding Date")
+    // let today = new Date();
+    // let d = new Date();
+    // console.log(d)
+    // d.setHours(0, -1, 0, 0);
+    // console.log(d)
+
+    // let myTomorrow = new Date(
+    //   today.getFullYear(),
+    //   today.getMonth(),
+    //   today.getDate() ,
+    //   0,
+    //   0,
+    //   -1
+    // );
+    // console.log(myTomorrow)
+    
     //this.pet_arr = [{name: "AnimalA"}, {name: "AnimalB"}, {name: "AnimalC"}];
     //const response = await axios.get("/pet-owners/view-caretakers-profiles");
     //number_of_pets = response.data.belongstotabledata[0].data_set;
