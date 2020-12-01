@@ -578,6 +578,15 @@ export default {
                 " till " + this.selected_dates[1] + " already exist!",
             });
           } 
+          else if (response.data[0] == null) {
+            Swal.fire({
+            // TODO: Do more checking on the type of error 
+              icon: "error",
+              title: "Oops...",
+              text:
+                "Bidding error! Please try again with NULL error: " + response.data[0] ,
+            });
+          }
           else {
             Swal.fire({
             // TODO: Do more checking on the type of error 
