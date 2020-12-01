@@ -11,13 +11,12 @@
       </v-btn>
       <template v-if="loaded && have_data">
         <br />
-        <v-layout justify-left>
-        </v-layout>
+        <v-layout justify-left> </v-layout>
         <v-row>
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_odd" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Leave {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
@@ -26,9 +25,14 @@
                       End Date: {{ end_date_odd[i] }} <br />
                     </p>
                   </v-card-text>
-                  <v-btn elevation="2" @click="deleteLeave(start_date_odd[i], end_date_odd[i])">
+                  <template v-if="can_delete_odd[i] == 'true'">
+                    <v-btn
+                      elevation="2"
+                      @click="deleteLeave(start_date_odd[i], end_date_odd[i])"
+                    >
                       Delete Leave
-                  </v-btn>
+                    </v-btn>
+                  </template>
                 </v-card>
               </v-row>
             </v-list>
@@ -36,7 +40,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_even" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Leave {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
@@ -45,9 +49,14 @@
                       End Date: {{ end_date_even[i] }} <br />
                     </p>
                   </v-card-text>
-                  <v-btn elevation="2" @click="deleteLeave(start_date_even[i], end_date_even[i])">
+                  <template v-if="can_delete_even[i] == 'true'">
+                    <v-btn
+                      elevation="2"
+                      @click="deleteLeave(start_date_even[i], end_date_even[i])"
+                    >
                       Delete Leave
-                  </v-btn>
+                    </v-btn>
+                  </template>
                 </v-card>
               </v-row>
             </v-list>
@@ -72,7 +81,7 @@
 import FullTimeCaretakerNavBar from "./FullTimeCaretakerNavBar";
 import * as constants from "../constants";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export default {
   name: "FullTimeCaretakerViewLeaves",
@@ -90,6 +99,8 @@ export default {
     start_date_even: [],
     end_date_odd: [],
     end_date_even: [],
+    can_delete_odd: [],
+    can_delete_even: [],
   }),
   methods: {
     applyForLeave: function() {
@@ -101,30 +112,30 @@ export default {
       const username = document.cookie.split("=")[1];
 
       const response = await axios({
-        method: 'delete',
-        url: 'https://pet-care-service.herokuapp.com/apply-leave',
+        method: "delete",
+        url: "https://pet-care-service.herokuapp.com/apply-leave",
         data: {
           username: username,
           start_date: start,
           end_date: end,
-        }
+        },
       });
 
       if (response.data.rowCount === 1) {
         Swal.fire({
           icon: "success",
           title: "Success",
-          text: "Leave deleted successfully."
-        })
-        window.location.reload(true);
+          text: "Leave deleted successfully.",
+        });
+        location.reload(true);
       } else {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Something went wrong. Please try again later."
+          text: "Something went wrong. Please try again later.",
         });
       }
-    }
+    },
   },
 
   async mounted() {
@@ -148,6 +159,15 @@ export default {
               this.start_date_odd.push(start_date);
               let end_date = response.data[i].end_date.split("T")[0];
               this.end_date_odd.push(end_date);
+              let date_start = new Date(start_date);
+              let can_delete = "";
+              if (date_start > new Date()) {
+                can_delete = "true";
+                this.can_delete_odd.push(can_delete);
+              } else {
+                can_delete = "false";
+                this.can_delete_odd.push(can_delete);
+              }
             } else {
               this.id_even.push(i + 1);
               this.reason_even.push(response.data[i].reason_for_leave);
@@ -155,6 +175,15 @@ export default {
               this.start_date_even.push(start_date);
               let end_date = response.data[i].end_date.split("T")[0];
               this.end_date_even.push(end_date);
+              let date_start = new Date(start_date);
+              let can_delete = "";
+              if (date_start > new Date()) {
+                can_delete = "true";
+                this.can_delete_even.push(can_delete);
+              } else {
+                can_delete = "false";
+                this.can_delete_even.push(can_delete);
+              }
             }
           }
         }
