@@ -17,8 +17,8 @@ var appRouter = function (app) {
     get_caretakers_total_salary
   );
   app.get(
-    "/pcs-admin/get-num-pets-and-pet-days-by-each-caretaker",
-    get_num_pets_and_petdays_by_each_caretaker
+    "/pcs-admin/get-num-pets-and-pet-days-and-salary-for-each-caretaker",
+    get_num_pets_and_petdays_and_salary_for_each_caretaker
   );
   app.get("/pcs-admin/get-num-full-time-caretakers", get_ft_caretakers_count);
 };
@@ -101,7 +101,10 @@ async function get_ft_caretakers_count(req, res) {
   }
 }
 
-async function get_num_pets_and_petdays_by_each_caretaker(req, res) {
+async function get_num_pets_and_petdays_and_salary_for_each_caretaker(
+  req,
+  res
+) {
   try {
     const client = await pool.connect();
 
@@ -112,8 +115,9 @@ async function get_num_pets_and_petdays_by_each_caretaker(req, res) {
     // );
 
     const result = await client.query(
-      `SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary FROM bid_transaction NATURAL JOIN pet_days_past_30_days 
-      NATURAL JOIN salary_calculation_for_full_time 
+      `SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary 
+      FROM salary_calculation_for_full_time SFT LEFT JOIN 
+      (bid_transaction NATURAL JOIN pet_days_past_30_days) AS X ON SFT.cusername = X.cusername 
       WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  (DATE_TRUNC('DAY', NOW()) + interval '1 day' - interval '1 millisecond') 
       GROUP BY cusername, salary 
       UNION 
