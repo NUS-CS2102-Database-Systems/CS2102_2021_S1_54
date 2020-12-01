@@ -219,8 +219,11 @@ export default {
                 icon: "error",
                 title: "Oops...",
                 text:
-                  "Credit card details could not be added. Please try again.",
+                  "Credit card details could not be added because it is used by another pet owner. If you suspect that someone is using your card fraudulently, please notify the bank and the police immediately. Otherwise, please use another credit card.",
               });
+              this.credit_card_name = null;
+              this.credit_card_num = null;
+              this.expiry_date = null;
             }
           });
       }

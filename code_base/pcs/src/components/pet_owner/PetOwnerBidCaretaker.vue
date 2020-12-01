@@ -657,7 +657,7 @@ export default {
                   " till " +
                   this.selected_dates[1] +
                   " is comfirmed. Please pay " +
-                  this.amount +
+                  this.price +
                   " to the caretaker upon the start of the caretaking session. Thank you!",
               }).then(function() {
                 window.location.href = constants.pet_owner_view_upcoming_jobs;

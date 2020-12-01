@@ -99,7 +99,7 @@ async function add_availabilities_information(req, res) {
     await client.query(query);
 
     const result = await client.query(
-      `SELECT COUNT(*) 
+      `SELECT COUNT(*) AS num
       FROM availabilities 
       WHERE username = '${username}' AND 
       ((SELECT EXTRACT(YEAR FROM start_date) = '${curr_year}') OR 
