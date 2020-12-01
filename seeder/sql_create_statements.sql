@@ -177,6 +177,12 @@ CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
 	WHERE EXISTS (SELECT 1 FROM part_time_caretaker P WHERE P.username = DPR.username)
 );
 
+--Modified salary calculation
+CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
+	SELECT P.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate DPR WHERE DPR.username = P.username) * PD.pet_days * 0.75)
+	FROM part_time_caretaker P NATURAL JOIN pet_days_past_30_days PD
+);
+
 -- trigger 1
 CREATE OR REPLACE FUNCTION not_overlap()
 	RETURNS TRIGGER AS 

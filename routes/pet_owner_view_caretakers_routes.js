@@ -87,13 +87,16 @@ async function get_specific_caretakers_information(req, res) {
       if (caretaker_username == null) {
         let request_full_time = `SELECT username, name, AGE(birth_date) AS age, birth_date, gender, 
       phone, email, address, average_rating, AGE(date_started) AS years_exp FROM users NATURAL JOIN 
-      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN leave_days 
-      NATURAL JOIN daily_price_rate WHERE`;
+      caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care NATURAL JOIN 
+      daily_price_rate WHERE`;
 
         if (date_from != null && date_to != null) {
-          let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND 
-        date('${date_to}'))`;
+          let add_dates_requested = ` (((SELECT (date '${date_from}', date '${date_to}') 
+          OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username) = 'f') 
+          OR (SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0)`;
+          //   let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND
+          // date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND
+          // date('${date_to}'))`;
 
           request_full_time = request_full_time + add_dates_requested + " AND";
         }
