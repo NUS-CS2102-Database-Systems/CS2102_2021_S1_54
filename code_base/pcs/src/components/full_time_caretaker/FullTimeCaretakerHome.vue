@@ -16,7 +16,7 @@
               <p style="color:black;font-size:20px">
                 Taken care of <b>{{ num_pets }}</b> pets in
                 <b>{{ num_pet_days }}</b> pet-days. <br />
-                Earned <b>SGD {{ amount_earned }}</b
+                Expected to earn <b>SGD {{ amount_earned }}</b
                 >. <br />
               </p>
             </v-card-text>

@@ -18,10 +18,12 @@
                 of <b>SGD {{ amount_earned }}</b> in <b>{{ num_days }}</b> days.
                 <br />
                 <br />
-                Our caretakers have earned a total of
+                We need to pay our Caretakers as their salaries a total of
                 <b>SGD {{ caretakers_salary }}</b> in
                 <b>{{ num_pet_days }}</b> pet-days.
                 <br />
+                (Note: For full-time Caretakers, we use the amount of their monthly salaries multiplied by the fraction of the month that has elapsed. 
+                For part-time Caretakers, we use their salaries earned so far in this month.)
               </p>
             </v-card-text>
           </v-layout>
@@ -113,8 +115,8 @@ export default {
         if (response.data[0] == undefined || response.data[1] == undefined) {
           this.caretakers_salary = 0;
         } else {
-          let total_salary = response.data[0].salary + response.data[1].salary;
-          this.caretakers_salary = total_salary;
+          let total_salary = response.data[0].salary * (this.num_days / 30) + response.data[1].salary;
+          this.caretakers_salary = total_salary.toFixed(2);
         }
         console.log(this.caretakers_salary);
       });
