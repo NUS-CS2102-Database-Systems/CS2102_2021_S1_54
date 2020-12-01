@@ -108,7 +108,7 @@ async function get_specific_past_jobs_information(req, res) {
       query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
       job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
       job_end_datetime BETWEEN '${start_date}' AND '${end_date}' 
-      ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
+      ORDER BY job_start_datetime ASC, job_end_datetime ASC;`;
     } else if (start_date == null && pet_names != null) {
       if (pet_names.includes(",")) {
         query = `SELECT u.username AS username, bt.pet_name AS pet_name, 

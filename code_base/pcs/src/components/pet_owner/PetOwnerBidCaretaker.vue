@@ -205,13 +205,13 @@ export default {
     method_to_arr: [
       { mtd: "Pet Owner Deliver" },
       { mtd: "Care Taker Pickup" },
-      { mtd: "Transfer thorugh PCS Building" },
+      { mtd: "Transfer through PCS Building" },
     ],
     start_method: null,
     method_from_arr: [
       { mtd: "Pet Owner Pickup" },
       { mtd: "Care Taker Deliver" },
-      { mtd: "Transfer thorugh PCS Building" },
+      { mtd: "Transfer through PCS Building" },
     ],
     end_method: null,
 
