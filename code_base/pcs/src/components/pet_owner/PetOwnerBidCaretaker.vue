@@ -490,7 +490,7 @@ export default {
         let date = new Date();
         //let hours = date.setHours(date.getHours() + 8);
         //date.setHours(date.getHours() + 8);
-        
+
         // let sg_bid_date = date.toISOString().toString();
         // sg_bid_date = sg_bid_date.replace(/T/, " ");
         // sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
@@ -523,19 +523,28 @@ export default {
         // console.log(startDateObj)
         // console.log(endDateObj)
 
+        date.setHours(date.getHours() + 8);
+        startDateObj.setHours(date.getHours() + 8);
+        endDateObj.setHours(date.getHours() + 8);
+
         const send_info = {
           username: this.username,
           pet: this.pet_selected,
           caretaker: this.caretaker,
-          bidding_time: date, //sg_bid_date, 
-          job_start_datetime: startDateObj,
-          job_end_datetime: endDateObj,
-          payment_datetime: startDateObj,
+          bidding_time: date.toISOString().toString().replace(/T/, " ").substring(0, 19), //sg_bid_date, 
+          job_start_datetime: startDateObj.toISOString().toString().replace(/T/, " ").substring(0, 19),
+          job_end_datetime: endDateObj.toISOString().toString().replace(/T/, " ").substring(0, 19),
+          payment_datetime: startDateObj.toISOString().toString().replace(/T/, " ").substring(0, 19),
           amount: this.price,
           payment_method: "Cash",
           start_transfer_method: this.start_method,
           end_transfer_method: this.end_method
         };
+
+        date.setHours(date.getHours() - 8);
+        startDateObj.setHours(date.getHours() - 8);
+        endDateObj.setHours(date.getHours() - 8);
+
         console.log(send_info)
         await axios
         .post(
@@ -545,8 +554,11 @@ export default {
           }
         )
         .then((response) => {
+          console.log("response")
           console.log(typeof response)
           console.log(response)
+          console.log(response.data)
+          console.log(response.data[0])
           if (response.data[0] == 1) {
             Swal.fire({
               icon: "success",
@@ -572,7 +584,7 @@ export default {
               icon: "error",
               title: "Oops...",
               text:
-                "Bidding error! Please try again",
+                "Bidding error! Please try again with error: " + response.data[0] ,
             });
           }
         });
@@ -597,8 +609,20 @@ export default {
     let date = new Date();
     //date.setHours(date.getHours() + 8);
     let sg_current_date = date.toISOString().toString();
+    // this.price_rate = sg_current_date;
+    // console.log(this.price_rate.replace(/T/, " ").substring(0, 18))
+
+    console.log(date)
+    console.log(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
+    date.setHours(date.getHours() + 8);
+    console.log(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
+    let d = new Date(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
+    console.log(d);
+    console.log(d.toISOString().toString().replace(/T/, " ").substring(0, 19));
+
+
     sg_current_date = sg_current_date.split(/T/, 2)[0];
-    this.today_date = sg_current_date
+    this.today_date = sg_current_date;
 
     const get_info = {
       username: this.username,
