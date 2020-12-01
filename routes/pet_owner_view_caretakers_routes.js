@@ -96,9 +96,9 @@ async function get_specific_caretakers_information(req, res) {
         // (date '2020-12-01', date '2020-12-24') OVERLAPS (L.start_date, L.end_date) AND
         // L.username = username) > 0;
         if (date_from != null && date_to != null) {
-          let add_dates_requested = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = X.username) = 0) 
-          OR (SELECT NOT EXISTS(SELECT (date '${date_from}', date '${date_to}') 
-          OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username))`;
+          let add_dates_requested = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = X.username) = 0 
+          OR (SELECT COUNT(*) FROM leave_days L WHERE L.username = X.username 
+          AND (date '${date_from}', date '${date_to}') OVERLAPS (L.start_date, L.end_date)) = 0)`;
           // let add_dates_requested = ` (((SELECT (date '${date_from}', date '${date_to}')
           // OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username) = 'f')
           // OR (SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0)`;
