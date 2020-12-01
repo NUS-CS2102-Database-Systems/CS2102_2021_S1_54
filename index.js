@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const routes = require("./routes/routes.js");
 const login_signup_routes = require("./routes/login_signup_routes.js");
 const admin_routes = require("./routes/admin_routes.js");
 const apply_leave_routes = require("./routes/apply_leave_routes.js");
@@ -49,7 +48,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // our routes go here
-routes(app);
 login_signup_routes(app);
 admin_routes(app);
 apply_leave_routes(app);
