@@ -26,11 +26,11 @@ const pet_owner_bid_caretakers_route = require("./routes/pet_owner_bid_caretaker
 const pet_owner_home_route = require("./routes/pet_owner_home.js");
 
 //here we are configuring dist to serve app files
-app.use("/", serveStatic(path.join(__dirname, "code_base/pcs/dist")));
+app.use("/", serveStatic(path.join(__dirname, "/code_base/pcs/dist")));
 
 // this * route is to serve project on different page routes except root `/`
 app.get(/.*/, function (req, res) {
-  res.sendFile(path.join(__dirname, "code_base/pcs/dist/index.html"));
+  res.sendFile(path.join(__dirname, "/code_base/pcs/dist/index.html"));
 });
 
 app.use(function (req, res, next) {
