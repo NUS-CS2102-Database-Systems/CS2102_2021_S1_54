@@ -158,7 +158,8 @@ async function get_num_pets_and_petdays_and_salary_for_each_caretaker(
       SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary FROM bid_transaction NATURAL JOIN pet_days_past_30_days 
       NATURAL JOIN salary_calculation_for_part_time 
       WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  (DATE_TRUNC('DAY', NOW()) + interval '1 day' - interval '1 millisecond') 
-      GROUP BY cusername, salary;`
+      GROUP BY cusername, salary 
+      ORDER BY num_pets DESC, num_pet_days DESC;`
     );
 
     res.setHeader("content-type", "application/json");
