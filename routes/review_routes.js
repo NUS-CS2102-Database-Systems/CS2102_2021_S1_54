@@ -26,12 +26,12 @@ async function get_all_reviews_for_caretaker(req, res) {
     const query = ` SELECT cusername, pusername AS reviewer, review, rating, review_time
             FROM bid_transaction
             WHERE cusername = '${cusername}'
-            ORDER BY review_time DESC 
             EXCEPT 
             SELECT cusername, pusername AS reviewer, review, rating, review_time
             FROM bid_transaction
             WHERE cusername = '${cusername}' AND review IS NULL AND rating IS NULL AND 
-            review_time IS NULL;
+            review_time IS NULL 
+            ORDER BY review_time DESC ;
         `;
     const result = await client.query(query);
 
