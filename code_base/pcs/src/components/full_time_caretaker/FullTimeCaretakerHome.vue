@@ -145,8 +145,8 @@ export default {
       0
     );
 
-    let myToday_str = myToday.toISOString().toString();
-    myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
+    // let myToday_str = myToday.toISOString().toString();
+    // myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
 
     let myTomorrow_str = myTomorrow.toISOString().toString();
     myTomorrow_str = myTomorrow_str.replace(/T/, " ").substring(0, 19);
@@ -178,7 +178,7 @@ export default {
 
     const get_info = {
       username: this.username,
-      current_datetime: myToday_str,
+      // current_datetime: myToday_str,
       tomorrow_datetime: myTomorrow_str,
       startMonth: firstDayOfMonth_str,
       moment_datetime: currentMoment_str,

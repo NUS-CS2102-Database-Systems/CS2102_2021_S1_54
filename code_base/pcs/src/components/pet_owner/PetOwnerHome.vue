@@ -110,8 +110,8 @@ export default {
 
     // let date = new Date();
     // let hours = date.setHours(date.getHours() + 8);
-    let startOfToday_str = startOfToday.toISOString().toString();
-    startOfToday_str = startOfToday_str.replace(/T/, " ").substring(0, 19);
+    // let startOfToday_str = startOfToday.toISOString().toString();
+    // startOfToday_str = startOfToday_str.replace(/T/, " ").substring(0, 19);
     // myToday_str = myToday_str.substring(0, myToday_str.length - 1);
 
     let myTomorrow_str = myTomorrow.toISOString().toString();
@@ -131,7 +131,7 @@ export default {
 
     const get_info = {
       username: this.username,
-      startOfToday_datetime: startOfToday_str,
+      //startOfToday_datetime: startOfToday_str,
       tomorrow_datetime: myTomorrow_str,
       moment_datetime: currentMoment_str,
     };
