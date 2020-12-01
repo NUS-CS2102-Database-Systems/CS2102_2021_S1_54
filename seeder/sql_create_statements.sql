@@ -138,7 +138,7 @@ CREATE VIEW pet_days_per_job(cusername, pet_days, job_end_datetime) AS (
 	FROM bid_transaction
 );
 
-CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS (
+CREATE VIEW pet_days_past_30_days(cusername, pet_days) AS (
 	SELECT cusername, SUM(pet_days)
 	FROM pet_days_per_job
 	WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  DATE_TRUNC('DAY'  , NOW())
