@@ -145,8 +145,8 @@ export default {
     let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
     let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
     
-    let myToday_str = myToday.toISOString().toString();
-    myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
+    // let myToday_str = myToday.toISOString().toString();
+    // myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
 
     let myTomorrow_str = myTomorrow.toISOString().toString();
     myTomorrow_str = myTomorrow_str.replace(/T/, " ").substring(0, 19);
@@ -158,17 +158,26 @@ export default {
     // console.log(firstDayOfNextMonth)
     
     let anothertoday = new Date();
-    anothertoday.setHours(today.getHours() + 8);
+    anothertoday.setHours(anothertoday.getHours() + 8);
     let currentMoment_str = anothertoday.toISOString().toString().replace(/T/, " ").substring(0, 19);
 
     const get_info = {
       username: this.username,
-      current_datetime: myToday_str,
+      //current_datetime: myToday_str,
       tomorrow_datetime: myTomorrow_str,
       startMonth: firstDayOfMonth_str,
       moment_datetime: currentMoment_str,
       //endMonth: firstDayOfNextMonth,
     };
+
+    console.log(today)
+    console.log(myToday)
+    console.log(myTomorrow)
+    console.log(anothertoday)
+    console.log(get_info)
+    myToday.setHours(myToday.getHours() -8);
+    myTomorrow.setHours(myTomorrow.getHours() -8);
+    console.log("äfter")
 
     await axios
       .post(

@@ -103,13 +103,13 @@ async function get_current_event_information(req, res) {
   try {
     const client = await pool.connect();
     const username = req.body.toGet.username;
-    const current_datetime = req.body.toGet.current_datetime;
+    const moment_datetime = req.body.toGet.moment_datetime;
     const tomorrow_datetime = req.body.toGet.tomorrow_datetime;
 
     const result = await client.query(
       `SELECT pet_name, pusername, job_start_datetime, job_end_datetime, start_transfer_method, end_transfer_method, payment_method, amount
       FROM bid_transaction 
-      WHERE cusername = '${username}' AND job_start_datetime < '${tomorrow_datetime}' AND job_end_datetime >= '${current_datetime}' 
+      WHERE cusername = '${username}' AND job_start_datetime < '${tomorrow_datetime}' AND job_end_datetime >= '${moment_datetime}' 
       ORDER BY job_start_datetime ASC, job_end_datetime ASC;`
     );
 
