@@ -189,7 +189,7 @@
                       <br />
                       <v-btn elevation="2">
                         <router-link
-                          tag="span"
+                          target="_blank"
                           :to="{
                             path:
                               '/pet-owners/view-caretaker-reviews/' +
@@ -250,11 +250,11 @@
                       <br />
                       <v-btn elevation="2">
                         <router-link
-                          tag="span"
+                          target="_blank"
                           :to="{
                             path:
                               '/pet-owners/view-caretaker-reviews/' +
-                              caretaker_username_even[i],
+                              caretaker_username_even[i - 1],
                           }"
                         >
                           View Reviews

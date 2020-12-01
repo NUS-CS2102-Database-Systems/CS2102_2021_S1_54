@@ -71,10 +71,10 @@ async function check_for_card(req, res) {
     //const caretaker = req.body.toGet.caretaker;
 
     const result = await client.query(
-      `SELECT 1
-        FROM pet_owner
-        WHERE username = '${username}' AND credit_card_number != NULL 
-          AND credit_card_full_name != NULL AND credit_card_full_name != NULL;`
+      `SELECT 1 
+      FROM pet_owner 
+        WHERE username = '${username}' AND credit_card_number IS NOT NULL
+          AND credit_card_full_name IS NOT NULL AND credit_card_expiry_date IS NOT NULL;`
     );
 
     res.setHeader("content-type", "application/json");
