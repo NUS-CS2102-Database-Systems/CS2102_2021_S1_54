@@ -83,6 +83,8 @@ export default {
   data: () => ({
     loaded: false,
     username: null,
+    month: null,
+    year: null,
     num_pets: 0,
     amount_earned: 0,
     num_pet_days: 0,
@@ -152,8 +154,8 @@ export default {
       moment_datetime: currentMoment_str,
       //endTimeOfMonth: myTomorrow,
     };
-    console.log("get_info is")
-    console.log(get_info)
+    // console.log("get_info is")
+    // console.log(get_info)
 
 
     await axios
