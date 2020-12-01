@@ -13,7 +13,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_odd" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <h3 style="color:black">Job Information</h3>
@@ -63,7 +63,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_even" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <h3 style="color:black">Job Information</h3>
@@ -158,7 +158,7 @@ export default {
     FullTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     have_data: false,
     username: null,
     id_odd: [],
@@ -227,7 +227,7 @@ export default {
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
-              this.pet_owner_odd.push(response.data[i].pusername);
+              this.pet_owner_odd.push(response.data[i].username);
               this.pet_odd.push(response.data[i].pet_name);
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
@@ -290,7 +290,7 @@ export default {
               this.payment_datetime_odd.push(date_time);
             } else {
               this.id_even.push(i + 1);
-              this.caretaker_even.push(response.data[i].cusername);
+              this.pet_owner_even.push(response.data[i].username);
               this.pet_even.push(response.data[i].pet_name);
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +

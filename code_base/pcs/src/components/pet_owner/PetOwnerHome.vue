@@ -13,8 +13,6 @@
           v-if="current_event.length != 0"
           :headers="headers_current"
           :items="current_event"
-          :sort-by="['comment_arr', 'job_end_datetime']"
-          :sort-desc="[true, false]"
           multi-sort
           hide-default-footer
           class="elevation-1"
@@ -29,8 +27,6 @@
           v-if="upcoming_event.length != 0"
           :headers="headers_upcoming"
           :items="upcoming_event"
-          :sort-by="['job_start_datetime', 'start_transfer_method']"
-          :sort-desc="[false, false]"
           multi-sort
           hide-default-footer
           class="elevation-1"
@@ -104,9 +100,22 @@ export default {
     //today.setHours(today.getHours() + 8);
     // console.log(today)
     // console.log(today.getDate())
-    let startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
-    let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
-
+    let startOfToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      8,
+      0,
+      0
+    );
+    let myTomorrow = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 1,
+      8,
+      0,
+      0
+    );
 
     // let date = new Date();
     // let hours = date.setHours(date.getHours() + 8);
@@ -120,11 +129,15 @@ export default {
 
     let anothertoday = new Date();
     anothertoday.setHours(anothertoday.getHours() + 8);
-    let currentMoment_str = anothertoday.toISOString().toString().replace(/T/, " ").substring(0, 19);
+    let currentMoment_str = anothertoday
+      .toISOString()
+      .toString()
+      .replace(/T/, " ")
+      .substring(0, 19);
 
-    console.log(today)
-    console.log(startOfToday)
-    console.log(myTomorrow)
+    console.log(today);
+    console.log(startOfToday);
+    console.log(myTomorrow);
     console.log(today);
     //console.log(myToday);
     console.log(myTomorrow);

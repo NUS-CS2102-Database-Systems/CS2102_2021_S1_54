@@ -32,8 +32,6 @@
           v-if="current_event.length != 0"
           :headers="headers_current"
           :items="current_event"
-          :sort-by="['comment_arr', 'job_end_datetime']"
-          :sort-desc="[true, false]"
           multi-sort
           hide-default-footer
           class="elevation-1"
@@ -48,8 +46,6 @@
           v-if="upcoming_event.length != 0"
           :headers="headers_upcoming"
           :items="upcoming_event"
-          :sort-by="['job_start_datetime', 'start_transfer_method']"
-          :sort-desc="[false, false]"
           multi-sort
           hide-default-footer
           class="elevation-1"
