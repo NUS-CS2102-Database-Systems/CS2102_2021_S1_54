@@ -65,7 +65,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_odd" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
@@ -89,7 +89,7 @@
                   </v-card-text>
                   <v-btn elevation="2">
                     <router-link
-                      tag="span"
+                      target="_blank"
                       :to="{
                         path: '/pet-owners/submit-review/',
                         query: {
@@ -113,7 +113,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_even" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
@@ -137,7 +137,7 @@
                   </v-card-text>
                   <v-btn elevation="2">
                     <router-link
-                      tag="span"
+                      target="_blank"
                       :to="{
                         path: '/pet-owners/submit-review/',
                         query: {

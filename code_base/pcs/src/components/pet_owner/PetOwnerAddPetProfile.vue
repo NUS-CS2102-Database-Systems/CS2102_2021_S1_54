@@ -301,10 +301,17 @@ export default {
                 title: "Added!",
                 text:
                   this.pet_name + "'s information has been added successfully.",
+              }).then(function() {
+                window.location.href = constants.pet_owner_view_pet_info;
               });
-              window.location.href = constants.pet_owner_view_pet_info;
             } else {
-              console.log("Error!");
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text:
+                  this.pet_name +
+                  "'s details could not be added. Please try again.",
+              });
             }
           });
       }

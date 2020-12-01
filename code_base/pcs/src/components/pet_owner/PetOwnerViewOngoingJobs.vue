@@ -13,26 +13,32 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_odd" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
-                    <h3>Caretaker Information</h3>
-                    Caretaker Username: {{ caretaker_odd[i] }} <br />
-                    Caretaker Name: {{ caretaker_name_odd[i] }} <br />
-                    Caretaker Phone: {{ caretaker_phone_odd[i] }} <br />
-                    Caretaker Address: {{ caretaker_address_odd[i] }} <br />
-                    <h3>Job Information</h3>
-                    Pet Name: {{ pet_odd[i] }} <br />
-                    Job Started: {{ job_start_odd[i] }} <br />
-                    Job End: {{ job_end_odd[i] }} <br />
-                    Transfer Method (Pick Up):
-                    {{ start_transfer_method_odd[i] }}
-                    <br />
-                    Transfer Method (Drop Off): {{ end_transfer_method_odd[i] }}
-                    <br />
-                    Amount: {{ amount_odd[i] }} <br />
-                    Paid By: {{ payment_method_odd[i] }} <br />
-                    Payment Date and Time: {{ payment_datetime_odd[i] }} <br />
+                    <h3 style="color:black">Caretaker Information</h3>
+                    <p style="color:black">
+                      Caretaker Username: {{ caretaker_odd[i] }} <br />
+                      Caretaker Name: {{ caretaker_name_odd[i] }} <br />
+                      Caretaker Phone: {{ caretaker_phone_odd[i] }} <br />
+                      Caretaker Address: {{ caretaker_address_odd[i] }} <br />
+                    </p>
+                    <h3 style="color:black">Job Information</h3>
+                    <p style="color:black">
+                      Pet Name: {{ pet_odd[i] }} <br />
+                      Job Started: {{ job_start_odd[i] }} <br />
+                      Job End: {{ job_end_odd[i] }} <br />
+                      Transfer Method (Pick Up):
+                      {{ start_transfer_method_odd[i] }}
+                      <br />
+                      Transfer Method (Drop Off):
+                      {{ end_transfer_method_odd[i] }}
+                      <br />
+                      Amount: {{ amount_odd[i] }} <br />
+                      Paid By: {{ payment_method_odd[i] }} <br />
+                      Payment Date and Time: {{ payment_datetime_odd[i] }}
+                      <br />
+                    </p>
                   </v-card-text>
                 </v-card>
               </v-row>
@@ -41,27 +47,32 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_even" :key="number">
               <v-row>
-                <v-card width="55%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
-                    <h3>Caretaker Information</h3>
-                    Caretaker Username: {{ caretaker_even[i] }} <br />
-                    Caretaker Name: {{ caretaker_name_even[i] }} <br />
-                    Caretaker Phone: {{ caretaker_phone_even[i] }} <br />
-                    Caretaker Address: {{ caretaker_address_even[i] }} <br />
-                    <h3>Job Information</h3>
-                    Pet Name: {{ pet_even[i] }} <br />
-                    Job Started: {{ job_start_even[i] }} <br />
-                    Job End: {{ job_end_even[i] }} <br />
-                    Transfer Method (Pick Up):
-                    {{ start_transfer_method_even[i] }}
-                    <br />
-                    Transfer Method (Drop Off):
-                    {{ end_transfer_method_even[i] }}
-                    <br />
-                    Amount: {{ amount_even[i] }} <br />
-                    Paid By: {{ payment_method_even[i] }} <br />
-                    Payment Date and Time: {{ payment_datetime_even[i] }} <br />
+                    <h3 style="color:black">Caretaker Information</h3>
+                    <p style="color:black">
+                      Caretaker Username: {{ caretaker_even[i] }} <br />
+                      Caretaker Name: {{ caretaker_name_even[i] }} <br />
+                      Caretaker Phone: {{ caretaker_phone_even[i] }} <br />
+                      Caretaker Address: {{ caretaker_address_even[i] }} <br />
+                    </p>
+                    <h3 style="color:black">Job Information</h3>
+                    <p style="color:black">
+                      Pet Name: {{ pet_even[i] }} <br />
+                      Job Started: {{ job_start_even[i] }} <br />
+                      Job End: {{ job_end_even[i] }} <br />
+                      Transfer Method (Pick Up):
+                      {{ start_transfer_method_even[i] }}
+                      <br />
+                      Transfer Method (Drop Off):
+                      {{ end_transfer_method_even[i] }}
+                      <br />
+                      Amount: {{ amount_even[i] }} <br />
+                      Paid By: {{ payment_method_even[i] }} <br />
+                      Payment Date and Time: {{ payment_datetime_even[i] }}
+                      <br />
+                    </p>
                   </v-card-text>
                 </v-card>
               </v-row>

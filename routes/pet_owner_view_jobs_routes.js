@@ -40,8 +40,8 @@ async function get_past_jobs_information(req, res) {
       bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND 
-      bt.job_start_datetime < current_timestamp AND 
-      bt.job_end_datetime < current_timestamp 
+      bt.job_start_datetime < (select (now() at time zone 'sgt')) AND 
+      bt.job_end_datetime < (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`
     );
 
@@ -118,8 +118,8 @@ async function get_specific_past_jobs_information(req, res) {
         bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime  
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-        bt.job_start_datetime < current_timestamp AND 
-        bt.job_end_datetime < current_timestamp AND (`;
+        bt.job_start_datetime < (select (now() at time zone 'sgt')) AND 
+        bt.job_end_datetime < (select (now() at time zone 'sgt')) AND (`;
         let pet_names_split = pet_names.split(",");
         let length = pet_names_split.length;
         for (let i = 0; i < length; i++) {
@@ -135,8 +135,8 @@ async function get_specific_past_jobs_information(req, res) {
         bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime  
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-        bt.job_start_datetime < current_timestamp AND 
-        bt.job_end_datetime < current_timestamp AND bt.pet_name = '${pet_names}' 
+        bt.job_start_datetime < (select (now() at time zone 'sgt')) AND 
+        bt.job_end_datetime < (select (now() at time zone 'sgt')) AND bt.pet_name = '${pet_names}' 
         ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
       }
     } else {
@@ -147,8 +147,8 @@ async function get_specific_past_jobs_information(req, res) {
       bt.review AS review, bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime  
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-      bt.job_start_datetime < current_timestamp AND 
-      bt.job_end_datetime < current_timestamp 
+      bt.job_start_datetime < (select (now() at time zone 'sgt')) AND 
+      bt.job_end_datetime < (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
     }
 
@@ -177,8 +177,8 @@ async function get_ongoing_jobs_information(req, res) {
       bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-      bt.job_start_datetime <= current_timestamp AND 
-      bt.job_end_datetime >= current_timestamp 
+      bt.job_start_datetime <= (select (now() at time zone 'sgt')) AND 
+      bt.job_end_datetime >= (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`
     );
 
@@ -205,7 +205,7 @@ async function get_upcoming_jobs_information(req, res) {
       bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-      bt.job_start_datetime > current_timestamp 
+      bt.job_start_datetime > (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`
     );
 
@@ -292,7 +292,7 @@ async function get_specific_upcoming_jobs_information(req, res) {
         bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-        job_start_datetime > current_timestamp AND (`;
+        job_start_datetime > (select (now() at time zone 'sgt')) AND (`;
         let pet_names_split = pet_names.split(",");
         let length = pet_names_split.length;
         for (let i = 0; i < length; i++) {
@@ -309,7 +309,7 @@ async function get_specific_upcoming_jobs_information(req, res) {
         bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
         FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
         WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-        job_start_datetime > current_timestamp AND pet_name = '${pet_names}' 
+        job_start_datetime > (select (now() at time zone 'sgt')) AND pet_name = '${pet_names}' 
         ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
       }
     } else {
@@ -321,7 +321,7 @@ async function get_specific_upcoming_jobs_information(req, res) {
       bt.payment_method AS payment_method, bt.payment_datetime AS payment_datetime 
       FROM users u INNER JOIN bid_transaction bt ON u.username = bt.cusername 
       WHERE bt.pusername = '${username}' AND bt.is_successful_bid = 'true' AND 
-      bt.job_start_datetime > current_timestamp 
+      bt.job_start_datetime > (select (now() at time zone 'sgt')) 
       ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
     }
 

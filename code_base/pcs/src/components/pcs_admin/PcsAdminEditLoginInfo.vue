@@ -142,9 +142,10 @@ export default {
                 icon: "success",
                 title: "Updated!",
                 text: "Password has been updated successfully.",
+              }).then(function() {
+                window.location.href =
+                  constants.pcs_admin_go_back_to_profile_page;
               });
-              window.location.href =
-                constants.pcs_admin_go_back_to_profile_page;
             } else {
               Swal.fire({
                 icon: "error",

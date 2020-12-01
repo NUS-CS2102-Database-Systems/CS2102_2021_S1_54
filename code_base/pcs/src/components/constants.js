@@ -21,6 +21,9 @@ export const pet_owner_view_pet_info =
 export const pet_owner_submit_bid_for_caretaker =
   domain + "pet-owners/view-caretakers-profiles/bid?";
 
+export const pet_owner_view_upcoming_jobs =
+  domain + "pet-owners/view-upcoming-jobs?" + document.cookie;
+
 export const pet_owner_add_pet_info = domain + "pet-owners/add-pets?";
 
 export const pet_owner_go_back_to_profile_page =

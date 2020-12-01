@@ -64,14 +64,14 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_odd" :key="number">
               <v-row>
-                <v-card width="45%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
                       Caretaker Username: {{ caretaker_odd[i] }} <br />
                       Pet Name: {{ pet_odd[i] }} <br />
-                      Job Started: {{ job_start_odd[i] }} <br />
-                      Job Ended: {{ job_end_odd[i] }} <br />
+                      Job Start: {{ job_start_odd[i] }} <br />
+                      Job End: {{ job_end_odd[i] }} <br />
                       Transfer Method (Pick Up):
                       {{ start_transfer_method_odd[i] }}
                       <br />
@@ -91,14 +91,14 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_even" :key="number">
               <v-row>
-                <v-card width="45%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
                       Caretaker Username: {{ caretaker_even[i] }} <br />
                       Pet Name: {{ pet_even[i] }} <br />
-                      Job Started: {{ job_start_even[i] }} <br />
-                      Job Ended: {{ job_end_even[i] }} <br />
+                      Job Start: {{ job_start_even[i] }} <br />
+                      Job End: {{ job_end_even[i] }} <br />
                       Transfer Method (Pick Up):
                       {{ start_transfer_method_even[i] }}
                       <br />
@@ -282,6 +282,7 @@ export default {
             }
           )
           .then((response) => {
+            console.log(response.data);
             this.id_odd = [];
             this.caretaker_odd = [];
             this.pet_odd = [];
@@ -312,7 +313,7 @@ export default {
               for (let i = 0; i < length; i++) {
                 if (i % 2 == 0) {
                   this.id_odd.push(i + 1);
-                  this.caretaker_odd.push(response.data[i].cusername);
+                  this.caretaker_odd.push(response.data[i].username);
                   this.pet_odd.push(response.data[i].pet_name);
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
@@ -345,7 +346,7 @@ export default {
                   this.payment_datetime_odd.push(date_time);
                 } else {
                   this.id_even.push(i + 1);
-                  this.caretaker_even.push(response.data[i].cusername);
+                  this.caretaker_even.push(response.data[i].username);
                   this.pet_even.push(response.data[i].pet_name);
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
@@ -425,7 +426,7 @@ export default {
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
-              this.caretaker_odd.push(response.data[i].cusername);
+              this.caretaker_odd.push(response.data[i].username);
               this.pet_odd.push(response.data[i].pet_name);
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
@@ -452,7 +453,7 @@ export default {
               this.payment_datetime_odd.push(date_time);
             } else {
               this.id_even.push(i + 1);
-              this.caretaker_even.push(response.data[i].cusername);
+              this.caretaker_even.push(response.data[i].username);
               this.pet_even.push(response.data[i].pet_name);
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
