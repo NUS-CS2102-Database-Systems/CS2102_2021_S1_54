@@ -356,38 +356,70 @@ export default {
 
           // Get current datetime
           let date = new Date();
-          //let hours = date.setHours(date.getHours() + 8);
-          //date.setHours(date.getHours() + 8);
-          let sg_bid_date = date.toISOString().toString();
-          sg_bid_date = sg_bid_date.replace(/T/, " ");
-          sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
 
-          // Format date and time into datetime for db
-          var startTimeString =
-            this.start_time.hour + ":" + this.start_time.minute + ":00";
-          var startDateObj = new Date(
-            this.selected_dates[0] + " " + startTimeString
-          );
+          var startDateObj = new Date(this.selected_dates[0]);
+          startDateObj.setHours(this.start_time.split(":")[0]);
+          startDateObj.setMinutes(this.start_time.split(":")[1]);
 
-          var endTimeString =
-            this.end_time.hour + ":" + this.end_time.minute + ":00";
-          var endDateObj = new Date(
-            this.selected_dates[1] + " " + endTimeString
-          );
+          var endDateObj = new Date(this.selected_dates[1]);
+          endDateObj.setHours(this.end_time.split(":")[0]);
+          endDateObj.setMinutes(this.end_time.split(":")[1]);
+
+          date.setHours(date.getHours() + 8);
+          startDateObj.setHours(startDateObj.getHours() + 8);
+          endDateObj.setHours(endDateObj.getHours() + 8);
+
+          // // Get current datetime
+          // let date = new Date();
+          // //let hours = date.setHours(date.getHours() + 8);
+          // //date.setHours(date.getHours() + 8);
+          // let sg_bid_date = date.toISOString().toString();
+          // sg_bid_date = sg_bid_date.replace(/T/, " ");
+          // sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
+
+          // // Format date and time into datetime for db
+          // var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
+          // var startDateObj = new Date(this.selected_dates[0] + ' ' + startTimeString);
+
+          // var endTimeString = this.end_time.hour + ':' + this.end_time.minute + ':00';
+          // var endDateObj = new Date(this.selected_dates[1] + ' ' + endTimeString);
 
           const send_info = {
             username: this.username,
             pet: this.pet_selected,
             caretaker: this.caretaker,
-            bidding_time: sg_bid_date,
-            job_start_datetime: startDateObj,
-            job_end_datetime: endDateObj,
-            payment_datetime: sg_bid_date,
+            bidding_time: date
+              .toISOString()
+              .toString()
+              .replace(/T/, " ")
+              .substring(0, 19), //sg_bid_date,
+            job_start_datetime: startDateObj
+              .toISOString()
+              .toString()
+              .replace(/T/, " ")
+              .substring(0, 19),
+            job_end_datetime: endDateObj
+              .toISOString()
+              .toString()
+              .replace(/T/, " ")
+              .substring(0, 19),
+            payment_datetime: date
+              .toISOString()
+              .toString()
+              .replace(/T/, " ")
+              .substring(0, 19), //sg_bid_date,
             amount: this.price,
             payment_method: "Credit Card",
             start_transfer_method: this.start_method,
             end_transfer_method: this.end_method,
           };
+
+          date.setHours(date.getHours() - 8);
+          startDateObj.setHours(startDateObj.getHours() - 8);
+          endDateObj.setHours(endDateObj.getHours() - 8);
+
+          console.log(send_info);
+
           await axios
             .post(
               "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid/pay",
@@ -396,28 +428,28 @@ export default {
               }
             )
             .then((response) => {
-              if (response.data[0] == 1) {
+              if (response.data[0].result == 1) {
                 Swal.fire({
                   icon: "success",
                   title: "Sucessfully bidded!",
                   text:
-                    this.pet_name +
+                    this.pet_selected +
                     "'s bid with " +
                     this.caretaker +
                     " starting from " +
                     this.selected_dates[0] +
                     " till " +
                     this.selected_dates[1] +
-                    " is confirmed. Thank you!",
+                    " is comfirmed. Thank you!",
                 });
                 window.location.href =
                   constants.pet_owner_view_caretaker_domain;
-              } else if (response.data[0] == 2) {
+              } else if (response.data[0].result == 2) {
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
                   text:
-                    this.pet_name +
+                    this.pet_selected +
                     "'s bid with " +
                     this.caretaker +
                     " starting from " +
@@ -426,12 +458,30 @@ export default {
                     this.selected_dates[1] +
                     " already exist!",
                 });
-              } else {
-                // TODO: Do more checking on the type of error
+              } else if (response.data[0].result == null) {
                 Swal.fire({
+                  // TODO: Do more checking on the type of error
                   icon: "error",
                   title: "Oops...",
-                  text: "Bidding error! Please try again",
+                  text:
+                    "Bidding error! Please try again with NULL Result error: " +
+                    response.data[0],
+                });
+              } else if (response.data[0] == null) {
+                Swal.fire({
+                  // TODO: Do more checking on the type of error
+                  icon: "error",
+                  title: "Oops...",
+                  text:
+                    "Bidding error! Please try again with NULL error: " +
+                    response.data[0],
+                });
+              } else {
+                Swal.fire({
+                  // TODO: Do more checking on the type of error
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Bidding error! Please try again: " + response.data[0],
                 });
               }
             });
@@ -542,8 +592,8 @@ export default {
         // console.log(endDateObj)
 
         date.setHours(date.getHours() + 8);
-        startDateObj.setHours(date.getHours() + 8);
-        endDateObj.setHours(date.getHours() + 8);
+        startDateObj.setHours(startDateObj.getHours() + 8);
+        endDateObj.setHours(endDateObj.getHours() + 8);
 
         const send_info = {
           username: this.username,
@@ -576,8 +626,8 @@ export default {
         };
 
         date.setHours(date.getHours() - 8);
-        startDateObj.setHours(date.getHours() - 8);
-        endDateObj.setHours(date.getHours() - 8);
+        startDateObj.setHours(startDateObj.getHours() - 8);
+        endDateObj.setHours(endDateObj.getHours() - 8);
 
         console.log(send_info);
         await axios
@@ -599,14 +649,14 @@ export default {
                 icon: "success",
                 title: "Sucessfully bidded!",
                 text:
-                  this.pet_name +
+                  this.pet_selected +
                   "'s bid with " +
                   this.caretaker +
                   " starting from " +
                   this.selected_dates[0] +
                   " till " +
                   this.selected_dates[1] +
-                  " is comfirmed.\n Please pay " +
+                  " is comfirmed. Please pay " +
                   this.amount +
                   " to the caretaker upon the start of the caretaking session. Thank you!",
               });
@@ -616,7 +666,7 @@ export default {
                 icon: "error",
                 title: "Oops...",
                 text:
-                  this.pet_name +
+                  this.pet_selected +
                   "'s bid with " +
                   this.caretaker +
                   " starting from " +
@@ -631,7 +681,7 @@ export default {
                 icon: "error",
                 title: "Oops...",
                 text:
-                  "Bidding error! Please try again with NULL result error: " +
+                  "Bidding error! Please try again with NULL Result error: " +
                   response.data[0],
               });
             } else if (response.data[0] == null) {
@@ -648,9 +698,7 @@ export default {
                 // TODO: Do more checking on the type of error
                 icon: "error",
                 title: "Oops...",
-                text:
-                  "Bidding error! Please try again with error: " +
-                  response.data[0],
+                text: "Bidding error! Please try again: " + response.data[0],
               });
             }
           });
@@ -671,46 +719,22 @@ export default {
     //}
     //pet_name_arr
 
-    let date = new Date();
-    //date.setHours(date.getHours() + 8);
-    let sg_current_date = date.toISOString().toString();
-    // this.price_rate = sg_current_date;
-    // console.log(this.price_rate.replace(/T/, " ").substring(0, 18))
+    // let date = new Date();
+    // //date.setHours(date.getHours() + 8);
+    // let sg_current_date = date.toISOString().toString();
+    // // this.price_rate = sg_current_date;
+    // // console.log(this.price_rate.replace(/T/, " ").substring(0, 18))
 
-    console.log(date);
-    console.log(
-      date
-        .toISOString()
-        .toString()
-        .replace(/T/, " ")
-        .substring(0, 19)
-    );
-    date.setHours(date.getHours() + 8);
-    console.log(
-      date
-        .toISOString()
-        .toString()
-        .replace(/T/, " ")
-        .substring(0, 19)
-    );
-    let d = new Date(
-      date
-        .toISOString()
-        .toString()
-        .replace(/T/, " ")
-        .substring(0, 19)
-    );
-    console.log(d);
-    console.log(
-      d
-        .toISOString()
-        .toString()
-        .replace(/T/, " ")
-        .substring(0, 19)
-    );
+    // console.log(date)
+    // console.log(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
+    // date.setHours(date.getHours() + 8);
+    // console.log(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
+    // let d = new Date(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
+    // console.log(d);
+    // console.log(d.toISOString().toString().replace(/T/, " ").substring(0, 19));
 
-    sg_current_date = sg_current_date.split(/T/, 2)[0];
-    this.today_date = sg_current_date;
+    // sg_current_date = sg_current_date.split(/T/, 2)[0];
+    // this.today_date = sg_current_date;
 
     const get_info = {
       username: this.username,

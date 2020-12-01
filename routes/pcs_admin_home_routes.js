@@ -136,7 +136,7 @@ async function get_num_pets_and_petdays_and_salary_for_each_caretaker(req, res) 
                               FROM bid_transaction BT
                               WHERE BT.job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND 
                                 BT.job_end_datetime <=  (SELECT (now() at time zone 'sgt'))
-                                AND BT.cusername = SPT.cusername) AS num_pets, 
+                                AND BT.cusername = SFT.cusername) AS num_pets, 
                               
                               COALESCE((SELECT SUM(pet_days) 
                                 FROM pet_days_past_30_days PD
@@ -160,9 +160,10 @@ async function get_num_pets_and_petdays_and_salary_for_each_caretaker(req, res) 
                                 WHERE PD.cusername = SPT.cusername), 0) 
                               AS num_pet_days, 
                               
-                              SPT.salary 
+                              SUM(SPT.salary) 
 
       FROM salary_calculation_for_part_time SPT 
+      GROUP BY SPT.cusername
      
       ORDER BY num_pets DESC, num_pet_days DESC;`
     );
