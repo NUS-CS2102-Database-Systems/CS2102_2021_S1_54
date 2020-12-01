@@ -339,7 +339,7 @@ export default {
           )
           .then((response) => {
             console.log(response.data);
-            if (response.data[0] != 1) {
+            if (response.data[0].valid_card != 1) {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",

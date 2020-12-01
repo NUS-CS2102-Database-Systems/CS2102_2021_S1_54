@@ -71,7 +71,7 @@ async function check_for_card(req, res) {
     //const caretaker = req.body.toGet.caretaker;
 
     const result = await client.query(
-      `SELECT 1 
+      `SELECT 1 AS valid_card
       FROM pet_owner 
         WHERE username = '${username}' AND credit_card_number IS NOT NULL
           AND credit_card_full_name IS NOT NULL AND credit_card_expiry_date IS NOT NULL;`
