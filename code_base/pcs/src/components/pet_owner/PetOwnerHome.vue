@@ -104,57 +104,36 @@ export default {
     //today.setHours(today.getHours() + 8);
     // console.log(today)
     // console.log(today.getDate())
-    let myToday = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate(),
-      8,
-      0,
-      0
-    );
-    let myTomorrow = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() + 1,
-      8,
-      0,
-      0
-    );
+    let startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
+    let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
 
-    // let myToday = new Date(
-    //   today.getFullYear(),
-    //   today.getMonth(),
-    //   today.getDate(),
-    //   0,
-    //   0,
-    //   0
-    // );
-    // let myTomorrow = new Date(
-    //   today.getFullYear(),
-    //   today.getMonth(),
-    //   today.getDate() + 1,
-    //   0,
-    //   0,
-    //   0
-    // );
 
     // let date = new Date();
     // let hours = date.setHours(date.getHours() + 8);
-    let myToday_str = myToday.toISOString().toString();
-    myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
+    let startOfToday_str = startOfToday.toISOString().toString();
+    startOfToday_str = startOfToday_str.replace(/T/, " ").substring(0, 19);
     // myToday_str = myToday_str.substring(0, myToday_str.length - 1);
 
     let myTomorrow_str = myTomorrow.toISOString().toString();
     myTomorrow_str = myTomorrow_str.replace(/T/, " ").substring(0, 19);
     // myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
+
+    let anothertoday = new Date();
+    anothertoday.setHours(anothertoday.getHours() + 8);
+    let currentMoment_str = anothertoday.toISOString().toString().replace(/T/, " ").substring(0, 19);
+
+    console.log(today)
+    console.log(startOfToday)
+    console.log(myTomorrow)
     console.log(today);
-    console.log(myToday);
+    //console.log(myToday);
     console.log(myTomorrow);
 
     const get_info = {
       username: this.username,
-      current_datetime: myToday_str,
+      startOfToday_datetime: startOfToday_str,
       tomorrow_datetime: myTomorrow_str,
+      moment_datetime: currentMoment_str,
     };
     console.log("get_info is");
     console.log(get_info);
@@ -179,7 +158,7 @@ export default {
             response.data[i].job_start_datetime.toString().split("T")[0]
           );
           console.log(job_start_date);
-          if (job_start_date >= myToday && job_start_date < myTomorrow) {
+          if (job_start_date >= startOfToday && job_start_date < myTomorrow) {
             if (response.data[i].payment_method.toString() == "Cash") {
               comment_arr_temp.push(
                 "Cash Payment of $" + response.data[i].amount.toString()
@@ -192,7 +171,7 @@ export default {
             response.data[i].job_end_datetime.toString().split("T")[0]
           );
           console.log(job_end_date);
-          if (job_end_date >= myToday && job_end_date < myTomorrow) {
+          if (job_end_date >= startOfToday && job_end_date < myTomorrow) {
             comment_arr_temp.push("End day");
           }
 

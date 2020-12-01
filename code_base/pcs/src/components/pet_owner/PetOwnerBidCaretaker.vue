@@ -779,8 +779,3 @@ export default {
   },
 };
 </script>
-
-// Double check that AVAILABILTIES & NUM OF PETS AT THAT SLOT: Caretaking dates
-that can be selected are drom the caretaker's avalilties (parttime) or not leave
-days (fulltime) // and that the number of slots does not exceed // Differentiate
-between failures of inserting
