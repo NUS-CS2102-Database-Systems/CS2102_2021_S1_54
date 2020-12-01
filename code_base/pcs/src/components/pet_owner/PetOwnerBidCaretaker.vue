@@ -559,7 +559,8 @@ export default {
           console.log(response)
           console.log(response.data)
           console.log(response.data[0])
-          if (response.data[0] == 1) {
+          console.log(response.data[0].result)
+          if (response.data[0].result == 1) {
             Swal.fire({
               icon: "success",
               title: "Sucessfully bidded!",
@@ -569,7 +570,7 @@ export default {
             });
             window.location.href = constants.pet_owner_view_caretaker_domain;
           } 
-          else if (response.data[0] == 2) {
+          else if (response.data[0].result == 2) {
             Swal.fire({
               icon: "error",
               title: "Oops...",
@@ -578,6 +579,15 @@ export default {
                 " till " + this.selected_dates[1] + " already exist!",
             });
           } 
+          else if (response.data[0].result == null) {
+            Swal.fire({
+            // TODO: Do more checking on the type of error 
+              icon: "error",
+              title: "Oops...",
+              text:
+                "Bidding error! Please try again with NULL result error: " + response.data[0] ,
+            });
+          }
           else if (response.data[0] == null) {
             Swal.fire({
             // TODO: Do more checking on the type of error 
