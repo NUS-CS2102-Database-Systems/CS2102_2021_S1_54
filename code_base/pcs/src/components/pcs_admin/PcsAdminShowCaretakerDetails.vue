@@ -44,7 +44,7 @@
                   <br />
                   <v-btn elevation="2">
                     <router-link
-                      tag="span"
+                      target="_blank"
                       :to="{
                         path:
                           '/pcs-admin/view-caretaker-reviews/' +
