@@ -20,7 +20,7 @@ CREATE TABLE users (
 
 CREATE TABLE pet_owner (
 	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
-	credit_card_number VARCHAR,
+	credit_card_number VARCHAR UNIQUE,
 	credit_card_full_name VARCHAR,
 	credit_card_expiry_date VARCHAR(5)
 );
@@ -104,7 +104,7 @@ CREATE TABLE availabilities(
 	start_date DATE NOT NULL,
     end_date DATE NOT NULL,
 	number_of_pets_allowed INTEGER NOT NULL ,
-	PRIMARY KEY(username, start_date, end_date),
+	PRIMARY KEY (username, start_date, end_date),
 	CHECK (number_of_pets_allowed = 2 OR number_of_pets_allowed = 4)
 );
 
