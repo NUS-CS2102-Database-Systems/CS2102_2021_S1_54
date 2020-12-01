@@ -397,7 +397,7 @@ async function get_specific_caretakers_information(req, res) {
           let general_query = `SELECT X.username AS username, X.name AS name, X.age AS age, X.birth_date AS birth_date, X.gender AS gender, 
         X.phone AS phone, X.email AS email, X.address AS address, X.average_rating AS average_rating, X.years_exp AS years_exp FROM (`;
 
-          let request_full_time = `SELECT T.username AS username, T.name AS name, AGE(T.birth_date) AS T.age, 
+          let request_full_time = `SELECT T.username AS username, T.name AS name, AGE(T.birth_date) AS age, 
           T.birth_date AS birth_date, T.gender AS gender, T.phone AS phone, T.email AS email, 
           T.address AS address, T.average_rating AS average_rating, AGE(T.date_started) AS years_exp 
           FROM (users NATURAL JOIN caretaker NATURAL JOIN full_time_caretaker NATURAL JOIN can_take_care 
@@ -421,11 +421,9 @@ async function get_specific_caretakers_information(req, res) {
               date_to +
               "'))";
 
-            request_full_time =
-              request_full_time + add_dates_requested_full_time + " AND";
+            request_full_time += add_dates_requested_full_time + " AND";
 
-            request_part_time =
-              request_part_time + add_dates_requested_part_time + " AND";
+            request_part_time += add_dates_requested_part_time + " AND";
           }
 
           if (rating_wanted != null) {
@@ -439,26 +437,30 @@ async function get_specific_caretakers_information(req, res) {
               parseFloat(rating_wanted).toString() +
               ")";
 
-            request_full_time =
-              request_full_time + add_rating_requested_full_time + " AND";
+            request_full_time += add_rating_requested_full_time + " AND";
 
-            request_part_time =
-              request_part_time + add_rating_requested_part_time + " AND";
+            request_part_time += add_rating_requested_part_time + " AND";
           }
 
           if (type_of_animal != null) {
-            type_of_animal = type_of_animal.replace(/,/g, "' OR type_name = '");
+            type_of_animal_full_time = type_of_animal.replace(
+              /,/g,
+              "' OR T.type_name = '"
+            );
+            type_of_animal_part_time = type_of_animal.replace(
+              /,/g,
+              "' OR type_name = '"
+            );
+
             let add_animal_type_requested_full_time =
-              " (T.type_name = '" + type_of_animal + "')";
+              " (T.type_name = '" + type_of_animal_full_time + "')";
 
             let add_animal_type_requested_part_time =
-              " (type_name = '" + type_of_animal + "')";
+              " (type_name = '" + type_of_animal_part_time + "')";
 
-            request_full_time =
-              request_full_time + add_animal_type_requested_full_time + " AND";
+            request_full_time += add_animal_type_requested_full_time + " AND";
 
-            request_part_time =
-              request_part_time + add_animal_type_requested_part_time + " AND";
+            request_part_time += add_animal_type_requested_part_time + " AND";
           }
 
           if (price_range_from != null && price_range_to == null) {
