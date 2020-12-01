@@ -175,7 +175,7 @@ async function submit_a_bid(req, res) {
       }
     }
 
-    const result = await client.query(
+    var result = await client.query(
       // Check if the same bid exist!
       `SELECT 2 AS result
         FROM bid_transaction
