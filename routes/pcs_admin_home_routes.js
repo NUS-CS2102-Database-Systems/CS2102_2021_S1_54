@@ -20,6 +20,7 @@ var appRouter = function (app) {
     "/pcs-admin/get-num-pets-and-pet-days-by-each-caretaker",
     get_num_pets_and_petdays_by_each_caretaker
   );
+  app.get("/pcs-admin/get-num-full-time-caretakers", get_ft_caretakers_count);
 };
 
 async function get_num_pets_cared_for_and_amount_earned(req, res) {
@@ -66,14 +67,29 @@ async function get_caretakers_total_salary(req, res) {
   try {
     const client = await pool.connect();
 
-    let salaryObj = { fullTime: {}, partTime: {} };
-
     const result = await client.query(
       `SELECT SUM(salary) AS salary 
         FROM salary_calculation_for_full_time 
         UNION 
         SELECT SUM(salary) AS salary FROM 
         salary_calculation_for_part_time;`
+    );
+
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify(result.rows));
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+async function get_ft_caretakers_count(req, res) {
+  try {
+    const client = await pool.connect();
+
+    const result = await client.query(
+      `SELECT COUNT(*) AS num_ft FROM full_time_caretaker;`
     );
 
     res.setHeader("content-type", "application/json");
