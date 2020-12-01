@@ -156,9 +156,9 @@ CREATE VIEW salary_calculation_for_full_time (cusername, salary) AS (
 );
 
 --Modified salary calculation
-CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
+CREATE VIEW salary_calculation_for_part_time(cusername, salary) AS (
 	SELECT P.username, ((SELECT AVG(current_daily_price) FROM daily_price_rate DPR WHERE DPR.username = P.username) * PD.pet_days * 0.75)
-	FROM part_time_caretaker P NATURAL JOIN pet_days_past_30_days PD
+	FROM part_time_caretaker P INNER JOIN pet_days_past_30_days PD ON P.username = PD.cusername
 );
 
 -- trigger 1
