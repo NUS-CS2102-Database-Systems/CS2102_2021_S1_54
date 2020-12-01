@@ -490,22 +490,44 @@ export default {
         let date = new Date();
         //let hours = date.setHours(date.getHours() + 8);
         //date.setHours(date.getHours() + 8);
-        let sg_bid_date = date.toISOString().toString();
-        sg_bid_date = sg_bid_date.replace(/T/, " ");
-        sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
+        
+        // let sg_bid_date = date.toISOString().toString();
+        // sg_bid_date = sg_bid_date.replace(/T/, " ");
+        // sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
+
+        // console.log("hiiii");
+        // console.log(date);
+        // console.log(sg_bid_date);
+        // console.log("next selected dates");
+        // console.log(this.selected_dates[0]);
+        // console.log(this.selected_dates[1]);
 
         // Format date and time into datetime for db
-        var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
-        var startDateObj = new Date(this.selected_dates[0] + ' ' + startTimeString);
+        // var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
+        var startDateObj = new Date(this.selected_dates[0]); // + ' ' + startTimeString);
+        // console.log(this.start_time)
+        // console.log(this.start_time.split(":")[0])
+        // console.log(this.start_time.split(":")[1])
+        startDateObj.setHours(this.start_time.split(":")[0]);
+        startDateObj.setMinutes(this.start_time.split(":")[1]);
+        // var startDateStr = startDateStr.replace(/T/, " ");
+        // startDateStr = startDateStr.substring(0, startDateStr - 1);
 
-        var endTimeString = this.end_time.hour + ':' + this.end_time.minute + ':00';
-        var endDateObj = new Date(this.selected_dates[1] + ' ' + endTimeString);
+        // var endTimeString = this.end_time.hour + ':' + this.end_time.minute + ':00';
+        var endDateObj = new Date(this.selected_dates[1]); // + ' ' + endTimeString);
+        endDateObj.setHours(this.end_time.split(":")[0]);
+        endDateObj.setMinutes(this.end_time.split(":")[1]);
+        // var endDateStr = endDateStr.replace(/T/, " ");
+        // endDateStr = endDateStr.substring(0, endDateStr - 1);
+        
+        // console.log(startDateObj)
+        // console.log(endDateObj)
 
         const send_info = {
           username: this.username,
           pet: this.pet_selected,
           caretaker: this.caretaker,
-          bidding_time: sg_bid_date, 
+          bidding_time: date, //sg_bid_date, 
           job_start_datetime: startDateObj,
           job_end_datetime: endDateObj,
           payment_datetime: startDateObj,
@@ -514,6 +536,7 @@ export default {
           start_transfer_method: this.start_method,
           end_transfer_method: this.end_method
         };
+        console.log(send_info)
         await axios
         .post(
           "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid/pay",
@@ -522,6 +545,8 @@ export default {
           }
         )
         .then((response) => {
+          console.log(typeof response)
+          console.log(response)
           if (response.data[0] == 1) {
             Swal.fire({
               icon: "success",

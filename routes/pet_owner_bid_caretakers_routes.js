@@ -108,12 +108,18 @@ async function submit_a_bid(req, res) {
     start.setHours(0, 0, 0, 0);
     var end = new Date(job_end_datetime);
     end.setHours(0, 0, 0, 0);
+
+    console.log("In JS!");
+    console.log(start);
+
     var date = start;
     const differenceInTime = end.getTime() - start.getTime();
     const differenceInDays = differenceInTime / (1000 * 3600 * 24) + 1;
     var maxNumOfPets = 0;
+
     console.log("number of days is \n");
     console.log(differenceInDays);
+
     for (var i = 0; i < differenceInDays; i++) {
       // check day by day
       const dateString = date.toISOString().substring(0, 10); // YYYY-MM-DD format
@@ -177,7 +183,7 @@ async function submit_a_bid(req, res) {
         job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
     );
 
-    if (result.rows[0] == NULL) {
+    if (result.rows[0] == null) {
       //!= 2) {
       const query = `INSERT INTO bid_transaction VALUES('${username}', '${pet}', '${caretaker}',
       '${biddingtime}', '${job_start_datetime}', '${job_end_datetime}', '${payment_datetime}', 
