@@ -175,9 +175,9 @@ async function submit_a_bid(req, res) {
       }
     }
 
-    const result = await client.query(
+    var result = await client.query(
       // Check if the same bid exist!
-      `SELECT 2
+      `SELECT 2 AS result
         FROM bid_transaction
         WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
         job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
@@ -192,8 +192,8 @@ async function submit_a_bid(req, res) {
 
       await client.query(query);
 
-      const result = await client.query(
-        `SELECT 1
+      result = await client.query(
+        `SELECT 1 AS result
         FROM bid_transaction
         WHERE pusername = '${username}' AND cusername = '${caretaker}' AND pet_name = '${pet}' AND
         job_start_datetime = '${job_start_datetime}' AND job_end_datetime = '${job_end_datetime}';`
