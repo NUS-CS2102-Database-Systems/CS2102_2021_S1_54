@@ -115,11 +115,11 @@ async function get_num_pets_and_petdays_and_salary_for_each_caretaker(
     // );
 
     const result = await client.query(
-      `SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary 
+      `SELECT SFT.cusername, COUNT(*) AS num_pets, SUM(X.pet_days) AS num_pet_days, SFT.salary 
       FROM salary_calculation_for_full_time SFT LEFT JOIN 
       (bid_transaction NATURAL JOIN pet_days_past_30_days) AS X ON SFT.cusername = X.cusername 
-      WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  (DATE_TRUNC('DAY', NOW()) + interval '1 day' - interval '1 millisecond') 
-      GROUP BY cusername, salary 
+      WHERE X.job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND X.job_end_datetime <=  (DATE_TRUNC('DAY', NOW()) + interval '1 day' - interval '1 millisecond') 
+      GROUP BY SFT.cusername, SFT.salary 
       UNION 
       SELECT cusername, COUNT(*) AS num_pets, SUM(pet_days) AS num_pet_days, salary FROM bid_transaction NATURAL JOIN pet_days_past_30_days 
       NATURAL JOIN salary_calculation_for_part_time 
