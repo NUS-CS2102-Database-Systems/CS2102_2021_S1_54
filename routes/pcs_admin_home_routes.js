@@ -33,8 +33,9 @@ async function get_num_pets_cared_for_and_amount_earned(req, res) {
 
     const result = await client.query(
       `SELECT COUNT(*) AS num_of_pets, SUM(amount) AS amount_earned 
-        FROM bid_transaction WHERE job_end_datetime >= '${firstDate}' 
-        AND job_end_datetime <= current_date;`
+        FROM bid_transaction 
+        WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND 
+          job_end_datetime <=  (SELECT (now() at time zone 'sgt'));`
     );
 
     res.setHeader("content-type", "application/json");
