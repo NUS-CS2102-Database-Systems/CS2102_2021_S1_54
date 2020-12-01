@@ -440,10 +440,10 @@ export default {
                     this.selected_dates[0] +
                     " till " +
                     this.selected_dates[1] +
-                    " is comfirmed. Thank you!",
+                    " is confirmed. Thank you!",
+                }).then(function() {
+                  window.location.href = constants.pet_owner_view_upcoming_jobs;
                 });
-                window.location.href =
-                  constants.pet_owner_view_caretaker_domain;
               } else if (response.data[0].result == 2) {
                 Swal.fire({
                   icon: "error",

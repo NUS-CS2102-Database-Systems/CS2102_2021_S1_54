@@ -73,9 +73,9 @@ export default {
       },
       { text: "Caretaker", value: "cusername" },
       { text: "Start Date and Time", value: "job_start_datetime" },
-      { text: "Start Transfer Mtd", value: "start_transfer_method" },
+      { text: "Start Transfer Methodd", value: "start_transfer_method" },
       { text: "End Date and Time", value: "job_end_datetime" },
-      { text: "End Transfer Mtd", value: "end_transfer_method" },
+      { text: "End Transfer Method", value: "end_transfer_method" },
       { text: "Note", value: "comment_arr" },
     ],
 
@@ -87,9 +87,9 @@ export default {
       },
       { text: "Caretaker", value: "cusername" },
       { text: "Start Date and Time", value: "job_start_datetime" },
-      { text: "Start Transfer Mtd", value: "start_transfer_method" },
+      { text: "Start Transfer Method", value: "start_transfer_method" },
       { text: "End Date and Time", value: "job_end_datetime" },
-      { text: "End Transfer Mtd", value: "end_transfer_method" },
+      { text: "End Transfer Method", value: "end_transfer_method" },
     ],
 
     current_event: [],
@@ -104,8 +104,22 @@ export default {
     //today.setHours(today.getHours() + 8);
     // console.log(today)
     // console.log(today.getDate())
-    let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
-    let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
+    let myToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      8,
+      0,
+      0
+    );
+    let myTomorrow = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 1,
+      8,
+      0,
+      0
+    );
 
     // let myToday = new Date(
     //   today.getFullYear(),
@@ -133,17 +147,17 @@ export default {
     let myTomorrow_str = myTomorrow.toISOString().toString();
     myTomorrow_str = myTomorrow_str.replace(/T/, " ").substring(0, 19);
     // myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
-    console.log(today)
-    console.log(myToday)
-    console.log(myTomorrow)
+    console.log(today);
+    console.log(myToday);
+    console.log(myTomorrow);
 
     const get_info = {
       username: this.username,
       current_datetime: myToday_str,
       tomorrow_datetime: myTomorrow_str,
     };
-    console.log("get_info is")
-    console.log(get_info)
+    console.log("get_info is");
+    console.log(get_info);
 
     await axios
       .post(
@@ -182,8 +196,12 @@ export default {
             comment_arr_temp.push("End day");
           }
 
-          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
-          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
+          let formatted_job_start_datetime = response.data[i].job_start_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
+          let formatted_job_end_datetime = response.data[i].job_end_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
 
           let event_data = {
             pet_name: response.data[i].pet_name,
@@ -222,8 +240,12 @@ export default {
           // }
           // console.log(comment_arr_temp)
 
-          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
-          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
+          let formatted_job_start_datetime = response.data[i].job_start_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
+          let formatted_job_end_datetime = response.data[i].job_end_datetime
+            .replace(/T/, " at ")
+            .substring(0, 19);
 
           let event_data = {
             pet_name: response.data[i].pet_name,
