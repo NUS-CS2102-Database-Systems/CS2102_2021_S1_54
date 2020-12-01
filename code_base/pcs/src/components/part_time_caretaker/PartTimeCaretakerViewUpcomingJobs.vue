@@ -66,8 +66,6 @@
                       Paid By: {{ payment_method_odd[i] }} <br />
                       Payment Date and Time: {{ payment_datetime_odd[i] }}
                       <br />
-                      Rating: {{ rating_odd[i] }} <br />
-                      Review: {{ review_odd[i] }} <br />
                     </p>
 
                     <h3 style="color:black">Pet Owner Information</h3>
@@ -118,8 +116,6 @@
                       Paid By: {{ payment_method_even[i] }} <br />
                       Payment Date and Time: {{ payment_datetime_even[i] }}
                       <br />
-                      Rating: {{ rating_even[i] }} <br />
-                      Review: {{ review_even[i] }} <br />
                     </p>
 
                     <h3 style="color:black">Pet Owner Information</h3>
@@ -198,7 +194,7 @@ export default {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     have_data: false,
     username: null,
     available_dates: false,
@@ -358,8 +354,20 @@ export default {
                   this.id_odd.push(i + 1);
                   this.pet_owner_odd.push(response.data[i].pusername);
                   this.pet_odd.push(response.data[i].pet_name);
-                  this.job_start_odd.push(response.data[i].job_start_datetime);
-                  this.job_end_odd.push(response.data[i].job_end_datetime);
+                  let job_start =
+                    response.data[i].job_start_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_start_datetime
+                      .split("T")[1]
+                      .split(".")[0];
+                  this.job_start_odd.push(job_start);
+                  let job_end =
+                    response.data[i].job_end_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_end_datetime
+                      .split("T")[1]
+                      .split(".")[0];
+                  this.job_end_odd.push(job_end);
                   this.start_transfer_method_odd.push(
                     response.data[i].start_transfer_method
                   );
@@ -378,12 +386,27 @@ export default {
                   this.type_of_animal_odd.push(response.data[i].type_of_animal);
                   this.pet_med_hist_odd.push(response.data[i].med_hist);
                   this.pet_special_req_odd.push(response.data[i].special_req);
+                  let date_time =
+                    response.data[i].payment_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].payment_datetime
+                      .split("T")[1]
+                      .split(".")[0];
+                  this.payment_datetime_odd.push(date_time);
                 } else {
                   this.id_even.push(i + 1);
                   this.caretaker_even.push(response.data[i].cusername);
                   this.pet_even.push(response.data[i].pet_name);
-                  this.job_start_even.push(response.data[i].job_start_datetime);
-                  this.job_end_even.push(response.data[i].job_end_datetime);
+                  let job_start =
+                    response.data[i].job_start_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_start_datetime.split("T")[1];
+                  this.job_start_even.push(job_start);
+                  let job_end =
+                    response.data[i].job_end_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].job_end_datetime.split("T")[1];
+                  this.job_end_even.push(job_end);
                   this.start_transfer_method_even.push(
                     response.data[i].start_transfer_method
                   );
@@ -404,6 +427,13 @@ export default {
                   );
                   this.pet_med_hist_even.push(response.data[i].med_hist);
                   this.pet_special_req_even.push(response.data[i].special_req);
+                  let date_time =
+                    response.data[i].payment_datetime.split("T")[0] +
+                    " " +
+                    response.data[i].payment_datetime
+                      .split("T")[1]
+                      .split(".")[0];
+                  this.payment_datetime_even.push(date_time);
                 }
               }
             }
@@ -440,12 +470,12 @@ export default {
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_start_datetime.split("T")[1];
+                response.data[i].job_start_datetime.split("T")[1].split(".")[0];
               this.job_start_odd.push(job_start);
               let job_end =
                 response.data[i].job_end_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_end_datetime.split("T")[1];
+                response.data[i].job_end_datetime.split("T")[1].split(".")[0];
               this.job_end_odd.push(job_end);
               this.start_transfer_method_odd.push(
                 response.data[i].start_transfer_method
@@ -491,7 +521,11 @@ export default {
               this.pet_med_hist_odd.push(response.data[i].med_hist);
               this.pet_special_req_odd.push(response.data[i].special_req);
               this.payment_method_odd.push(response.data[i].payment_method);
-              this.payment_datetime_odd.push(response.data[i].payment_datetime);
+              let date_time =
+                response.data[i].payment_datetime.split("T")[0] +
+                " " +
+                response.data[i].payment_datetime.split("T")[1].split(".")[0];
+              this.payment_datetime_odd.push(date_time);
             } else {
               this.id_even.push(i + 1);
               this.caretaker_even.push(response.data[i].cusername);
@@ -550,9 +584,11 @@ export default {
               this.pet_med_hist_even.push(response.data[i].med_hist);
               this.pet_special_req_even.push(response.data[i].special_req);
               this.payment_method_even.push(response.data[i].payment_method);
-              this.payment_datetime_even.push(
-                response.data[i].payment_datetime
-              );
+              let date_time =
+                response.data[i].payment_datetime.split("T")[0] +
+                " " +
+                response.data[i].payment_datetime.split("T")[1].split(".")[0];
+              this.payment_datetime_even.push(date_time);
             }
           }
         }

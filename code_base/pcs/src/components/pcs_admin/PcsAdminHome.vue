@@ -14,7 +14,7 @@
           <v-layout align-center>
             <v-card-text>
               <p style="color:black;font-size:20px">
-                Taken care of <b>{{ num_pets }}</b> pets and providing a revenue
+                Taken care of <b>{{ num_pets }}</b> pets and provided a revenue
                 of <b>SGD {{ amount_earned }}</b> in <b>{{ num_days }}</b> days.
                 <br />
                 <br />
@@ -85,14 +85,22 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.num_pets = response.data[0].num_of_pets;
-        this.amount_earned = response.data[0].amount_earned;
+        if (response.data[0].amount_earned == null) {
+          this.amount_earned = 0;
+        } else {
+          this.amount_earned = response.data[0].amount_earned;
+        }
       });
 
     await axios
       .get("https://pet-care-service.herokuapp.com/pcs-admin/get-num-pet-days")
       .then((response) => {
         console.log(response.data);
-        this.num_pet_days = response.data[0].num_pet_days;
+        if (response.data[0].num_pet_days == null) {
+          this.num_pet_days = 0;
+        } else {
+          this.num_pet_days = response.data[0].num_pet_days;
+        }
       });
 
     await axios
@@ -101,14 +109,32 @@ export default {
       )
       .then((response) => {
         console.log(response.data);
-        let total_salary = response.data[0].salary + response.data[1].salary;
 
-        if (total_salary == undefined) {
+        if (response.data[0] == undefined || response.data[1] == undefined) {
           this.caretakers_salary = 0;
         } else {
+          let total_salary = response.data[0].salary + response.data[1].salary;
           this.caretakers_salary = total_salary;
         }
+        console.log(this.caretakers_salary);
       });
+
+    if (this.caretakers_salary == 0) {
+      await axios
+        .get(
+          "https://pet-care-service.herokuapp.com/pcs-admin/get-num-full-time-caretakers"
+        )
+        .then((response) => {
+          console.log(response.data);
+
+          if (response.data[0].num_ft == undefined) {
+            this.caretakers_salary = 0;
+          } else {
+            this.caretakers_salary = response.data[0].num_ft * 3000;
+          }
+        });
+    }
+
     this.loaded = true;
   },
 };

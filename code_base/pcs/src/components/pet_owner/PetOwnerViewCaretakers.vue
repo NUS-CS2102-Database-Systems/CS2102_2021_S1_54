@@ -837,9 +837,9 @@ export default {
               this.animals_length_even += 1;
             });
         }
-        console.log(this.length_odd);
-        console.log(this.length_even);
-        console.log(this.caretaker_username_even);
+        // console.log(this.length_odd);
+        // console.log(this.length_even);
+        // console.log(this.caretaker_username_even);
         this.loaded = true;
       }
     },
@@ -1058,9 +1058,9 @@ export default {
           this.animals_length_even += 1;
         });
     }
-    console.log(this.length_odd);
-    console.log(this.length_even);
-    console.log(this.caretaker_username_even);
+    // console.log(this.length_odd);
+    // console.log(this.length_even);
+    // console.log(this.caretaker_username_even);
     this.loaded = true;
   },
 };

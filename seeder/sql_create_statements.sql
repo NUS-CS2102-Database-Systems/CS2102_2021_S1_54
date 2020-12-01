@@ -145,6 +145,14 @@ CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS (
 	GROUP BY cusername
 );
 
+-- Modified pet_days_past_30_days, so job_end_datetime is less than or equal to time now in SGT
+CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS (
+	SELECT cusername, SUM(pet_days)
+	FROM pet_days_per_job
+	WHERE job_end_datetime >= DATE_TRUNC('MONTH', NOW()) AND job_end_datetime <=  (SELECT (now() at time zone 'sgt'))
+	GROUP BY cusername
+);
+
 CREATE VIEW salary_calculation_for_full_time (cusername, salary) AS (
 	SELECT DPR.username, CASE
 		WHEN PD.pet_days <= 60 THEN 3000
@@ -152,6 +160,15 @@ CREATE VIEW salary_calculation_for_full_time (cusername, salary) AS (
 		END AS salary
 	FROM daily_price_rate DPR NATURAL JOIN pet_days_past_30_days PD 
 	WHERE EXISTS (SELECT 1 FROM full_time_caretaker F WHERE F.username = DPR.username)
+);
+
+--Modified salary_calculation
+CREATE VIEW salary_calculation_for_full_time (cusername, salary) AS (
+	SELECT F.username, CASE
+		WHEN PD.pet_days <= 60 OR PD.pet_days IS NULL THEN 3000
+		ELSE 3000 + (PD.pet_days - 60) * (SELECT AVG(current_daily_price) FROM daily_price_rate DPR WHERE DPR.username = F.username) * 0.8
+		END AS salary
+	FROM full_time_caretaker F LEFT JOIN pet_days_past_30_days PD ON F.username = PD.cusername
 );
 
 CREATE VIEW salary_calculation_for_part_time (cusername, salary) AS (
@@ -187,7 +204,7 @@ CREATE OR REPLACE FUNCTION not_overlap()
 
 		IF ctx2 > 0 THEN
 			-- Replaced RETURN NULL with RAISE EXCEPTION
-			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, L.start_date, L.end_date;
+			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, NEW.job_start_datetime, NEW.job_end_datetime;
 		ELSE
 			RETURN NEW;
 		END IF;

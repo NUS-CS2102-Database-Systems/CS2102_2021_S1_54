@@ -98,11 +98,11 @@ export default {
         value: "totalNumDays",
         align: "center",
       },
-      // {
-      //   text: "Salary",
-      //   value: "salary",
-      //   align: "center",
-      // },
+      {
+        text: "Salary",
+        value: "salary",
+        align: "center",
+      },
     ],
   }),
   methods: {
@@ -124,17 +124,31 @@ export default {
 
     await axios
       .get(
-        "https://pet-care-service.herokuapp.com/pcs-admin/get-num-pets-and-pet-days-by-each-caretaker"
+        "https://pet-care-service.herokuapp.com/pcs-admin/get-num-pets-and-pet-days-and-salary-for-each-caretaker"
       )
       .then((response) => {
         console.log(response.data);
         for (let i = 0; i < response.data.length; i++) {
+          let num_pets = 0;
+          let num_pet_days = 0;
+          if (response.data[i].num_pets == null) {
+            num_pets = 0;
+          } else {
+            num_pets = response.data[i].num_pets;
+          }
+
+          if (response.data[i].num_pet_days == null) {
+            num_pet_days = 0;
+          } else {
+            num_pet_days = response.data[i].num_pet_days;
+          }
+
           let caretaker_data = {
             number: i + 1,
             cusername: response.data[i].cusername,
-            totalNumPets: response.data[i].num_pets,
-            totalNumDays: response.data[i].num_pet_days,
-            // salary: response.data[i].salary,
+            totalNumPets: num_pets,
+            totalNumDays: num_pet_days,
+            salary: response.data[i].salary,
           };
           this.bid_transaction.push(caretaker_data);
         }

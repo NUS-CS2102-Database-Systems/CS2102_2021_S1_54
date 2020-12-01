@@ -227,7 +227,7 @@ export default {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: "End date greater than start date (at row " + (i + 1) + ")",
+              text: "Start date greater than end date (at row " + (i + 1) + ")",
             });
             data_ok_val1 = false;
             data_ok_val2 = false;
