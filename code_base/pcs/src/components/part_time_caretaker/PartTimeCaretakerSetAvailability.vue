@@ -316,7 +316,10 @@ export default {
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
-                  text: "Updating availabilities failed. Please try again.",
+                  text:
+                    "Updating availabilities failed. " +
+                    response.data +
+                    ". Please try again.",
                 });
               }
             });
