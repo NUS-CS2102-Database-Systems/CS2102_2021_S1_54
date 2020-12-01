@@ -64,7 +64,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_odd" :key="number">
               <v-row>
-                <v-card width="45%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
@@ -91,7 +91,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_even" :key="number">
               <v-row>
-                <v-card width="45%">
+                <v-card>
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <p style="color:black">
