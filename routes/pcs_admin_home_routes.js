@@ -160,9 +160,10 @@ async function get_num_pets_and_petdays_and_salary_for_each_caretaker(req, res) 
                                 WHERE PD.cusername = SPT.cusername), 0) 
                               AS num_pet_days, 
                               
-                              SPT.salary 
+                              SUM(SPT.salary) 
 
       FROM salary_calculation_for_part_time SPT 
+      GROUP BY SPT.cusername
      
       ORDER BY num_pets DESC, num_pet_days DESC;`
     );
