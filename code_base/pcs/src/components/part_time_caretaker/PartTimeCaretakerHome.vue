@@ -81,7 +81,7 @@ export default {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: false, //true,
+    loaded: false, 
     username: null,
     month: null,
     year: null,
@@ -95,7 +95,7 @@ export default {
         align: 'start',
         value: 'pet_name',
       },
-      { text: 'Caretaker', value: 'cusername' },
+      { text: 'Owner', value: 'pusername' },
       { text: 'Start Date and Time', value: 'job_start_datetime' },
       { text: 'Start Transfer Mtd', value: 'start_transfer_method' },
       { text: 'End Date and Time', value: 'job_end_datetime' },
@@ -109,7 +109,7 @@ export default {
         align: 'start',
         value: 'pet_name',
       },
-      { text: 'Caretaker', value: 'cusername' },
+      { text: 'Owner', value: 'pusername' },
       { text: 'Start Date and Time', value: 'job_start_datetime' },
       { text: 'Start Transfer Mtd', value: 'start_transfer_method' },
       { text: 'End Date and Time', value: 'job_end_datetime' },
@@ -125,26 +125,48 @@ export default {
     this.month = date.toString().split(" ")[1];
     this.year = date.getFullYear();
 
+    // // Get current date with time = 00:00:00
+    // let today = new Date();
+    // let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
+    // let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
+    // let myToday_str = myToday.toISOString().toString();
+    // myToday_str = myToday_str.replace(/T/, " ");
+    // myToday_str = myToday_str.substring(0, myToday_str.length - 1);
+
+    // let myTomorrow_str = myTomorrow.toISOString().toString();
+    // myTomorrow_str = myTomorrow_str.replace(/T/, " ");
+    // myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
+
+    // let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0);
+    // //let firstDayOfNextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1, 0, 0, 0);
+
     // Get current date with time = 00:00:00
     let today = new Date();
-    let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
-    let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 0, 0, 0);
+    let myToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0, 0);
+    let myTomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 8, 0, 0);
+    
     let myToday_str = myToday.toISOString().toString();
-    myToday_str = myToday_str.replace(/T/, " ");
-    myToday_str = myToday_str.substring(0, myToday_str.length - 1);
+    myToday_str = myToday_str.replace(/T/, " ").substring(0, 19);
 
     let myTomorrow_str = myTomorrow.toISOString().toString();
-    myTomorrow_str = myTomorrow_str.replace(/T/, " ");
-    myTomorrow_str = myTomorrow_str.substring(0, myToday_str.length - 1);
+    myTomorrow_str = myTomorrow_str.replace(/T/, " ").substring(0, 19);
 
-    let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0);
+    let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1, 8, 0, 0);
+    let firstDayOfMonth_str = firstDayOfMonth.toISOString().toString().replace(/T/, " ").substring(0, 19);
     //let firstDayOfNextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1, 0, 0, 0);
+    // console.log(firstDayOfMonth)
+    // console.log(firstDayOfNextMonth)
+    
+    let anothertoday = new Date();
+    anothertoday.setHours(today.getHours() + 8);
+    let currentMoment_str = anothertoday.toISOString().toString().replace(/T/, " ").substring(0, 19);
 
     const get_info = {
       username: this.username,
       current_datetime: myToday_str,
       tomorrow_datetime: myTomorrow_str,
-      startMonth: firstDayOfMonth,
+      startMonth: firstDayOfMonth_str,
+      moment_datetime: currentMoment_str,
       //endMonth: firstDayOfNextMonth,
     };
 
@@ -174,6 +196,8 @@ export default {
       )
       .then((response) => {
         if (response.data.length == 0) {
+          this.num_pet_days = 0;
+        } else if (response.data[0].pet_days == undefined) {
           this.num_pet_days = 0;
         } else {
           this.num_pet_days = response.data[0].pet_days;
@@ -221,12 +245,15 @@ export default {
           if (job_end_date >= myToday && job_end_date < myTomorrow){
             comment_arr_temp.push("End day")
           }
+          
+          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
+          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
 
           let event_data = {
             pet_name: response.data[i].pet_name,
-            cusername: response.data[i].pusername, 
-            job_start_datetime: response.data[i].job_start_datetime,
-            job_end_datetime: response.data[i].job_end_datetime,
+            pusername: response.data[i].pusername, 
+            job_start_datetime: formatted_job_start_datetime,
+            job_end_datetime: formatted_job_end_datetime,
             comment_arr: comment_arr_temp, 
             start_transfer_method: response.data[i].start_transfer_method, 
             end_transfer_method: response.data[i].end_transfer_method, 
@@ -245,11 +272,14 @@ export default {
         var i
         for (i = 0; i < response.data.length; i++) { 
 
+          let formatted_job_start_datetime = response.data[i].job_start_datetime.replace(/T/, " at ").substring(0, 19)
+          let formatted_job_end_datetime = response.data[i].job_end_datetime.replace(/T/, " at ").substring(0, 19)
+
           let event_data = {
             pet_name: response.data[i].pet_name,
-            cusername: response.data[i].pusername, 
-            job_start_datetime: response.data[i].job_start_datetime.toString().replace(/T/, " at ").substring(0, myToday_str.length - 4),
-            job_end_datetime: response.data[i].job_end_datetime.toString().replace(/T/, " at ").substring(0, myToday_str.length - 4),
+            pusername: response.data[i].pusername, 
+            job_start_datetime: formatted_job_start_datetime,
+            job_end_datetime: formatted_job_end_datetime,
             start_transfer_method: response.data[i].start_transfer_method,
             end_transfer_method: response.data[i].end_transfer_method, 
           };
