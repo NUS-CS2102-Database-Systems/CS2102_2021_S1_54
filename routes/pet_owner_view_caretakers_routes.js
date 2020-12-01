@@ -91,9 +91,12 @@ async function get_specific_caretakers_information(req, res) {
       daily_price_rate WHERE`;
 
         if (date_from != null && date_to != null) {
-          let add_dates_requested = ` (((SELECT (date '${date_from}', date '${date_to}') 
-          OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username) = 'f') 
-          OR (SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0)`;
+          let add_dates_requested = ` ((SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0) 
+          OR (SELECT NOT EXISTS(SELECT (date '${date_from}', date '${date_to}') 
+          OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username)))`;
+          // let add_dates_requested = ` (((SELECT (date '${date_from}', date '${date_to}')
+          // OVERLAPS (L.start_date, L.end_date) FROM leave_days L WHERE L.username = username) = 'f')
+          // OR (SELECT COUNT(*) FROM leave_days L1 WHERE L1.username = username) = 0)`;
           //   let add_dates_requested = ` (start_date NOT BETWEEN date('${date_from}') AND
           // date('${date_to}') AND end_date NOT BETWEEN date('${date_from}') AND
           // date('${date_to}'))`;
