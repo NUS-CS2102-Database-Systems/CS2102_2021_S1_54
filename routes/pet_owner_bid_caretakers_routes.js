@@ -167,7 +167,10 @@ async function submit_a_bid(req, res) {
       // caretaker is full time
       console.log("it's a full time caretaker");
       if (maxNumOfPets >= 5) {
-        res.send("Pet limit reached for full time caretaker.");
+        res.send(
+          "Pet limit reached for full time caretaker. The max pet has " +
+            maxNumOfPets.toString()
+        );
         client.release();
         return;
       }
