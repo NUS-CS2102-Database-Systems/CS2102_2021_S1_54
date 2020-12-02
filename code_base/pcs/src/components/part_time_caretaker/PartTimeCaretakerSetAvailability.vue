@@ -306,6 +306,8 @@ export default {
                     "Adding availabilities failed. " +
                     error_msg +
                     ". Please try again.",
+                }).then(function() {
+                  location.reload();
                 });
               }
             });
@@ -345,6 +347,8 @@ export default {
                     "Updating availabilities failed. " +
                     error_msg +
                     ". Please try again.",
+                }).then(function() {
+                  location.reload();
                 });
               }
             });
