@@ -131,13 +131,13 @@ async function submit_a_bid(req, res) {
 
     for (var i = 0; i < differenceInDays; i++) {
       // check day by day
-      const dateString = date.toISOString().replace(/T/, " ").substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
-      const dateEndString = dateEnd
+      var dateString = date.toISOString().replace(/T/, " ").substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
+      var dateEndString = dateEnd
         .toISOString()
         .replace(/T/, " ")
         .substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
 
-      const numberOfPets = await client.query(`
+      var numberOfPets = await client.query(`
       SELECT COUNT(*) AS num_pets
       FROM bid_transaction 
       WHERE cusername = '${caretaker}' 
@@ -154,7 +154,7 @@ async function submit_a_bid(req, res) {
       console.log(date);
 
       date.setDate(date.getDate() + 1);
-      date.setDate(dateEnd.getDate() + 1);
+      dateEnd.setDate(dateEnd.getDate() + 1);
     }
 
     console.log("max number is:");
@@ -167,7 +167,7 @@ async function submit_a_bid(req, res) {
       // caretaker is full time
       console.log("it's a full time caretaker");
       if (maxNumOfPets >= 5) {
-        res.send("Pet limit reached for full time caretaker.");
+        res.send("Pet limit reached for full-time caretaker.");
         client.release();
         return;
       }
@@ -184,7 +184,7 @@ async function submit_a_bid(req, res) {
         console.log("checkPetLimit is \n");
         console.log(checkPetLimit.rows[0].number_of_pets_allowed);
 
-        res.send("Pet limit reached for part time caretaker.");
+        res.send("Pet limit reached for part-time caretaker.");
         client.release();
         return;
       }

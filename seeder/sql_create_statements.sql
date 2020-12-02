@@ -19,14 +19,22 @@ CREATE TABLE users (
 );
 
 CREATE TABLE pet_owner (
-	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
-	credit_card_number VARCHAR UNIQUE,
-	credit_card_full_name VARCHAR,
-	credit_card_expiry_date VARCHAR(5),
-	-- add this?
-	CHECK ((credit_card_number IS NULL AND credit_card_full_name IS NULL AND credit_card_expiry_date IS NULL) OR 
-		(credit_card_number IS NOT NULL AND credit_card_full_name IS NOT NULL AND credit_card_expiry_date IS NOT NULL))
+   username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
+   credit_card_number VARCHAR UNIQUE,
+   credit_card_full_name VARCHAR,
+   credit_card_expiry_date VARCHAR(5),
+   CHECK ((credit_card_number IS NULL AND credit_card_full_name IS NULL 
+   			AND credit_card_expiry_date IS NULL) 
+   OR (credit_card_number IS NOT NULL AND credit_card_full_name IS NOT NULL 
+   		AND credit_card_expiry_date IS NOT NULL))
 );
+
+-- CREATE TABLE pet_owner (
+-- 	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
+-- 	credit_card_number VARCHAR UNIQUE,
+-- 	credit_card_full_name VARCHAR,
+-- 	credit_card_expiry_date VARCHAR(5)
+-- );
 
 CREATE TABLE caretaker (
     username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
@@ -167,7 +175,7 @@ CREATE VIEW salary_calculation_for_part_time(cusername, salary) AS (
 -- trigger 1
 CREATE OR REPLACE FUNCTION not_overlap()
 	RETURNS TRIGGER AS 
-	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN;
+	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN; leave_start DATE; leave_end DATE;
 	BEGIN 
 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
 		-- TODO: change part_time_exists to a more explanatory name?
@@ -175,7 +183,8 @@ CREATE OR REPLACE FUNCTION not_overlap()
 		IF part_time_exists THEN
 			SELECT COUNT(*) INTO ctx1 FROM availabilities A
 			WHERE NEW.cusername = A.username AND 
-			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <= A.end_date);
+			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <  (A.end_date + INTERVAL '1 day') );
+			-- <= A.end_date);
 
 			IF ctx1 = 0 THEN
 				-- Replaced RETURN NULL with RAISE EXCEPTION
@@ -187,11 +196,16 @@ CREATE OR REPLACE FUNCTION not_overlap()
 		ELSE
 		SELECT COUNT(*) INTO ctx2 FROM leave_days L
 		WHERE NEW.cusername = L.username AND
-			(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, L.end_date);
+			(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, (L.end_date + INTERVAL '1 day') );
 
 		IF ctx2 > 0 THEN
 			-- Replaced RETURN NULL with RAISE EXCEPTION
-			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, NEW.job_start_datetime, NEW.job_end_datetime;
+			SELECT L.start_date, L.end_date INTO leave_start, leave_end 
+			FROM leave_days L
+			WHERE NEW.cusername = L.username AND
+				(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, (L.end_date + INTERVAL '1 day') )
+			LIMIT 1;
+			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, leave_start, leave_end;
 		ELSE
 			RETURN NEW;
 		END IF;

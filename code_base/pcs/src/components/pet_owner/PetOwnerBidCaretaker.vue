@@ -390,7 +390,7 @@ export default {
             username: this.username,
             pet: this.pet_selected,
             caretaker: this.caretaker,
-            bidding_time: date
+            bidding_time: startDateObj //date
               .toISOString()
               .toString()
               .replace(/T/, " ")
@@ -405,7 +405,7 @@ export default {
               .toString()
               .replace(/T/, " ")
               .substring(0, 19),
-            payment_datetime: date
+            payment_datetime: startDateObj //date
               .toISOString()
               .toString()
               .replace(/T/, " ")
@@ -430,6 +430,12 @@ export default {
               }
             )
             .then((response) => {
+              console.log("response");
+              console.log(typeof response);
+              console.log(response);
+              console.log(response.data);
+              console.log(response.data[0]);
+              console.log(response.data[0].result);
               if (response.data[0].result == 1) {
                 Swal.fire({
                   icon: "success",
@@ -460,30 +466,37 @@ export default {
                     this.selected_dates[1] +
                     " already exist!",
                 });
-              } else if (response.data[0].result == null) {
-                Swal.fire({
-                  // TODO: Do more checking on the type of error
-                  icon: "error",
-                  title: "Oops...",
-                  text:
-                    "Bidding error! Please try again with NULL Result error: " +
-                    response.data[0],
-                });
+              
               } else if (response.data[0] == null) {
                 Swal.fire({
-                  // TODO: Do more checking on the type of error
                   icon: "error",
                   title: "Oops...",
                   text:
-                    "Bidding error! Please try again with NULL error: " +
-                    response.data[0],
+                    "Missed Bid! Please try another bid or contact the Admin. Null Error: " +
+                    response,
+                });
+              } else if (response.data[0].result == null) {
+                console.log("Inside response.data[0].result == null")
+                console.log(response.data)
+                console.log(typeof response.data)
+                console.log(response.data.substr(0, 12))
+                console.log(response.data.substr(0, 12).trim() === "Error error: ".trim())
+                if (response.data.substr(0, 12).trim() === "Error error: ".trim()) {
+                  response.data = response.data.substr(13);
+                  console.log(response.data)
+                }
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text:
+                    "Missed Bid! Please try another bid: " +
+                    response.data,
                 });
               } else {
                 Swal.fire({
-                  // TODO: Do more checking on the type of error
                   icon: "error",
                   title: "Oops...",
-                  text: "Bidding error! Please try again: " + response.data[0],
+                  text: "Missed Bid! Please try another bid or contact the Admin. Error: " + response.data[0],
                 });
               }
             });
@@ -604,7 +617,7 @@ export default {
           username: this.username,
           pet: this.pet_selected,
           caretaker: this.caretaker,
-          bidding_time: date
+          bidding_time: startDateObj//date
             .toISOString()
             .toString()
             .replace(/T/, " ")
@@ -661,7 +674,7 @@ export default {
                   this.selected_dates[0] +
                   " till " +
                   this.selected_dates[1] +
-                  " is comfirmed. Please pay " +
+                  " is comfirmed. Please pay $" +
                   this.price +
                   " to the caretaker upon the start of the caretaking session. Thank you!",
               }).then(function() {
@@ -681,30 +694,36 @@ export default {
                   this.selected_dates[1] +
                   " already exist!",
               });
-            } else if (response.data[0].result == null) {
-              Swal.fire({
-                // TODO: Do more checking on the type of error
-                icon: "error",
-                title: "Oops...",
-                text:
-                  "Bidding error! Please try again with NULL Result error: " +
-                  response.data[0],
-              });
             } else if (response.data[0] == null) {
               Swal.fire({
-                // TODO: Do more checking on the type of error
                 icon: "error",
                 title: "Oops...",
                 text:
-                  "Bidding error! Please try again with NULL error: " +
-                  response.data[0],
+                  "Missed Bid! Please try another bid or contact the Admin. Null Error: " +
+                  response,
+              });
+            } else if (response.data[0].result == null) {
+              // console.log("Inside response.data[0].result == null")
+              // console.log(response.data)
+              // console.log(typeof response.data)
+              // console.log(response.data.substr(0, 12))
+              // console.log(response.data.substr(0, 12).trim() === "Error error: ".trim())
+              if (response.data.substr(0, 12).trim() === "Error error: ".trim()) {
+                response.data = response.data.substr(13);
+                console.log(response.data)
+              }
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text:
+                  "Missed Bid! Please try another bid: " +
+                  response.data,
               });
             } else {
               Swal.fire({
-                // TODO: Do more checking on the type of error
                 icon: "error",
                 title: "Oops...",
-                text: "Bidding error! Please try again: " + response.data[0],
+                text: "Missed Bid! Please try another bid or contact the Admin. Error: " + response.data[0],
               });
             }
           });
@@ -758,6 +777,32 @@ export default {
 
     // sg_current_date = sg_current_date.split(/T/, 2)[0];
     // this.today_date = sg_current_date;
+    
+    
+    // //CHECK OR FIGURE OUT GETTING END DAT
+    // let dateEnd = new Date( //End of the day
+    //   date.getFullYear(),
+    //   date.getMonth(),
+    //   date.getDate() + 1,
+    //   8,
+    //   0,
+    //   -1
+    // );
+    // const dateEndString = dateEnd
+    //     .toISOString()
+    //     .replace(/T/, " ")
+    //     .substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
+    // console.log(dateEndString);
+
+
+    // Set the minimum date availble for date picker
+    // let date = new Date();
+    // date.setHours(date.getHours() + 8);
+    // //date.setHours(0, 0, 0, 0);
+    // this.today_date = date.toISOString().toString().substring(0, 10);
+    // console.log("today date is")
+    // console.log(date)
+    // console.log(this.today_date)
 
     const get_info = {
       username: this.username,
