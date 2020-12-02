@@ -154,7 +154,7 @@ async function submit_a_bid(req, res) {
       console.log(date);
 
       date.setDate(date.getDate() + 1);
-      date.setDate(dateEnd.getDate() + 1);
+      dateEnd.setDate(dateEnd.getDate() + 1);
     }
 
     console.log("max number is:");
