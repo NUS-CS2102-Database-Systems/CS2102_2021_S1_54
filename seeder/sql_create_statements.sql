@@ -19,11 +19,22 @@ CREATE TABLE users (
 );
 
 CREATE TABLE pet_owner (
-	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
-	credit_card_number VARCHAR UNIQUE,
-	credit_card_full_name VARCHAR,
-	credit_card_expiry_date VARCHAR(5)
+   username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
+   credit_card_number VARCHAR UNIQUE,
+   credit_card_full_name VARCHAR,
+   credit_card_expiry_date VARCHAR(5),
+   CHECK ((credit_card_number IS NULL AND credit_card_full_name IS NULL 
+   			AND credit_card_expiry_date IS NULL) 
+   OR (credit_card_number IS NOT NULL AND credit_card_full_name IS NOT NULL 
+   		AND credit_card_expiry_date IS NOT NULL))
 );
+
+-- CREATE TABLE pet_owner (
+-- 	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
+-- 	credit_card_number VARCHAR UNIQUE,
+-- 	credit_card_full_name VARCHAR,
+-- 	credit_card_expiry_date VARCHAR(5)
+-- );
 
 CREATE TABLE caretaker (
     username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,

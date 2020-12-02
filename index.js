@@ -27,11 +27,6 @@ const pet_owner_home_route = require("./routes/pet_owner_home.js");
 //here we are configuring dist to serve app files
 app.use("/", serveStatic(path.join(__dirname, "/code_base/pcs/dist")));
 
-// this * route is to serve project on different page routes except root `/`
-// app.get(/.*/, function (req, res) {
-//   res.sendFile(path.join(__dirname, "/code_base/pcs/dist/index.html"));
-// });
-
 app.use(function (req, res, next) {
   res.header(
     "Access-Control-Allow-Headers",
@@ -77,6 +72,11 @@ pcs_admin_set_price_routes(app);
 pcs_admin_show_caretaker_details(app);
 pet_owner_bid_caretakers_route(app);
 pet_owner_home_route(app);
+
+// this * route is to serve project on different page routes except root `/`
+app.get(/.*/, function (req, res) {
+  res.sendFile(path.join(__dirname, "/code_base/pcs/dist/index.html"));
+});
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Example app listening on port %d", this.address().port);
