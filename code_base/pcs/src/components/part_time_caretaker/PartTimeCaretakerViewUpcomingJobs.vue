@@ -352,7 +352,7 @@ export default {
               for (let i = 0; i < length; i++) {
                 if (i % 2 == 0) {
                   this.id_odd.push(i + 1);
-                  this.pet_owner_odd.push(response.data[i].pusername);
+                  this.pet_owner_odd.push(response.data[i].username);
                   this.pet_odd.push(response.data[i].pet_name);
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
@@ -380,7 +380,32 @@ export default {
                   this.pet_owner_phone_odd.push(response.data[i].phone);
                   this.pet_owner_email_odd.push(response.data[i].email);
                   this.pet_owner_address_odd.push(response.data[i].address);
-                  this.pet_age_odd.push(response.data[i].pet_age);
+                  let pet_age = null;
+
+                  if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.months + " months ";
+                  } else if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.months + " months ";
+                  }
+
+                  if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.days + " days";
+                  } else if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.days + " days";
+                  }
+                  this.pet_age_odd.push(pet_age);
                   this.pet_gender_odd.push(response.data[i].pet_gender);
                   this.pet_breed_odd.push(response.data[i].breed);
                   this.type_of_animal_odd.push(response.data[i].type_of_animal);
@@ -395,17 +420,21 @@ export default {
                   this.payment_datetime_odd.push(date_time);
                 } else {
                   this.id_even.push(i + 1);
-                  this.caretaker_even.push(response.data[i].cusername);
+                  this.pet_owner_even.push(response.data[i].username);
                   this.pet_even.push(response.data[i].pet_name);
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_start_datetime.split("T")[1];
+                    response.data[i].job_start_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_start_even.push(job_start);
                   let job_end =
                     response.data[i].job_end_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_end_datetime.split("T")[1];
+                    response.data[i].job_end_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_end_even.push(job_end);
                   this.start_transfer_method_even.push(
                     response.data[i].start_transfer_method
@@ -419,7 +448,32 @@ export default {
                   this.pet_owner_phone_even.push(response.data[i].phone);
                   this.pet_owner_email_even.push(response.data[i].email);
                   this.pet_owner_address_even.push(response.data[i].address);
-                  this.pet_age_even.push(response.data[i].pet_age);
+                  let pet_age = null;
+
+                  if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.months + " months ";
+                  } else if (
+                    response.data[0].pet_age.months != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.months + " months ";
+                  }
+
+                  if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age == null
+                  ) {
+                    pet_age = response.data[0].pet_age.days + " days";
+                  } else if (
+                    response.data[0].pet_age.days != undefined &&
+                    pet_age != null
+                  ) {
+                    pet_age += response.data[0].pet_age.days + " days";
+                  }
+                  this.pet_age_even.push(pet_age);
                   this.pet_gender_even.push(response.data[i].pet_gender);
                   this.pet_breed_even.push(response.data[i].breed);
                   this.type_of_animal_even.push(
@@ -457,6 +511,7 @@ export default {
         }
       )
       .then((response) => {
+        console.log(response.data);
         let length = response.data.length;
         if (length == 0) {
           this.have_data = false;
@@ -465,7 +520,7 @@ export default {
           for (let i = 0; i < length; i++) {
             if (i % 2 == 0) {
               this.id_odd.push(i + 1);
-              this.pet_owner_odd.push(response.data[i].pusername);
+              this.pet_owner_odd.push(response.data[i].username);
               this.pet_odd.push(response.data[i].pet_name);
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
@@ -528,17 +583,17 @@ export default {
               this.payment_datetime_odd.push(date_time);
             } else {
               this.id_even.push(i + 1);
-              this.caretaker_even.push(response.data[i].cusername);
+              this.pet_owner_even.push(response.data[i].username);
               this.pet_even.push(response.data[i].pet_name);
               let job_start =
                 response.data[i].job_start_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_start_datetime.split("T")[1];
+                response.data[i].job_start_datetime.split("T")[1].split(".")[0];
               this.job_start_even.push(job_start);
               let job_end =
                 response.data[i].job_end_datetime.split("T")[0] +
                 " " +
-                response.data[i].job_end_datetime.split("T")[1];
+                response.data[i].job_end_datetime.split("T")[1].split(".")[0];
               this.job_end_even.push(job_end);
               this.start_transfer_method_even.push(
                 response.data[i].start_transfer_method

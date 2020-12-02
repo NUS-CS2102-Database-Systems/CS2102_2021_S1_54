@@ -15,8 +15,8 @@
             <v-card-text>
               <p style="color:black;font-size:20px">
                 Taken care of <b>{{ num_pets }}</b> pets in
-                <b>{{ num_pet_days }}</b> pet-days. <br />
-                Expected to earn <b>SGD {{ amount_earned }}</b
+                <b>{{ num_pet_days }}</b> pet-day(s). <br />
+                Earned <b>SGD {{ amount_earned }}</b
                 >. <br />
               </p>
             </v-card-text>
@@ -36,7 +36,7 @@
           hide-default-footer
           class="elevation-1"
         ></v-data-table>
-        <p v-else>No pet is in caretaking today</p>
+        <p v-else>You do not have any pet under your care today.</p>
         <br />
 
         <br />
@@ -50,7 +50,7 @@
           hide-default-footer
           class="elevation-1"
         ></v-data-table>
-        <p v-else>No upcoming pet care event</p>
+        <p v-else>You do not have any pet under your care in the future yet.</p>
         <br />
       </template>
       <template v-else-if="!loaded">
@@ -182,6 +182,17 @@ export default {
     };
     // console.log("get_info is")
     // console.log(get_info)
+
+    // console.log(today)
+    // console.log(myToday)
+    // console.log(myTomorrow)
+    // console.log(anothertoday)
+    // console.log(get_info)
+    myToday.setHours(myToday.getHours() -8);
+    myTomorrow.setHours(myTomorrow.getHours() -8);
+    // console.log("after")
+    // console.log(myToday)
+    // console.log(myTomorrow)
 
     await axios
       .post(

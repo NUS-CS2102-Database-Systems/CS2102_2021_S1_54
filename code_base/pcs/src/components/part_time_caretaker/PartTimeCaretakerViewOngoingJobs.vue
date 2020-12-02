@@ -13,7 +13,7 @@
           <v-col class="mx-auto">
             <v-list v-for="(number, i) in id_odd" :key="number">
               <v-row>
-                <v-card width="45%">
+                <v-card width="55%">
                   <v-card-title> Job {{ number }} </v-card-title>
                   <v-card-text>
                     <h3 style="color:black">Job Information</h3>
@@ -158,7 +158,7 @@ export default {
     PartTimeCaretakerNavBar,
   },
   data: () => ({
-    loaded: true,
+    loaded: false,
     have_data: false,
     username: null,
     id_odd: [],

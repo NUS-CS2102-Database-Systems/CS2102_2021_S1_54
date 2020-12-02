@@ -135,12 +135,12 @@ export default {
       .replace(/T/, " ")
       .substring(0, 19);
 
-    console.log(today);
-    console.log(startOfToday);
-    console.log(myTomorrow);
-    console.log(today);
-    //console.log(myToday);
-    console.log(myTomorrow);
+    // console.log(today);
+    // console.log(startOfToday);
+    // console.log(myTomorrow);
+    // console.log(today);
+    // //console.log(myToday);
+    // console.log(myTomorrow);
 
     const get_info = {
       username: this.username,
@@ -148,8 +148,20 @@ export default {
       tomorrow_datetime: myTomorrow_str,
       moment_datetime: currentMoment_str,
     };
-    console.log("get_info is");
+
+    // console.log("get_info is");
     console.log(get_info);
+    
+    // console.log(today)
+    // console.log(startOfToday)
+    // console.log(myTomorrow)
+    // console.log(anothertoday)
+    // console.log(get_info)
+    startOfToday.setHours(startOfToday.getHours() -8);
+    myTomorrow.setHours(myTomorrow.getHours() -8);
+    // console.log("after")
+    // console.log(startOfToday)
+    // console.log(myTomorrow)
 
     await axios
       .post(
@@ -170,7 +182,7 @@ export default {
           let job_start_date = new Date(
             response.data[i].job_start_datetime.toString().split("T")[0]
           );
-          console.log(job_start_date);
+          // console.log(job_start_date);
           if (job_start_date >= startOfToday && job_start_date < myTomorrow) {
             if (response.data[i].payment_method.toString() == "Cash") {
               comment_arr_temp.push(
@@ -183,7 +195,7 @@ export default {
           let job_end_date = new Date(
             response.data[i].job_end_datetime.toString().split("T")[0]
           );
-          console.log(job_end_date);
+          // console.log(job_end_date);
           if (job_end_date >= startOfToday && job_end_date < myTomorrow) {
             comment_arr_temp.push("End day");
           }

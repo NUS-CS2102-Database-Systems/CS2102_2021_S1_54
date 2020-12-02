@@ -120,15 +120,29 @@ async function submit_a_bid(req, res) {
     console.log("number of days is \n");
     console.log(differenceInDays);
 
+    let dateEnd = new Date( //End of the day
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1,
+      0,
+      0,
+      -1
+    );
+
     for (var i = 0; i < differenceInDays; i++) {
       // check day by day
-      const dateString = date.toISOString().substring(0, 10); // YYYY-MM-DD format
+      const dateString = date.toISOString().replace(/T/, " ").substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
+      const dateEndString = dateEnd
+        .toISOString()
+        .replace(/T/, " ")
+        .substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
+
       const numberOfPets = await client.query(`
       SELECT COUNT(*) AS num_pets
       FROM bid_transaction 
       WHERE cusername = '${caretaker}' 
-        AND (job_start_datetime, job_end_datetime) OVERLAPS ('${dateString}', '${dateString}');
-      `);
+        AND (job_start_datetime, job_end_datetime) OVERLAPS ('${dateString}', '${dateEndString}');
+      `); //2020-12-02', '2020-12-02'); //sborrownx
 
       if (numberOfPets.rows[0].num_pets > maxNumOfPets) {
         console.log("numberOfPets is \n");
@@ -140,6 +154,7 @@ async function submit_a_bid(req, res) {
       console.log(date);
 
       date.setDate(date.getDate() + 1);
+      date.setDate(dateEnd.getDate() + 1);
     }
 
     console.log("max number is:");
