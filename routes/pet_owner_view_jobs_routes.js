@@ -105,7 +105,11 @@ async function get_specific_past_jobs_information(req, res) {
         bt.pet_name = '${pet_names}' ORDER BY bt.job_start_datetime ASC, bt.job_end_datetime ASC;`;
       }
     } else if (start_date != null && pet_names == null) {
-      query = `SELECT * FROM bid_transaction WHERE pusername = '${username}' AND 
+      query = `SELECT cusername AS username, pet_name, 
+      job_start_datetime, job_end_datetime, 
+      start_transfer_method, end_transfer_method, amount, rating, 
+      review, payment_method, payment_datetime
+       FROM bid_transaction WHERE pusername = '${username}' AND 
       job_start_datetime BETWEEN '${start_date}' AND '${end_date}' AND 
       job_end_datetime BETWEEN '${start_date}' AND '${end_date}' 
       ORDER BY job_start_datetime ASC, job_end_datetime ASC;`;

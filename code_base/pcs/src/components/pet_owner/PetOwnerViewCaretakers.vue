@@ -640,7 +640,9 @@ export default {
                   this.caretaker_username_odd.push(response.data[i].username);
                   this.caretaker_name_odd.push(response.data[i].name);
                   let age = "";
-
+                  if (response.data[i].age.years != undefined) {
+                    age = response.data[i].age.years + " years ";
+                  }
                   if (response.data[0].age.months != undefined && age == null) {
                     age = response.data[0].age.months + " months ";
                   } else if (
@@ -704,7 +706,9 @@ export default {
                   this.caretaker_username_even.push(response.data[i].username);
                   this.caretaker_name_even.push(response.data[i].name);
                   let age = null;
-
+                  if (response.data[i].age.years != undefined) {
+                    age = response.data[i].age.years + " years ";
+                  }
                   if (response.data[0].age.months != undefined && age == null) {
                     age = response.data[0].age.months + " months ";
                   } else if (
@@ -863,7 +867,9 @@ export default {
               this.caretaker_username_odd.push(response.data[i].username);
               this.caretaker_name_odd.push(response.data[i].name);
               let age = null;
-
+              if (response.data[i].age.years != undefined) {
+                age = response.data[i].age.years + " years ";
+              }
               if (response.data[0].age.months != undefined && age == null) {
                 age = response.data[0].age.months + " months ";
               } else if (
@@ -926,6 +932,9 @@ export default {
               this.caretaker_username_even.push(response.data[i].username);
               this.caretaker_name_even.push(response.data[i].name);
               let age = null;
+              if (response.data[i].age.years != undefined) {
+                age = response.data[i].age.years + " years ";
+              }
               if (response.data[0].age.months != undefined && age == null) {
                 age = response.data[0].age.months + " months ";
               } else if (

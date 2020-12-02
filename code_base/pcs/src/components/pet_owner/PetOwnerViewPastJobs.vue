@@ -214,7 +214,9 @@ export default {
     available_dates: false,
     selected_dates: null,
     selected_pet_names: null,
-    getEndDate: new Date().toISOString().substr(0, 10),
+    getEndDate: new Date(new Date().setDate(new Date().getDate() - 1))
+      .toISOString()
+      .substr(0, 10),
     id_odd: [],
     id_even: [],
     caretaker_odd: [],
@@ -364,17 +366,21 @@ export default {
               for (let i = 0; i < length; i++) {
                 if (i % 2 == 0) {
                   this.id_odd.push(i + 1);
-                  this.caretaker_odd.push(response.data[i].cusername);
+                  this.caretaker_odd.push(response.data[i].username);
                   this.pet_odd.push(response.data[i].pet_name);
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_start_datetime.split("T")[1];
+                    response.data[i].job_start_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_start_odd.push(job_start);
                   let job_end =
                     response.data[i].job_end_datetime.split("T")[0] +
                     " " +
-                    response.data[i].job_end_datetime.split("T")[1];
+                    response.data[i].job_end_datetime
+                      .split("T")[1]
+                      .split(".")[0];
                   this.job_end_odd.push(job_end);
                   this.start_transfer_method_odd.push(
                     response.data[i].start_transfer_method
@@ -395,7 +401,7 @@ export default {
                   this.payment_datetime_odd.push(date_time);
                 } else {
                   this.id_even.push(i + 1);
-                  this.caretaker_even.push(response.data[i].cusername);
+                  this.caretaker_even.push(response.data[i].username);
                   this.pet_even.push(response.data[i].pet_name);
                   let job_start =
                     response.data[i].job_start_datetime.split("T")[0] +
