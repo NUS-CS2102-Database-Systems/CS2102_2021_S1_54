@@ -18,7 +18,7 @@
               <v-row>
                 <v-card width="55%">
                   <v-card-title>
-                    {{ pet_name_odd[i - 1] }}
+                    {{ pet_name_odd[i - 1] }} <v-spacer />
                     <v-btn
                       icon
                       color="blue"
@@ -62,7 +62,7 @@
               <v-row>
                 <v-card width="55%">
                   <v-card-title>
-                    {{ pet_name_even[i - 1] }}
+                    {{ pet_name_even[i - 1] }} <v-spacer />
                     <v-btn
                       icon
                       color="blue"
@@ -194,8 +194,9 @@ export default {
                   title: "Deleted!",
                   text:
                     pet_name + "'s information has been deleted successfully.",
+                }).then(function() {
+                  window.location.reload();
                 });
-                window.location.reload();
               }
             });
         }
@@ -225,20 +226,23 @@ export default {
           if (i % 2 == 0) {
             this.pet_name_odd.push(response.data[i].pet_name);
             let age = null;
-
-            if (response.data[0].age.months != undefined && age == null) {
-              age = response.data[0].age.months + " months ";
-            } else if (
-              response.data[0].age.months != undefined &&
-              age != null
-            ) {
-              age += response.data[0].age.months + " months ";
+            if (response.data[i].age.years != undefined) {
+              age = response.data[i].age.years + " years ";
             }
 
-            if (response.data[0].age.days != undefined && age == null) {
-              age = response.data[0].age.days + " days";
-            } else if (response.data[0].age.days != undefined && age != null) {
-              age += response.data[0].age.days + " days";
+            if (response.data[i].age.months != undefined && age == null) {
+              age = response.data[i].age.months + " months ";
+            } else if (
+              response.data[i].age.months != undefined &&
+              age != null
+            ) {
+              age += response.data[i].age.months + " months ";
+            }
+
+            if (response.data[i].age.days != undefined && age == null) {
+              age = response.data[i].age.days + " days";
+            } else if (response.data[i].age.days != undefined && age != null) {
+              age += response.data[i].age.days + " days";
             }
 
             this.pet_age_odd.push(age);
@@ -262,25 +266,25 @@ export default {
             this.length_odd += 1;
           } else {
             this.pet_name_even.push(response.data[i].pet_name);
-            if (response.data[0].age.years != undefined) {
-              this.age = response.data[0].age.years + " years ";
-            }
 
             let age = null;
-
-            if (response.data[0].age.months != undefined && age == null) {
-              age = response.data[0].age.months + " months ";
-            } else if (
-              response.data[0].age.months != undefined &&
-              age != null
-            ) {
-              age += response.data[0].age.months + " months ";
+            if (response.data[i].age.years != undefined) {
+              age = response.data[i].age.years + " years ";
             }
 
-            if (response.data[0].age.days != undefined && age == null) {
-              age = response.data[0].age.days + " days";
-            } else if (response.data[0].age.days != undefined && age != null) {
-              age += response.data[0].age.days + " days";
+            if (response.data[i].age.months != undefined && age == null) {
+              age = response.data[i].age.months + " months ";
+            } else if (
+              response.data[i].age.months != undefined &&
+              age != null
+            ) {
+              age += response.data[i].age.months + " months ";
+            }
+
+            if (response.data[i].age.days != undefined && age == null) {
+              age = response.data[i].age.days + " days";
+            } else if (response.data[i].age.days != undefined && age != null) {
+              age += response.data[i].age.days + " days";
             }
 
             this.pet_age_even.push(age);
@@ -306,6 +310,8 @@ export default {
         }
       });
     this.loaded = true;
+    console.log(this.pet_age_odd);
+    console.log(this.pet_age_even);
   },
 };
 </script>

@@ -42,15 +42,15 @@
         </v-layout>
         <v-row>
           <v-col class="mx-auto">
-            <v-btn icon color="blue" fab @click="submit">
-              <v-icon> mdi-content-save</v-icon>
-              Save
-            </v-btn>
-          </v-col>
-          <v-col class="mx-auto">
             <v-btn icon color="red" fab @click="cancel">
               <v-icon> mdi-close</v-icon>
               Cancel
+            </v-btn>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-btn icon color="blue" fab @click="submit">
+              <v-icon> mdi-content-save</v-icon>
+              Save
             </v-btn>
           </v-col>
         </v-row>
@@ -221,7 +221,8 @@ export default {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Credit Card information update failed. Please try again",
+                text:
+                  "Credit card details could not be updated because it is used by another pet owner. If you suspect that someone is using your card fraudulently, please notify the bank and the police immediately. Otherwise, please use another credit card.",
               });
             }
           });

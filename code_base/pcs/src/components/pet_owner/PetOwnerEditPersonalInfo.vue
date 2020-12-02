@@ -66,15 +66,15 @@
         </v-layout>
         <v-row>
           <v-col class="mx-auto">
-            <v-btn icon color="blue" fab @click="submit">
-              <v-icon> mdi-content-save</v-icon>
-              Save
-            </v-btn>
-          </v-col>
-          <v-col class="mx-auto">
             <v-btn icon color="red" fab @click="cancel">
               <v-icon> mdi-close</v-icon>
               Cancel
+            </v-btn>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-btn icon color="blue" fab @click="submit">
+              <v-icon> mdi-content-save</v-icon>
+              Save
             </v-btn>
           </v-col>
         </v-row>
@@ -148,6 +148,7 @@ export default {
             title: "Oops...",
             text: "Please provide a valid phone number",
           });
+          data_ok = false;
           this.phone = null;
         }
       } else {
@@ -173,6 +174,7 @@ export default {
             title: "Oops...",
             text: "Please provide a valid email address",
           });
+          data_ok = false;
           this.email = null;
         }
       } else {
@@ -227,54 +229,56 @@ export default {
           this.address = null;
         }
 
-        const dataToSend =
-          '{"username":"' +
-          this.username +
-          '", "name":' +
-          new_name +
-          ', "gender":' +
-          new_gender +
-          ', "phone":' +
-          new_phone +
-          ', "email":' +
-          new_email +
-          ', "address":' +
-          new_address +
-          "}";
-        console.log(dataToSend);
-        const jsonDataToSend = JSON.parse(dataToSend);
-        console.log(jsonDataToSend);
-        await axios
-          .post(
-            "https://pet-care-service.herokuapp.com/pet-owners/edit-personal-information",
-            {
-              toEdit: jsonDataToSend,
-            }
-          )
-          .then((response) => {
-            if (
-              response.data[0].name == this.name &&
-              response.data[0].gender == this.gender &&
-              response.data[0].phone == this.phone &&
-              response.data[0].email == this.email &&
-              response.data[0].address == this.address
-            ) {
-              Swal.fire({
-                icon: "success",
-                title: "Updated!",
-                text: "Personal information has been updated successfully.",
-              }).then(function() {
-                window.location.href =
-                  constants.pet_owner_go_back_to_profile_page;
-              });
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Personal information update failed. Please try again",
-              });
-            }
-          });
+        if (data_ok == true) {
+          const dataToSend =
+            '{"username":"' +
+            this.username +
+            '", "name":' +
+            new_name +
+            ', "gender":' +
+            new_gender +
+            ', "phone":' +
+            new_phone +
+            ', "email":' +
+            new_email +
+            ', "address":' +
+            new_address +
+            "}";
+          console.log(dataToSend);
+          const jsonDataToSend = JSON.parse(dataToSend);
+          console.log(jsonDataToSend);
+          await axios
+            .post(
+              "https://pet-care-service.herokuapp.com/pet-owners/edit-personal-information",
+              {
+                toEdit: jsonDataToSend,
+              }
+            )
+            .then((response) => {
+              if (
+                response.data[0].name == this.name &&
+                response.data[0].gender == this.gender &&
+                response.data[0].phone == this.phone &&
+                response.data[0].email == this.email &&
+                response.data[0].address == this.address
+              ) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Updated!",
+                  text: "Personal information has been updated successfully.",
+                }).then(function() {
+                  window.location.href =
+                    constants.pet_owner_go_back_to_profile_page;
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Personal information update failed. Please try again",
+                });
+              }
+            });
+        }
       }
     },
   },
