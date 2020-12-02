@@ -98,12 +98,14 @@ async function submit_a_bid(req, res) {
       `); //('${start_job_String}', '${end_job_String}');
 
     if (overlapping_bid.rows[0].num_overlap >= 1) {
-      res.send("This bid's timeframe overlaps with an existing sucessful bid.");
+      res.send(
+        "This bid overlaps with an existing sucessful bid for " + pet.toString()
+      );
       client.release();
       return;
     }
 
-    // check wether caretaker's pet limit has been reached
+    // check whether caretaker's pet limit has been reached
     var start = new Date(job_start_datetime);
     start.setHours(0, 0, 0, 0);
     var end = new Date(job_end_datetime);
