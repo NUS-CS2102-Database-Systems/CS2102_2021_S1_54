@@ -252,29 +252,32 @@ export default {
               this.pet_owner_email_odd.push(response.data[i].email);
               this.pet_owner_address_odd.push(response.data[i].address);
               let pet_age = null;
-
-              if (
-                response.data[0].pet_age.months != undefined &&
-                pet_age == null
-              ) {
-                pet_age = response.data[0].pet_age.months + " months ";
-              } else if (
-                response.data[0].pet_age.months != undefined &&
-                pet_age != null
-              ) {
-                pet_age += response.data[0].pet_age.months + " months ";
+              if (response.data[i].pet_age.years != undefined) {
+                pet_age = response.data[i].pet_age.years + " years ";
               }
 
               if (
-                response.data[0].pet_age.days != undefined &&
+                response.data[i].pet_age.months != undefined &&
                 pet_age == null
               ) {
-                pet_age = response.data[0].pet_age.days + " days";
+                pet_age = response.data[i].pet_age.months + " months ";
               } else if (
-                response.data[0].pet_age.days != undefined &&
+                response.data[i].pet_age.months != undefined &&
                 pet_age != null
               ) {
-                pet_age += response.data[0].pet_age.days + " days";
+                pet_age += response.data[i].pet_age.months + " months ";
+              }
+
+              if (
+                response.data[i].pet_age.days != undefined &&
+                pet_age == null
+              ) {
+                pet_age = response.data[i].pet_age.days + " days";
+              } else if (
+                response.data[i].pet_age.days != undefined &&
+                pet_age != null
+              ) {
+                pet_age += response.data[i].pet_age.days + " days";
               }
               this.pet_age_odd.push(pet_age);
               this.pet_gender_odd.push(response.data[i].pet_gender);
@@ -315,29 +318,32 @@ export default {
               this.pet_owner_email_even.push(response.data[i].email);
               this.pet_owner_address_even.push(response.data[i].address);
               let pet_age = null;
-
-              if (
-                response.data[0].pet_age.months != undefined &&
-                pet_age == null
-              ) {
-                pet_age = response.data[0].pet_age.months + " months ";
-              } else if (
-                response.data[0].pet_age.months != undefined &&
-                pet_age != null
-              ) {
-                pet_age += response.data[0].pet_age.months + " months ";
+              if (response.data[i].pet_age.years != undefined) {
+                pet_age = response.data[i].pet_age.years + " years ";
               }
 
               if (
-                response.data[0].pet_age.days != undefined &&
+                response.data[i].pet_age.months != undefined &&
                 pet_age == null
               ) {
-                pet_age = response.data[0].pet_age.days + " days";
+                pet_age = response.data[i].pet_age.months + " months ";
               } else if (
-                response.data[0].pet_age.days != undefined &&
+                response.data[i].pet_age.months != undefined &&
                 pet_age != null
               ) {
-                pet_age += response.data[0].pet_age.days + " days";
+                pet_age += response.data[i].pet_age.months + " months ";
+              }
+
+              if (
+                response.data[i].pet_age.days != undefined &&
+                pet_age == null
+              ) {
+                pet_age = response.data[i].pet_age.days + " days";
+              } else if (
+                response.data[i].pet_age.days != undefined &&
+                pet_age != null
+              ) {
+                pet_age += response.data[i].pet_age.days + " days";
               }
               this.pet_age_even.push(pet_age);
               this.pet_gender_even.push(response.data[i].pet_gender);

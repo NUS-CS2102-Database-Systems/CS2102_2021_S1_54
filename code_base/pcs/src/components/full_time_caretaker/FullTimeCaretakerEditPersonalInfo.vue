@@ -66,15 +66,15 @@
         </v-layout>
         <v-row>
           <v-col class="mx-auto">
-            <v-btn icon color="blue" fab @click="submit">
-              <v-icon> mdi-content-save</v-icon>
-              Save
-            </v-btn>
-          </v-col>
-          <v-col class="mx-auto">
             <v-btn icon color="red" fab @click="cancel">
               <v-icon> mdi-close</v-icon>
               Cancel
+            </v-btn>
+          </v-col>
+          <v-col class="mx-auto">
+            <v-btn icon color="blue" fab @click="submit">
+              <v-icon> mdi-content-save</v-icon>
+              Save
             </v-btn>
           </v-col>
         </v-row>
@@ -149,8 +149,8 @@ export default {
             title: "Oops...",
             text: "Please provide a valid phone number",
           });
-          this.phone = null;
           data_ok = false;
+          this.phone = null;
         }
       } else {
         Swal.fire({
@@ -175,6 +175,7 @@ export default {
             title: "Oops...",
             text: "Please provide a valid email address",
           });
+          data_ok = false;
           this.email = null;
         }
       } else {
