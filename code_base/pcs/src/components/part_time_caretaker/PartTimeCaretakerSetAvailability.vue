@@ -287,11 +287,27 @@ export default {
                   location.reload();
                 });
               } else {
-                console.log(response.data[0]);
+                console.log(response.data);
+                let error_msg = "";
+                error_msg = response.data;
+                console.log(error_msg);
+                if (
+                  error_msg ==
+                  'Error error: duplicate key value violates unique constraint "availabilities_pkey"'
+                ) {
+                  console.log("1");
+                  error_msg =
+                    "Pairs of start dates and end dates cannot repeat";
+                }
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
-                  text: "Adding availabilities failed. Please try again.",
+                  text:
+                    "Adding availabilities failed. " +
+                    error_msg +
+                    ". Please try again.",
+                }).then(function() {
+                  location.reload();
                 });
               }
             });
@@ -313,13 +329,26 @@ export default {
                   location.reload();
                 });
               } else {
+                let error_msg = "";
+                error_msg = response.data;
+                console.log(error_msg);
+                if (
+                  error_msg ==
+                  'Error error: duplicate key value violates unique constraint "availabilities_pkey"'
+                ) {
+                  console.log("2");
+                  error_msg =
+                    "Pairs of start dates and end dates cannot repeat";
+                }
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
                   text:
                     "Updating availabilities failed. " +
-                    response.data +
+                    error_msg +
                     ". Please try again.",
+                }).then(function() {
+                  location.reload();
                 });
               }
             });
@@ -355,22 +384,6 @@ export default {
           // axios to get num of pets allowed from availabilties
           // latest available date
           // If dont have any data at all, then set to 2
-          axios
-            .post(
-              "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets-information",
-              {
-                toGet: get_info,
-              }
-            )
-            .then((response) => {
-              this.count = response.data.length;
-              console.log(response.data);
-              if (response.data.number_of_pets_allowed != 0) {
-                this.num_of_pets = response.data.number_of_pets_allowed;
-              } else {
-                this.num_of_pets = 2;
-              }
-            });
         } else {
           this.have_data = true;
           for (let i = 0; i < length; i++) {
@@ -399,6 +412,25 @@ export default {
           }
         }
       });
+
+    if (this.have_data == false) {
+      await axios
+        .post(
+          "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets-information",
+          {
+            toGet: get_info,
+          }
+        )
+        .then((response) => {
+          this.count = response.data.length;
+          console.log(response.data);
+          if (response.data.number_of_pets_allowed != undefined) {
+            this.num_of_pets = response.data.number_of_pets_allowed;
+          } else {
+            this.num_of_pets = 2;
+          }
+        });
+    }
     this.loaded = true;
   },
 };
