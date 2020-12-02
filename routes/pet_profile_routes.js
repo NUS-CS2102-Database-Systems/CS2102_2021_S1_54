@@ -28,7 +28,7 @@ async function get_pet_information(req, res) {
     const result = await client.query(
       `SELECT pet_name, birth_date, AGE(birth_date) AS age, 
       breed, type_of_animal, gender, med_hist, special_req FROM pet WHERE username = '${username}' 
-      ORDER BY birth_date DESC;`
+      ORDER BY birth_date ASC;`
     );
 
     res.setHeader("content-type", "application/json");
