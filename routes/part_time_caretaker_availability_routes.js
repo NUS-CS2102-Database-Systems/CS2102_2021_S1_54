@@ -57,7 +57,7 @@ async function get_availabilities_information(req, res) {
 async function get_num_of_pets_information(req, res) {
   try {
     const client = await pool.connect();
-    const username = req.body.toGet.username;
+    let username = req.body.toGet.username;
 
     const result = await client.query(
       `SELECT number_of_pets_allowed 
