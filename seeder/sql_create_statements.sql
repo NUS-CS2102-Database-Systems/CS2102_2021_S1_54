@@ -164,7 +164,7 @@ CREATE VIEW salary_calculation_for_part_time(cusername, salary) AS (
 -- trigger 1
 CREATE OR REPLACE FUNCTION not_overlap()
 	RETURNS TRIGGER AS 
-	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN;
+	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN; leave_start DATE; leave_end DATE;
 	BEGIN 
 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
 		-- TODO: change part_time_exists to a more explanatory name?
@@ -189,7 +189,12 @@ CREATE OR REPLACE FUNCTION not_overlap()
 
 		IF ctx2 > 0 THEN
 			-- Replaced RETURN NULL with RAISE EXCEPTION
-			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, NEW.job_start_datetime, NEW.job_end_datetime;
+			SELECT L.start_date, L.end_date INTO leave_start, leave_end 
+			FROM leave_days L
+			WHERE NEW.cusername = L.username AND
+				(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, (L.end_date + INTERVAL '1 day') )
+			LIMIT 1;
+			RAISE EXCEPTION 'We regret to inform you that % will be on leave from % to %.', NEW.cusername, leave_start, leave_end;
 		ELSE
 			RETURN NEW;
 		END IF;

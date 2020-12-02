@@ -131,13 +131,13 @@ async function submit_a_bid(req, res) {
 
     for (var i = 0; i < differenceInDays; i++) {
       // check day by day
-      const dateString = date.toISOString().replace(/T/, " ").substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
-      const dateEndString = dateEnd
+      var dateString = date.toISOString().replace(/T/, " ").substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
+      var dateEndString = dateEnd
         .toISOString()
         .replace(/T/, " ")
         .substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
 
-      const numberOfPets = await client.query(`
+      var numberOfPets = await client.query(`
       SELECT COUNT(*) AS num_pets
       FROM bid_transaction 
       WHERE cusername = '${caretaker}' 

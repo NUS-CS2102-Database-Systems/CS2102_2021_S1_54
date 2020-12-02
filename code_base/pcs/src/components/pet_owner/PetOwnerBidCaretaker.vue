@@ -390,7 +390,7 @@ export default {
             username: this.username,
             pet: this.pet_selected,
             caretaker: this.caretaker,
-            bidding_time: date //startDateObj //date
+            bidding_time: startDateObj //date
               .toISOString()
               .toString()
               .replace(/T/, " ")
@@ -405,7 +405,7 @@ export default {
               .toString()
               .replace(/T/, " ")
               .substring(0, 19),
-            payment_datetime: date
+            payment_datetime: startDateObj //date
               .toISOString()
               .toString()
               .replace(/T/, " ")
@@ -430,6 +430,12 @@ export default {
               }
             )
             .then((response) => {
+              console.log("response");
+              console.log(typeof response);
+              console.log(response);
+              console.log(response.data);
+              console.log(response.data[0]);
+              console.log(response.data[0].result);
               if (response.data[0].result == 1) {
                 Swal.fire({
                   icon: "success",
@@ -460,30 +466,37 @@ export default {
                     this.selected_dates[1] +
                     " already exist!",
                 });
-              } else if (response.data[0].result == null) {
-                Swal.fire({
-                  // TODO: Do more checking on the type of error
-                  icon: "error",
-                  title: "Oops...",
-                  text:
-                    "Bidding error! Please try again with NULL Result error: " +
-                    response.data[0],
-                });
+              
               } else if (response.data[0] == null) {
                 Swal.fire({
-                  // TODO: Do more checking on the type of error
                   icon: "error",
                   title: "Oops...",
                   text:
-                    "Bidding error! Please try again with NULL error: " +
-                    response.data[0],
+                    "Missed Bid! Please try another bid or contact the Admin. Null Error: " +
+                    response,
+                });
+              } else if (response.data[0].result == null) {
+                console.log("Inside response.data[0].result == null")
+                console.log(response.data)
+                console.log(typeof response.data)
+                console.log(response.data.substr(0, 12))
+                console.log(response.data.substr(0, 12).trim() === "Error error: ".trim())
+                if (response.data.substr(0, 12).trim() === "Error error: ".trim()) {
+                  response.data = response.data.substr(13);
+                  console.log(response.data)
+                }
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text:
+                    "Missed Bid! Please try another bid: " +
+                    response.data,
                 });
               } else {
                 Swal.fire({
-                  // TODO: Do more checking on the type of error
                   icon: "error",
                   title: "Oops...",
-                  text: "Bidding error! Please try again: " + response.data[0],
+                  text: "Missed Bid! Please try another bid or contact the Admin. Error: " + response.data[0],
                 });
               }
             });
