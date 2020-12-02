@@ -105,9 +105,9 @@ async function submit_a_bid(req, res) {
 
     // check wether caretaker's pet limit has been reached
     var start = new Date(job_start_datetime);
-    start.setHours(0, 0, 0, 0);
+    start.setHours(0, 8, 0, 0);
     var end = new Date(job_end_datetime);
-    end.setHours(0, 0, 0, 0);
+    end.setHours(0, 8, 0, 0);
 
     console.log("In JS!");
     console.log(start);
@@ -124,7 +124,7 @@ async function submit_a_bid(req, res) {
       date.getFullYear(),
       date.getMonth(),
       date.getDate() + 1,
-      0,
+      8,
       0,
       -1
     );

@@ -172,7 +172,8 @@ CREATE OR REPLACE FUNCTION not_overlap()
 		IF part_time_exists THEN
 			SELECT COUNT(*) INTO ctx1 FROM availabilities A
 			WHERE NEW.cusername = A.username AND 
-			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <= A.end_date);
+			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <  (A.end_date + INTERVAL '1 day') );
+			-- <= A.end_date);
 
 			IF ctx1 = 0 THEN
 				-- Replaced RETURN NULL with RAISE EXCEPTION
@@ -184,7 +185,7 @@ CREATE OR REPLACE FUNCTION not_overlap()
 		ELSE
 		SELECT COUNT(*) INTO ctx2 FROM leave_days L
 		WHERE NEW.cusername = L.username AND
-			(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, L.end_date);
+			(NEW.job_start_datetime, NEW.job_end_datetime) overlaps (L.start_date, (L.end_date + INTERVAL '1 day') );
 
 		IF ctx2 > 0 THEN
 			-- Replaced RETURN NULL with RAISE EXCEPTION
