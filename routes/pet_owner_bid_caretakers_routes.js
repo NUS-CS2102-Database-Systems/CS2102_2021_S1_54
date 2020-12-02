@@ -116,13 +116,13 @@ async function submit_a_bid(req, res) {
       .substring(0, 19);
 
     var overlapping_bid = await client.query(`
-      SELECT COUNT(*) AS num_overlap
+      SELECT 1 AS num_overlap
       FROM bid_transaction 
       WHERE pet_name = '${pet}' AND pusername = '${username}'
         AND (job_start_datetime, job_end_datetime) OVERLAPS ('${start_job_String}', '${end_job_String}');
       `);
 
-    if (overlapping_bid[0].num_overlap >= 1) {
+    if (overlapping_bid[0].num_overlap == 1) {
       res.send("This bid's timeframe overlaps with an existing sucessful bid.");
       client.release();
       return;
