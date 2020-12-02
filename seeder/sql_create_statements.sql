@@ -29,7 +29,6 @@ CREATE TABLE pet_owner (
    		AND credit_card_expiry_date IS NOT NULL))
 );
 
-
 -- CREATE TABLE pet_owner (
 -- 	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
 -- 	credit_card_number VARCHAR UNIQUE,
