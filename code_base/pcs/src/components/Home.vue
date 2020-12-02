@@ -6,7 +6,7 @@
     <div style="width: 80%; float: right">
       <h1 style="text-align:center">Welcome to Petopia!</h1>
       <br />
-      <p style="font-size:30px">
+      <p style="font-size:20px">
         Need someone to help you to take care of your pet while you are away?
         Fret not, Petopia is here!<br /><br />
         At Petopia, we are commited to providing the best care for your pets.

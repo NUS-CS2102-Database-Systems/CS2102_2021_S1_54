@@ -5,7 +5,7 @@
     </div>
     <div style="width: 80%; float: right">
       <v-row>
-        <v-col class="mx-auto" md="2">
+        <v-col class="mx-auto" md="4">
           <v-select
             v-model="selected_commitment_level"
             :items="commitment_levels"
@@ -21,7 +21,7 @@
             @click:clear="clearCommitmentLevel"
           />
         </v-col>
-        <v-col class="mx-auto" md="3">
+        <v-col class="mx-auto" md="4">
           <v-menu
             v-model="available_dates"
             :nudge-right="40"
@@ -51,7 +51,7 @@
             />
           </v-menu>
         </v-col>
-        <v-col class="mx-auto" md="2">
+        <v-col class="mx-auto" md="3">
           <v-select
             v-model="selected_rating"
             :items="rating_types"
@@ -67,7 +67,7 @@
             @click:clear="clearRating"
           />
         </v-col>
-        <v-col class="mx-auto" md="2">
+        <v-col class="mx-auto" md="3">
           <v-text-field
             v-model="selected_price_from"
             label="Min. Price"
@@ -80,7 +80,7 @@
             @click:clear="clearMinimumPrice"
           />
         </v-col>
-        <v-col class="mx-auto" md="2">
+        <v-col class="mx-auto" md="3">
           <v-text-field
             v-model="selected_price_to"
             label="Max. Price"
@@ -110,7 +110,7 @@
             @click:clear="clearSortBy"
           />
         </v-col> -->
-        <v-col class="mx-auto" md="3">
+        <v-col class="mx-auto" md="5">
           <v-text-field
             v-model="search"
             clearable

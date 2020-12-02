@@ -1,4 +1,5 @@
-const domain = "http://localhost:8080/";
+// const domain = "http://localhost:8080/";
+const domain = "https://pet-care-service.herokuapp.com/";
 
 export const pet_owner_edit_login_info =
   domain + "pet-owners/edit-login-information?";
