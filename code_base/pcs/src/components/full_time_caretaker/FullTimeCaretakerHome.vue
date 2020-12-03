@@ -33,7 +33,6 @@
           :headers="headers_current"
           :items="current_event"
           multi-sort
-          hide-default-footer
           class="elevation-1"
         ></v-data-table>
         <p v-else>You do not have any pet under your care today.</p>
@@ -47,7 +46,6 @@
           :headers="headers_upcoming"
           :items="upcoming_event"
           multi-sort
-          hide-default-footer
           class="elevation-1"
         ></v-data-table>
         <p v-else>You do not have any pet under your care in the future yet.</p>
@@ -188,8 +186,8 @@ export default {
     // console.log(myTomorrow)
     // console.log(anothertoday)
     // console.log(get_info)
-    myToday.setHours(myToday.getHours() -8);
-    myTomorrow.setHours(myTomorrow.getHours() -8);
+    myToday.setHours(myToday.getHours() - 8);
+    myTomorrow.setHours(myTomorrow.getHours() - 8);
     // console.log("after")
     // console.log(myToday)
     // console.log(myTomorrow)
