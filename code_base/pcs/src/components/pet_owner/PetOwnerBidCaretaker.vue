@@ -452,7 +452,7 @@ export default {
                   icon: "error",
                   title: "Oops...",
                   text:
-                    "Missed Bid! Please try another bid or contact the Admin. Null Error: " +
+                    "Missed Bid! Please try another bid or contact the Admin. Error: " +
                     response,
                 });
               } else if (response.data[0].result == null) {
@@ -460,10 +460,18 @@ export default {
                 console.log(response.data)
                 console.log(typeof response.data)
                 console.log(response.data.substr(0, 12))
-                console.log(response.data.substr(0, 12).trim() === "Error error: ".trim())
-                if (response.data.substr(0, 12).trim() === "Error error: ".trim()) {
+                console.log(response.data.trim() === "Error error: ".trim())
+                if (response.data.toString().trim() === 'Error error: new row for relation "bid_transaction" violates check constraint "bid_transaction_check2"'.trim()){
+                  response.data = "Job start timing should be after current time.";
+                  console.log(response.data);
+                }
+                else if (response.data.toString().trim() === 'Error error: new row for relation "bid_transaction" violates check constraint "bid_transaction_check1"'.trim()){
+                  response.data = "Job start timing should be after current time.";
+                  console.log(response.data);
+                }
+                else if (response.data.substr(0, 12).trim() === "Error error: ".trim()) {
                   response.data = response.data.substr(13);
-                  console.log(response.data)
+                  console.log(response.data);
                 }
                 Swal.fire({
                   icon: "error",
@@ -688,9 +696,17 @@ export default {
               // console.log(typeof response.data)
               // console.log(response.data.substr(0, 12))
               // console.log(response.data.substr(0, 12).trim() === "Error error: ".trim())
-              if (response.data.substr(0, 12).trim() === "Error error: ".trim()) {
+              if (response.data.toString().trim() === 'Error error: new row for relation "bid_transaction" violates check constraint "bid_transaction_check2"'.trim()){
+                response.data = "Job start timing should be after current time.";
+                console.log(response.data);
+              }
+              else if (response.data.toString().trim() === 'Error error: new row for relation "bid_transaction" violates check constraint "bid_transaction_check1"'.trim()){
+                response.data = "Job start timing should be after current time.";
+                console.log(response.data);
+              }
+              else if (response.data.substr(0, 12).trim() === "Error error: ".trim()) {
                 response.data = response.data.substr(13);
-                console.log(response.data)
+                console.log(response.data);
               }
               Swal.fire({
                 icon: "error",
