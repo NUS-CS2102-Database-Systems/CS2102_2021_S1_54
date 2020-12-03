@@ -166,6 +166,7 @@ export default {
         this.email = response.data[0].email;
         this.address = response.data[0].address;
         this.avg_rating = response.data[0].average_rating;
+        console.log(response.data[0].years_exp);
         if (response.data[0].years_exp.years != undefined) {
           this.years_exp = response.data[0].years_exp.years + " years ";
         }
@@ -193,6 +194,13 @@ export default {
         ) {
           this.years_exp += response.data[0].years_exp.days + " days";
         }
+
+        // for the case when the user is created today - age is 0 and the object returned from DB is empty
+        if (this.years_exp == null) {
+          this.years_exp = "0 days";
+        }
+
+        console.log("Years: " + this.years_exp);
         this.date_started = response.data[0].date_started
           .toString()
           .split("T")[0];
