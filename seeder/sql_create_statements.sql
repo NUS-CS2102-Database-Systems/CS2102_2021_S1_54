@@ -29,13 +29,6 @@ CREATE TABLE pet_owner (
    		AND credit_card_expiry_date IS NOT NULL))
 );
 
--- CREATE TABLE pet_owner (
--- 	username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
--- 	credit_card_number VARCHAR UNIQUE,
--- 	credit_card_full_name VARCHAR,
--- 	credit_card_expiry_date VARCHAR(5)
--- );
-
 CREATE TABLE caretaker (
     username VARCHAR PRIMARY KEY REFERENCES users(username) ON DELETE cascade,
     average_rating NUMERIC(2, 1) NOT NULL DEFAULT 0.0,
@@ -70,7 +63,6 @@ CREATE TABLE bid_transaction (
 	job_start_datetime TIMESTAMP,
 	job_end_datetime TIMESTAMP,
     payment_datetime TIMESTAMP,
-    -- daily_price_at_that_point NUMERIC(7, 2),
 	amount NUMERIC(7, 2),
 	payment_method VARCHAR ,
     start_transfer_method VARCHAR,
@@ -125,24 +117,8 @@ CREATE TABLE leave_days(
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
     PRIMARY KEY(username, start_date, end_date),
-	-- just added:
 	CHECK (start_date <= end_date)
 );
-
--- CREATE VIEW pet_days_past_30_days(cusername,pet_days) AS
--- 	(SELECT cusername, SUM(days)
--- 	FROM  bid_transaction
--- 	GROUP BY cusername
--- 	WHERE (SELECT (date_trunc('MONTH', (CURRENT_DATE)::date) + INTERVAL '1 MONTH - 1 day')::DATE AS last_date_of_month) AND (SELECT date_trunc('MONTH',now())::DATE AS first_date_month) AND 
--- 		CASE 
--- 	   		WHEN EXTRACT(MONTH FROM last_date_of_month) = EXTRACT(MONTH FROM job_start_datetime) AND EXTRACT(MONTH FROM last_date_of_month) = EXTRACT(MONTH FROM job_end_datetime) 
---    				THEN DATE(SUBSTRING(job_end_datetime FROM 1 FOR 10)) - DATE(SUBSTRING(job_start_datetime FROM 1 FOR 10))
---    			WHEN EXTRACT(MONTH FROM last_date_of_month) = EXTRACT(MONTH FROM job_start_datetime) AND  EXTRACT(MONTH FROM last_date_of_month) != EXTRACT(MONTH FROM job_end_datetime) 
--- 				THEN  last_date_of_month - DATE(SUBSTRING(job_start_datetime FROM 1 FOR 10))
--- 			WHEN EXTRACT(MONTH FROM first_date_of_month) != EXTRACT(MONTH FROM job_start_datetime) AND EXTRACT(MONTH FROM first_date_of_month) = EXTRACT(MONTH FROM job_end_datetime) 
--- 				THEN DATE(SUBSTRING(job_end_datetime FROM 1 FOR 10)) - first_date_of_month 
--- 	END AS days
--- );
 
 CREATE VIEW pet_days_per_job(cusername, pet_days, job_end_datetime) AS (
 	SELECT cusername, DATE_PART('DAY', job_end_datetime - job_start_datetime) + 1 AS pet_days, job_end_datetime
@@ -178,13 +154,11 @@ CREATE OR REPLACE FUNCTION not_overlap()
 	$$ DECLARE ctx1 NUMERIC; ctx2 NUMERIC; part_time_exists BOOLEAN; leave_start DATE; leave_end DATE;
 	BEGIN 
 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
-		-- TODO: change part_time_exists to a more explanatory name?
 
 		IF part_time_exists THEN
 			SELECT COUNT(*) INTO ctx1 FROM availabilities A
 			WHERE NEW.cusername = A.username AND 
 			(NEW.job_start_datetime >= A.start_date AND NEW.job_end_datetime <  (A.end_date + INTERVAL '1 day') );
-			-- <= A.end_date);
 
 			IF ctx1 = 0 THEN
 				-- Replaced RETURN NULL with RAISE EXCEPTION
@@ -290,43 +264,6 @@ CREATE TRIGGER update_daily_price
 AFTER UPDATE ON caretaker
 FOR EACH ROW EXECUTE FUNCTION new_current_daily_price_rate();
 
--- trigger 5
--- CREATE OR REPLACE FUNCTION check_caretaker_pet_limit()
---  RETURNS TRIGGER
--- AS $$
--- 	DECLARE num_pets INT;
--- 	DECLARE part_time_pets INT;
--- 	DECLARE part_time_exists BOOLEAN;
--- 	DECLARE full_time_exists BOOLEAN;
--- 	BEGIN
--- 		SELECT COUNT(*) INTO num_pets FROM bid_transaction WHERE cusername = NEW.cusername AND (job_start_datetime, job_end_datetime) OVERLAPS (NEW.job_start_datetime, NEW.job_end_datetime);
-		
--- 		full_time_exists := (SELECT EXISTS (SELECT 1 FROM full_time_caretaker WHERE username = NEW.cusername));
-
--- 		part_time_exists := (SELECT EXISTS (SELECT 1 FROM part_time_caretaker WHERE username = NEW.cusername));
-
--- 		IF full_time_exists THEN 
--- 			IF num_pets >= 5 THEN
--- 				RETURN NULL;
--- 			ELSIF num_pets < 5 THEN
--- 				RETURN NEW;
--- 			END IF;
--- 		ELSIF part_time_exists THEN
--- 			SELECT number_of_pets_allowed INTO part_time_pets FROM availabilities WHERE username = NEW.cusername ORDER BY start_date DESC LIMIT 1;
--- 			IF num_pets >= part_time_pets THEN
--- 				RETURN NULL;
--- 			ELSIF num_pets < part_time_pets THEN
--- 				RETURN NEW;
--- 			END IF;
--- 		END IF;
--- END; $$
--- LANGUAGE plpgsql;
-
--- CREATE TRIGGER check_pet_limit
--- BEFORE INSERT ON bid_transaction
--- FOR EACH ROW EXECUTE FUNCTION check_caretaker_pet_limit();
-
-
 -- trigger 6
 CREATE OR REPLACE FUNCTION not_full_time()
 	RETURNS TRIGGER AS 
@@ -427,4 +364,3 @@ LANGUAGE plpgsql;
 CREATE TRIGGER add_daily_price
 AFTER INSERT ON can_take_care -- At the moment, cannot edit can_take_care and hence does not care about update
 FOR EACH ROW EXECUTE FUNCTION new_daily_price_rate();
-

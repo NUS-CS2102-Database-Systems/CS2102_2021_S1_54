@@ -142,35 +142,6 @@ export default {
           text: "You've logged in successfully!",
         });
       }
-
-      // this.$emit("log-in", user);
-      // this.type = "";
-      // this.username = "";
-      // this.password = "";
-      // const username_logged_in = this.username;
-
-      // if (this.type == "petOwner") {
-      //   document.cookie = "pet_owner_username=" + username_logged_in;
-      //   console.log("cookie: " + document.cookie);
-      //   this.$router.push({
-      //     path: "pet-owners",
-      //     query: { pet_owner_username: username_logged_in },
-      //   });
-      // } else if (this.type == "parttimeCaretaker") {
-      //   document.cookie = "pt_caretaker_username=" + username_logged_in;
-      //   console.log("cookie: " + document.cookie);
-      //   this.$router.push({
-      //     path: "part-time-caretakers",
-      //     query: { pt_caretaker_username: username_logged_in },
-      //   });
-      // } else if (this.type == "fulltimeCaretaker") {
-      //   document.cookie = "ft_caretaker_username=" + username_logged_in;
-      //   console.log("cookie: " + document.cookie);
-      //   this.$router.push({
-      //     path: "full-time-caretakers",
-      //     query: { ft_caretaker_username: username_logged_in },
-      //   });
-      // }
     },
   },
   async mounted() {

@@ -1,11 +1,5 @@
 <template>
   <div>
-    <!-- <form >
-            <input type="text" name="username" v-model="username" placeholder="Enter your username...">
-
-            <input type="submit" value='Submit' class='btn'>
-        </form> -->
-
     <form @submit="signUp" style="border:1px solid #ccc">
       <div class="container">
         <h1>Sign Up</h1>
