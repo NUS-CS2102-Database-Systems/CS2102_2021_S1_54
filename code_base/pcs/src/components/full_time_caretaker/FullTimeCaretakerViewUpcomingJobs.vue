@@ -414,6 +414,7 @@ export default {
                   this.type_of_animal_odd.push(response.data[i].type_of_animal);
                   this.pet_med_hist_odd.push(response.data[i].med_hist);
                   this.pet_special_req_odd.push(response.data[i].special_req);
+                  this.payment_method_odd.push(response.data[i].payment_method);
                   let date_time =
                     response.data[i].payment_datetime.split("T")[0] +
                     " " +
@@ -487,6 +488,9 @@ export default {
                   );
                   this.pet_med_hist_even.push(response.data[i].med_hist);
                   this.pet_special_req_even.push(response.data[i].special_req);
+                  this.payment_method_even.push(
+                    response.data[i].payment_method
+                  );
                   let date_time =
                     response.data[i].payment_datetime.split("T")[0] +
                     " " +
