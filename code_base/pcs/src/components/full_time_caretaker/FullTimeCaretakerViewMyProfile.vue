@@ -195,11 +195,10 @@ export default {
         }
 
         // for the case when the user is created today - age is 0 and the object returned from DB is empty
-        if (
-          this.years_exp == null
-        ) {
+        if (this.years_exp == null) {
           this.years_exp = "0 days";
         }
+        console.log("Years: " + this.years_exp);
 
         this.date_started = response.data[0].date_started
           .toString()

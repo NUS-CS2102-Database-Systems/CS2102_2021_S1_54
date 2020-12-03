@@ -246,9 +246,9 @@ AS $$
 
 			IF part_time_exists THEN
 				IF NEW.average_rating >= 4.0 THEN
-					UPDATE availabilities SET number_of_pets_allowed = 4 WHERE username = NEW.username AND start_date >= current_date;
+					UPDATE availabilities SET number_of_pets_allowed = 4 WHERE username = NEW.username AND end_date >= current_date;
 				ELSIF NEW.average_rating < 4.0 THEN
-					UPDATE availabilities SET number_of_pets_allowed = 2 WHERE username = NEW.username AND start_date >= current_date;
+					UPDATE availabilities SET number_of_pets_allowed = 2 WHERE username = NEW.username AND end_date >= current_date;
 				END IF;
 			END IF;
 		END IF;

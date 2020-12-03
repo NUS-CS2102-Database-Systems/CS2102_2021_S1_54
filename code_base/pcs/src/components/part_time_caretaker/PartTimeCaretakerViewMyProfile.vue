@@ -166,6 +166,7 @@ export default {
         this.email = response.data[0].email;
         this.address = response.data[0].address;
         this.avg_rating = response.data[0].average_rating;
+        console.log(response.data[0].years_exp);
         if (response.data[0].years_exp.years != undefined) {
           this.years_exp = response.data[0].years_exp.years + " years ";
         }
@@ -193,25 +194,38 @@ export default {
         ) {
           this.years_exp += response.data[0].years_exp.days + " days";
         }
+
+        // for the case when the user is created today - age is 0 and the object returned from DB is empty
+        if (this.years_exp == null) {
+          this.years_exp = "0 days";
+        }
+
+        console.log("Years: " + this.years_exp);
         this.date_started = response.data[0].date_started
           .toString()
           .split("T")[0];
-      });
 
-    await axios
-      .post(
-        "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets",
-        {
-          toGet: get_info,
-        }
-      )
-      .then((response) => {
-        if (response.data.length == 0 || response.data[0].number_of_pets_allowed == null) {
+        if (this.avg_rating < 4.0) {
           this.num_of_pets = 2;
         } else {
-          this.num_of_pets = response.data[0].number_of_pets_allowed;
+          this.num_of_pets = 4;
         }
       });
+
+    // await axios
+    //   .post(
+    //     "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets",
+    //     {
+    //       toGet: get_info,
+    //     }
+    //   )
+    //   .then((response) => {
+    //     if (response.data.length == 0 || response.data[0].number_of_pets_allowed == null) {
+    //       this.num_of_pets = 2;
+    //     } else {
+    //       this.num_of_pets = response.data[0].number_of_pets_allowed;
+    //     }
+    //   });
 
     await axios
       .post(

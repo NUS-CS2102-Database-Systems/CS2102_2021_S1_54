@@ -54,8 +54,8 @@
                     <p style="color:black">
                       Pet Owner Username: {{ pet_owner_odd[i] }} <br />
                       Pet Name: {{ pet_odd[i] }} <br />
-                      Job Started: {{ job_start_odd[i] }} <br />
-                      Job Ended: {{ job_end_odd[i] }} <br />
+                      Job Start: {{ job_start_odd[i] }} <br />
+                      Job End: {{ job_end_odd[i] }} <br />
                       Transfer Method (Pick Up):
                       {{ start_transfer_method_odd[i] }}
                       <br />
@@ -104,8 +104,8 @@
                     <p style="color:black">
                       Pet Owner Username: {{ pet_owner_even[i] }} <br />
                       Pet Name: {{ pet_even[i] }} <br />
-                      Job Started: {{ job_start_even[i] }} <br />
-                      Job Ended: {{ job_end_even[i] }} <br />
+                      Job Start: {{ job_start_even[i] }} <br />
+                      Job End: {{ job_end_even[i] }} <br />
                       Transfer Method (Pick Up):
                       {{ start_transfer_method_even[i] }}
                       <br />
@@ -414,6 +414,7 @@ export default {
                   this.type_of_animal_odd.push(response.data[i].type_of_animal);
                   this.pet_med_hist_odd.push(response.data[i].med_hist);
                   this.pet_special_req_odd.push(response.data[i].special_req);
+                  this.payment_method_odd.push(response.data[i].payment_method);
                   let date_time =
                     response.data[i].payment_datetime.split("T")[0] +
                     " " +
@@ -451,6 +452,9 @@ export default {
                   this.pet_owner_phone_even.push(response.data[i].phone);
                   this.pet_owner_email_even.push(response.data[i].email);
                   this.pet_owner_address_even.push(response.data[i].address);
+                  this.payment_method_even.push(
+                    response.data[i].payment_method
+                  );
                   let pet_age = null;
                   if (response.data[i].pet_age.years != undefined) {
                     pet_age = response.data[i].pet_age.years + " years ";

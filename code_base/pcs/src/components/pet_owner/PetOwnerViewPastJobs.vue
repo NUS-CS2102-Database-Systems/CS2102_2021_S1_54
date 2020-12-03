@@ -141,13 +141,13 @@
                       :to="{
                         path: '/pet-owners/submit-review/',
                         query: {
-                          cusername: caretaker_odd[i],
+                          cusername: caretaker_even[i],
                           pusername: username,
-                          pet_name: pet_odd[i],
-                          job_start_datetime: job_start_odd[i],
-                          job_end_datetime: job_end_odd[i],
-                          rating: rating_odd[i],
-                          review: review_odd[i],
+                          pet_name: pet_even[i],
+                          job_start_datetime: job_start_even[i],
+                          job_end_datetime: job_end_even[i],
+                          rating: rating_even[i],
+                          review: review_even[i],
                         },
                       }"
                     >
