@@ -196,22 +196,28 @@ export default {
         this.date_started = response.data[0].date_started
           .toString()
           .split("T")[0];
-      });
 
-    await axios
-      .post(
-        "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets",
-        {
-          toGet: get_info,
-        }
-      )
-      .then((response) => {
-        if (response.data.length == 0 || response.data[0].number_of_pets_allowed == null) {
+        if (this.avg_rating < 4.0) {
           this.num_of_pets = 2;
         } else {
-          this.num_of_pets = response.data[0].number_of_pets_allowed;
+          this.num_of_pets = 4;
         }
       });
+
+    // await axios
+    //   .post(
+    //     "https://pet-care-service.herokuapp.com/part-time-caretakers/get-num-of-pets",
+    //     {
+    //       toGet: get_info,
+    //     }
+    //   )
+    //   .then((response) => {
+    //     if (response.data.length == 0 || response.data[0].number_of_pets_allowed == null) {
+    //       this.num_of_pets = 2;
+    //     } else {
+    //       this.num_of_pets = response.data[0].number_of_pets_allowed;
+    //     }
+    //   });
 
     await axios
       .post(
