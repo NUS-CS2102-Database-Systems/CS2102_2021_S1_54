@@ -700,6 +700,11 @@ export default {
                   ) {
                     years += response.data[0].years_exp.days + " days";
                   }
+
+                  // for the case when the caretaker is created today - age is 0 and the object returned from DB is empty
+                  if (years == null) {
+                    years = "0 days";
+                  }
                   this.caretaker_years_exp_odd.push(years);
                 } else {
                   this.length_even += 1;
@@ -764,6 +769,11 @@ export default {
                     years != null
                   ) {
                     years += response.data[0].years_exp.days + " days";
+                  }
+
+                  // for the case when the caretaker is created today - age is 0 and the object returned from DB is empty
+                  if (years == null) {
+                    years = "0 days";
                   }
                   this.caretaker_years_exp_even.push(years);
                 }
@@ -926,6 +936,11 @@ export default {
               ) {
                 years += response.data[0].years_exp.days + " days";
               }
+
+              // for the case when the caretaker is created today - age is 0 and the object returned from DB is empty
+              if (years == null) {
+                years = "0 days";
+              }
               this.caretaker_years_exp_odd.push(years);
             } else {
               this.length_even += 1;
@@ -990,6 +1005,10 @@ export default {
                 years != null
               ) {
                 years += response.data[0].years_exp.days + " days";
+              }
+              // for the case when the caretaker is created today - age is 0 and the object returned from DB is empty
+              if (years == null) {
+                years = "0 days";
               }
               this.caretaker_years_exp_even.push(years);
             }
