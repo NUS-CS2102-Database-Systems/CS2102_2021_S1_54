@@ -54,8 +54,8 @@
                     <p style="color:black">
                       Pet Owner Username: {{ pet_owner_odd[i] }} <br />
                       Pet Name: {{ pet_odd[i] }} <br />
-                      Job Started: {{ job_start_odd[i] }} <br />
-                      Job Ended: {{ job_end_odd[i] }} <br />
+                      Job Start: {{ job_start_odd[i] }} <br />
+                      Job End: {{ job_end_odd[i] }} <br />
                       Transfer Method (Pick Up):
                       {{ start_transfer_method_odd[i] }}
                       <br />
@@ -104,8 +104,8 @@
                     <p style="color:black">
                       Pet Owner Username: {{ pet_owner_even[i] }} <br />
                       Pet Name: {{ pet_even[i] }} <br />
-                      Job Started: {{ job_start_even[i] }} <br />
-                      Job Ended: {{ job_end_even[i] }} <br />
+                      Job Start: {{ job_start_even[i] }} <br />
+                      Job End: {{ job_end_even[i] }} <br />
                       Transfer Method (Pick Up):
                       {{ start_transfer_method_even[i] }}
                       <br />

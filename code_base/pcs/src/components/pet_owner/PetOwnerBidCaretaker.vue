@@ -230,7 +230,6 @@ export default {
       this.price_rate = this.dict_pet_price[this.pet_selected];
 
       if (this.num_pet_days != null) {
-        // && !this.num_pet_days.isNaN){
         this.price = this.price_rate * this.num_pet_days;
       }
     },
@@ -243,10 +242,6 @@ export default {
         const diffTime = Math.abs(date2 - date1);
         this.num_pet_days = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-        // if (this.num_pet_days.isNaN){
-        //   this.price = null
-        //   console.log("isNanN!!")
-        // }
         if (this.price_rate != null) {
           this.price = this.price_rate * this.num_pet_days;
         }
@@ -371,30 +366,15 @@ export default {
           startDateObj.setHours(startDateObj.getHours() + 8);
           endDateObj.setHours(endDateObj.getHours() + 8);
 
-          // // Get current datetime
-          // let date = new Date();
-          // //let hours = date.setHours(date.getHours() + 8);
-          // //date.setHours(date.getHours() + 8);
-          // let sg_bid_date = date.toISOString().toString();
-          // sg_bid_date = sg_bid_date.replace(/T/, " ");
-          // sg_bid_date = sg_bid_date.substring(0, sg_bid_date.length - 1);
-
-          // // Format date and time into datetime for db
-          // var startTimeString = this.start_time.hour + ':' + this.start_time.minute + ':00';
-          // var startDateObj = new Date(this.selected_dates[0] + ' ' + startTimeString);
-
-          // var endTimeString = this.end_time.hour + ':' + this.end_time.minute + ':00';
-          // var endDateObj = new Date(this.selected_dates[1] + ' ' + endTimeString);
-
           const send_info = {
             username: this.username,
             pet: this.pet_selected,
             caretaker: this.caretaker,
-            bidding_time: startDateObj //date
+            bidding_time: date
               .toISOString()
               .toString()
               .replace(/T/, " ")
-              .substring(0, 19), //sg_bid_date,
+              .substring(0, 19), 
             job_start_datetime: startDateObj
               .toISOString()
               .toString()
@@ -405,11 +385,11 @@ export default {
               .toString()
               .replace(/T/, " ")
               .substring(0, 19),
-            payment_datetime: startDateObj //date
+            payment_datetime: date
               .toISOString()
               .toString()
               .replace(/T/, " ")
-              .substring(0, 19), //sg_bid_date,
+              .substring(0, 19), 
             amount: this.price,
             payment_method: "Credit Card",
             start_transfer_method: this.start_method,
@@ -555,7 +535,7 @@ export default {
         });
         data_ok = false;
       }
-
+      // Single day booking would have ending time after starting time
       if (
         this.selected_dates[0] == this.selected_dates[1] &&
         this.end_time < this.start_time
@@ -617,11 +597,11 @@ export default {
           username: this.username,
           pet: this.pet_selected,
           caretaker: this.caretaker,
-          bidding_time: startDateObj//date
+          bidding_time: date
             .toISOString()
             .toString()
             .replace(/T/, " ")
-            .substring(0, 19), //sg_bid_date,
+            .substring(0, 19), 
           job_start_datetime: startDateObj
             .toISOString()
             .toString()
@@ -736,73 +716,15 @@ export default {
     const urlParams = new URLSearchParams(queryString);
     this.caretaker = urlParams.get("caretaker");
 
-    // console.log("Understanding Date")
-    // let today = new Date();
-    // let d = new Date();
-    // console.log(d)
-    // d.setHours(0, -1, 0, 0);
-    // console.log(d)
-
-    // let myTomorrow = new Date(
-    //   today.getFullYear(),
-    //   today.getMonth(),
-    //   today.getDate() ,
-    //   0,
-    //   0,
-    //   -1
-    // );
-    // console.log(myTomorrow)
-    
-    //this.pet_arr = [{name: "AnimalA"}, {name: "AnimalB"}, {name: "AnimalC"}];
-    //const response = await axios.get("/pet-owners/view-caretakers-profiles");
-    //number_of_pets = response.data.belongstotabledata[0].data_set;
-    //for(var i = 1; i <= number_of_pets; i++){
-    //
-    //}
-    //pet_name_arr
-
-    // let date = new Date();
-    // //date.setHours(date.getHours() + 8);
-    // let sg_current_date = date.toISOString().toString();
-    // // this.price_rate = sg_current_date;
-    // // console.log(this.price_rate.replace(/T/, " ").substring(0, 18))
-
-    // console.log(date)
-    // console.log(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
+    let date = new Date();
+    date.setHours(date.getHours() + 8);
+    let sg_current_date = date.toISOString().toString();
     // date.setHours(date.getHours() + 8);
-    // console.log(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
-    // let d = new Date(date.toISOString().toString().replace(/T/, " ").substring(0, 19));
-    // console.log(d);
-    // console.log(d.toISOString().toString().replace(/T/, " ").substring(0, 19));
-
     // sg_current_date = sg_current_date.split(/T/, 2)[0];
-    // this.today_date = sg_current_date;
-    
-    
-    // //CHECK OR FIGURE OUT GETTING END DAT
-    // let dateEnd = new Date( //End of the day
-    //   date.getFullYear(),
-    //   date.getMonth(),
-    //   date.getDate() + 1,
-    //   8,
-    //   0,
-    //   -1
-    // );
-    // const dateEndString = dateEnd
-    //     .toISOString()
-    //     .replace(/T/, " ")
-    //     .substring(0, 19); //.substring(0, 10); // YYYY-MM-DD format
-    // console.log(dateEndString);
-
-
-    // Set the minimum date availble for date picker
-    // let date = new Date();
-    // date.setHours(date.getHours() + 8);
-    // //date.setHours(0, 0, 0, 0);
-    // this.today_date = date.toISOString().toString().substring(0, 10);
-    // console.log("today date is")
-    // console.log(date)
-    // console.log(this.today_date)
+    this.today_date = sg_current_date.split(/T/, 2)[0];
+    console.log("current datetime")
+    console.log(sg_current_date)
+    console.log(this.today_date)
 
     const get_info = {
       username: this.username,
@@ -825,23 +747,8 @@ export default {
           this.pet_arr.push(pet_name_opt);
           this.dict_pet_price[response.data[i].pet_name] =
             response.data[i].current_daily_price;
-          // let pet_and_its_price ={
-          //   pet_name: response.data[i].pet_name,
-          //   price: response.data[i].price //dothis in sql
-          // };
-          // this.pet_arr.push(pet_and_its_price);
         }
       });
-    // await axios
-    //  .post(
-    //    "https://pet-care-service.herokuapp.com/pet-owners/view-caretakers-profiles/bid-date-options",
-    //    {
-    //      toGet: get_info,
-    //     }
-    //   )
-    //   .then((response) => {
-
-    //   });
     this.loaded = true;
   },
 };
